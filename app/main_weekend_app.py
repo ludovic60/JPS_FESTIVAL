@@ -6,7 +6,7 @@ import streamlit as st
 
 from design_system import inject
 from weekend_app import auth, storage
-##from weekend_app.views import login_view, reset_password_view, main_app
+from weekend_app.views import login_view, reset_password_view, main_app
 
 st.set_page_config(page_title="Présence Week-end", page_icon="📅", layout="wide")
 inject()
