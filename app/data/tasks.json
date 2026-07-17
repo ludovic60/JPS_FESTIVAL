@@ -1,0 +1,7 @@
+[
+  { "id": "accueil", "label": "Accueil" },
+  { "id": "cuisine", "label": "Cuisine" },
+  { "id": "menage", "label": "Ménage" },
+  { "id": "logistique", "label": "Logistique" },
+  { "id": "animation", "label": "Animation" }
+]
