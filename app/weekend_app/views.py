@@ -1,4 +1,4 @@
-""Vues / écrans Streamlit."""
+"""Vues / écrans Streamlit."""
 import html
 
 import streamlit as st
