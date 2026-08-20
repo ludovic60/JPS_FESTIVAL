@@ -2,7 +2,7 @@
 import pandas as pd
 import streamlit as st
 
-from . import auth, storage, config, export
+import auth, storage, config, export
 
 
 def login_view():
