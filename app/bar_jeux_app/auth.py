@@ -1,0 +1,46 @@
+"""Authentification (nom, email, mot de passe) pour Bar à jeux."""
+import streamlit as st
+from email_validator import validate_email, EmailNotValidError
+
+from weekend_app.security import generate_token
+from . import storage
+
+
+def current_user():
+    return st.session_state.get("jeux_user")
+
+
+def login(email, password):
+    try:
+        validate_email(email)
+    except EmailNotValidError:
+        return "Adresse email invalide"
+    user = storage.check_credentials(email.strip(), password)
+    if not user:
+        return "Email ou mot de passe incorrect"
+    st.session_state["jeux_user"] = _public(user)
+    return None
+
+
+def register(name, email, password):
+    if len(name.strip()) < 1:
+        return "Le nom est requis"
+    if len(password) < 6:
+        return "Mot de passe : 6 caractères minimum"
+    try:
+        validate_email(email)
+    except EmailNotValidError:
+        return "Adresse email invalide"
+    user, err = storage.create_user(email.strip(), name, password)
+    if err:
+        return err
+    st.session_state["jeux_user"] = _public(user)
+    return None
+
+
+def logout():
+    st.session_state.pop("jeux_user", None)
+
+
+def _public(u):
+    return {"id": u["id"], "email": u["email"], "name": u["name"], "role": u["role"]}
