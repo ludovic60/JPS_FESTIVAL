@@ -7,7 +7,7 @@ from threading import Lock
 
 import common_store as cs
 from weekend_app.security import hash_password, verify_password
-from . import config
+import config
 
 _lock = Lock()
 
