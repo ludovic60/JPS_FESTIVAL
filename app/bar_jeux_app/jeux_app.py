@@ -3,7 +3,7 @@
 Lancement local :  streamlit run jeux_app.py
 """
 import streamlit as st
-from . import auth, storage
+import auth, storage
 from views import login_view, main_app
 import os
 import sys
