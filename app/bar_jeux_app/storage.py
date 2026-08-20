@@ -6,6 +6,11 @@ from datetime import datetime, timezone
 from threading import Lock
 
 import common_store as cs
+import os
+import sys
+# Ajoute le dossier parent à sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from weekend_app.security import hash_password, verify_password
 import config
 
