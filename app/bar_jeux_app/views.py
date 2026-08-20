@@ -110,10 +110,15 @@ def _list_page(title, list_key, user):
                 storage.add_request(n, u, list_key, user["name"])
                 st.success("Demande envoyée à l'administrateur")
     games = storage.load_games(list_key)
-    if not games:
+   if not games:
         st.info("Aucun jeu dans cette liste. Ajoutez des jeux dans le fichier JSON correspondant.")
-    for g in games:
-        _game_card(g, list_key, user)
+        return
+    per_row = 3
+    for i in range(0, len(games), per_row):
+        cols = st.columns(per_row)
+        for j, g in enumerate(games[i:i + per_row]):
+            with cols[j]:
+                _game_card(g, list_key, user)
 
 
 def _requests_page(user):
