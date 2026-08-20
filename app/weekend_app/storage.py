@@ -1,14 +1,11 @@
-"""Couche de stockage en fichiers plats JSON.
-
-Abstraction volontairement simple : chaque entité est un fichier JSON.
-Pour migrer vers MongoDB Atlas plus tard, il suffit de réimplémenter
-ces fonctions avec pymongo sans toucher au reste de l'application.
-"""
+"""Stockage App1 (Présence Week-end) — utilisateurs & données partagés via common_store,
+tâches conservées en fichier plat (data/tasks.json)."""
 import json
 import uuid
 from datetime import datetime, timezone, timedelta
 from threading import Lock
 
+import common_store as cs
 from . import config
 from .security import hash_password, verify_password, token_hash
 
@@ -32,34 +29,22 @@ def _write(path, data):
             json.dump(data, f, ensure_ascii=False, indent=2)
 
 
-# --------------------------------------------------------------------------
-# Initialisation / seed
-# --------------------------------------------------------------------------
 def init_storage():
     config.DATA_DIR.mkdir(parents=True, exist_ok=True)
     if not config.TASKS_FILE.exists():
         _write(config.TASKS_FILE, [])
-    if not config.USERS_FILE.exists():
-        _write(config.USERS_FILE, [])
-    if not config.PRESENCE_FILE.exists():
-        _write(config.PRESENCE_FILE, {})
-    if not config.RESET_TOKENS_FILE.exists():
-        _write(config.RESET_TOKENS_FILE, {})
-
     admin_email = str(config.get_secret("ADMIN_EMAIL", "admin@weekend.fr")).lower()
     admin_password = str(config.get_secret("ADMIN_PASSWORD", "admin123"))
-    if get_user_by_email(admin_email) is None:
-        _add_user_raw(admin_email, "Administrateur", admin_password, role="admin")
+    if cs.get_user_by_email(admin_email) is None:
+        _seed_user(admin_email, "Administrateur", admin_password, role="admin")
 
 
-# --------------------------------------------------------------------------
-# Tâches (fichier plat lu par l'application)
-# --------------------------------------------------------------------------
+# ---- Tâches (fichier plat) ----
 def get_tasks():
     return _read(config.TASKS_FILE, [])
 
 
-def add_task(label: str):
+def add_task(label):
     tasks = get_tasks()
     task = {"id": uuid.uuid4().hex[:8], "label": label.strip()}
     tasks.append(task)
@@ -68,7 +53,7 @@ def add_task(label: str):
     return task
 
 
-def update_task(task_id: str, label: str):
+def update_task(task_id, label):
     tasks = get_tasks()
     for t in tasks:
         if t["id"] == task_id:
@@ -77,82 +62,56 @@ def update_task(task_id: str, label: str):
     _write(config.TASKS_FILE, tasks)
 
 
-def delete_task(task_id: str):
-    tasks = [t for t in get_tasks() if t["id"] != task_id]
-    _write(config.TASKS_FILE, tasks)
+def delete_task(task_id):
+    _write(config.TASKS_FILE, [t for t in get_tasks() if t["id"] != task_id])
     presence = get_all_presence()
     for p in presence.values():
         p["task_ids"] = [tid for tid in p.get("task_ids", []) if tid != task_id]
-    _write(config.PRESENCE_FILE, presence)
+    cs.put_doc("weekend_presence", presence)
 
 
-# --------------------------------------------------------------------------
-# Utilisateurs
-# --------------------------------------------------------------------------
+# ---- Utilisateurs (partagés) ----
 def get_users():
-    return _read(config.USERS_FILE, [])
+    return cs.get_users()
 
 
-def get_user_by_email(email: str):
-    email = email.lower()
-    for u in get_users():
-        if u["email"] == email:
-            return u
-    return None
+def get_user_by_email(email):
+    return cs.get_user_by_email(email)
 
 
-def get_user_by_id(user_id: str):
-    for u in get_users():
-        if u["id"] == user_id:
-            return u
-    return None
+def get_user_by_id(uid):
+    return cs.get_user_by_id(uid)
 
 
-def _add_user_raw(email, name, password, role="user"):
-    users = get_users()
-    user = {
-        "id": uuid.uuid4().hex,
-        "email": email.lower(),
-        "name": name.strip(),
-        "password_hash": hash_password(password),
-        "role": role,
-        "created_at": datetime.now(timezone.utc).isoformat(),
-    }
-    users.append(user)
-    _write(config.USERS_FILE, users)
-    return user
+def _seed_user(email, name, password, role="user"):
+    u = {"id": uuid.uuid4().hex, "email": email.lower(), "name": name.strip(),
+         "password_hash": hash_password(password), "role": role,
+         "created_at": datetime.now(timezone.utc).isoformat()}
+    cs.add_user(u)
+    return u
 
 
 def create_user(email, name, password):
-    if get_user_by_email(email):
+    if cs.get_user_by_email(email):
         return None, "Cet email est déjà utilisé"
-    user = _add_user_raw(email, name, password, role="user")
-    return user, None
+    return _seed_user(email, name, password, role="user"), None
 
 
 def check_credentials(email, password):
-    user = get_user_by_email(email)
-    if user and verify_password(password, user["password_hash"]):
-        return user
-    return None
+    u = cs.get_user_by_email(email)
+    return u if u and verify_password(password, u["password_hash"]) else None
 
 
-def update_password(user_id: str, new_password: str):
-    users = get_users()
-    for u in users:
-        if u["id"] == user_id:
-            u["password_hash"] = hash_password(new_password)
-    _write(config.USERS_FILE, users)
+def update_password(user_id, new_password):
+    cs.update_password(user_id, hash_password(new_password))
 
 
-# --------------------------------------------------------------------------
-# Présence / votes
-# --------------------------------------------------------------------------
+# ---- Présence (partagée) ----
 def get_all_presence():
-    return _read(config.PRESENCE_FILE, {})
+    return cs.get_doc("weekend_presence", {})
 
 
-def get_presence(user_id: str):
+def get_presence(user_id):
     p = get_all_presence().get(user_id)
     slots = {k: False for k in config.SLOT_KEYS}
     task_ids = []
@@ -162,48 +121,43 @@ def get_presence(user_id: str):
     return {"slots": slots, "task_ids": task_ids}
 
 
-def set_presence(user_id: str, user_name: str, slots: dict, task_ids: list):
+def set_presence(user_id, user_name, slots, task_ids):
     presence = get_all_presence()
-    clean = {k: bool(slots.get(k, False)) for k in config.SLOT_KEYS}
-    presence[user_id] = {
-        "user_name": user_name,
-        "slots": clean,
-        "task_ids": task_ids,
-        "updated_at": datetime.now(timezone.utc).isoformat(),
-    }
-    _write(config.PRESENCE_FILE, presence)
+    presence[user_id] = {"user_name": user_name,
+                         "slots": {k: bool(slots.get(k, False)) for k in config.SLOT_KEYS},
+                         "task_ids": task_ids,
+                         "updated_at": datetime.now(timezone.utc).isoformat()}
+    cs.put_doc("weekend_presence", presence)
 
 
 def clear_all_presence():
-    _write(config.PRESENCE_FILE, {})
+    cs.put_doc("weekend_presence", {})
 
 
-def clear_user_presence(user_id: str):
+def clear_user_presence(user_id):
     presence = get_all_presence()
     presence.pop(user_id, None)
-    _write(config.PRESENCE_FILE, presence)
+    cs.put_doc("weekend_presence", presence)
 
 
-# --------------------------------------------------------------------------
-# Jetons de réinitialisation
-# --------------------------------------------------------------------------
-def create_reset_token(user_id: str, token: str, hours: int = 1):
-    tokens = _read(config.RESET_TOKENS_FILE, {})
+# ---- Jetons de réinitialisation (partagés) ----
+def create_reset_token(user_id, token, hours=1):
+    tokens = cs.get_doc("weekend_reset_tokens", {})
     tokens[token_hash(token)] = {
         "user_id": user_id,
         "expires_at": (datetime.now(timezone.utc) + timedelta(hours=hours)).isoformat(),
         "used": False,
     }
-    _write(config.RESET_TOKENS_FILE, tokens)
+    cs.put_doc("weekend_reset_tokens", tokens)
 
 
-def consume_reset_token(token: str):
-    tokens = _read(config.RESET_TOKENS_FILE, {})
+def consume_reset_token(token):
+    tokens = cs.get_doc("weekend_reset_tokens", {})
     rec = tokens.get(token_hash(token))
     if not rec or rec.get("used"):
         return None, "Jeton invalide ou déjà utilisé"
     if datetime.now(timezone.utc) > datetime.fromisoformat(rec["expires_at"]):
         return None, "Jeton expiré"
     rec["used"] = True
-    _write(config.RESET_TOKENS_FILE, tokens)
+    cs.put_doc("weekend_reset_tokens", tokens)
     return rec["user_id"], None
