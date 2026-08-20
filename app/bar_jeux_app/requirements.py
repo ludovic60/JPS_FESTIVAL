@@ -1,0 +1,5 @@
+streamlit>=1.40.0
+bcrypt>=4.1.3
+email-validator>=2.2.0
+pymongo>=4.6.3
+pandas>=2.2.0
