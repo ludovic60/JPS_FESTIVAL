@@ -4,7 +4,7 @@ Lancement local :  streamlit run jeux_app.py
 """
 import streamlit as st
 
-from design_system import inject
+from ..design_system import inject
 from . import auth, storage
 from views import login_view, main_app
 
