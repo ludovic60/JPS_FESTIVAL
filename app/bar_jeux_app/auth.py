@@ -7,7 +7,7 @@ import sys
 # Ajoute le dossier parent à sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from weekend_app.security import generate_token
-from . import storage
+import storage
 
 
 def current_user():
