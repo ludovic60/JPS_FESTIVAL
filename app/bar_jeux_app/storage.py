@@ -1,9 +1,11 @@
-"""Stockage fichiers plats JSON pour Bar à jeux."""
+"""Stockage App2 (Bar à jeux) — utilisateurs & données mutables partagés via common_store.
+Les listes de jeux restent des fichiers plats JSON nommés par mois (exigence)."""
 import json
 import uuid
 from datetime import datetime, timezone
 from threading import Lock
 
+import common_store as cs
 from weekend_app.security import hash_password, verify_password
 from . import config
 
@@ -53,21 +55,9 @@ def _sample(name, sub, players, age, duree, cover, note="7.8", nouv="Oui"):
 
 def init_storage():
     config.DATA_DIR.mkdir(parents=True, exist_ok=True)
-    for f, default in [
-        (config.ADMIN_SELECTED_FILE, []),
-        (config.SUGGESTIONS_FILE, {}),
-        (config.REQUESTS_FILE, []),
-        (config.LOANS_FILE, {}),
-        (config.USERS_FILE, []),
-    ]:
-        if not f.exists():
-            _write(f, default)
-
-    # Fichiers mensuels + vieux
     for key, _ in config.month_keys():
         if not config.games_file(key).exists():
             _write(config.games_file(key), [])
-    # Exemples de jeux
     if not _read(config.games_file("2025_10"), []):
         _write(config.games_file("2025_10"), [
             _sample("Wingspan", "Oiseaux", "1-5", "10+", "40-70 min", _COVERS[0], "8.1"),
@@ -78,25 +68,23 @@ def init_storage():
         _write(config.games_file("2025_11"), [
             _sample("Splendor", "Duel", "2", "10+", "30 min", _COVERS[3], "7.6"),
         ])
-    if not config.games_file(config.VIEUX_KEY).exists() or not _read(config.games_file(config.VIEUX_KEY), []):
+    if not _read(config.games_file(config.VIEUX_KEY), []):
         _write(config.games_file(config.VIEUX_KEY), [
             _sample("Monopoly", "Classique", "2-6", "8+", "60-180 min", _COVERS[3], "5.5", "Non"),
             _sample("Carcassonne", "", "2-5", "7+", "35 min", _COVERS[0], "7.4", "Non"),
         ])
 
-    admin_email = str(config.__dict__.get("_", "")) or "admin@barajeux.fr"
     from weekend_app.config import get_secret
     admin_email = str(get_secret("JEUX_ADMIN_EMAIL", "admin@barajeux.fr")).lower()
     admin_password = str(get_secret("JEUX_ADMIN_PASSWORD", "admin123"))
-    if get_user_by_email(admin_email) is None:
-        _add_user_raw(admin_email, "Administrateur", admin_password, role="admin")
-    # Membres prédéterminés
+    if cs.get_user_by_email(admin_email) is None:
+        _seed_user(admin_email, "Administrateur Jeux", admin_password, role="admin")
     for nm, em in [("Alice", "alice@barajeux.fr"), ("Bob", "bob@barajeux.fr"), ("Chloé", "chloe@barajeux.fr")]:
-        if get_user_by_email(em) is None:
-            _add_user_raw(em, nm, "membre123", role="user")
+        if cs.get_user_by_email(em) is None:
+            _seed_user(em, nm, "membre123", role="user")
 
 
-# ---- Jeux ----
+# ---- Jeux (fichiers plats) ----
 def load_games(list_key):
     games = _read(config.games_file(list_key), [])
     for g in games:
@@ -105,51 +93,47 @@ def load_games(list_key):
     return games
 
 
-# ---- Utilisateurs ----
+# ---- Utilisateurs (partagés) ----
 def get_users():
-    return _read(config.USERS_FILE, [])
+    return cs.get_users()
 
 
 def get_user_by_email(email):
-    email = email.lower()
-    return next((u for u in get_users() if u["email"] == email), None)
+    return cs.get_user_by_email(email)
 
 
-def _add_user_raw(email, name, password, role="user"):
-    users = get_users()
+def _seed_user(email, name, password, role="user"):
     u = {"id": uuid.uuid4().hex, "email": email.lower(), "name": name.strip(),
          "password_hash": hash_password(password), "role": role,
          "created_at": datetime.now(timezone.utc).isoformat()}
-    users.append(u)
-    _write(config.USERS_FILE, users)
+    cs.add_user(u)
     return u
 
 
 def create_user(email, name, password):
-    if get_user_by_email(email):
+    if cs.get_user_by_email(email):
         return None, "Cet email est déjà utilisé"
-    return _add_user_raw(email, name, password), None
+    return _seed_user(email, name, password), None
 
 
 def check_credentials(email, password):
-    u = get_user_by_email(email)
+    u = cs.get_user_by_email(email)
     return u if u and verify_password(password, u["password_hash"]) else None
 
 
-# ---- Sélection admin (clé composite "listkey::gameid") ----
+# ---- Sélection admin / suggestions / demandes / prêts (partagés) ----
 def get_admin_selected():
-    return set(_read(config.ADMIN_SELECTED_FILE, []))
+    return set(cs.get_doc("jeux_admin_selected", []))
 
 
 def toggle_admin_selected(ckey, value):
     sel = get_admin_selected()
     sel.add(ckey) if value else sel.discard(ckey)
-    _write(config.ADMIN_SELECTED_FILE, sorted(sel))
+    cs.put_doc("jeux_admin_selected", sorted(sel))
 
 
-# ---- Suggestions utilisateurs ----
 def get_suggestions():
-    return _read(config.SUGGESTIONS_FILE, {})
+    return cs.get_doc("jeux_suggestions", {})
 
 
 def toggle_suggestion(ckey, user_id, value):
@@ -157,26 +141,24 @@ def toggle_suggestion(ckey, user_id, value):
     lst = set(s.get(ckey, []))
     lst.add(user_id) if value else lst.discard(user_id)
     s[ckey] = sorted(lst)
-    _write(config.SUGGESTIONS_FILE, s)
+    cs.put_doc("jeux_suggestions", s)
 
 
-# ---- Demandes d'ajout ----
 def get_requests():
-    return _read(config.REQUESTS_FILE, [])
+    return cs.get_doc("jeux_requests", [])
 
 
 def add_request(name, myludo_url, list_key, by_name):
     reqs = get_requests()
     reqs.append({"id": uuid.uuid4().hex[:8], "name": name.strip(), "myludo_url": myludo_url.strip(),
                  "list_key": list_key, "by": by_name, "created_at": datetime.now(timezone.utc).isoformat()})
-    _write(config.REQUESTS_FILE, reqs)
+    cs.put_doc("jeux_requests", reqs)
 
 
 def remove_request(req_id):
-    _write(config.REQUESTS_FILE, [r for r in get_requests() if r["id"] != req_id])
+    cs.put_doc("jeux_requests", [r for r in get_requests() if r["id"] != req_id])
 
 
-# ---- Liste finale + prêts ----
 def all_list_keys():
     return [k for k, _ in config.month_keys()] + [config.VIEUX_KEY]
 
@@ -193,7 +175,7 @@ def final_games():
 
 
 def get_loans():
-    return _read(config.LOANS_FILE, {})
+    return cs.get_doc("jeux_loans", {})
 
 
 def toggle_loan(ckey, user_id, value):
@@ -201,7 +183,7 @@ def toggle_loan(ckey, user_id, value):
     lst = set(loans.get(ckey, []))
     lst.add(user_id) if value else lst.discard(user_id)
     loans[ckey] = sorted(lst)
-    _write(config.LOANS_FILE, loans)
+    cs.put_doc("jeux_loans", loans)
 
 
 def set_loan(ckey, user_id, value):
