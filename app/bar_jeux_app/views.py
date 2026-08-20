@@ -112,7 +112,6 @@ def _list_page(title, list_key, user):
     games = storage.load_games(list_key)
    if not games:
         st.info("Aucun jeu dans cette liste. Ajoutez des jeux dans le fichier JSON correspondant.")
-        return
     per_row = 3
     for i in range(0, len(games), per_row):
         cols = st.columns(per_row)
