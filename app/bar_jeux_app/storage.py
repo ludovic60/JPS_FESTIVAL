@@ -106,23 +106,30 @@ def get_users():
 def get_user_by_email(email):
     return cs.get_user_by_email(email)
 
+def get_user_by_pseudo(pseudo):
+    return cs.get_user_by_pseudo(pseudo)
 
-def _seed_user(email, name, password, role="user"):
-    u = {"id": uuid.uuid4().hex, "email": email.lower(), "name": name.strip(),
+def _seed_user(email, pseudo, password, role="user"):
+    u = {"id": uuid.uuid4().hex, "email": email.lower(), "pseudo": pseudo.strip(),
          "password_hash": hash_password(password), "role": role,
          "created_at": datetime.now(timezone.utc).isoformat()}
     cs.add_user(u)
     return u
 
 
-def create_user(email, name, password):
+def create_user(email, pseudo, password):
     if cs.get_user_by_email(email):
         return None, "Cet email est déjà utilisé"
-    return _seed_user(email, name, password), None
+    return _seed_user(email, pseudo, password), None
 
 
-def check_credentials(email, password):
-    u = cs.get_user_by_email(email)
+def check_credentials(mode, login, password):
+    if mode == "email":
+        u = cs.get_user_by_email(login)
+    elif mode == "pseudo":
+        u = cs.get_user_by_pesudo(login)
+    else :
+        u = None
     return u if u and verify_password(password, u["password_hash"]) else None
 
 
