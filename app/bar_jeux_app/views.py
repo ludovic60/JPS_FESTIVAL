@@ -1,6 +1,7 @@
 """Vues Streamlit pour Bar à jeux."""
 import pandas as pd
 import streamlit as st
+
 import auth, storage, config, export
 
 
@@ -32,9 +33,7 @@ def main_app(user):
         st.caption(user["email"])
         if user["role"] == "admin":
             st.markdown("<span class='ws-tag-admin'>Admin</span>", unsafe_allow_html=True)
-            pages = ["Jeux du mois", "Vieux jeux", "Demandes d'ajout", "creation mot de passe", "Liste finale"]
-        else     
-            pages = ["Jeux du mois", "Vieux jeux", "Demandes d'ajout", "creation mot de passe", "Liste finale"]
+        pages = ["Jeux du mois", "Vieux jeux", "Demandes d'ajout", "Liste finale"]
         page = st.radio("Navigation", pages, label_visibility="collapsed")
         st.divider()
         if st.button("Déconnexion"):
@@ -50,16 +49,8 @@ def main_app(user):
         _list_page("Vieux jeux", config.VIEUX_KEY, user)
     elif page == "Demandes d'ajout":
         _requests_page(user)
-    elif page == "creation mot de passe":
-        _password_page(user)
     else:
         _final_page(user)
-
-
-
-def _password_page(user):
-       
- 
 
 
 def _game_card(g, list_key, user):
