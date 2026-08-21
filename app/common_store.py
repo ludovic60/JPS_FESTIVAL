@@ -108,7 +108,7 @@ def get_user_by_pseudo(pseudo):
 
 
 def get_user_by_id(uid):
-    return next((u for u in get_users() if u["id"] == uid), None)
+    return next((u for u in get_users() if u["_id"] == uid), None)
 
 
 def add_user(user: dict):
@@ -128,6 +128,6 @@ def update_password(uid, new_hash):
         return
     users = get_doc("shared_users", [])
     for u in users:
-        if u["id"] == uid:
+        if u["_id"] == uid:
             u["password_hash"] = new_hash
     put_doc("shared_users", users)
