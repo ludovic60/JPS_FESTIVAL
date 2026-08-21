@@ -11,7 +11,7 @@ les données applicatives mutables dans `app_data` sous forme {_id: <nom>, data:
 import json
 import os
 from pathlib import Path
-from pymongo import MongoClient
+
 
 try:
     import streamlit as st
@@ -42,7 +42,8 @@ def get_db():
         return None
     if _client is None:
         from pymongo import MongoClient
-        _client = MongoClient(url, serverSelectionTimeoutMS=4000)
+        from pymongo.server_api import ServerApi
+        _client = MongoClient(url, server_api=ServerApi('1'), serverSelectionTimeoutMS=4000)
     return _client[_secret("DB_NAME", "shared_apps")]
 
 
