@@ -196,6 +196,25 @@ def _final_page(user):
         rows.append(row)
     df = pd.DataFrame(rows)
     display_cols = ["Nouveauté"] +["Categorie jeu"] +["Couverture Jeu"] +["Jeu"] + [u["pseudo"] for u in users]
+
+    st.markdown(
+        """
+        <style>
+        /* Agrandit la hauteur des cellules et conteneurs du tableau */
+        [data-testid="stTable"] td, 
+        div[data-testid="stDataEditor"] div[role="grid"] div[role="row"] {
+            min-height: 100px !important;
+            height: 100px !important;
+        }
+        /* Permet à l'image de prendre toute la hauteur disponible */
+        div[data-testid="stDataEditor"] img {
+            max-height: 90px !important;
+            object-fit: contain;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
     edited = st.data_editor(
             df[display_cols + ["_ckey"]],
             column_config={"_ckey": None, "Couverture Jeu": st.column_config.ImageColumn(width="large"),"Jeu": st.column_config.TextColumn(disabled=True)},
