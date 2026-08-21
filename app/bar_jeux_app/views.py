@@ -12,9 +12,10 @@ def login_view():
     with t1:
         with st.form("j_login"):
             e = st.text_input("Email")
+            ps = st.text_input("pseudo")
             p = st.text_input("Mot de passe", type="password")
             if st.form_submit_button("Se connecter", type="primary"):
-                err = auth.login(e, p)
+                err = auth.login(ps, e, p)
                 st.error(err) if err else st.rerun()
     with t2:
         with st.form("j_reg"):
