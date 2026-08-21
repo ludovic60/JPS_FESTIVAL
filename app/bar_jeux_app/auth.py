@@ -23,7 +23,7 @@ def login(pseudo , email, password):
         user = storage.check_credentials(email.strip(), password)
         if not user:
             return "Email ou mot de passe incorrect"
-    elif not pseudo == "":
+    elif not pseudo == " ":
         user = storage.check_credentials(pseudo.strip(), password)
         if not user:
             return "pseudo ou mot de passe incorrect"
