@@ -15,7 +15,7 @@ def current_user():
 
 
 def login(pseudo , email, password):
-    if email:
+    if not email == " ":
         try:
             validate_email(email)
         except EmailNotValidError:
@@ -23,7 +23,7 @@ def login(pseudo , email, password):
         user = storage.check_credentials(email.strip(), password)
         if not user:
             return "Email ou mot de passe incorrect"
-    elif pseudo:
+    elif not pseudo == "":
         user = storage.check_credentials(pseudo.strip(), password)
         if not user:
             return "pseudo ou mot de passe incorrect"
