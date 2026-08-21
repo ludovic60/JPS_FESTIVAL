@@ -182,31 +182,8 @@ def _final_page(user):
     finals = storage.final_games()
     users = storage.get_users()
     loans = storage.get_loans()
-    
-    if st.button("Enregistrer les prêts", type="primary"):
-        for _, r in edited.iterrows():
-            ckey = df.loc[df["Jeu"] == r["Jeu"], "_ckey"].values[0]
-            for u in users:
-                storage.set_loan(ckey, u["_id"], bool(r[u["pseudo"]]))
-            st.success("Prêts enregistrés")
-            st.rerun()
-    else:
-        for ckey, g in finals:
-            with st.container(border=True):
-                c1, c2 = st.columns([1, 3])
-                if g.get("couverture"):
-                    c1.image(g["couverture"], use_container_width=True)
-                title = g.get("nom_jeu_complet") or g.get("nom_jeu")
-                c2.markdown(f"#### {title}")
-                lenders = [u["name"] for u in users if u["id"] in set(loans.get(ckey, []))]
-                c2.caption("Prêteurs : " + (", ".join(lenders) if lenders else "aucun"))
-                mine = user["id"] in set(loans.get(ckey, []))
-                val = c2.checkbox("Je peux prêter ce jeu", value=mine, key=f"loan_{ckey}")
-                if val != mine:
-                    storage.toggle_loan(ckey, user["id"], val)
-                    st.rerun()
-    
-    
+    st.button("Enregistrer les prêts", type="primary")
+
     if not finals:
         st.info("Aucun jeu retenu par l'admin pour l'instant.")
         return
@@ -223,5 +200,30 @@ def _final_page(user):
             column_config={"_ckey": None, "Couverture Jeu": st.column_config.ImageColumn(width="small"),"Jeu": st.column_config.TextColumn(disabled=True)},
             hide_index=True, use_container_width=True, key="loans_editor",
     )
+
+    if st.button("Enregistrer les prêts", type="primary"):
+        for _, r in edited.iterrows():
+            ckey = df.loc[df["Jeu"] == r["Jeu"], "_ckey"].values[0]
+            for u in users:
+                storage.set_loan(ckey, u["_id"], bool(r[u["pseudo"]]))
+            st.success("Prêts enregistrés")
+            st.rerun()
+    else:
+        for ckey, g in finals:
+            with st.container(border=True):
+                c1, c2 = st.columns([1, 3])
+                if g.get("couverture"):
+                    c1.image(g["couverture"], use_container_width=True)
+                title = g.get("nom_jeu_complet") or g.get("nom_jeu")
+                c2.markdown(f"#### {title}")
+                lenders = [u["name"] for u in users if u["_id"] in set(loans.get(ckey, []))]
+                c2.caption("Prêteurs : " + (", ".join(lenders) if lenders else "aucun"))
+                mine = user["id"] in set(loans.get(ckey, []))
+                val = c2.checkbox("Je peux prêter ce jeu", value=mine, key=f"loan_{ckey}")
+                if val != mine:
+                    storage.toggle_loan(ckey, user["id"], val)
+                    st.rerun()
+    
+    
         
 
