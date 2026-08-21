@@ -87,7 +87,7 @@ def put_doc(name, data):
 # --------------------------------------------------------------------------
 def _clean(u):
     u = dict(u)
-    u.pop("_id", None)
+    # u.pop("_id", None)
     return u
 
 
