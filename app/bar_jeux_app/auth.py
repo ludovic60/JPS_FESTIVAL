@@ -21,12 +21,17 @@ def login(pseudo , email, password):
         except EmailNotValidError:
             return "Adresse email invalide"
         user = storage.check_credentials(email.strip(), password)
-    elif pseudo::
-         user = storage.check_credentials(pseudo.strip(), password)
-     else
+        if not user:
+            return "Email ou mot de passe incorrect"
+    elif pseudo:
+        user = storage.check_credentials(pseudo.strip(), password)
+        if not user:
+            return "pseudo ou mot de passe incorrect"
+    else :
+       st.info("💡Merci de renseigner soit votre pseudo ou votre email ")
 
     if not user:
-        return "Email ou mot de passe incorrect"
+        return "Email ou pseudo ou mot de passe incorrect"
     st.session_state["jeux_user"] = _public(user)
     return None
 
