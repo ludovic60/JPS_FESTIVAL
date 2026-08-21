@@ -56,12 +56,8 @@ def main_app(user):
 
 
 
-
 def _password_page(user):
-    
-import streamlit as st
-
-   
+       
     st.set_page_config(page_title="Générateur de Hash Bcrypt", page_icon="🔑")
     
     st.title("🔑 Générateur de Hash Bcrypt")
