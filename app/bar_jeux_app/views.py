@@ -122,9 +122,9 @@ def _game_card(g, list_key, user):
                         st.rerun()
                 else:
                     uids = set(sugg.get(ckey, []))
-                    val = st.checkbox("Je suggère ce jeu", value=user["id"] in uids, key=f"sug_{ckey}")
-                    if val != (user["id"] in uids):
-                        storage.toggle_suggestion(ckey, user["id"], val)
+                    val = st.checkbox("Je suggère ce jeu", value=user["_id"] in uids, key=f"sug_{ckey}")
+                    if val != (user["_id"] in uids):
+                        storage.toggle_suggestion(ckey, user["_id"], val)
                         st.rerun()
             with cc[1]:
                 st.caption(f"👍 {len(sugg.get(ckey, []))} suggestion(s)")
