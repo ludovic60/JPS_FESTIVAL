@@ -62,4 +62,4 @@ def logout():
 
 
 def _public(u):
-    return {"id": u["_id"], "email": u["email"], "name": u["name"], "role": u["role"]}
+    return {"id": str(u["_id"]), "email": u["email"], "name": u["name"], "role": u["role"]}
