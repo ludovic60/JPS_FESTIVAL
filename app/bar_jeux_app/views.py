@@ -191,7 +191,7 @@ def _final_page(user):
         for ckey, g in finals:
             row = {"Jeu": g.get("nom_jeu_complet") or g.get("nom_jeu"), "_ckey": ckey}
             for u in users:
-                row[u["pseudo"]] = u["id"] in set(loans.get(ckey, []))
+                row[u["pseudo"]] = u["_id"] in set(loans.get(ckey, []))
             rows.append(row)
         df = pd.DataFrame(rows)
         display_cols = ["Jeu"] + [u["pseudo"] for u in users]
