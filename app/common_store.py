@@ -11,6 +11,7 @@ les données applicatives mutables dans `app_data` sous forme {_id: <nom>, data:
 import json
 import os
 from pathlib import Path
+from pymongo import MongoClient
 
 try:
     import streamlit as st
