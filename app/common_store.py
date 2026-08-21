@@ -108,7 +108,7 @@ def get_user_by_pseudo(pseudo):
 
 
 def get_user_by_id(uid):
-    return next((u for u in get_users() if u["_id"] == uid), None)
+    return next((u for u in get_users() if string(u["_id"]) == uid), None)
 
 
 def add_user(user: dict):
@@ -124,10 +124,10 @@ def add_user(user: dict):
 def update_password(uid, new_hash):
     db = get_db()
     if db is not None:
-        db.users.update_one({"id": uid}, {"$set": {"password_hash": new_hash}})
+        db.users.update_one({"id": ObjectId(uid)}, {"$set": {"password_hash": new_hash}})
         return
     users = get_doc("shared_users", [])
     for u in users:
-        if u["_id"] == uid:
+        if string(u["_id"]) == uid:
             u["password_hash"] = new_hash
     put_doc("shared_users", users)
