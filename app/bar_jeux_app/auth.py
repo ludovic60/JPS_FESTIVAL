@@ -14,12 +14,17 @@ def current_user():
     return st.session_state.get("jeux_user")
 
 
-def login(email, password):
-    try:
-        validate_email(email)
-    except EmailNotValidError:
-        return "Adresse email invalide"
-    user = storage.check_credentials(email.strip(), password)
+def login(pseudo , email, password):
+    if email:
+        try:
+            validate_email(email)
+        except EmailNotValidError:
+            return "Adresse email invalide"
+        user = storage.check_credentials(email.strip(), password)
+    elif pseudo::
+         user = storage.check_credentials(pseudo.strip(), password)
+     else
+
     if not user:
         return "Email ou mot de passe incorrect"
     st.session_state["jeux_user"] = _public(user)
