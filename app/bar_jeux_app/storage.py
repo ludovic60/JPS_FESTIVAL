@@ -103,7 +103,7 @@ def get_user_by_pseudo(pseudo):
     return cs.get_user_by_pseudo(pseudo)
 
 def _seed_user(email, pseudo, password, role="user"):
-    u = {"id": uuid.uuid4().hex, "email": email.lower(), "pseudo": pseudo.strip(),
+    u = {"_id": ObjectId(uuid.uuid4().hex), "email": email.lower(), "pseudo": pseudo.strip(),
          "password_hash": hash_password(password), "role": role,
          "created_at": datetime.now(timezone.utc).isoformat()}
     cs.add_user(u)
@@ -119,10 +119,10 @@ def create_user(email, pseudo, password):
 def check_credentials(mode, login, password):
     if mode == "email":
         u = cs.get_user_by_email(login)
-        print(u)
+      
     elif mode == "pseudo":
         u = cs.get_user_by_pseudo(login)
-        print(u)
+        
     else :
         u = None
     return u if u and verify_password(password, u["password_hash"]) else None
