@@ -11,8 +11,8 @@ def login_view():
     t1, t2 = st.tabs(["Connexion", "Créer un compte"])
     with t1:
         with st.form("j_login"):
-            e = st.text_input("Email")
             ps = st.text_input("pseudo")
+            e = st.text_input("Email")            
             p = st.text_input("Mot de passe", type="password")
             if st.form_submit_button("Se connecter", type="primary"):
                 err = auth.login(ps, e, p)
