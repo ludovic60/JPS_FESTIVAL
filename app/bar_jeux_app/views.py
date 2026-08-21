@@ -199,7 +199,7 @@ def _final_page(user):
     edited = st.data_editor(
             df[display_cols + ["_ckey"]],
             column_config={"_ckey": None, "Couverture Jeu": st.column_config.ImageColumn(width="large"),"Jeu": st.column_config.TextColumn(disabled=True)},
-            hide_index=True, use_container_width=True, key="loans_editor",
+            hide_index=True, use_container_width=True, key="loans_editor", height=400
     )
     with button_container:
         if st.button("Enregistrer les prêts", type="primary"):
