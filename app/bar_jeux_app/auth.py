@@ -15,6 +15,11 @@ def current_user():
 
 
 def login(pseudo , email, password):
+
+    print "pseudo :"+pseudo+"fin"
+    print "email :"+email+"fin"
+    print "password :"+password+"fin"
+    
     if not email == " ":
         try:
             validate_email(email)
