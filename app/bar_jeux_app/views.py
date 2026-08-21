@@ -194,7 +194,7 @@ def _final_page(user):
                 row[u["pseudo"]] = u["_id"] in set(loans.get(ckey, []))
             rows.append(row)
         df = pd.DataFrame(rows)
-        display_cols = ["Jeu"] + [u["pseudo"] for u in users]
+        display_cols = ["Nouveauté"] +["Categorie jeu"] +["Couverture Jeu"] +["Jeu"] + [u["pseudo"] for u in users]
         edited = st.data_editor(
             df[display_cols + ["_ckey"]],
             column_config={"_ckey": None, "Jeu": st.column_config.TextColumn(disabled=True)},
