@@ -236,7 +236,7 @@ def _final_page(user):
                         c1.image(g["couverture"], use_container_width=True)
                     title = g.get("nom_jeu_complet") or g.get("nom_jeu")
                     c2.markdown(f"#### {title}")
-                    lenders = [u["name"] for u in users if u["id"] in set(loans.get(ckey, []))]
+                    lenders = [u["name"] for u in users if u["_id"] in set(loans.get(ckey, []))]
                     c2.caption("Prêteurs : " + (", ".join(lenders) if lenders else "aucun"))
                     mine = user["_id"] in set(loans.get(ckey, []))
                     val = c2.checkbox("Je peux prêter ce jeu", value=mine, key=f"loan_{ckey}")
