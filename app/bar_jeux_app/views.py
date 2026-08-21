@@ -64,10 +64,10 @@ def _password_page(user):
     st.title("🔑 Générateur de Hash Bcrypt")
     st.write("Saisissez un mot de passe ci-dessous pour obtenir sa version hachée.")
     
-     Champ de saisie sécurisé
-     password_input = st.text_input("Mot de passe à hacher", type="password")
+    # Champ de saisie sécurisé
+    password_input = st.text_input("Mot de passe à hacher", type="password")
     
-     if st.button("Générer le hash"):
+    if st.button("Générer le hash"):
          if password_input:
              # Convertit le texte en octets
              password_bytes = password_input.encode('utf-8')
@@ -83,7 +83,7 @@ def _password_page(user):
              st.code(hashed_result, language="text")
              
              st.info("💡 **Remarque :** En raison du salage aléatoire de Bcrypt, chaque clic générera une empreinte différente, même pour un mot de passe identique.")
-     else:
+    else:
             st.warning("Veuillez saisir un mot de passe avant de cliquer.")
 
 
