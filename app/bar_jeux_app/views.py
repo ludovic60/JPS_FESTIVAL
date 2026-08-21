@@ -67,7 +67,7 @@ def _password_page(user):
     ## # Champ de saisie sécurisé
     password_input = st.text_input("Mot de passe à hacher", type="password")
     
-    ## if st.button("Générer le hash"):
+    if st.button("Générer le hash"):
     ##      if password_input:
     ##          # Convertit le texte en octets
     ##          password_bytes = password_input.encode('utf-8')
@@ -77,14 +77,14 @@ def _password_page(user):
     ##          # Retourne la chaîne encodée à stocker en base                 
     ##          hashed_result = hash_password(password_input) hashed.decode('utf-8') 
     ##        
-    ##          st.success("Mot de passe haché avec succès !")
+        st.success("Mot de passe haché avec succès !")
            
     ##          # Affichage du résultat dans un bloc de code pour faciliter le copie-coller
     ##          st.code(hashed_result, language="text")
              
     ##          st.info("💡 **Remarque :** En raison du salage aléatoire de Bcrypt, chaque clic générera une empreinte différente, même pour un mot de passe identique.")
-    ## else:
-    ##         st.warning("Veuillez saisir un mot de passe avant de cliquer.")
+    else:
+        st.warning("Veuillez saisir un mot de passe avant de cliquer.")
 
 
 def _game_card(g, list_key, user):
