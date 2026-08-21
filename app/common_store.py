@@ -5,8 +5,8 @@
 - Sinon -> repli sur des fichiers plats JSON dans data/_store/ (utilisateurs partagés
   dans un même fichier).
 
-Les utilisateurs sont dans la collection commune `users` ; les données applicatives
-mutables dans `app_data` sous forme {_id: <nom>, data: <...>}.
+Les utilisateurs sont dans la collection commune `users` ; 
+les données applicatives mutables dans `app_data` sous forme {_id: <nom>, data: <...>}.
 """
 import json
 import os
@@ -99,6 +99,10 @@ def get_users():
 def get_user_by_email(email):
     email = email.lower()
     return next((u for u in get_users() if u["email"] == email), None)
+
+def get_user_by_pseudo(pseudo):
+    pseudo = pseudo.lower()
+    return next((u for u in get_users() if u["pseudo"] == pseudo), None)
 
 
 def get_user_by_id(uid):
