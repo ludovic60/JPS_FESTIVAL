@@ -65,7 +65,7 @@ def _password_page(user):
     st.write("Saisissez un mot de passe ci-dessous pour obtenir sa version hachée.")
     
     ## # Champ de saisie sécurisé
-    ## password_input = st.text_input("Mot de passe à hacher", type="password")
+    password_input = st.text_input("Mot de passe à hacher", type="password")
     
     ## if st.button("Générer le hash"):
     ##      if password_input:
