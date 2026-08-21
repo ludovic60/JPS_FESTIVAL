@@ -71,18 +71,17 @@ def _password_page(user):
        if password_input:
             # Convertit le texte en octets
             password_bytes = password_input.encode('utf-8')
-    ##          # Génère un sel et hache le mot de passe
-    ##          salt = bcrypt.gensalt()
-    ##          hashed = bcrypt.hashpw(password_bytes, salt)
-    ##          # Retourne la chaîne encodée à stocker en base                 
-    ##          hashed_result = hash_password(password_input) hashed.decode('utf-8') 
-    ##        
+            # Génère un sel et hache le mot de passe
+            salt = bcrypt.gensalt()
+            hashed = bcrypt.hashpw(password_bytes, salt)
+            # Retourne la chaîne encodée à stocker en base                 
+            hashed_result = hash_password(password_input) hashed.decode('utf-8') 
             st.success("Mot de passe haché avec succès !")
            
-    ##          # Affichage du résultat dans un bloc de code pour faciliter le copie-coller
-    ##          st.code(hashed_result, language="text")
+            # Affichage du résultat dans un bloc de code pour faciliter le copie-coller
+            st.code(hashed_result, language="text")
              
-    ##          st.info("💡 **Remarque :** En raison du salage aléatoire de Bcrypt, chaque clic générera une empreinte différente, même pour un mot de passe identique.")
+            st.info("💡 **Remarque :** En raison du salage aléatoire de Bcrypt, chaque clic générera une empreinte différente, même pour un mot de passe identique.")
     else:
         st.warning("Veuillez saisir un mot de passe avant de cliquer.")
 
