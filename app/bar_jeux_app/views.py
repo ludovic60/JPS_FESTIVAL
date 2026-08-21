@@ -50,7 +50,7 @@ def main_app(user):
         _list_page("Vieux jeux", config.VIEUX_KEY, user)
     elif page == "Demandes d'ajout":
         _requests_page(user)
-    elif page == "creation mot de passe" :
+    elif page == "creation mot de passe":
         _password_page(user)
     else:
         _final_page(user)
