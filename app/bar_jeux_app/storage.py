@@ -119,8 +119,10 @@ def create_user(email, pseudo, password):
 def check_credentials(mode, login, password):
     if mode == "email":
         u = cs.get_user_by_email(login)
+        print(u)
     elif mode == "pseudo":
         u = cs.get_user_by_pseudo(login)
+        print(u)
     else :
         u = None
     return u if u and verify_password(password, u["password_hash"]) else None
