@@ -34,7 +34,7 @@ def login_view():
 def main_app(user):
     with st.sidebar:
         st.markdown("### 🎲 Bar à jeux")
-        st.write(f"**{user['name']}**")
+        st.write(f"**{user['pseudo']}**")
         st.caption(user["email"])
         if user["role"] == "admin":
             st.markdown("<span class='ws-tag-admin'>Admin</span>", unsafe_allow_html=True)
@@ -145,7 +145,7 @@ def _list_page(title, list_key, user):
             n = st.text_input("Nom du jeu")
             u = st.text_input("URL myludo")
             if st.form_submit_button("Envoyer la demande", type="primary") and n.strip():
-                storage.add_request(n, u, list_key, user["name"])
+                storage.add_request(n, u, list_key, user["pseudo"])
                 st.success("Demande envoyée à l'administrateur")
     games = storage.load_games(list_key)
     if not games:
@@ -191,10 +191,10 @@ def _final_page(user):
         for ckey, g in finals:
             row = {"Jeu": g.get("nom_jeu_complet") or g.get("nom_jeu"), "_ckey": ckey}
             for u in users:
-                row[u["name"]] = u["id"] in set(loans.get(ckey, []))
+                row[u["pseudo"]] = u["id"] in set(loans.get(ckey, []))
             rows.append(row)
         df = pd.DataFrame(rows)
-        display_cols = ["Jeu"] + [u["name"] for u in users]
+        display_cols = ["Jeu"] + [u["pseudo"] for u in users]
         edited = st.data_editor(
             df[display_cols + ["_ckey"]],
             column_config={"_ckey": None, "Jeu": st.column_config.TextColumn(disabled=True)},
@@ -204,7 +204,7 @@ def _final_page(user):
             for _, r in edited.iterrows():
                 ckey = df.loc[df["Jeu"] == r["Jeu"], "_ckey"].values[0]
                 for u in users:
-                    storage.set_loan(ckey, u["id"], bool(r[u["name"]]))
+                    storage.set_loan(ckey, u["id"], bool(r[u["pseudo"]]))
             st.success("Prêts enregistrés")
             st.rerun()
     else:
