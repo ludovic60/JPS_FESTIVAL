@@ -79,14 +79,7 @@ def init_storage():
             _sample("Carcassonne", "", "2-5", "7+", "35 min", _COVERS[0], "7.4", "Non"),
         ])
 
-    from weekend_app.config import get_secret
-    admin_email = str(get_secret("JEUX_ADMIN_EMAIL", "admin@barajeux.fr")).lower()
-    admin_password = str(get_secret("JEUX_ADMIN_PASSWORD", "admin123"))
-    if cs.get_user_by_email(admin_email) is None:
-        _seed_user(admin_email, "Administrateur Jeux", admin_password, role="admin")
-    for nm, em in [("Alice", "alice@barajeux.fr"), ("Bob", "bob@barajeux.fr"), ("Chloé", "chloe@barajeux.fr")]:
-        if cs.get_user_by_email(em) is None:
-            _seed_user(em, nm, "membre123", role="user")
+
 
 
 # ---- Jeux (fichiers plats) ----
@@ -127,7 +120,7 @@ def check_credentials(mode, login, password):
     if mode == "email":
         u = cs.get_user_by_email(login)
     elif mode == "pseudo":
-        u = cs.get_user_by_pesudo(login)
+        u = cs.get_user_by_pseudo(login)
     else :
         u = None
     return u if u and verify_password(password, u["password_hash"]) else None
