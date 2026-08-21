@@ -182,29 +182,12 @@ def _final_page(user):
     finals = storage.final_games()
     users = storage.get_users()
     loans = storage.get_loans()
-    if not finals:
-        st.info("Aucun jeu retenu par l'admin pour l'instant.")
-        return
-
-    if user["role"] == "admin":
-        rows = []
-        for ckey, g in finals:
-            row = {"Nouveauté": g.get("est nouveauté"), "Categorie jeu": g.get("classement JPS final")or g.get("classement JPS correction manuelle")or g.get("classement JPS automatique"), "Couverture Jeu": g.get("couverture"), "Jeu": g.get("nom_jeu_complet") or g.get("nom_jeu"), "_ckey": ckey}
+    
+    if st.button("Enregistrer les prêts", type="primary"):
+        for _, r in edited.iterrows():
+            ckey = df.loc[df["Jeu"] == r["Jeu"], "_ckey"].values[0]
             for u in users:
-                row[u["pseudo"]] = u["_id"] in set(loans.get(ckey, []))
-            rows.append(row)
-        df = pd.DataFrame(rows)
-        display_cols = ["Nouveauté"] +["Categorie jeu"] +["Couverture Jeu"] +["Jeu"] + [u["pseudo"] for u in users]
-        edited = st.data_editor(
-            df[display_cols + ["_ckey"]],
-            column_config={"_ckey": None, "Jeu": st.column_config.TextColumn(disabled=True)},
-            hide_index=True, use_container_width=True, key="loans_editor",
-        )
-        if st.button("Enregistrer les prêts", type="primary"):
-            for _, r in edited.iterrows():
-                ckey = df.loc[df["Jeu"] == r["Jeu"], "_ckey"].values[0]
-                for u in users:
-                    storage.set_loan(ckey, u["id"], bool(r[u["pseudo"]]))
+                storage.set_loan(ckey, u["_id"], bool(r[u["pseudo"]]))
             st.success("Prêts enregistrés")
             st.rerun()
     else:
@@ -222,3 +205,23 @@ def _final_page(user):
                 if val != mine:
                     storage.toggle_loan(ckey, user["id"], val)
                     st.rerun()
+    
+    
+    if not finals:
+        st.info("Aucun jeu retenu par l'admin pour l'instant.")
+        return
+    rows = []
+    for ckey, g in finals:
+        row = {"Nouveauté": g.get("est nouveauté"), "Categorie jeu": g.get("classement JPS final")or g.get("classement JPS correction manuelle")or g.get("classement JPS automatique"), "Couverture Jeu": g.get("couverture"), "Jeu": g.get("nom_jeu_complet") or g.get("nom_jeu"), "_ckey": ckey}
+        for u in users:
+            row[u["pseudo"]] = u["_id"] in set(loans.get(ckey, []))
+        rows.append(row)
+    df = pd.DataFrame(rows)
+    display_cols = ["Nouveauté"] +["Categorie jeu"] +["Couverture Jeu"] +["Jeu"] + [u["pseudo"] for u in users]
+    edited = st.data_editor(
+            df[display_cols + ["_ckey"]],
+            column_config={"_ckey": None, "Couverture Jeu": st.column_config.ImageColumn(width="small"),"Jeu": st.column_config.TextColumn(disabled=True)},
+            hide_index=True, use_container_width=True, key="loans_editor",
+    )
+        
+
