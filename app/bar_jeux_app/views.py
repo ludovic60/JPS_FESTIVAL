@@ -1,7 +1,7 @@
 """Vues Streamlit pour Bar à jeux."""
 import pandas as pd
 import streamlit as st
-
+import bcrypt
 import auth, storage, config, export
 
 
@@ -33,7 +33,7 @@ def main_app(user):
         st.caption(user["email"])
         if user["role"] == "admin":
             st.markdown("<span class='ws-tag-admin'>Admin</span>", unsafe_allow_html=True)
-        pages = ["Jeux du mois", "Vieux jeux", "Demandes d'ajout", "Liste finale"]
+        pages = ["Jeux du mois", "Vieux jeux", "Demandes d'ajout", "creation mot de passe","Liste finale"]
         page = st.radio("Navigation", pages, label_visibility="collapsed")
         st.divider()
         if st.button("Déconnexion"):
@@ -49,8 +49,45 @@ def main_app(user):
         _list_page("Vieux jeux", config.VIEUX_KEY, user)
     elif page == "Demandes d'ajout":
         _requests_page(user)
+    elif page == "creation mot de passe" :
+        _password_page(user)
     else:
         _final_page(user)
+
+
+
+
+def _password_page(user):
+    
+import streamlit as st
+
+   
+    st.set_page_config(page_title="Générateur de Hash Bcrypt", page_icon="🔑")
+    
+    st.title("🔑 Générateur de Hash Bcrypt")
+    st.write("Saisissez un mot de passe ci-dessous pour obtenir sa version hachée.")
+    
+    # Champ de saisie sécurisé
+    password_input = st.text_input("Mot de passe à hacher", type="password")
+    
+    if st.button("Générer le hash"):
+        if password_input:
+            # Convertit le texte en octets
+            password_bytes = password_input.encode('utf-8')
+            # Génère un sel et hache le mot de passe
+            salt = bcrypt.gensalt()
+            hashed = bcrypt.hashpw(password_bytes, salt)
+            # Retourne la chaîne encodée à stocker en base                 
+            hashed_result = hash_password(password_input) hashed.decode('utf-8') 
+            
+            st.success("Mot de passe haché avec succès !")
+            
+            # Affichage du résultat dans un bloc de code pour faciliter le copie-coller
+            st.code(hashed_result, language="text")
+            
+            st.info("💡 **Remarque :** En raison du salage aléatoire de Bcrypt, chaque clic générera une empreinte différente, même pour un mot de passe identique.")
+        else:
+            st.warning("Veuillez saisir un mot de passe avant de cliquer.")
 
 
 def _game_card(g, list_key, user):
