@@ -1,7 +1,6 @@
 """Vues Streamlit pour Bar à jeux."""
 import pandas as pd
 import streamlit as st
-import bcrypt
 import auth, storage, config, export
 
 
