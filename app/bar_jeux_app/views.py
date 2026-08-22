@@ -222,12 +222,12 @@ def _final_page(user):
     )
     with button_container:
         if st.button("Enregistrer les prêts", type="primary"):
-            for _, r in edited.iterrows():
+            for r in edited.iterrows():
                 ckey = df.loc[df["Jeu"] == r["Jeu"], "_ckey"].values[0]
                 for u in users:
                     storage.set_loan(ckey, u["_id"], bool(r[u["pseudo"]]))
-                st.success("Prêts enregistrés")
-                st.rerun()
+            st.success("Prêts enregistrés")
+            #st.rerun()
       
     
         
