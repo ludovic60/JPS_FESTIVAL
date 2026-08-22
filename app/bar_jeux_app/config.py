@@ -21,7 +21,7 @@ _MOIS_FR = {
 def month_keys():
     """Liste (clé, libellé) d'Octobre 2025 à Octobre 2026 inclus."""
     keys = []
-    y, m = 2025, 10
+    y, m = _secret("ANNEE_FESTIVAL"), _secret("MOIS_FESTIVAL")
     for _ in range(13):
         keys.append((f"{y}_{m:02d}", f"{_MOIS_FR[m]} {y}"))
         m += 1
