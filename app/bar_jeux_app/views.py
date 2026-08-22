@@ -204,11 +204,11 @@ def _final_page(user):
         [data-testid="stTable"] td, 
         div[data-testid="stDataEditor"] div[role="grid"] div[role="row"] {
             min-height: 100px !important;
-            height: 100px !important;
+            height: 500px !important;
         }
         /* Permet à l'image de prendre toute la hauteur disponible */
         div[data-testid="stDataEditor"] img {
-            max-height: 90px !important;
+            max-height: 5000px !important;
             object-fit: contain;
         }
         </style>
@@ -218,7 +218,7 @@ def _final_page(user):
     edited = st.data_editor(
             df[display_cols + ["_ckey"]],
             column_config={"_ckey": None, "Couverture Jeu": st.column_config.ImageColumn(width="large"),"Jeu": st.column_config.TextColumn(disabled=True)},
-            hide_index=True, use_container_width=True, key="loans_editor", height=400
+            hide_index=True, width=True, key="loans_editor"
     )
     with button_container:
         if st.button("Enregistrer les prêts", type="primary"):
@@ -228,22 +228,7 @@ def _final_page(user):
                     storage.set_loan(ckey, u["_id"], bool(r[u["pseudo"]]))
                 st.success("Prêts enregistrés")
                 st.rerun()
-        else:
-            for ckey, g in finals:
-                with st.container(border=True):
-                    c1, c2 = st.columns([1, 3])
-                    if g.get("couverture"):
-                        c1.image(g["couverture"], use_container_width=True)
-                    title = g.get("nom_jeu_complet") or g.get("nom_jeu")
-                    c2.markdown(f"#### {title}")
-                    lenders = [u["name"] for u in users if u["_id"] in set(loans.get(ckey, []))]
-                    c2.caption("Prêteurs : " + (", ".join(lenders) if lenders else "aucun"))
-                    mine = user["_id"] in set(loans.get(ckey, []))
-                    val = c2.checkbox("Je peux prêter ce jeu", value=mine, key=f"loan_{ckey}")
-                    if val != mine:
-                        storage.toggle_loan(ckey, user["_id"], val)
-                        st.rerun()
-        
+      
     
         
 
