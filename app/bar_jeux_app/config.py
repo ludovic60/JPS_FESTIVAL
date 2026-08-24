@@ -1,7 +1,7 @@
 """Configuration de l'application Bar à jeux."""
 from pathlib import Path
 import common_store as cs
-
+from common_store import _secrets
 ROOT_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT_DIR / "data" / "jeux"
 
