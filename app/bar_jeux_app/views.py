@@ -215,10 +215,10 @@ def _final_page(user):
         """,
         unsafe_allow_html=True,
     )
-    edited = st.data_editor(
+    edited = st.dataframe(
             df[display_cols + ["_ckey"]],
             column_config={"_ckey": None, "Couverture Jeu": st.column_config.ImageColumn(width="large"),"Jeu": st.column_config.TextColumn(disabled=True)},
-            hide_index=True, width=True, key="loans_editor"
+            hide_index=True, width=True, key="loans_editor",row_height=150
     )
     with button_container:
         if st.button("Enregistrer les prêts", type="primary"):
