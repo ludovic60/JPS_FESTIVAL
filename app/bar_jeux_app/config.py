@@ -1,6 +1,6 @@
 """Configuration de l'application Bar à jeux."""
 from pathlib import Path
-import streamlit as st
+import common_store as cs
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT_DIR / "data" / "jeux"
@@ -22,7 +22,7 @@ _MOIS_FR = {
 def month_keys():
     """Liste (clé, libellé) d'Octobre 2025 à Octobre 2026 inclus."""
     keys = []
-    y, m = st.secrets("ANNEE_FESTIVAL"), st.secrets("MOIS_FESTIVAL")
+    y, m = _secrets("ANNEE_FESTIVAL"), _secrets("MOIS_FESTIVAL")
     for _ in range(13):
         keys.append((f"{y}_{m:02d}", f"{_MOIS_FR[m]} {y}"))
         m += 1
