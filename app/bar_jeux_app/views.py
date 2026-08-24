@@ -195,8 +195,9 @@ def _final_page(user):
             row[u["pseudo"]] = u["_id"] in set(loans.get(ckey, []))
         rows.append(row)
     df = pd.DataFrame(rows)
-    display_cols = ["Nouveauté"] +["Categorie jeu"] +["Couverture Jeu"] +["Jeu"] + [u["pseudo"] for u in users]
-
+    users_list = [u["pseudo"] for u in users]
+    display_cols = ["Nouveauté"] +["Categorie jeu"] +["Couverture Jeu"] +["Jeu"] + users_list
+  
     st.markdown(
         """
         <style>
@@ -215,11 +216,36 @@ def _final_page(user):
         """,
         unsafe_allow_html=True,
     )
+
+    st.subheader("📋 Grille de suivi")
+    
     edited = st.dataframe(
             df[display_cols + ["_ckey"]],
-            column_config={"_ckey": None, "Couverture Jeu": st.column_config.ImageColumn(width="large"),"Jeu": st.column_config.TextColumn(disabled=True)},
+            column_config={"_ckey": None, "Couverture Jeu": st.column_config.ImageColumn(width=100),"Jeu": st.column_config.TextColumn(disabled=True)},
             hide_index=True, use_container_width=True, key="loans_editor",row_height=100 ,width="stretch"
     )
+
+    # 5. TABLEAU RÉCAPITULATIF PAR PERSONNE ET TOTAL
+    st.subheader("📊 Récapitulatif des validations")
+    
+    totaux_par_personne = df_edite[users_list].sum().to_dict()
+    total_general = sum(totaux_par_personne.values())
+    
+    # Création du DataFrame récapitulatif
+    df_recap = pd.DataFrame(
+        list(totaux_par_personne.items()), 
+        columns=["Personne", "Nombre de coches"]
+    )
+    # Affichage avec ligne de Total Général via les metrics ou un tableau
+    col1, col2 = st.columns([2, 1])
+
+    with col1:
+        st.dataframe(df_recap, hide_index=True, width="stretch")
+
+    with col2:
+        st.metric(label="🎯 Total Général", value=total_general)
+    
+
     with button_container:
         if st.button("Enregistrer les prêts", type="primary"):
             for r in edited.iterrows():
