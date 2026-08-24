@@ -1,6 +1,7 @@
 """Configuration de l'application Bar à jeux."""
 from pathlib import Path
-
+import streamlit as st
+from  streamlit import secret as _secret
 ROOT_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT_DIR / "data" / "jeux"
 
