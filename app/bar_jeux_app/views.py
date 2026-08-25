@@ -3,12 +3,13 @@ import pandas as pd
 import streamlit as st
 import bcrypt
 import config_bar_jeux
+import storage_jeux
 import os
 import sys
 # Ajoute le dossier parent à sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-import commun.auth, commun.storage, commun.config, commun.export
+import commun.auth,  commun.config, commun.export
 
 
 def main_app(user):
