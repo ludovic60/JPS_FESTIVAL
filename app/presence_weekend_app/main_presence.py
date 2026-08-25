@@ -4,8 +4,8 @@ Lancement local :  streamlit run streamlit_app.py
 """
 
 import streamlit as st
+import design_system
 
-from design_system import inject
 from weekend_app import auth, storage
 from weekend_app.views import login_view, reset_password_view, main_app
 
