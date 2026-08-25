@@ -1,11 +1,18 @@
 """Logique d'authentification basée sur st.session_state."""
 import streamlit as st
 from email_validator import validate_email, EmailNotValidError
-
-import common_store
-from config import get_secret
-from security import generate_token
 from streamlit_cookies_controller import CookieController
+
+# Ajoute le dossier parent à sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from commun.security import hash_password, verify_password
+import commun.config
+
+import commun.common_store
+from commun.config import get_secret
+from commun.security import generate_token
+
 
 controller = CookieController()
 
