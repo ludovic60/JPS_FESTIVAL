@@ -2,14 +2,6 @@
 from pathlib import Path
 import common_store as cs
 
-ROOT_DIR = Path(__file__).resolve().parent.parent
-DATA_DIR = ROOT_DIR / "data" / "jeux"
-
-USERS_FILE = DATA_DIR / "users.json"
-ADMIN_SELECTED_FILE = DATA_DIR / "admin_selected.json"
-SUGGESTIONS_FILE = DATA_DIR / "suggestions.json"
-REQUESTS_FILE = DATA_DIR / "requests.json"
-LOANS_FILE = DATA_DIR / "loans.json"
 
 VIEUX_KEY = "vieux"
 
