@@ -2,9 +2,16 @@
 import html
 
 import streamlit as st
+import storage
+import sys
+from pathlib import Path
 
-import auth, storage
-from config import DAYS, PERIODS, PERIOD_LABELS, SLOT_KEYS
+# Ajoute le dossier parent (la racine du projet) à sys.path
+racine_projet = Path(__file__).resolve().parent.parent
+sys.path.append(str(racine_projet))
+
+import commun.auth
+from commun.config import DAYS, PERIODS, PERIOD_LABELS, SLOT_KEYS
 
 # ==========================================================================
 # APPLICATION PRINCIPALE
