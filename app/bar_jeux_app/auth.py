@@ -1,6 +1,6 @@
 """Authentification (nom, email, mot de passe) pour Bar à jeux."""
 import streamlit as st
-from email_validator import validate_email, EmailNotValidError
+#from email_validator import validate_email, EmailNotValidError
 
 import os
 import sys
