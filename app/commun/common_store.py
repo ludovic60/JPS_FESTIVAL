@@ -5,13 +5,14 @@
 - Sinon -> repli sur des fichiers plats JSON dans data/_store/ (utilisateurs partagés
   dans un même fichier).
 
-Les utilisateurs sont dans la collection commune `users` ; 
+Les utilisateurs sont dans la collection commune `users` ;
 les données applicatives mutables dans `app_data` sous forme {_id: <nom>, data: <...>}.
 """
 import json
 import os
 from pathlib import Path
 
+from bson import ObjectId
 
 try:
     import streamlit as st
@@ -99,16 +100,23 @@ def get_users():
 
 
 def get_user_by_email(email):
-    email = email.lower()
-    return next((u for u in get_users() if u["email"] == email), None)
+    email = email.strip().lower()
+    return next(
+        (u for u in get_users() if u.get("email", "").strip().lower() == email),
+        None,
+    )
+
 
 def get_user_by_pseudo(pseudo):
-    pseudo = pseudo.lower()
-    return next((u for u in get_users() if u["pseudo"] == pseudo), None)
+    pseudo = pseudo.strip().lower()
+    return next(
+        (u for u in get_users() if u.get("pseudo", "").strip().lower() == pseudo),
+        None,
+    )
 
 
 def get_user_by_id(uid):
-    return next((u for u in get_users() if str(u["_id"]) == uid), None)
+    return next((u for u in get_users() if str(u["_id"]) == str(uid)), None)
 
 
 def add_user(user: dict):
@@ -124,10 +132,10 @@ def add_user(user: dict):
 def update_password(uid, new_hash):
     db = get_db()
     if db is not None:
-        db.users.update_one({"id": ObjectId(uid)}, {"$set": {"password_hash": new_hash}})
+        db.users.update_one({"_id": ObjectId(uid)}, {"$set": {"password_hash": new_hash}})
         return
     users = get_doc("shared_users", [])
     for u in users:
-        if str(u["_id"]) == uid:
+        if str(u["_id"]) == str(uid):
             u["password_hash"] = new_hash
     put_doc("shared_users", users)
