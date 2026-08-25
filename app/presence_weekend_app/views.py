@@ -2,7 +2,7 @@
 import html
 
 import streamlit as st
-import storage
+import storage_presence
 import sys
 from pathlib import Path
 from config_presence import DAYS, PERIODS, PERIOD_LABELS, SLOT_KEYS
