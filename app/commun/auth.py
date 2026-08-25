@@ -3,6 +3,8 @@ import streamlit as st
 from email_validator import validate_email, EmailNotValidError
 from streamlit_cookies_controller import CookieController
 
+import os
+import sys
 # Ajoute le dossier parent à sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
