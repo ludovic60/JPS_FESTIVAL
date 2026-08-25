@@ -6,14 +6,14 @@ Lancement local :  streamlit run streamlit_app.py
 import streamlit as st
 import sys
 from pathlib import Path
+import auth, storage
+from views import login_view, reset_password_view, main_app
+
 
 # Ajoute le dossier parent (la racine du projet) à sys.path
 racine_projet = Path(__file__).resolve().parent.parent
 sys.path.append(str(racine_projet))
 import design_system
-
-from weekend_app import auth, storage
-from weekend_app.views import login_view, reset_password_view, main_app
 
 st.set_page_config(page_title="Présence Week-end", page_icon="📅", layout="wide")
 inject()
