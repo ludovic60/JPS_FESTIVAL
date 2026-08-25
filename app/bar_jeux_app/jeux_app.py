@@ -12,7 +12,9 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from commun.design_system import inject
 
-import commun.auth, commun.storage
+import commun.auth, commun.common_store
+
+
 st.set_page_config(page_title="Bar à jeux", page_icon="🎲", layout="wide")
 inject()
 storage_jeux.init_storage()
