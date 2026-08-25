@@ -56,7 +56,12 @@ def logout():
 
 
 def _public(user: dict) -> dict:
-    return {"id": user["_id"], "email": user["email"], "pseudo": user["pseudo"], "role": user["role"]}
+    return {
+        "id": str(user["_id"]),  # ObjectId n'est pas JSON-sérialisable -> on caste en str
+        "email": user["email"],
+        "pseudo": user["pseudo"],
+        "role": user["role"],
+    }
 
 
 def check_credentials(mode, login, password):
