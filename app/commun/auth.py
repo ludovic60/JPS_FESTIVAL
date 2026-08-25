@@ -11,7 +11,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from commun.security import hash_password, verify_password
 import commun.config
 
-import commun.common_store as cs
+from commun.common_store import check_credential
 from commun.config import get_secret
 from commun.security import generate_token
 
