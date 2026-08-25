@@ -16,9 +16,7 @@ st.set_page_config(page_title="Bar à jeux", page_icon="🎲", layout="wide")
 inject()
 storage.init_storage()
 
-user = auth.current_user()
-if not user:
-    login_view()
-    st.stop()
+# Exécute la vérification (affiche le formulaire si besoin, puis stoppe)
+require_auth()
 
 main_app(user)
