@@ -227,14 +227,15 @@ def _final_page(user):
     edited = st.dataframe(
             df[display_cols + "Total coché" + ["_ckey"]],
             column_config={"_ckey": None, "Couverture Jeu": st.column_config.ImageColumn(width=100),"Jeu": st.column_config.TextColumn(disabled=True) , "Total coché": st.column_config.NumberColumn("Total coché", disabled=True),
-                          for user in users_list:
-                                # Seul l'admin ou l'utilisateur concerné peut modifier sa colonne
-                                # Si tu veux que SEUL l'admin modifie TOUT, remplace par : disabled = not is_admin
-                                is_disabled = not is_admin and user != current_user
-                                column_config[user] = st.column_config.CheckboxColumn(
+            for user in users_list:
+                # Seul l'admin ou l'utilisateur concerné peut modifier sa colonne
+                # Si tu veux que SEUL l'admin modifie TOUT, remplace par : disabled = not is_admin
+                is_disabled = not is_admin and user != current_user
+                column_config[user] = st.column_config.CheckboxColumn(
                                     user,
                                     disabled=is_disabled,
-                                )},
+                                )
+            },
             hide_index=True, use_container_width=True, key="loans_editor",row_height=100 ,width="stretch"
     )
 
