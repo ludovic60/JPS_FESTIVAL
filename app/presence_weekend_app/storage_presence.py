@@ -15,7 +15,7 @@ sys.path.append(str(racine_projet))
 import commun.common_store as cs
 from commun.design_system import inject
 from commun.auth import require_auth, logout
-import commun.config
+import commun.config as cfg
 from commun.security import hash_password, verify_password, token_hash
 
 
@@ -41,11 +41,11 @@ def _write(path, data):
 
 
 def init_storage():
-    config.DATA_DIR.mkdir(parents=True, exist_ok=True)
+    cfg.DATA_DIR.mkdir(parents=True, exist_ok=True)
     if not config.TASKS_FILE.exists():
         _write(config.TASKS_FILE, [])
-    admin_email = str(config.get_secret("ADMIN_EMAIL", "admin@weekend.fr")).lower()
-    admin_password = str(config.get_secret("ADMIN_PASSWORD", "admin123"))
+    admin_email = str(cfg.get_secret("ADMIN_EMAIL", "admin@weekend.fr")).lower()
+    admin_password = str(cfg.get_secret("ADMIN_PASSWORD", "admin123"))
     if cs.get_user_by_email(admin_email) is None:
         _seed_user(admin_email, "Administrateur", admin_password, role="admin")
 
