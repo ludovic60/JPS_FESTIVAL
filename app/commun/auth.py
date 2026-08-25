@@ -5,6 +5,9 @@ from email_validator import validate_email, EmailNotValidError
 import storage
 from config import get_secret
 from security import generate_token
+from streamlit_cookies_controller import CookieController
+
+controller = CookieController()
 
 
 def current_user():
@@ -41,6 +44,8 @@ def register(name: str, email: str, password: str):
 
 def logout():
     st.session_state.pop("user", None)
+    controller.remove("user_session")
+    st.rerun()
 
 
 def request_reset(email: str):
@@ -76,6 +81,26 @@ def _public(user: dict) -> dict:
 
 
 
+
+def require_auth():
+    """
+    Gère l'authentification automatique par cookie.
+    Si non connecté, affiche le formulaire et stoppe l'exécution de l'application.
+    """
+    # 1. Vérification de la session en mémoire
+    if st.session_state.get("authenticated", False):
+        return True
+
+    # 2. Vérification de l'existence du cookie
+    user_from_cookie = controller.get("user_session")
+    if user_from_cookie:
+        st.session_state["authenticated"] = True
+        st.session_state["user"] = user_from_cookie
+        return True
+    st.subheader("Connexion requise")
+    login_view()
+    # Stoppe le reste de l'application si non authentifié
+    st.stop()
 
 # ==========================================================================
 # AUTHENTIFICATION
