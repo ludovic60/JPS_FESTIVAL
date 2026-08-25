@@ -158,7 +158,7 @@ def login_view():
              if err :
                  st.error(err)
              else :
-                if ps = " " :
+                if ps == " " :
                     username = e
                 else :
                     username = ps 
