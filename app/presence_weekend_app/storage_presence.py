@@ -42,8 +42,8 @@ def _write(path, data):
 
 def init_storage():
     cfg.DATA_DIR.mkdir(parents=True, exist_ok=True)
-    if not config.TASKS_FILE.exists():
-        _write(config.TASKS_FILE, [])
+    if not cfg.TASKS_FILE.exists():
+        _write(cfg.TASKS_FILE, [])
     admin_email = str(cfg.get_secret("ADMIN_EMAIL", "admin@weekend.fr")).lower()
     admin_password = str(cfg.get_secret("ADMIN_PASSWORD", "admin123"))
     if cs.get_user_by_email(admin_email) is None:
@@ -52,7 +52,7 @@ def init_storage():
 
 # ---- Tâches (fichier plat) ----
 def get_tasks():
-    return _read(config.TASKS_FILE, [])
+    return _read(cfg.TASKS_FILE, [])
 
 
 def add_task(label):
@@ -60,7 +60,7 @@ def add_task(label):
     task = {"id": uuid.uuid4().hex[:8], "label": label.strip()}
     tasks.append(task)
     tasks.sort(key=lambda t: t["label"].lower())
-    _write(config.TASKS_FILE, tasks)
+    _write(cfg.TASKS_FILE, tasks)
     return task
 
 
@@ -70,11 +70,11 @@ def update_task(task_id, label):
         if t["id"] == task_id:
             t["label"] = label.strip()
     tasks.sort(key=lambda t: t["label"].lower())
-    _write(config.TASKS_FILE, tasks)
+    _write(cfg.TASKS_FILE, tasks)
 
 
 def delete_task(task_id):
-    _write(config.TASKS_FILE, [t for t in get_tasks() if t["id"] != task_id])
+    _write(cfg.TASKS_FILE, [t for t in get_tasks() if t["id"] != task_id])
     presence = get_all_presence()
     for p in presence.values():
         p["task_ids"] = [tid for tid in p.get("task_ids", []) if tid != task_id]
