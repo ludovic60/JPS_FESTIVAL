@@ -2,7 +2,7 @@
 import streamlit as st
 from email_validator import validate_email, EmailNotValidError
 
-import storage
+import common_store
 from config import get_secret
 from security import generate_token
 from streamlit_cookies_controller import CookieController
