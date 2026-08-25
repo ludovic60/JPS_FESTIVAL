@@ -2,6 +2,7 @@
 
 Lancement local :  streamlit run streamlit_app.py
 """
+
 import streamlit as st
 
 from design_system import inject
