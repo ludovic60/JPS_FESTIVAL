@@ -101,7 +101,7 @@ def logout():
 
 
 def _public(user: dict) -> dict:
-    return {"id": user["id"], "email": user["email"], "name": user["name"], "role": user["role"]}
+    return {"id": user["_id"], "email": user["email"], "pseudo": user["pseudo"], "role": user["role"]}
 
 
 def check_credentials(mode, login, password):
