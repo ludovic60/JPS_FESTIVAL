@@ -5,7 +5,7 @@ Lancement local :  streamlit run jeux_app.py
 import streamlit as st
 
 from views import login_view, main_app
-import storage
+import storage_jeux
 import os
 import sys
 # Ajoute le dossier parent à sys.path
