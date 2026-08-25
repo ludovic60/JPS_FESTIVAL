@@ -127,19 +127,19 @@ def require_auth():
 def login_view():
     st.title("FESTIVAL JEUX DE CREPY")
     st.caption("Connectez-vous pour acceder aux applications du festival de jeux.")
-    t1 = st.tabs(["Connexion"])
-    with t1:
-        with st.form("j_login"):
-            ps = st.text_input("pseudo")
-            if not ps :
-                ps = " "
-            e = st.text_input("Email")   
-            if not e :
-                e = " "
-            p = st.text_input("Mot de passe", type="password")
-            if st.form_submit_button("Se connecter", type="primary"):
-                err = auth.login(ps, e, p)
-                st.error(err) if err else st.rerun()
+    st.tabs(["Connexion"])
+
+     with st.form("j_login"):
+         ps = st.text_input("pseudo")
+         if not ps :
+             ps = " "
+         e = st.text_input("Email")   
+         if not e :
+             e = " "
+         p = st.text_input("Mot de passe", type="password")
+         if st.form_submit_button("Se connecter", type="primary"):
+             err = auth.login(ps, e, p)
+             st.error(err) if err else st.rerun()
    
 
 # def reset_password_view(token: str):
