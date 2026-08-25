@@ -11,7 +11,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from commun.security import hash_password, verify_password
 import commun.config
 
-import commun.common_store
+import commun.common_store as cs
 from commun.config import get_secret
 from commun.security import generate_token
 
@@ -23,16 +23,32 @@ def current_user():
     return st.session_state.get("user")
 
 
-def login(email: str, password: str):
-    try:
-        validate_email(email)
-    except EmailNotValidError:
-        return "Adresse email invalide"
-    user = common_store.check_credentials(email.strip(), password)
+def login(pseudo , email, password):
+
+    print("pseudo :"+pseudo+"fin")
+    print("email :"+email+"fin")
+    print("password :"+password+"fin")
+    
+    if not email == " ":
+        try:
+            validate_email(email)
+        except EmailNotValidError:
+            return "Adresse email invalide"
+        user = cs.check_credentials("email", email.strip(), password)
+        if not user:
+            return "Email ou mot de passe incorrect"
+    elif not pseudo == " ":
+        user = cs.check_credentials("pseudo", pseudo.strip(), password)
+        if not user:
+            return "pseudo ou mot de passe incorrect"
+    else :
+       st.info("💡Merci de renseigner soit votre pseudo ou votre email ")
+
     if not user:
-        return "Email ou mot de passe incorrect"
-    st.session_state["user"] = _public(user)
+        return "Email ou pseudo ou mot de passe incorrect"
+    st.session_state["jeux_user"] = _public(user)
     return None
+
 
 
 # def register(name: str, email: str, password: str):
@@ -90,10 +106,10 @@ def _public(user: dict) -> dict:
 
 def check_credentials(mode, login, password):
     if mode == "email":
-        u = common_store.get_user_by_email(login)
+        u = cs.get_user_by_email(login)
       
     elif mode == "pseudo":
-        u = common_store.get_user_by_pseudo(login)
+        u = cs.get_user_by_pseudo(login)
         
     else :
         u = None
