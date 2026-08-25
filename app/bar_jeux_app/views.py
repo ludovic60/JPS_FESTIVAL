@@ -224,28 +224,30 @@ def _final_page(user):
 
     st.subheader("📋 Grille de suivi")
 
-    for user in users_list:
-        # Seul l'admin ou l'utilisateur concerné peut modifier sa colonne
-        # Si tu veux que SEUL l'admin modifie TOUT, remplace par : disabled = not is_admin
-        is_disabled = not is_admin and user != current_user
-        column_config[user] = st.column_config.CheckboxColumn(
-                                    user,
-                                    disabled=is_disabled
-                                )
+
         
        
     edited = st.dataframe(
             df[display_cols +["_ckey"]],
             column_config={
+                ["_ckey"] :     for user in users_list:
+                                     # Seul l'admin ou l'utilisateur concerné peut modifier sa colonne
+                                     # Si tu veux que SEUL l'admin modifie TOUT, remplace par : disabled = not is_admin
+                                     is_disabled = not is_admin and user != current_user
+                                     column_config[user] = st.column_config.CheckboxColumn(
+                                             user,
+                                            disabled=is_disabled
+                                     ),
                 "Couverture Jeu": st.column_config.ImageColumn(width=100),
                 "Jeu": st.column_config.TextColumn(disabled=True) , 
-                "Total coché" : st.column_config.NumberColumn(disabled=True),
-                 hide_index=True, 
-                 use_container_width=True, 
-                 key="loans_editor", 
-                 row_height=100 ,
-                 width="stretch"
-            }
+                "Total coché" : st.column_config.NumberColumn(disabled=True)
+            },
+            hide_index =True, 
+            use_container_width =True, 
+            key ="loans_editor", 
+            row_height=100 ,
+            width="stretch"
+            
     )
 
     # 5. TABLEAU RÉCAPITULATIF PAR PERSONNE ET TOTAL
