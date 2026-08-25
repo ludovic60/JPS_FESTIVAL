@@ -236,8 +236,7 @@ def _final_page(user):
     
     edited = st.dataframe(
             df[display_cols + "Total coché" + ["_ckey"]],
-            column_config={"_ckey": column_config[user] , "Couverture Jeu": st.column_config.ImageColumn(width=100),"Jeu": st.column_config.TextColumn(disabled=True) , "Total coché": st.column_config.NumberColumn("Total coché", disabled=True),
-            hide_index=True, use_container_width=True, key="loans_editor",row_height=100 ,width="stretch"
+            column_config={"_ckey": column_config[user] ,"Couverture Jeu": st.column_config.ImageColumn(width=100),"Jeu": st.column_config.TextColumn(disabled=True) , "Total coché": st.column_config.NumberColumn("Total coché", disabled=True), hide_index=True, use_container_width=True, key="loans_editor", row_height=100 ,width="stretch"}
     )
 
     # 5. TABLEAU RÉCAPITULATIF PAR PERSONNE ET TOTAL
