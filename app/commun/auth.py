@@ -129,7 +129,7 @@ def login_view():
     st.caption("Connectez-vous pour acceder aux applications du festival de jeux.")
     st.tabs(["Connexion"])
 
-     with st.form("j_login"):
+    with st.form("j_login"):
          ps = st.text_input("pseudo")
          if not ps :
              ps = " "
