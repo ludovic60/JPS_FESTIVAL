@@ -155,7 +155,15 @@ def login_view():
          p = st.text_input("Mot de passe", type="password")
          if st.form_submit_button("Se connecter", type="primary"):
              err = login(ps, e, p)
-             st.error(err) if err else st.rerun()
+             if err :
+                 st.error(err)
+             else 
+                if ps = " ":
+                    username = e
+                else
+                    username = ps 
+                controller.set("user_session", username, max_age=86400 * 7)
+                st.rerun()
       
 
      
