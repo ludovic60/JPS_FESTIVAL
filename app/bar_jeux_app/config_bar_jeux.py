@@ -1,6 +1,11 @@
 """Configuration de l'application Bar à jeux."""
 from pathlib import Path
-import common_store as cs
+import os
+import sys
+# Ajoute le dossier parent à sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+import commun.common_store as cs
 
 
 VIEUX_KEY = "vieux"
