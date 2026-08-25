@@ -230,13 +230,13 @@ def _final_page(user):
         is_disabled = not is_admin and user != current_user
         column_config[user] = st.column_config.CheckboxColumn(
                                     user,
-                                    disabled=is_disabled,
+                                    disabled=is_disabled
                                 )
         
     
     edited = st.dataframe(
             df[display_cols + "Total coché" + ["_ckey"]],
-            column_config={"_ckey": column_config[user] ,"Couverture Jeu": st.column_config.ImageColumn(width=100),"Jeu": st.column_config.TextColumn(disabled=True) , "Total coché": st.column_config.NumberColumn("Total coché", disabled=True), hide_index=True, use_container_width=True, key="loans_editor", row_height=100 ,width="stretch"}
+            column_config={"_ckey" ,"Couverture Jeu": st.column_config.ImageColumn(width=100),"Jeu": st.column_config.TextColumn(disabled=True) , "Total coché": st.column_config.NumberColumn("Total coché", disabled=True), hide_index=True, use_container_width=True, key="loans_editor", row_height=100 ,width="stretch"}
     )
 
     # 5. TABLEAU RÉCAPITULATIF PAR PERSONNE ET TOTAL
