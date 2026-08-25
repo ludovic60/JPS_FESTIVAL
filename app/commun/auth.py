@@ -72,3 +72,79 @@ def reset_password(token: str, new_password: str):
 
 def _public(user: dict) -> dict:
     return {"id": user["id"], "email": user["email"], "name": user["name"], "role": user["role"]}
+
+
+
+
+
+# ==========================================================================
+# AUTHENTIFICATION
+# ==========================================================================
+def login_view():
+    st.title("Présence Week-end")
+    st.caption("Connectez-vous pour indiquer votre présence et vos tâches.")
+
+    tab_login, tab_register, tab_forgot = st.tabs(
+        ["Connexion", "Créer un compte", "Mot de passe oublié"]
+    )
+
+    with tab_login:
+        with st.form("login_form"):
+            email = st.text_input("Email", key="login_email")
+            password = st.text_input("Mot de passe", type="password", key="login_pwd")
+            if st.form_submit_button("Se connecter", type="primary"):
+                err = auth.login(email, password)
+                if err:
+                    st.error(err)
+                else:
+                    st.rerun()
+
+    with tab_register:
+        with st.form("register_form"):
+            name = st.text_input("Nom", key="reg_name")
+            email = st.text_input("Email", key="reg_email")
+            password = st.text_input("Mot de passe (min. 6 caractères)", type="password", key="reg_pwd")
+            if st.form_submit_button("S'inscrire", type="primary"):
+                err = auth.register(name, email, password)
+                if err:
+                    st.error(err)
+                else:
+                    st.rerun()
+
+    with tab_forgot:
+        with st.form("forgot_form"):
+            email = st.text_input("Votre email", key="forgot_email")
+            if st.form_submit_button("Envoyer le lien de réinitialisation", type="primary"):
+                msg, debug_link = auth.request_reset(email)
+                st.success(msg)
+                if debug_link:
+                    st.warning("SMTP non configuré — lien de réinitialisation (mode dev) :")
+                    st.code(debug_link)
+
+
+def reset_password_view(token: str):
+    st.title("Réinitialiser le mot de passe")
+    with st.form("reset_form"):
+        pwd1 = st.text_input("Nouveau mot de passe", type="password")
+        pwd2 = st.text_input("Confirmer le mot de passe", type="password")
+        if st.form_submit_button("Valider", type="primary"):
+            if pwd1 != pwd2:
+                st.error("Les mots de passe ne correspondent pas")
+            else:
+                err = auth.reset_password(token, pwd1)
+                if err:
+                    st.error(err)
+                else:
+                    st.success("Mot de passe réinitialisé. Vous pouvez vous connecter.")
+                    st.link_button("Aller à la connexion", url=str(auth.get_secret("APP_URL", "/")))
+
+
+
+
+
+
+
+
+
+
+
