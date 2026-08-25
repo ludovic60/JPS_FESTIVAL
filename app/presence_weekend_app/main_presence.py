@@ -13,7 +13,7 @@ from views import login_view, reset_password_view, main_app
 # Ajoute le dossier parent (la racine du projet) à sys.path
 racine_projet = Path(__file__).resolve().parent.parent
 sys.path.append(str(racine_projet))
-import design_system
+from design_system import inject
 
 st.set_page_config(page_title="Présence Week-end", page_icon="📅", layout="wide")
 inject()
