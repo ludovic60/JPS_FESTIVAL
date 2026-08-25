@@ -138,7 +138,7 @@ def login_view():
              e = " "
          p = st.text_input("Mot de passe", type="password")
          if st.form_submit_button("Se connecter", type="primary"):
-             err = auth.login(ps, e, p)
+             err = login(ps, e, p)
              st.error(err) if err else st.rerun()
    
 
