@@ -4,7 +4,7 @@ Lancement local :  streamlit run jeux_app.py
 """
 import streamlit as st
 
-from views import login_view, main_app
+from views import  main_app
 import storage_jeux
 import os
 import sys
@@ -15,7 +15,7 @@ from commun.design_system import inject
 import commun.auth, commun.storage
 st.set_page_config(page_title="Bar à jeux", page_icon="🎲", layout="wide")
 inject()
-storage.init_storage()
+storage_jeux.init_storage()
 
 # Exécute la vérification (affiche le formulaire si besoin, puis stoppe)
 require_auth()
