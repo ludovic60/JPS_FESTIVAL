@@ -11,32 +11,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import commun.auth, commun.storage, commun.config, commun.export
 
 
-def login_view():
-    st.title("Bar à jeux")
-    st.caption("Connectez-vous pour suggérer et prêter des jeux.")
-    t1, t2 = st.tabs(["Connexion", "Créer un compte"])
-    with t1:
-        with st.form("j_login"):
-            ps = st.text_input("pseudo")
-            if not ps :
-                ps = " "
-            e = st.text_input("Email")   
-            if not e :
-                e = " "
-            p = st.text_input("Mot de passe", type="password")
-            if st.form_submit_button("Se connecter", type="primary"):
-                err = auth.login(ps, e, p)
-                st.error(err) if err else st.rerun()
-    with t2:
-        with st.form("j_reg"):
-            n = st.text_input("Nom")
-            e = st.text_input("Email", key="je")
-            p = st.text_input("Mot de passe", type="password", key="jp")
-            if st.form_submit_button("S'inscrire", type="primary"):
-                err = auth.register(n, e, p)
-                st.error(err) if err else st.rerun()
-
-
 def main_app(user):
     with st.sidebar:
         st.markdown("### 🎲 Bar à jeux")
