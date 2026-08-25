@@ -157,10 +157,10 @@ def login_view():
              err = login(ps, e, p)
              if err :
                  st.error(err)
-             else 
-                if ps = " ":
+             else :
+                if ps = " " :
                     username = e
-                else
+                else :
                     username = ps 
                 controller.set("user_session", username, max_age=86400 * 7)
                 st.rerun()
