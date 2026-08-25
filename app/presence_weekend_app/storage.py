@@ -4,8 +4,6 @@ import json
 import uuid
 from datetime import datetime, timezone, timedelta
 from threading import Lock
-import config
-from security import hash_password, verify_password, token_hash
 
 
 import sys
@@ -14,7 +12,13 @@ from pathlib import Path
 # Ajoute le dossier parent (la racine du projet) à sys.path
 racine_projet = Path(__file__).resolve().parent.parent
 sys.path.append(str(racine_projet))
-import common_store as cs
+import commun.common_store as cs
+from commun.design_system import inject
+from commun.auth import require_auth, logout
+import commun.config
+from commun.security import hash_password, verify_password, token_hash
+
+
 
 _lock = Lock()
 
