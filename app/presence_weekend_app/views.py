@@ -3,8 +3,8 @@ import html
 
 import streamlit as st
 
-from . import auth, storage
-from .config import DAYS, PERIODS, PERIOD_LABELS, SLOT_KEYS
+import auth, storage
+from config import DAYS, PERIODS, PERIOD_LABELS, SLOT_KEYS
 
 
 # ==========================================================================
