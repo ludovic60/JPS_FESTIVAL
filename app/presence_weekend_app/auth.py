@@ -2,9 +2,9 @@
 import streamlit as st
 from email_validator import validate_email, EmailNotValidError
 
-from . import storage
-from .config import get_secret
-from .security import generate_token
+import storage
+from config import get_secret
+from security import generate_token
 
 
 def current_user():
