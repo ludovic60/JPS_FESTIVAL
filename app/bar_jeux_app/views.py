@@ -198,7 +198,7 @@ def _final_page(user):
         rows.append(row)
     df = pd.DataFrame(rows)
     users_list = [u["pseudo"] for u in users]
-    display_cols = ["Nouveauté"] +["Categorie jeu"] +["Couverture Jeu"] +["Jeu"] + users_list
+    display_cols = ["Nouveauté"] +["Categorie jeu"] +["Couverture Jeu"] +["Jeu"] +["Total coché"]+ users_list
 
     # Calcul du compteur par ligne
     st.session_state.df["Total coché"] = st.session_state.df[users_list].sum(axis=1)
@@ -233,10 +233,19 @@ def _final_page(user):
                                     disabled=is_disabled
                                 )
         
-    
+       
     edited = st.dataframe(
-            df[display_cols + "Total coché" + ["_ckey"]],
-            column_config={"_ckey" ,"Couverture Jeu": st.column_config.ImageColumn(width=100),"Jeu": st.column_config.TextColumn(disabled=True) , "Total coché": st.column_config.NumberColumn("Total coché", disabled=True), hide_index=True, use_container_width=True, key="loans_editor", row_height=100 ,width="stretch"}
+            df[display_cols +["_ckey"]],
+            column_config={
+                "Couverture Jeu": st.column_config.ImageColumn(width=100),
+                "Jeu": st.column_config.TextColumn(disabled=True) , 
+                "Total coché" : st.column_config.NumberColumn(disabled=True),
+                 hide_index=True, 
+                 use_container_width=True, 
+                 key="loans_editor", 
+                 row_height=100 ,
+                 width="stretch"
+            }
     )
 
     # 5. TABLEAU RÉCAPITULATIF PAR PERSONNE ET TOTAL
