@@ -5,12 +5,12 @@ import uuid
 from datetime import datetime, timezone
 from threading import Lock
 import config_bar_jeux
-import common_store as cs
+
 import os
 import sys
 # Ajoute le dossier parent à sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
+import commun.common_store as cs
 from commun.security import hash_password, verify_password
 import commun.config
 
