@@ -28,7 +28,7 @@ def login(email: str, password: str):
         validate_email(email)
     except EmailNotValidError:
         return "Adresse email invalide"
-    user = storage.check_credentials(email.strip(), password)
+    user = common_store.check_credentials(email.strip(), password)
     if not user:
         return "Email ou mot de passe incorrect"
     st.session_state["user"] = _public(user)
@@ -88,6 +88,16 @@ def _public(user: dict) -> dict:
     return {"id": user["id"], "email": user["email"], "name": user["name"], "role": user["role"]}
 
 
+def check_credentials(mode, login, password):
+    if mode == "email":
+        u = common_store.get_user_by_email(login)
+      
+    elif mode == "pseudo":
+        u = common_store.get_user_by_pseudo(login)
+        
+    else :
+        u = None
+    return u if u and verify_password(password, u["password_hash"]) else None
 
 
 
