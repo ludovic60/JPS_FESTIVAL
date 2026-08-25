@@ -156,7 +156,8 @@ def login_view():
          if st.form_submit_button("Se connecter", type="primary"):
              err = login(ps, e, p)
              st.error(err) if err else st.rerun()
-   
+    st.stop()
+     
 
 # def reset_password_view(token: str):
 #     st.title("Réinitialiser le mot de passe")
