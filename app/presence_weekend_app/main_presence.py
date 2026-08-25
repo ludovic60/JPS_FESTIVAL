@@ -6,7 +6,7 @@ Lancement local :  streamlit run streamlit_app.py
 import streamlit as st
 import sys
 from pathlib import Path
-import storage
+import storage_presence
 from views import  main_app
 
 
