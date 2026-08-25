@@ -59,22 +59,22 @@ def _sample(name, sub, players, age, duree, cover, note="7.8", nouv="Oui"):
 
 
 def init_storage():
-    config.DATA_DIR.mkdir(parents=True, exist_ok=True)
+    cs.DATA_DIR.mkdir(parents=True, exist_ok=True)
     for key, _ in config.month_keys():
-        if not config.games_file(key).exists():
-            _write(config.games_file(key), [])
-    if not _read(config.games_file("2025_10"), []):
-        _write(config.games_file("2025_10"), [
+        if not config_bar_jeux.games_file(key).exists():
+            _write(config_bar_jeux.games_file(key), [])
+    if not _read(config_bar_jeux.games_file("2025_10"), []):
+        _write(config_bar_jeux.games_file("2025_10"), [
             _sample("Wingspan", "Oiseaux", "1-5", "10+", "40-70 min", _COVERS[0], "8.1"),
             _sample("Ticket to Ride", "Europe", "2-5", "8+", "30-60 min", _COVERS[2], "7.9"),
             _sample("Tokyo Highway", "", "2-4", "8+", "30 min", _COVERS[1], "7.5", "Non"),
         ])
-    if not _read(config.games_file("2025_11"), []):
-        _write(config.games_file("2025_11"), [
+    if not _read(config_bar_jeux.games_file("2025_11"), []):
+        _write(config_bar_jeux.games_file("2025_11"), [
             _sample("Splendor", "Duel", "2", "10+", "30 min", _COVERS[3], "7.6"),
         ])
-    if not _read(config.games_file(config.VIEUX_KEY), []):
-        _write(config.games_file(config.VIEUX_KEY), [
+    if not _read(config_bar_jeux.games_file(config.VIEUX_KEY), []):
+        _write(config_bar_jeux.games_file(config.VIEUX_KEY), [
             _sample("Monopoly", "Classique", "2-6", "8+", "60-180 min", _COVERS[3], "5.5", "Non"),
             _sample("Carcassonne", "", "2-5", "7+", "35 min", _COVERS[0], "7.4", "Non"),
         ])
@@ -84,7 +84,7 @@ def init_storage():
 
 # ---- Jeux (fichiers plats) ----
 def load_games(list_key):
-    games = _read(config.games_file(list_key), [])
+    games = _read(config_bar_jeux.games_file(list_key), [])
     for g in games:
         if "id" not in g:
             g["id"] = g.get("id_myludo") or uuid.uuid4().hex[:8]
