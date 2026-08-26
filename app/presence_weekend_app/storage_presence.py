@@ -55,7 +55,7 @@ _lock = Lock()
 
 def get_tasks():
     con_mongo = cs.mongo_enabled()
-    tasks_tb = con_mongo.tache
+    tasks_tb = con_mongo.taches
     filtre_tb = {}
     selc_tb = {"tache": 1, "_id": 0}
     resultats = tasks_tb.find(filtre_tb, selc_tb)
@@ -65,21 +65,20 @@ def get_tasks():
 
 def add_task(label):
     tasks = get_tasks()
-    cs.mongo_enabled()
-    table_tache = db["taches"]
+    con_mongo = cs.mongo_enabled()
+    tasks_tb = con_mongo.taches
     new_task = {"_id": str(ObjectId()), "tache": label.strip()}
     filtre_tb = {}
     ins_tb = {}
 
-    resultat = table_tache.insert_one(new_task)
+    resultat = tasks_tb.insert_one(new_task)
 
     return resultat
 
 
 def update_task(task_id, label):
     con_mongo = cs.mongo_enabled()
-    db = con_mongo["JPS"]
-    tasks_tb = db["tache"]
+    tasks_tb = con_mongo.taches
 
     upd_task_id = ObjectId(task_id)
 
@@ -89,8 +88,7 @@ def update_task(task_id, label):
 
 def delete_task(task_id):
     con_mongo = cs.mongo_enabled()
-    db = con_mongo["JPS"]
-    tasks_tb = db["tache"]
+    tasks_tb = con_mongo.taches
 
     del_task_id = ObjectId(task_id)
     resultats =  tasks_tb.delete_one({"_id": del_task_id})
@@ -101,8 +99,8 @@ def delete_task(task_id):
 # ---- Présence (partagée) ----
 def get_all_presence():
     con_mongo = cs.mongo_enabled()
-    db = con_mongo["JPS"]
-    presence_tb = db["presence"]
+    presence_tb = con_mongo.presence
+  
     filtre_tb = {"annne": get_secret("ANNEE_FESTIVAL")}
     selc_tb = { "user_id":1 ,"pseudo" :2,  "creneau": 3,"task_ids": 4, "_id": 0}
     resultats = presence_tb.find(filtre_tb, selc_tb)
@@ -112,8 +110,7 @@ def get_all_presence():
 
 def get_presence(user_id):
     con_mongo = cs.mongo_enabled()
-    db = con_mongo["JPS"]
-    presence_tb = db["presence"]
+    presence_tb = con_mongo.presence
     filtre_tb = {"annne": get_secret("ANNEE_FESTIVAL") , "user_id" : objectid(user_id)}
     selc_tb = { "creneau": 3,"task_ids": 4}
     resultats = presence_tb.find(filtre_tb, selc_tb)
@@ -122,8 +119,7 @@ def get_presence(user_id):
     
 def set_presence(user_id, pseudo, slots, task_ids):
     con_mongo = cs.mongo_enabled()
-    db = con_mongo["JPS"]
-    presence_tb = db["presence"]
+    presence_tb = con_mongo.presence
     ## supprime ancienne presences en base au prealable
     clear_user_presence(user_id)
     new_presence= {"_id": str(ObjectId()), 
@@ -140,9 +136,7 @@ def set_presence(user_id, pseudo, slots, task_ids):
 
 def clear_all_presence():
     con_mongo = cs.mongo_enabled()
-    db = con_mongo["JPS"]
-    presence_tb = db["presence"]
-
+    presence_tb = con_mongo.presence
     filtre_tb = {"annne": get_secret("ANNEE_FESTIVAL") }
     
     resultats = presence_tb.delete_many(filtre_tb)
@@ -151,8 +145,7 @@ def clear_all_presence():
 
 def clear_user_presence(user_id):
     con_mongo = cs.mongo_enabled()
-    db = con_mongo["JPS"]
-    presence_tb = db["presence"]
+    presence_tb = con_mongo.presence
 
     filtre_tb = {"annne": get_secret("ANNEE_FESTIVAL"),"user_id" : obecjtid(user_id) }
     
