@@ -120,7 +120,7 @@ def get_all_presence():
         selc_tb = { "user_id":1 ,"pseudo" :2,  "creneau": 3,"task_ids": 4, "_id": 0}
         resultats = presence_tb.find(filtre_tb, selc_tb)
         db.close()
-     else :
+    else :
         resultats ={}
     return resultats 
 
@@ -134,7 +134,7 @@ def get_presence(user_id):
         selc_tb = { "creneau": 3,"task_ids": 4}
         resultats = presence_tb.find(filtre_tb, selc_tb)
         db.close()
-     else :
+    else :
         resultats ={}
     return resultats 
     
@@ -156,7 +156,7 @@ def set_presence(user_id, pseudo, slots, task_ids):
     
         resultat = presence_tb.insert_one(new_presence)
         db.close()
-     else :
+    else :
         resultat ={}
     return resultat 
     
