@@ -58,29 +58,29 @@ def mongo_enabled():
 # --------------------------------------------------------------------------
 # Données applicatives génériques (partagées quand Mongo est actif)
 # --------------------------------------------------------------------------
-def get_doc(name, default):
-    db = get_db()
-    if db is not None:
-        d = db.app_data.find_one({"_id": name})
-        return d["data"] if d else default
-    p = FALLBACK_DIR / f"{name}.json"
-    if not p.exists():
-        return default
-    try:
-        with open(p, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except (json.JSONDecodeError, OSError):
-        return default
+# def get_doc(name, default):
+#     db = get_db()
+#     if db is not None:
+#         d = db.app_data.find_one({"_id": name})
+#         return d["data"] if d else default
+#     p = FALLBACK_DIR / f"{name}.json"
+#     if not p.exists():
+#         return default
+#     try:
+#         with open(p, "r", encoding="utf-8") as f:
+#             return json.load(f)
+#     except (json.JSONDecodeError, OSError):
+#         return default
 
 
-def put_doc(name, data):
-    db = get_db()
-    if db is not None:
-        db.app_data.update_one({"_id": name}, {"$set": {"data": data}}, upsert=True)
-        return
-    FALLBACK_DIR.mkdir(parents=True, exist_ok=True)
-    with open(FALLBACK_DIR / f"{name}.json", "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+# def put_doc(name, data):
+#     db = get_db()
+#     if db is not None:
+#         db.app_data.update_one({"_id": name}, {"$set": {"data": data}}, upsert=True)
+#         return
+#     FALLBACK_DIR.mkdir(parents=True, exist_ok=True)
+#     with open(FALLBACK_DIR / f"{name}.json", "w", encoding="utf-8") as f:
+#        json.dump(data, f, ensure_ascii=False, indent=2)
 
 
 # --------------------------------------------------------------------------
