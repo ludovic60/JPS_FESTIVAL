@@ -132,11 +132,11 @@ def recap_page():
     columns = [(f"{d}_{p}", dl, pl) for d, dl in DAYS for p, pl in PERIODS]
 
     matrix = {t["_id"]: {c[0]: [] for c in columns} for t in tasks}
-    for p in presence.values():
-        name = p.get("user_name", "")
-        for tid in p.get("task_ids", []):
+    for p in presence :
+        name = p["user_name"]
+        for tid in p.["task_ids"]:
             if tid in matrix:
-                for sk, active in p.get("creneau", {}).items():
+                for sk, active in p.["creneau"]:
                     if active and sk in matrix[tid]:
                         matrix[tid][sk].append(name)
 
