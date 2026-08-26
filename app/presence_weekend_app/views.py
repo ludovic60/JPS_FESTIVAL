@@ -32,7 +32,7 @@ def main_app(user: dict):
 
         st.divider()
         if st.button("Déconnexion"):
-            auth.logout()
+            commun.auth.logout()
             st.rerun()
 
     if page == "Ma présence":
