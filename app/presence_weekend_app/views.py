@@ -74,12 +74,17 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
 
     st.markdown("#### Tâches souhaitées")
     tasks = get_tasks()
+    print("liste tache")
+    print(tasks)
+    print("fin liste tache")
+    
+    
     selected = []
     if not tasks:
         st.info("Aucune tâche disponible. L'administrateur doit en ajouter.")
     for t in tasks:
-        checked = t["_id"] in data["task_ids"]
-        if st.checkbox(t["label"], value=checked, key=f"{key_prefix}_task_{t['_id']}"):
+        #checked = t["_id"] in data["task_ids"]
+        if st.checkbox(t["tache"], value=checked, key=f"{key_prefix}_task_{t['_id']}"):
             selected.append(t["_id"])
 
     return slot_state, selected
