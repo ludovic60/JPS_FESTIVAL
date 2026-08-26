@@ -178,7 +178,7 @@ def clear_user_presence(user_id):
         db = cs.get_db()
         presence_tb = db.presence
     
-        filtre_tb = {"annne": cs._secret("ANNEE_FESTIVAL"),"user_id" : obecjtid(user_id) }
+        filtre_tb = {"annne": cs._secret("ANNEE_FESTIVAL"),"user_id" : ObjectId(user_id) }
         
         resultats = presence_tb.delete_many(filtre_tb)
 
