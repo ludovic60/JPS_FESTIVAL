@@ -55,43 +55,63 @@ _lock = Lock()
 
 def get_tasks():
     con_mongo = cs.mongo_enabled()
-    tasks_tb = con_mongo.taches
-    filtre_tb = {}
-    selc_tb = {"tache": 1, "_id": 0}
-    resultats = tasks_tb.find(filtre_tb, selc_tb)
-    con_mongo.close()
+    if   con_mongo : 
+        db = get_db()
+        tasks_tb = db.taches
+        filtre_tb = {}
+        selc_tb = {"tache": 1, "_id": 0}
+        resultats = tasks_tb.find(filtre_tb, selc_tb)
+        db.close()
+    else :
+        resultats ={}
     return resultats
 
 
 def add_task(label):
     tasks = get_tasks()
     con_mongo = cs.mongo_enabled()
-    tasks_tb = con_mongo.taches
-    new_task = {"_id": str(ObjectId()), "tache": label.strip()}
-    filtre_tb = {}
-    ins_tb = {}
+    if   con_mongo : 
+        db = get_db()
+        tasks_tb = db.taches
+        new_task = {"_id": str(ObjectId()), "tache": label.strip()}
+        filtre_tb = {}
+        ins_tb = {}
 
-    resultat = tasks_tb.insert_one(new_task)
-
+        resultat = tasks_tb.insert_one(new_task)
+        db.close()
+     else :
+        resultat ={}
     return resultat
 
 
 def update_task(task_id, label):
     con_mongo = cs.mongo_enabled()
-    tasks_tb = con_mongo.taches
-
-    upd_task_id = ObjectId(task_id)
-
-    resultats =  tasks_tb.update_one({"_id": upd_task_id}, {"$set": {"tache": label}})
+    if   con_mongo : 
+        db = get_db()
+        tasks_tb = db.taches
     
+        upd_task_id = ObjectId(task_id)
+    
+        resultats =  tasks_tb.update_one({"_id": upd_task_id}, {"$set": {"tache": label}})
+        db.close()
+     else :
+        resultats ={}
+    return resultats 
 
 
 def delete_task(task_id):
     con_mongo = cs.mongo_enabled()
-    tasks_tb = con_mongo.taches
+    if   con_mongo : 
+        db = get_db()
+        tasks_tb = db.taches
+    
+        del_task_id = ObjectId(task_id)
+        resultats =  tasks_tb.delete_one({"_id": del_task_id})
+        db.close()
+     else :
+        resultats ={}
+    return resultats 
 
-    del_task_id = ObjectId(task_id)
-    resultats =  tasks_tb.delete_one({"_id": del_task_id})
     
 
 
@@ -99,59 +119,82 @@ def delete_task(task_id):
 # ---- Présence (partagée) ----
 def get_all_presence():
     con_mongo = cs.mongo_enabled()
-    presence_tb = con_mongo.presence
-  
-    filtre_tb = {"annne": get_secret("ANNEE_FESTIVAL")}
-    selc_tb = { "user_id":1 ,"pseudo" :2,  "creneau": 3,"task_ids": 4, "_id": 0}
-    resultats = presence_tb.find(filtre_tb, selc_tb)
-    con_mongo.close()
-    return resultats
+    if   con_mongo : 
+        db = get_db()
+        presence_tb = db.presence
+      
+        filtre_tb = {"annne": get_secret("ANNEE_FESTIVAL")}
+        selc_tb = { "user_id":1 ,"pseudo" :2,  "creneau": 3,"task_ids": 4, "_id": 0}
+        resultats = presence_tb.find(filtre_tb, selc_tb)
+        db.close()
+     else :
+        resultats ={}
+    return resultats 
 
 
 def get_presence(user_id):
     con_mongo = cs.mongo_enabled()
-    presence_tb = con_mongo.presence
-    filtre_tb = {"annne": get_secret("ANNEE_FESTIVAL") , "user_id" : objectid(user_id)}
-    selc_tb = { "creneau": 3,"task_ids": 4}
-    resultats = presence_tb.find(filtre_tb, selc_tb)
-    con_mongo.close()
-    return resultats
+    if   con_mongo : 
+        db = get_db()
+        presence_tb = db.presence
+        filtre_tb = {"annne": get_secret("ANNEE_FESTIVAL") , "user_id" : objectid(user_id)}
+        selc_tb = { "creneau": 3,"task_ids": 4}
+        resultats = presence_tb.find(filtre_tb, selc_tb)
+        db.close()
+     else :
+        resultats ={}
+    return resultats 
     
 def set_presence(user_id, pseudo, slots, task_ids):
     con_mongo = cs.mongo_enabled()
-    presence_tb = con_mongo.presence
-    ## supprime ancienne presences en base au prealable
-    clear_user_presence(user_id)
-    new_presence= {"_id": str(ObjectId()), 
-                 "annee" : get_secret("ANNEE_FESTIVAL"), 
-                 "user_id": user_id,
-                 "pseudo" : pseudo,
-                 "creneau": {k: bool(slots.get(k, False)) for k in config.SLOT_KEYS},
-                 "task_ids": task_ids,
-                 "updated_at": datetime.now(timezone.utc).isoformat()}
-
-
-    resultat = presence_tb.insert_one(new_presence)
-
+    if   con_mongo : 
+        db = get_db()
+        presence_tb = db.presence
+        ## supprime ancienne presences en base au prealable
+        clear_user_presence(user_id)
+        new_presence= {"_id": str(ObjectId()), 
+                     "annee" : get_secret("ANNEE_FESTIVAL"), 
+                     "user_id": user_id,
+                     "pseudo" : pseudo,
+                     "creneau": {k: bool(slots.get(k, False)) for k in config.SLOT_KEYS},
+                     "task_ids": task_ids,
+                     "updated_at": datetime.now(timezone.utc).isoformat()}
+    
+    
+        resultat = presence_tb.insert_one(new_presence)
+        db.close()
+     else :
+        resultat ={}
+    return resultat 
+    
 
 def clear_all_presence():
     con_mongo = cs.mongo_enabled()
-    presence_tb = con_mongo.presence
-    filtre_tb = {"annne": get_secret("ANNEE_FESTIVAL") }
-    
-    resultats = presence_tb.delete_many(filtre_tb)
-    con_mongo.close()
+    if   con_mongo : 
+        db = get_db()
+        presence_tb = db.presence
+        filtre_tb = {"annne": get_secret("ANNEE_FESTIVAL") }
+        
+        resultats = presence_tb.delete_many(filtre_tb)
+        db.close()
+     else :
+        resultats ={}
+    return resultats 
 
 
 def clear_user_presence(user_id):
     con_mongo = cs.mongo_enabled()
-    presence_tb = con_mongo.presence
-
-    filtre_tb = {"annne": get_secret("ANNEE_FESTIVAL"),"user_id" : obecjtid(user_id) }
+    if   con_mongo : 
+        db = get_db()
+        presence_tb = db.presence
     
-    resultats = presence_tb.delete_many(filtre_tb)
-    con_mongo.close()
-
+        filtre_tb = {"annne": get_secret("ANNEE_FESTIVAL"),"user_id" : obecjtid(user_id) }
+        
+        resultats = presence_tb.delete_many(filtre_tb)
+        db.close()
+     else :
+        resultats ={}
+    return resultats 
     
 
 
