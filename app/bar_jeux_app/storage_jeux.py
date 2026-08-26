@@ -12,7 +12,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import commun.common_store as cs
 from commun.security import hash_password, verify_password
-import commun.config
+import commun.config as ccfg
 
 _lock = Lock()
 
@@ -59,7 +59,7 @@ def _sample(name, sub, players, age, duree, cover, note="7.8", nouv="Oui"):
 
 
 def init_storage():
-    cs.DATA_DIR.mkdir(parents=True, exist_ok=True)
+    ccfg.DATA_DIR.mkdir(parents=True, exist_ok=True)
     for key, _ in config.month_keys():
         if not config_bar_jeux.games_file(key).exists():
             _write(config_bar_jeux.games_file(key), [])
