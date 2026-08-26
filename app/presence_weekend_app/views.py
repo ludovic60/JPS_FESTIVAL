@@ -126,6 +126,7 @@ def recap_page():
     st.caption("Tâches (lignes) × Jours & créneaux (colonnes). Les personnes présentes apparaissent dans chaque cellule.")
 
     tasks = get_tasks()
+    print("TACHE")
     print(tasks)
     presence = get_all_presence()
     print("presence")
