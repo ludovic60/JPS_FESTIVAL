@@ -129,7 +129,7 @@ def get_presence(user_id):
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
-        prefiltre_tbsence_tb = db.presence
+        presence_tb = db.presence
         filtre_tb = {"annne": cs._secret("ANNEE_FESTIVAL") , "user_id" : ObjectId(user_id)}
         selc_tb = { "creneau": 1,"task_ids": 2}
         resultats = list(presence_tb.find( selc_tb,filtre_tb))
