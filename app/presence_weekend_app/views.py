@@ -52,6 +52,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     data = get_presence(user_id)
     print("creneau")
     print(data )
+    print("fin creneau")
     cols = st.columns(2)
     slot_state = {}
     for i, (day, day_label) in enumerate(DAYS):
