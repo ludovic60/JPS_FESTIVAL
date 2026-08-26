@@ -128,7 +128,7 @@ def recap_page():
     tasks = get_tasks()
     print(tasks)
     presence = get_all_presence()
-
+    print("presence")
     print(presence)
 
 
