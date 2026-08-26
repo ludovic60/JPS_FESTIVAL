@@ -61,7 +61,7 @@ def get_tasks():
         filtre_tb = {}
         selc_tb = {"tache": 1, "_id": 0}
         resultats = tasks_tb.find(filtre_tb, selc_tb)
-        db.close()
+        con_mongo.close()
     else :
         resultats ={}
     return resultats
@@ -77,7 +77,7 @@ def add_task(label):
         filtre_tb = {}
         ins_tb = {}
         resultat = tasks_tb.insert_one(new_task)
-        db.close()
+        con_mongo.close()
 
 
 
@@ -90,7 +90,7 @@ def update_task(task_id, label):
         upd_task_id = ObjectId(task_id)
     
         resultats =  tasks_tb.update_one({"_id": upd_task_id}, {"$set": {"tache": label}})
-        db.close()
+        con_mongo.close()
 
 
 
@@ -102,7 +102,7 @@ def delete_task(task_id):
     
         del_task_id = ObjectId(task_id)
         resultats =  tasks_tb.delete_one({"_id": del_task_id})
-        db.close()
+        con_mongo.close()
 
 
     
@@ -119,7 +119,7 @@ def get_all_presence():
         filtre_tb = {"annne": cs._secret("ANNEE_FESTIVAL")}
         selc_tb = { "user_id":1 ,"pseudo" :2,  "creneau": 3,"task_ids": 4, "_id": 0}
         resultats = presence_tb.find(filtre_tb, selc_tb)
-        db.close()
+        con_mongo.close()
     else :
         resultats ={}
     return resultats 
@@ -133,7 +133,7 @@ def get_presence(user_id):
         filtre_tb = {"annne": cs._secret("ANNEE_FESTIVAL") , "user_id" : ObjectId(user_id)}
         selc_tb = { "creneau": 3,"task_ids": 4}
         resultats = presence_tb.find(filtre_tb, selc_tb)
-        db.close()
+        con_mongo.close()
     else :
         resultats ={}
     return resultats 
@@ -155,7 +155,7 @@ def set_presence(user_id, pseudo, slots, task_ids):
     
     
         resultat = presence_tb.insert_one(new_presence)
-        db.close()
+        con_mongo.close()
     else :
         resultat ={}
     return resultat 
@@ -169,7 +169,7 @@ def clear_all_presence():
         filtre_tb = {"annne": cs._secret("ANNEE_FESTIVAL") }
         
         resultats = presence_tb.delete_many(filtre_tb)
-        db.close()
+        con_mongo.close()
 
 
 
@@ -182,7 +182,7 @@ def clear_user_presence(user_id):
         filtre_tb = {"annne": cs._secret("ANNEE_FESTIVAL"),"user_id" : obecjtid(user_id) }
         
         resultats = presence_tb.delete_many(filtre_tb)
-        db.close()
+        con_mongo.close()
 
     
 
