@@ -54,7 +54,7 @@ _lock = Lock()
 # ----  gestion de la table Tâche  ----
 
 def get_tasks():
-    con_mongo = mongo_enabled()
+    con_mongo = cs.mongo_enabled()
     db = con_mongo["JPS"]
     tasks_tb = db["tache"]
     filtre_tb = {}
@@ -66,7 +66,7 @@ def get_tasks():
 
 def add_task(label):
     tasks = get_tasks()
-    mongo_enabled()
+    cs.mongo_enabled()
     table_tache = db["taches"]
     new_task = {"_id": str(ObjectId()), "tache": label.strip()}
     filtre_tb = {}
@@ -78,7 +78,7 @@ def add_task(label):
 
 
 def update_task(task_id, label):
-    con_mongo = mongo_enabled()
+    con_mongo = cs.mongo_enabled()
     db = con_mongo["JPS"]
     tasks_tb = db["tache"]
 
@@ -89,7 +89,7 @@ def update_task(task_id, label):
 
 
 def delete_task(task_id):
-    con_mongo = mongo_enabled()
+    con_mongo = cs.mongo_enabled()
     db = con_mongo["JPS"]
     tasks_tb = db["tache"]
 
@@ -101,7 +101,7 @@ def delete_task(task_id):
 
 # ---- Présence (partagée) ----
 def get_all_presence():
-    con_mongo = mongo_enabled()
+    con_mongo = cs.mongo_enabled()
     db = con_mongo["JPS"]
     presence_tb = db["presence"]
     filtre_tb = {"annne": get_secret("ANNEE_FESTIVAL")}
@@ -112,7 +112,7 @@ def get_all_presence():
 
 
 def get_presence(user_id):
-    con_mongo = mongo_enabled()
+    con_mongo = cs.mongo_enabled()
     db = con_mongo["JPS"]
     presence_tb = db["presence"]
     filtre_tb = {"annne": get_secret("ANNEE_FESTIVAL") , "user_id" : objectid(user_id)}
@@ -122,7 +122,7 @@ def get_presence(user_id):
     return resultats
     
 def set_presence(user_id, pseudo, slots, task_ids):
-    con_mongo = mongo_enabled()
+    con_mongo = cs.mongo_enabled()
     db = con_mongo["JPS"]
     presence_tb = db["presence"]
     ## supprime ancienne presences en base au prealable
@@ -140,7 +140,7 @@ def set_presence(user_id, pseudo, slots, task_ids):
 
 
 def clear_all_presence():
-    con_mongo = mongo_enabled()
+    con_mongo = cs.mongo_enabled()
     db = con_mongo["JPS"]
     presence_tb = db["presence"]
 
@@ -151,7 +151,7 @@ def clear_all_presence():
 
 
 def clear_user_presence(user_id):
-    con_mongo = mongo_enabled()
+    con_mongo = cs.mongo_enabled()
     db = con_mongo["JPS"]
     presence_tb = db["presence"]
 
