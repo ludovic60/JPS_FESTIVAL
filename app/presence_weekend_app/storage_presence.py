@@ -130,7 +130,7 @@ def get_presence(user_id):
         db = cs.get_db()
         presence_tb = db.presence
         filtre_tb = {"annne": cs._secret("ANNEE_FESTIVAL") , "user_id" : ObjectId(user_id)}
-        selc_tb = { "creneau": 3,"task_ids": 4}
+        selc_tb = { "creneau": 1,"task_ids": 2}
         resultats = presence_tb.find(filtre_tb, selc_tb)
  
     else :
