@@ -144,9 +144,9 @@ def set_presence(user_id, pseudo, slots, task_ids):
         presence_tb = db.presence
         ## supprime ancienne presences en base au prealable
         clear_user_presence(user_id)
-        new_presence= {"_id": str(ObjectId()), 
+        new_presence= {"_id": ObjectId(), 
                      "annee" : cs._secret("ANNEE_FESTIVAL"), 
-                     "user_id": user_id,
+                     "user_id": ObjectId(user_id),
                      "pseudo" : pseudo,
                      "creneau": {k: bool(slots.get(k, False)) for k in config.SLOT_KEYS},
                      "task_ids": task_ids,
