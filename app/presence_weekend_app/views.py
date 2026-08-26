@@ -86,9 +86,9 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     if not tasks:
         st.info("Aucune tâche disponible. L'administrateur doit en ajouter.")
     for t in tasks:
-        checked = t["_id"] in data["task_ids"]
-        if st.checkbox(t["tache"], value=checked, key=f"{key_prefix}_task_{t['_id']}"):
-            selected.append(t["_id"])
+        checked = t["id"] in data["task_ids"]
+        if st.checkbox(t["tache"], value=checked, key=f"{key_prefix}_task_{t['id']}"):
+            selected.append(t["id"])
 
     return slot_state, selected
 
@@ -165,15 +165,15 @@ def admin_page():
 
         for t in get_tasks():
             c1, c2, c3 = st.columns([4, 1, 1])
-            label = c1.text_input("t", value=t["tache"], key=f"edit_{t['_id']}",
+            label = c1.text_input("t", value=t["tache"], key=f"edit_{t['id']}",
                                    label_visibility="collapsed")
-            #  if c2.button("Modifier", key=f"upd_{t['_id']}"):
+            #  if c2.button("Modifier", key=f"upd_{t['id']}"):
             if c2.button("Modifier"):
-                update_task(t["_id"], label)
+                update_task(t["id"], label)
                 st.rerun()
             # if c3.button("Supprimer"):
             if c3.button("Supprimer"):
-                delete_task(t["_id"])
+                delete_task(t["id"])
                 st.rerun()
 
     # ---- Votes ----
