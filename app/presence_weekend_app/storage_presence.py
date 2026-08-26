@@ -52,6 +52,7 @@ _lock = Lock()
 
 
 # ----  gestion de la table Tâche  ----
+
 def get_tasks():
     con_mongo = mongo_enabled()
     db = con_mongo["JPS"]
