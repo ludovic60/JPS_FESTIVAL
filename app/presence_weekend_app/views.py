@@ -94,9 +94,9 @@ def presence_page(user: dict):
     st.title("Ma présence")
     st.caption("Cochez vos créneaux de disponibilité (Samedi & Dimanche) et vos tâches souhaitées.")
     print("user")
-    print(user["_id"])
+    print(user["id"])
     print(user["pseudo"])
-    slot_state, selected = presence_editor(user["_id"], user["pseudo"], "self")
+    slot_state, selected = presence_editor(user["id"], user["pseudo"], "self")
     if st.button("Enregistrer", type="primary"):
         set_presence(user["id"], user["pseudo"], slot_state, selected)
         st.success("Présence enregistrée")
