@@ -80,67 +80,27 @@ def update_task(task_id, label):
     con_mongo = mongo_enabled()
     db = con_mongo["JPS"]
     tasks_tb = db["tache"]
-    filtre_tb = {}
-    selc_tb = {"tache": 1, "_id": 0}
-    resultats = tasks_tb.find(filtre_tb, selc_tb)
 
+    upd_task_id = ObjectId(task_id)
 
-    doc_id = ObjectId("651a2b3c4d5e6f7a8b9c0d1e")
+    resultats =  tasks_tb.update_one({"_id": upd_task_id}, {"$set": {"tache": label}})
+    
 
-collection.update_one(
-    {"_id": doc_id},
-    {"$set": {"statut": "valide"}}
-)
-  
 
 def delete_task(task_id):
-    _write(cfg.TASKS_FILE, [t for t in get_tasks() if t["id"] != task_id])
-    presence = get_all_presence()
-    for p in presence.values():
-        p["task_ids"] = [tid for tid in p.get("task_ids", []) if tid != task_id]
-    cs.put_doc("weekend_presence", presence)
+    con_mongo = mongo_enabled()
+    db = con_mongo["JPS"]
+    tasks_tb = db["tache"]
 
+    del_task_id = ObjectId(task_id)
+    resultats =  tasks_tb.delete_one({"_id": del_task_id})
+    
 
-# ---- Utilisateurs (partagés) ----
-def get_users():
-    return cs.get_users()
-
-
-def get_user_by_email(email):
-    return cs.get_user_by_email(email)
-
-
-def get_user_by_id(uid):
-    return cs.get_user_by_id(uid)
-
-
-def _seed_user(email, name, password, role="user"):
-    u = {"id": uuid.uuid4().hex, "email": email.lower(), "pseudo": pseudo.strip(),
-         "password_hash": hash_password(password), "role": role,
-         "created_at": datetime.now(timezone.utc).isoformat()}
-    cs.add_user(u)
-    return u
-
-
-def create_user(email, name, password):
-    if cs.get_user_by_email(email):
-        return None, "Cet email est déjà utilisé"
-    return _seed_user(email, name, password, role="user"), None
-
-
-def check_credentials(email, password):
-    u = cs.get_user_by_email(email)
-    return u if u and verify_password(password, u["password_hash"]) else None
-
-
-def update_password(user_id, new_password):
-    cs.update_password(user_id, hash_password(new_password))
 
 
 # ---- Présence (partagée) ----
 def get_all_presence():
-    return cs.get_doc("weekend_presence", {})
-
+    
 
 def get_presence(user_id):
     p = get_all_presence().get(user_id)
@@ -152,23 +112,27 @@ def get_presence(user_id):
     return {"slots": slots, "task_ids": task_ids}
 
 
-def set_presence(user_id, user_name, slots, task_ids):
+def set_presence(user_id, pseudo, slots, task_ids):
     presence = get_all_presence()
-    presence[user_id] = {"user_name": user_name,
+    presence[user_id] = { "annee" : get_secret("ANNEE_FESTIVAL"), 
+                         "pseudo": pseudo,
                          "slots": {k: bool(slots.get(k, False)) for k in config.SLOT_KEYS},
                          "task_ids": task_ids,
                          "updated_at": datetime.now(timezone.utc).isoformat()}
-    cs.put_doc("weekend_presence", presence)
+
 
 
 def clear_all_presence():
-    cs.put_doc("weekend_presence", {})
 
 
 def clear_user_presence(user_id):
     presence = get_all_presence()
     presence.pop(user_id, None)
     cs.put_doc("weekend_presence", presence)
+
+
+    
+    
 
 
 # ---- Jetons de réinitialisation (partagés) ----
