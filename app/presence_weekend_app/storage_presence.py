@@ -116,7 +116,7 @@ def get_all_presence():
         db = cs.get_db()
         presence_tb = db.presence
       
-        filtre_tb = {"annne": cs._secret("ANNEE_FESTIVAL")}
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL")}
         selc_tb = { "user_id":1 ,"pseudo" :2,  "creneau": 3,"task_ids": 4, "_id": 0}
         resultats = list(presence_tb.find(selc_tb,filtre_tb))
 
@@ -130,7 +130,7 @@ def get_presence(user_id):
     if   con_mongo : 
         db = cs.get_db()
         presence_tb = db.presence
-        filtre_tb = {"annne": cs._secret("ANNEE_FESTIVAL") , "user_id" : ObjectId(user_id)}
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") , "user_id" : ObjectId(user_id)}
         selc_tb = { "creneau": 1,"task_ids": 2}
         resultats = list(presence_tb.find( selc_tb,filtre_tb))
         print("RESULTAT")
@@ -172,7 +172,7 @@ def clear_all_presence():
     if   con_mongo : 
         db = cs.get_db()
         presence_tb = db.presence
-        filtre_tb = {"annne": cs._secret("ANNEE_FESTIVAL") }
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") }
         
         resultats = presence_tb.delete_many(filtre_tb)
 
@@ -185,7 +185,7 @@ def clear_user_presence(user_id):
         db = cs.get_db()
         presence_tb = db.presence
     
-        filtre_tb = {"annne": cs._secret("ANNEE_FESTIVAL"),"user_id" : ObjectId(user_id) }
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"),"user_id" : ObjectId(user_id) }
         
         resultats = presence_tb.delete_many(filtre_tb)
 
