@@ -129,11 +129,13 @@ def recap_page():
     print(tasks)
     presence = get_all_presence()
 
-    columns = [(f"{d}_{p}", dl, pl) for d, dl in DAYS for p, pl in PERIODS]
 
+
+    columns = [(f"{d}_{p}", dl, pl) for d, dl in DAYS for p, pl in PERIODS]
+  
     matrix = {t["_id"]: {c[0]: [] for c in columns} for t in tasks}
     for p in presence :
-        name = p["user_name"]
+        name = p["pseudo"]
         for tid in p["task_ids"]:
             if tid in matrix:
                 for sk, active in p["creneau"]:
@@ -146,6 +148,8 @@ def recap_page():
     ) + "</tr>"
 
     body = ""
+
+
     if not tasks:
         body = f"<tr><td colspan='{len(columns)+1}'>Aucune tâche définie.</td></tr>"
     for t in tasks:
