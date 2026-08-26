@@ -60,8 +60,8 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
             with st.container(border=True):
                 st.markdown(f"#### {day_label}")
                 full_key = f"{key_prefix}_full_{day}"
-                #current_full = all(data["creneau"][_slot_key(day, p)] for p, _ in PERIODS)
-                current_full = all([_slot_key(day, p)] for p, _ in PERIODS)
+                current_full = all(data["creneau"][_slot_key(day, p)] for p, _ in PERIODS)
+                #current_full = all([_slot_key(day, p)] for p, _ in PERIODS)
                 
                 full = st.checkbox("Journée entière", value=current_full, key=full_key)
                 for period, plabel in PERIODS:
@@ -83,7 +83,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     if not tasks:
         st.info("Aucune tâche disponible. L'administrateur doit en ajouter.")
     for t in tasks:
-        #checked = t["_id"] in data["task_ids"]
+        checked = t["_id"] in data["task_ids"]
         if st.checkbox(t["tache"], value=checked, key=f"{key_prefix}_task_{t['_id']}"):
             selected.append(t["_id"])
 
