@@ -76,7 +76,7 @@ def add_task(label):
         new_task = {"_id": str(ObjectId()), "tache": label.strip()}
         filtre_tb = {}
         ins_tb = {}
-        resultat = tasks_tb.insert_one(new_task)
+        resultat = tasks_tb.insert_one(new_task))
      
 
 
@@ -117,7 +117,7 @@ def get_all_presence():
       
         filtre_tb = {"annne": cs._secret("ANNEE_FESTIVAL")}
         selc_tb = { "user_id":1 ,"pseudo" :2,  "creneau": 3,"task_ids": 4, "_id": 0}
-        resultats = presence_tb.find(filtre_tb, selc_tb)
+        resultats = list(presence_tb.find(filtre_tb, selc_tb))
 
     else :
         resultats ={}
@@ -131,7 +131,7 @@ def get_presence(user_id):
         presence_tb = db.presence
         filtre_tb = {"annne": cs._secret("ANNEE_FESTIVAL") , "user_id" : ObjectId(user_id)}
         selc_tb = { "creneau": 1,"task_ids": 2}
-        resultats = presence_tb.find(filtre_tb, selc_tb)
+        resultats = list(presence_tb.find(filtre_tb, selc_tb))
  
     else :
         resultats ={}
