@@ -22,7 +22,7 @@ require_auth()
 st.set_page_config(page_title="Présence Week-end", page_icon="📅", layout="wide")
 inject()
 
-storage_presence.init_storage()
+#storage_presence.init_storage()
 
 # Lien de réinitialisation : ?token=...
 params = st.query_params
