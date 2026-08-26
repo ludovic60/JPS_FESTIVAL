@@ -60,7 +60,7 @@ def _sample(name, sub, players, age, duree, cover, note="7.8", nouv="Oui"):
 
 def init_storage():
     ccfg.DATA_DIR.mkdir(parents=True, exist_ok=True)
-    for key, _ in config.month_keys():
+    for key, _ in config_bar_jeux.month_keys():
         if not config_bar_jeux.games_file(key).exists():
             _write(config_bar_jeux.games_file(key), [])
     if not _read(config_bar_jeux.games_file("2025_10"), []):
