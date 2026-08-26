@@ -55,8 +55,7 @@ _lock = Lock()
 
 def get_tasks():
     con_mongo = cs.mongo_enabled()
-    db = con_mongo["JPS"]
-    tasks_tb = db["tache"]
+    tasks_tb = con_mongo.tache
     filtre_tb = {}
     selc_tb = {"tache": 1, "_id": 0}
     resultats = tasks_tb.find(filtre_tb, selc_tb)
