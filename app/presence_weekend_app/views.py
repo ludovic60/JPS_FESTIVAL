@@ -160,7 +160,7 @@ def recap_page():
     for t in tasks:
         cells = ""
         for c in columns:
-            names = matrix[t["_id"]][c[0]]
+            names = matrix[str(t["_id"])][c[0]]
             if names:
                 cells += "<td>" + "".join(
                     f"<span class='ws-badge'>{html.escape(n)}</span>" for n in names
