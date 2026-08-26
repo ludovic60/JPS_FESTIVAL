@@ -50,7 +50,8 @@ def _slot_key(day, period):
 def presence_editor(user_id: str, user_name: str, key_prefix: str):
     """Éditeur de présence réutilisable (soi-même ou, pour l'admin, une autre personne)."""
     data = get_presence(user_id)
-
+    print("creneau")
+    print(data["creneau"])
     cols = st.columns(2)
     slot_state = {}
     for i, (day, day_label) in enumerate(DAYS):
