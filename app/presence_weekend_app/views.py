@@ -131,7 +131,7 @@ def recap_page():
 
     columns = [(f"{d}_{p}", dl, pl) for d, dl in DAYS for p, pl in PERIODS]
 
-    matrix = {t["id"]: {c[0]: [] for c in columns} for t in tasks}
+    matrix = {t["_id"]: {c[0]: [] for c in columns} for t in tasks}
     for p in presence.values():
         name = p.get("user_name", "")
         for tid in p.get("task_ids", []):
