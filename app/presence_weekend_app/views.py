@@ -54,6 +54,8 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     data = raw[0] if raw else {}
     creneau = data.get("creneau", {})
     task_ids = data.get("task_ids", [])
+    print("raw")
+    print(raw[0])
 
     cols = st.columns(2)
     slot_state = {}
@@ -150,7 +152,7 @@ def recap_page():
     for t in tasks:
         cells = ""
         for c in columns:
-            names = matrix[t["id"]][c[0]]
+            names = matrix[t["_id"]][c[0]]
             if names:
                 cells += "<td>" + "".join(
                     f"<span class='ws-badge'>{html.escape(n)}</span>" for n in names
