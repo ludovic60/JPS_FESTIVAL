@@ -150,13 +150,13 @@ def admin_page():
 
         for t in get_tasks():
             c1, c2, c3 = st.columns([4, 1, 1])
-            label = c1.text_input("t", value=t["label"], key=f"edit_{t['id']}",
+            label = c1.text_input("t", value=t["tache"], key=f"edit_{t['_id']}",
                                    label_visibility="collapsed")
-            if c2.button("Modifier", key=f"upd_{t['id']}"):
-                update_task(t["id"], label)
+            if c2.button("Modifier", key=f"upd_{t['_id']}"):
+                update_task(t["_id"], label)
                 st.rerun()
-            if c3.button("Supprimer", key=f"del_{t['id']}"):
-                delete_task(t["id"])
+            if c3.button("Supprimer", key=f"del_{t['_id']}"):
+                delete_task(t["_id"])
                 st.rerun()
 
     # ---- Votes ----
