@@ -51,7 +51,7 @@ _lock = Lock()
 #         _seed_user(admin_email, "Administrateur", admin_password, role="admin")
 
 
-# ---- Tâches (fichier plat) ----
+# ----  gestion de la table Tâche  ----
 def get_tasks():
     con_mongo = mongo_enabled()
     db = con_mongo["JPS"]
@@ -77,13 +77,21 @@ def add_task(label):
 
 
 def update_task(task_id, label):
-    tasks = get_tasks()
-    for t in tasks:
-        if t["id"] == task_id:
-            t["label"] = label.strip()
-    tasks.sort(key=lambda t: t["label"].lower())
-    _write(cfg.TASKS_FILE, tasks)
+    con_mongo = mongo_enabled()
+    db = con_mongo["JPS"]
+    tasks_tb = db["tache"]
+    filtre_tb = {}
+    selc_tb = {"tache": 1, "_id": 0}
+    resultats = tasks_tb.find(filtre_tb, selc_tb)
 
+
+    doc_id = ObjectId("651a2b3c4d5e6f7a8b9c0d1e")
+
+collection.update_one(
+    {"_id": doc_id},
+    {"$set": {"statut": "valide"}}
+)
+  
 
 def delete_task(task_id):
     _write(cfg.TASKS_FILE, [t for t in get_tasks() if t["id"] != task_id])
