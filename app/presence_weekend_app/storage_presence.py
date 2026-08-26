@@ -100,38 +100,65 @@ def delete_task(task_id):
 
 # ---- Présence (partagée) ----
 def get_all_presence():
-    
+    con_mongo = mongo_enabled()
+    db = con_mongo["JPS"]
+    presence_tb = db["presence"]
+    filtre_tb = {"annne": get_secret("ANNEE_FESTIVAL")}
+    selc_tb = { "user_id":1 ,"pseudo" :2,  "creneau": 3,"task_ids": 4, "_id": 0}
+    resultats = presence_tb.find(filtre_tb, selc_tb)
+    con_mongo.close()
+    return resultats
+
 
 def get_presence(user_id):
-    p = get_all_presence().get(user_id)
-    slots = {k: False for k in config.SLOT_KEYS}
-    task_ids = []
-    if p:
-        slots.update({k: bool(v) for k, v in p.get("slots", {}).items() if k in config.SLOT_KEYS})
-        task_ids = p.get("task_ids", [])
-    return {"slots": slots, "task_ids": task_ids}
-
-
+    con_mongo = mongo_enabled()
+    db = con_mongo["JPS"]
+    presence_tb = db["presence"]
+    filtre_tb = {"annne": get_secret("ANNEE_FESTIVAL") , "user_id" : objectid(user_id)}
+     selc_tb = { "creneau": 3,"task_ids": 4}
+    resultats = presence_tb.find(filtre_tb, selc_tb)
+    con_mongo.close()
+    return resultats
+    
 def set_presence(user_id, pseudo, slots, task_ids):
-    presence = get_all_presence()
-    presence[user_id] = { "annee" : get_secret("ANNEE_FESTIVAL"), 
-                         "pseudo": pseudo,
-                         "slots": {k: bool(slots.get(k, False)) for k in config.SLOT_KEYS},
-                         "task_ids": task_ids,
-                         "updated_at": datetime.now(timezone.utc).isoformat()}
+    con_mongo = mongo_enabled()
+    db = con_mongo["JPS"]
+    presence_tb = db["presence"]
+    ## supprime ancienne presences en base au prealable
+    clear_user_presence(user_id)
+    new_presence= {"_id": str(ObjectId()), 
+                 "annee" : get_secret("ANNEE_FESTIVAL"), 
+                 "user_id": user_id,
+                 "pseudo" : pseudo,
+                 "creneau": {k: bool(slots.get(k, False)) for k in config.SLOT_KEYS},
+                 "task_ids": task_ids,
+                 "updated_at": datetime.now(timezone.utc).isoformat()}
 
+
+    resultat = presence_tb.insert_one(new_presence)
 
 
 def clear_all_presence():
+    con_mongo = mongo_enabled()
+    db = con_mongo["JPS"]
+    presence_tb = db["presence"]
+
+    filtre_tb = {"annne": get_secret("ANNEE_FESTIVAL") }
+    
+    resultats = presence_tb.delete_many(filtre_tb)
+    con_mongo.close()
 
 
 def clear_user_presence(user_id):
-    presence = get_all_presence()
-    presence.pop(user_id, None)
-    cs.put_doc("weekend_presence", presence)
+    con_mongo = mongo_enabled()
+    db = con_mongo["JPS"]
+    presence_tb = db["presence"]
 
-
+    filtre_tb = {"annne": get_secret("ANNEE_FESTIVAL"),"user_id" : obecjtid(user_id) }
     
+    resultats = presence_tb.delete_many(filtre_tb)
+    con_mongo.close()
+
     
 
 
