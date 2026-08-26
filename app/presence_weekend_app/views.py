@@ -129,6 +129,8 @@ def recap_page():
     print(tasks)
     presence = get_all_presence()
 
+    print(presence)
+
 
 
     columns = [(f"{d}_{p}", dl, pl) for d, dl in DAYS for p, pl in PERIODS]
