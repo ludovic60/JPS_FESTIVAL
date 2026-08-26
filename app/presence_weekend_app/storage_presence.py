@@ -94,9 +94,7 @@ def update_task(task_id, label):
     
         resultats =  tasks_tb.update_one({"_id": upd_task_id}, {"$set": {"tache": label}})
         db.close()
-     else :
-        resultats ={}
-    return resultats 
+
 
 
 def delete_task(task_id):
@@ -108,9 +106,7 @@ def delete_task(task_id):
         del_task_id = ObjectId(task_id)
         resultats =  tasks_tb.delete_one({"_id": del_task_id})
         db.close()
-     else :
-        resultats ={}
-    return resultats 
+
 
     
 
@@ -177,9 +173,7 @@ def clear_all_presence():
         
         resultats = presence_tb.delete_many(filtre_tb)
         db.close()
-     else :
-        resultats ={}
-    return resultats 
+
 
 
 def clear_user_presence(user_id):
@@ -192,9 +186,7 @@ def clear_user_presence(user_id):
         
         resultats = presence_tb.delete_many(filtre_tb)
         db.close()
-     else :
-        resultats ={}
-    return resultats 
+
     
 
 
