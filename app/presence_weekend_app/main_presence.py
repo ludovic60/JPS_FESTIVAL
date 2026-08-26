@@ -30,6 +30,6 @@ token = params.get("token")
 
 
 user = current_user()
-print(user)
+
 
 main_app(user)
