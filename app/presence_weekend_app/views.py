@@ -2,7 +2,7 @@
 import html
 
 import streamlit as st
-from  storage_presence import get_presence, clear_user_presence, clear_all_presence, get_all_presence, get_tasks, add_task, update_task, delete_task
+from  storage_presence import get_presence, clear_user_presence, clear_all_presence, get_all_presence, get_tasks, add_task, update_task, delete_task, set_presence
 import sys
 from pathlib import Path
 from config_presence import DAYS, PERIODS, PERIOD_LABELS, SLOT_KEYS
