@@ -157,6 +157,7 @@ def admin_page():
                 update_task(t["_id"], label)
                 st.rerun()
            # if c3.button("Supprimer"):
+             if c3.button("Supprimer"):
                 delete_task(t["_id"])
                 st.rerun()
 
