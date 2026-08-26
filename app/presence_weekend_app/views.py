@@ -144,7 +144,8 @@ def recap_page():
                 for sk, active in p["creneau"]:
                     if active and sk in matrix[tid]:
                         matrix[tid][sk].append(name)
-
+    print("matrix")
+    print(matrix)
     head = "<tr><th>Tâche</th>" + "".join(
         f"<th>{c[1]}<br><span style='font-weight:400;font-size:11px;opacity:.7'>{c[2]}</span></th>"
         for c in columns
