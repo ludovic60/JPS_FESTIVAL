@@ -134,7 +134,7 @@ def get_presence(user_id):
         selc_tb = { "creneau": 1,"task_ids": 2}
         resultats = list(presence_tb.find( selc_tb,filtre_tb))
         print(cs._secret("ANNEE_FESTIVAL"))
-        print( ObjectId(user_id))
+        print( str(ObjectId(user_id)))
         print(resultats)
  
     else :
