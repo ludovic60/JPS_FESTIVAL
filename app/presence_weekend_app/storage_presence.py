@@ -5,6 +5,7 @@ import uuid
 from datetime import datetime, timezone, timedelta
 from threading import Lock
 from bson import ObjectId
+import config_presence as cfg_pres
 
 
 import sys
@@ -148,7 +149,7 @@ def set_presence(user_id, pseudo, slots, task_ids):
                      "annee" : cs._secret("ANNEE_FESTIVAL"), 
                      "user_id": ObjectId(user_id),
                      "pseudo" : pseudo,
-                     "creneau": {k: bool(slots.get(k, False)) for k in config.SLOT_KEYS},
+                     "creneau": {k: bool(slots.get(k, False)) for k in cfg_pres.SLOT_KEYS},
                      "task_ids": task_ids,
                      "updated_at": datetime.now(timezone.utc).isoformat()}
     
