@@ -52,11 +52,14 @@ def init_storage():
 
 # ---- Tâches (fichier plat) ----
 def get_tasks():
+    mongo_enabled()
     return _read(cfg.TASKS_FILE, [])
 
 
 def add_task(label):
     tasks = get_tasks()
+    mongo_enabled()
+    table_tache = db["taches"]
     task = {"id": uuid.uuid4().hex[:8], "label": label.strip()}
     tasks.append(task)
     tasks.sort(key=lambda t: t["label"].lower())
