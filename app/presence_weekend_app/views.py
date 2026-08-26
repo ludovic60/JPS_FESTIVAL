@@ -162,7 +162,7 @@ def recap_page():
                 ) + "</td>"
             else:
                 cells += "<td class='ws-empty'>—</td>"
-        body += f"<tr><td>{html.escape(t['label'])}</td>{cells}</tr>"
+        body += f"<tr><td>{html.escape(t['tache'])}</td>{cells}</tr>"
 
     st.markdown(f"<table class='ws-recap'><thead>{head}</thead><tbody>{body}</tbody></table>",
                 unsafe_allow_html=True)
