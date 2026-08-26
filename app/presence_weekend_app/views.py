@@ -55,7 +55,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     creneau = data.get("creneau", {})
     task_ids = data.get("task_ids", [])
     print("raw")
-    print(raw[0])
+    print(creneau)
 
     cols = st.columns(2)
     slot_state = {}
