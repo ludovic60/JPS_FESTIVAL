@@ -86,9 +86,9 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     if not tasks:
         st.info("Aucune tâche disponible. L'administrateur doit en ajouter.")
     for t in tasks:
-        checked = t["id"] in data["task_ids"]
-        if st.checkbox(t["tache"], value=checked, key=f"{key_prefix}_task_{t['id']}"):
-            selected.append(t["id"])
+        checked = str(t["_id"]) in data["task_ids"]
+        if st.checkbox(t["tache"], value=checked, key=f"{key_prefix}_task_{str(t['_id'])}"):
+            selected.append(str(t["_id"]))
 
     return slot_state, selected
 
