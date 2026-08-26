@@ -60,7 +60,7 @@ def get_tasks():
         db = cs.get_db()
         tasks_tb = db.taches
         filtre_tb = {}
-        selc_tb = {"tache": 1, "_id": 2}
+        selc_tb = {"tache": 1, "_id": 1}
         resultats = list(tasks_tb.find(filtre_tb, selc_tb))
        
     else :
@@ -117,8 +117,8 @@ def get_all_presence():
         presence_tb = db.presence
       
         filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL")}
-        selc_tb = { "user_id":1 ,"pseudo" :2,  "creneau": 3,"task_ids": 4, "_id": 0}
-        resultats = list(presence_tb.find(selc_tb,filtre_tb))
+        selc_tb = { "user_id":1 ,"pseudo" :1,  "creneau": 1,"task_ids": 1, "_id": 1}
+        resultats = list(presence_tb.find(filtre_tb, selc_tb))
 
     else :
         resultats ={}
@@ -131,8 +131,8 @@ def get_presence(user_id):
         db = cs.get_db()
         presence_tb = db.presence
         filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") , "user_id" : ObjectId(user_id)}
-        selc_tb = { "creneau": 1,"task_ids": 2}
-        resultats = list(presence_tb.find(filtre_tb))
+        selc_tb = { "creneau": 1,"task_ids": 1}
+        resultats = list(presence_tb.find(filtre_tb, selc_tb))
         print("RESULTAT")
         print(cs._secret("ANNEE_FESTIVAL"))
         print( str(ObjectId(user_id)))
