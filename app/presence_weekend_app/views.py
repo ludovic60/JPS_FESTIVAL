@@ -55,9 +55,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     data = raw[0] if raw else {}
     creneau = data.get("creneau", {})
     task_ids = data.get("task_ids", [])
-    print("raw")
-    print(user_id)
-    print(creneau)
+
 
     cols = st.columns(2)
     slot_state = {}
@@ -128,6 +126,7 @@ def recap_page():
     st.caption("Tâches (lignes) × Jours & créneaux (colonnes). Les personnes présentes apparaissent dans chaque cellule.")
 
     tasks = get_tasks()
+    print(tasks)
     presence = get_all_presence()
 
     columns = [(f"{d}_{p}", dl, pl) for d, dl in DAYS for p, pl in PERIODS]
