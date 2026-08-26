@@ -60,7 +60,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                 st.markdown(f"#### {day_label}")
                 full_key = f"{key_prefix}_full_{day}"
                 #current_full = all(data["creneau"][_slot_key(day, p)] for p, _ in PERIODS)
-                #current_full = all([_slot_key(day, p)] for p, _ in PERIODS)
+                current_full = all([_slot_key(day, p)] for p, _ in PERIODS)
                 
                 full = st.checkbox("Journée entière", value=current_full, key=full_key)
                 for period, plabel in PERIODS:
