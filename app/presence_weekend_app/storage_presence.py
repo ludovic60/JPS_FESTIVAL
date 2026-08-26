@@ -76,12 +76,9 @@ def add_task(label):
         new_task = {"_id": str(ObjectId()), "tache": label.strip()}
         filtre_tb = {}
         ins_tb = {}
-
         resultat = tasks_tb.insert_one(new_task)
         db.close()
-     else :
-        resultat ={}
-    return resultat
+
 
 
 def update_task(task_id, label):
