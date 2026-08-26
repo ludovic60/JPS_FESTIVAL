@@ -14,7 +14,7 @@ from views import  main_app
 racine_projet = Path(__file__).resolve().parent.parent
 sys.path.append(str(racine_projet))
 from commun.design_system import inject
-from commun.auth import require_auth, logout
+from commun.auth import require_auth, logout, current_user
 
 # Exécute la vérification (affiche le formulaire si besoin, puis stoppe)
 require_auth()
@@ -29,6 +29,6 @@ params = st.query_params
 token = params.get("token")
 
 
-user = auth.current_user()
+user = current_user()
 
 main_app(user)
