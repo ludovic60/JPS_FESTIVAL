@@ -141,7 +141,7 @@ def recap_page():
         name = p["pseudo"]
         for tid in p["task_ids"]:
             if tid in matrix:
-                for sk in p["creneau"]:
+                for sk, statut in p["creneau"].items() if statut:
                     if  sk in matrix[tid]:
                         matrix[tid][sk].append(name)
     print("matrix")
