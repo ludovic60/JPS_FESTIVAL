@@ -58,11 +58,11 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
             with st.container(border=True):
                 st.markdown(f"#### {day_label}")
                 full_key = f"{key_prefix}_full_{day}"
-                current_full = all(data["slots"][_slot_key(day, p)] for p, _ in PERIODS)
+                current_full = all(data["creneau"][_slot_key(day, p)] for p, _ in PERIODS)
                 full = st.checkbox("Journée entière", value=current_full, key=full_key)
                 for period, plabel in PERIODS:
                     sk = _slot_key(day, period)
-                    default = True if full else data["slots"][sk]
+                    default = True if full else data["creneau"][sk]
                     # Si "journée entière" est coché, force les trois créneaux.
                     val = st.checkbox(plabel, value=default, key=f"{key_prefix}_{sk}",
                                       disabled=full)
@@ -104,7 +104,7 @@ def recap_page():
         name = p.get("user_name", "")
         for tid in p.get("task_ids", []):
             if tid in matrix:
-                for sk, active in p.get("slots", {}).items():
+                for sk, active in p.get("creneau", {}).items():
                     if active and sk in matrix[tid]:
                         matrix[tid][sk].append(name)
 
