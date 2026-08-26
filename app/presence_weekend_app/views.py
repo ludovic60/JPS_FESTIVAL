@@ -49,12 +49,14 @@ def _slot_key(day, period):
 
 def presence_editor(user_id: str, user_name: str, key_prefix: str):
     """Éditeur de présence réutilisable (soi-même ou, pour l'admin, une autre personne)."""
+    
     raw = get_presence(user_id)
     # get_presence renvoie une liste (résultat Mongo find) -> on prend le 1er élément
     data = raw[0] if raw else {}
     creneau = data.get("creneau", {})
     task_ids = data.get("task_ids", [])
     print("raw")
+    print(user_id)
     print(creneau)
 
     cols = st.columns(2)
@@ -114,9 +116,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
 def presence_page(user: dict):
     st.title("Ma présence")
     st.caption("Cochez vos créneaux de disponibilité (Samedi & Dimanche) et vos tâches souhaitées.")
-    print("user")
-    print(user["id"])
-    print(user["pseudo"])
+ 
     slot_state, selected = presence_editor(user["id"], user["pseudo"], "self")
     if st.button("Enregistrer", type="primary"):
         set_presence(user["id"], user["pseudo"], slot_state, selected)
