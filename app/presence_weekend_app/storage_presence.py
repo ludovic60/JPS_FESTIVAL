@@ -59,7 +59,7 @@ def get_tasks():
         db = cs.get_db()
         tasks_tb = db.taches
         filtre_tb = {}
-        selc_tb = {"tache": 1, "_id": 0}
+        selc_tb = {"tache": 1, "_id": 2}
         resultats = list(tasks_tb.find(filtre_tb, selc_tb))
        
     else :
