@@ -84,9 +84,9 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
 def presence_page(user: dict):
     st.title("Ma présence")
     st.caption("Cochez vos créneaux de disponibilité (Samedi & Dimanche) et vos tâches souhaitées.")
-    slot_state, selected = presence_editor(user["_id"], user["pseudo"], "self")
+    slot_state, selected = presence_editor(user["id"], user["pseudo"], "self")
     if st.button("Enregistrer", type="primary"):
-        set_presence(user["_id"], user["pseudo"], slot_state, selected)
+        set_presence(user["id"], user["pseudo"], slot_state, selected)
         st.success("Présence enregistrée")
 
 
@@ -150,13 +150,13 @@ def admin_page():
 
         for t in get_tasks():
             c1, c2, c3 = st.columns([4, 1, 1])
-            label = c1.text_input("t", value=t["tache"], key=f"edit_{t['_id']}",
+            label = c1.text_input("t", value=t["tache"], key=f"edit_{t['id']}",
                                    label_visibility="collapsed")
-            if c2.button("Modifier", key=f"upd_{t['_id']}"):
-                update_task(t["_id"], label)
+            if c2.button("Modifier", key=f"upd_{t['id']}"):
+                update_task(t["id"], label)
                 st.rerun()
-            if c3.button("Supprimer", key=f"del_{t['_id']}"):
-                delete_task(t["_id"])
+            if c3.button("Supprimer", key=f"del_{t['id']}"):
+                delete_task(t["id"])
                 st.rerun()
 
     # ---- Votes ----
