@@ -23,37 +23,43 @@ from commun.security import hash_password, verify_password, token_hash
 _lock = Lock()
 
 
-def _read(path, default):
-    if not path.exists():
-        return default
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except (json.JSONDecodeError, OSError):
-        return default
+# def _read(path, default):
+#     if not path.exists():
+#         return default
+#     try:
+#         with open(path, "r", encoding="utf-8") as f:
+#             return json.load(f)
+#     except (json.JSONDecodeError, OSError):
+#         return default
 
 
-def _write(path, data):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with _lock:
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+# def _write(path, data):
+#     path.parent.mkdir(parents=True, exist_ok=True)
+#     with _lock:
+#         with open(path, "w", encoding="utf-8") as f:
+#             json.dump(data, f, ensure_ascii=False, indent=2)
 
 
-def init_storage():
-    cfg.DATA_DIR.mkdir(parents=True, exist_ok=True)
-    if not cfg.TASKS_FILE.exists():
-        _write(cfg.TASKS_FILE, [])
-    admin_email = str(cfg.get_secret("ADMIN_EMAIL", "admin@weekend.fr")).lower()
-    admin_password = str(cfg.get_secret("ADMIN_PASSWORD", "admin123"))
-    if cs.get_user_by_email(admin_email) is None:
-        _seed_user(admin_email, "Administrateur", admin_password, role="admin")
+# def init_storage():
+#     cfg.DATA_DIR.mkdir(parents=True, exist_ok=True)
+#     if not cfg.TASKS_FILE.exists():
+#         _write(cfg.TASKS_FILE, [])
+#     admin_email = str(cfg.get_secret("ADMIN_EMAIL", "admin@weekend.fr")).lower()
+#     admin_password = str(cfg.get_secret("ADMIN_PASSWORD", "admin123"))
+#     if cs.get_user_by_email(admin_email) is None:
+#         _seed_user(admin_email, "Administrateur", admin_password, role="admin")
 
 
 # ---- Tâches (fichier plat) ----
 def get_tasks():
-    mongo_enabled()
-    return _read(cfg.TASKS_FILE, [])
+    con_mongo = mongo_enabled()
+    db = con_mongo["JPS"]
+    tasks_tb = db["tache"]
+    filtre_tb = {}
+    selc_tb = {"tache": 1, "_id": 0}
+    resultats = tasks_tb.find(filtre_tb, selc_tb)
+    con_mongo.close()
+    return resultats
 
 
 def add_task(label):
@@ -98,7 +104,7 @@ def get_user_by_id(uid):
 
 
 def _seed_user(email, name, password, role="user"):
-    u = {"id": uuid.uuid4().hex, "email": email.lower(), "name": name.strip(),
+    u = {"id": uuid.uuid4().hex, "email": email.lower(), "pseudo": pseudo.strip(),
          "password_hash": hash_password(password), "role": role,
          "created_at": datetime.now(timezone.utc).isoformat()}
     cs.add_user(u)
