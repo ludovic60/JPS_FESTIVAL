@@ -118,7 +118,7 @@ def get_all_presence():
       
         filtre_tb = {"annne": cs._secret("ANNEE_FESTIVAL")}
         selc_tb = { "user_id":1 ,"pseudo" :2,  "creneau": 3,"task_ids": 4, "_id": 0}
-        resultats = list(presence_tb.find(filtre_tb, selc_tb))
+        resultats = list(presence_tb.find(selc_tb,filtre_tb))
 
     else :
         resultats ={}
@@ -129,10 +129,13 @@ def get_presence(user_id):
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
-        presence_tb = db.presence
+        prefiltre_tbsence_tb = db.presence
         filtre_tb = {"annne": cs._secret("ANNEE_FESTIVAL") , "user_id" : ObjectId(user_id)}
         selc_tb = { "creneau": 1,"task_ids": 2}
-        resultats = list(presence_tb.find(filtre_tb, selc_tb))
+        resultats = list(presence_tb.find( selc_tb,filtre_tb))
+        print(cs._secret("ANNEE_FESTIVAL"))
+        print( ObjectId(user_id))
+        print(resultats)
  
     else :
         resultats ={}
