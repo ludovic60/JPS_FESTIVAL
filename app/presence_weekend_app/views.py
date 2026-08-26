@@ -134,9 +134,9 @@ def recap_page():
     matrix = {t["_id"]: {c[0]: [] for c in columns} for t in tasks}
     for p in presence :
         name = p["user_name"]
-        for tid in p.["task_ids"]:
+        for tid in p["task_ids"]:
             if tid in matrix:
-                for sk, active in p.["creneau"]:
+                for sk, active in p["creneau"]:
                     if active and sk in matrix[tid]:
                         matrix[tid][sk].append(name)
 
