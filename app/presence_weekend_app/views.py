@@ -49,7 +49,7 @@ def _slot_key(day, period):
 
 def presence_editor(user_id: str, user_name: str, key_prefix: str):
     """Éditeur de présence réutilisable (soi-même ou, pour l'admin, une autre personne)."""
-    data = storage.get_presence(user_id)
+    data = get_presence(user_id)
 
     cols = st.columns(2)
     slot_state = {}
@@ -69,7 +69,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                     slot_state[sk] = True if full else val
 
     st.markdown("#### Tâches souhaitées")
-    tasks = storage.get_tasks()
+    tasks = get_tasks()
     selected = []
     if not tasks:
         st.info("Aucune tâche disponible. L'administrateur doit en ajouter.")
@@ -86,7 +86,7 @@ def presence_page(user: dict):
     st.caption("Cochez vos créneaux de disponibilité (Samedi & Dimanche) et vos tâches souhaitées.")
     slot_state, selected = presence_editor(user["_id"], user["pseudo"], "self")
     if st.button("Enregistrer", type="primary"):
-        storage.set_presence(user["_id"], user["pseudo"], slot_state, selected)
+        set_presence(user["_id"], user["pseudo"], slot_state, selected)
         st.success("Présence enregistrée")
 
 
@@ -94,8 +94,8 @@ def recap_page():
     st.title("Tableau récapitulatif")
     st.caption("Tâches (lignes) × Jours & créneaux (colonnes). Les personnes présentes apparaissent dans chaque cellule.")
 
-    tasks = storage.get_tasks()
-    presence = storage.get_all_presence()
+    tasks = get_tasks()
+    presence = get_all_presence()
 
     columns = [(f"{d}_{p}", dl, pl) for d, dl in DAYS for p, pl in PERIODS]
 
@@ -145,18 +145,18 @@ def admin_page():
             new_label = c1.text_input("Nouvelle tâche", label_visibility="collapsed",
                                       placeholder="Nom de la nouvelle tâche")
             if c2.form_submit_button("Ajouter", type="primary") and new_label.strip():
-                storage.add_task(new_label)
+                add_task(new_label)
                 st.rerun()
 
-        for t in storage.get_tasks():
+        for t in get_tasks():
             c1, c2, c3 = st.columns([4, 1, 1])
             label = c1.text_input("t", value=t["label"], key=f"edit_{t['id']}",
                                    label_visibility="collapsed")
             if c2.button("Modifier", key=f"upd_{t['id']}"):
-                storage.update_task(t["id"], label)
+                update_task(t["id"], label)
                 st.rerun()
             if c3.button("Supprimer", key=f"del_{t['id']}"):
-                storage.delete_task(t["id"])
+                delete_task(t["id"])
                 st.rerun()
 
     # ---- Votes ----
@@ -169,7 +169,7 @@ def admin_page():
             st.warning("Confirmer la suppression de tous les votes ?")
             c1, c2 = st.columns(2)
             if c1.button("Oui, tout réinitialiser"):
-                storage.clear_all_presence()
+                clear_all_presence()
                 st.session_state.pop("confirm_reset_all", None)
                 st.success("Tous les votes ont été réinitialisés")
             if c2.button("Annuler"):
@@ -177,7 +177,7 @@ def admin_page():
 
         st.divider()
         st.subheader("Modifier / réinitialiser les votes d'une personne")
-        users = [u for u in storage.get_users()]
+        users = [u for u in get_users()]
         if not users:
             st.info("Aucun utilisateur.")
             return
@@ -186,12 +186,12 @@ def admin_page():
         target = options[choice]
 
         if st.button(f"Réinitialiser les votes de {target['pseudo']}"):
-            storage.clear_user_presence(target["id"])
+            clear_user_presence(target["id"])
             st.success(f"Votes de {target['pseudo']} réinitialisés")
             st.rerun()
 
         st.markdown("**Modifier les votes de cette personne :**")
         slot_state, selected = presence_editor(target["id"], target["pseudo"], f"admin_{target['id']}")
         if st.button("Enregistrer les votes de cette personne", type="primary"):
-            storage.set_presence(target["id"], target["pseudo"], slot_state, selected)
+            set_presence(target["id"], target["pseudo"], slot_state, selected)
             st.success(f"Votes de {target['pseudo']} enregistrés")
