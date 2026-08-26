@@ -104,9 +104,9 @@ def _game_card(g, list_key, user):
                         st.rerun()
                 else:
                     uids = set(sugg.get(ckey, []))
-                    val = st.checkbox("Je suggère ce jeu", value=user["_id"] in uids, key=f"sug_{ckey}")
-                    if val != (user["_id"] in uids):
-                        storage.toggle_suggestion(ckey, user["_id"], val)
+                    val = st.checkbox("Je suggère ce jeu", value=user["id"] in uids, key=f"sug_{ckey}")
+                    if val != (user["id"] in uids):
+                        storage.toggle_suggestion(ckey, user["id"], val)
                         st.rerun()
             with cc[1]:
                 st.caption(f"👍 {len(sugg.get(ckey, []))} suggestion(s)")
@@ -176,7 +176,7 @@ def _final_page(user):
     for ckey, g in finals:
         row = {"Nouveauté": g.get("est nouveauté"), "Categorie jeu": g.get("classement JPS final")or g.get("classement JPS correction manuelle")or g.get("classement JPS automatique"), "Couverture Jeu": g.get("couverture"), "Jeu": g.get("nom_jeu_complet") or g.get("nom_jeu"), "_ckey": ckey}
         for u in users:
-            row[u["pseudo"]] = u["_id"] in set(loans.get(ckey, []))
+            row[u["pseudo"]] = u["id"] in set(loans.get(ckey, []))
         rows.append(row)
     df = pd.DataFrame(rows)
     users_list = [u["pseudo"] for u in users]
@@ -250,7 +250,7 @@ def _final_page(user):
             for r in edited.iterrows():
                 ckey = df.loc[df["Jeu"] == r["Jeu"], "_ckey"].values[0]
                 for u in users:
-                    storage.set_loan(ckey, u["_id"], bool(r[u["pseudo"]]))
+                    storage.set_loan(ckey, u["id"], bool(r[u["pseudo"]]))
             st.success("Prêts enregistrés")
             #st.rerun()
       
