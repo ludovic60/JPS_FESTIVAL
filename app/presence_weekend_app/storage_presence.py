@@ -45,7 +45,7 @@ _lock = Lock()
 #     cfg.DATA_DIR.mkdir(parents=True, exist_ok=True)
 #     if not cfg.TASKS_FILE.exists():
 #         _write(cfg.TASKS_FILE, [])
-#     admin_email = str(cfg.get_secret("ADMIN_EMAIL", "admin@weekend.fr")).lower()
+#     admin_email = str(cfg._secret("ADMIN_EMAIL", "admin@weekend.fr")).lower()
 #     admin_password = str(cfg.get_secret("ADMIN_PASSWORD", "admin123"))
 #     if cs.get_user_by_email(admin_email) is None:
 #         _seed_user(admin_email, "Administrateur", admin_password, role="admin")
@@ -116,7 +116,7 @@ def get_all_presence():
         db = cs.get_db()
         presence_tb = db.presence
       
-        filtre_tb = {"annne": cs.get_secret("ANNEE_FESTIVAL")}
+        filtre_tb = {"annne": cs._secret("ANNEE_FESTIVAL")}
         selc_tb = { "user_id":1 ,"pseudo" :2,  "creneau": 3,"task_ids": 4, "_id": 0}
         resultats = presence_tb.find(filtre_tb, selc_tb)
         db.close()
@@ -130,7 +130,7 @@ def get_presence(user_id):
     if   con_mongo : 
         db = cs.get_db()
         presence_tb = db.presence
-        filtre_tb = {"annne": cs.get_secret("ANNEE_FESTIVAL") , "user_id" : objectid(user_id)}
+        filtre_tb = {"annne": cs._secret("ANNEE_FESTIVAL") , "user_id" : objectid(user_id)}
         selc_tb = { "creneau": 3,"task_ids": 4}
         resultats = presence_tb.find(filtre_tb, selc_tb)
         db.close()
@@ -146,7 +146,7 @@ def set_presence(user_id, pseudo, slots, task_ids):
         ## supprime ancienne presences en base au prealable
         clear_user_presence(user_id)
         new_presence= {"_id": str(ObjectId()), 
-                     "annee" : cs.get_secret("ANNEE_FESTIVAL"), 
+                     "annee" : cs._secret("ANNEE_FESTIVAL"), 
                      "user_id": user_id,
                      "pseudo" : pseudo,
                      "creneau": {k: bool(slots.get(k, False)) for k in config.SLOT_KEYS},
@@ -166,7 +166,7 @@ def clear_all_presence():
     if   con_mongo : 
         db = cs.get_db()
         presence_tb = db.presence
-        filtre_tb = {"annne": cs.get_secret("ANNEE_FESTIVAL") }
+        filtre_tb = {"annne": cs._secret("ANNEE_FESTIVAL") }
         
         resultats = presence_tb.delete_many(filtre_tb)
         db.close()
@@ -179,7 +179,7 @@ def clear_user_presence(user_id):
         db = cs.get_db()
         presence_tb = db.presence
     
-        filtre_tb = {"annne": cs.get_secret("ANNEE_FESTIVAL"),"user_id" : obecjtid(user_id) }
+        filtre_tb = {"annne": cs._secret("ANNEE_FESTIVAL"),"user_id" : obecjtid(user_id) }
         
         resultats = presence_tb.delete_many(filtre_tb)
         db.close()
