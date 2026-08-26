@@ -4,6 +4,7 @@ import json
 import uuid
 from datetime import datetime, timezone, timedelta
 from threading import Lock
+from bson import ObjectId
 
 
 import sys
@@ -66,11 +67,13 @@ def add_task(label):
     tasks = get_tasks()
     mongo_enabled()
     table_tache = db["taches"]
-    task = {"id": uuid.uuid4().hex[:8], "label": label.strip()}
-    tasks.append(task)
-    tasks.sort(key=lambda t: t["label"].lower())
-    _write(cfg.TASKS_FILE, tasks)
-    return task
+    new_task = {"_id": str(ObjectId()), "tache": label.strip()}
+    filtre_tb = {}
+    ins_tb = {}
+
+    resultat = table_tache.insert_one(new_task)
+
+    return resultat
 
 
 def update_task(task_id, label):
