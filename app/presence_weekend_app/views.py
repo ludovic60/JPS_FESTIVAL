@@ -20,7 +20,7 @@ import commun.auth
 def main_app(user: dict):
     with st.sidebar:
         st.markdown("### 📅 Week-end")
-        st.write(f"**{user['name']}**")
+        st.write(f"**{user['pseudo']}**")
         st.caption(user["email"])
         if user["role"] == "admin":
             st.markdown("<span class='ws-tag-admin'>Admin</span>", unsafe_allow_html=True)
@@ -84,9 +84,9 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
 def presence_page(user: dict):
     st.title("Ma présence")
     st.caption("Cochez vos créneaux de disponibilité (Samedi & Dimanche) et vos tâches souhaitées.")
-    slot_state, selected = presence_editor(user["id"], user["name"], "self")
+    slot_state, selected = presence_editor(user["_id"], user["pseudo"], "self")
     if st.button("Enregistrer", type="primary"):
-        storage.set_presence(user["id"], user["name"], slot_state, selected)
+        storage.set_presence(user["_id"], user["pseudo"], slot_state, selected)
         st.success("Présence enregistrée")
 
 
@@ -181,17 +181,17 @@ def admin_page():
         if not users:
             st.info("Aucun utilisateur.")
             return
-        options = {f"{u['name']} ({u['email']})": u for u in users}
+        options = {f"{u['pseudo']} ({u['email']})": u for u in users}
         choice = st.selectbox("Personne", list(options.keys()))
         target = options[choice]
 
-        if st.button(f"Réinitialiser les votes de {target['name']}"):
+        if st.button(f"Réinitialiser les votes de {target['pseudo']}"):
             storage.clear_user_presence(target["id"])
-            st.success(f"Votes de {target['name']} réinitialisés")
+            st.success(f"Votes de {target['pseudo']} réinitialisés")
             st.rerun()
 
         st.markdown("**Modifier les votes de cette personne :**")
-        slot_state, selected = presence_editor(target["id"], target["name"], f"admin_{target['id']}")
+        slot_state, selected = presence_editor(target["id"], target["pseudo"], f"admin_{target['id']}")
         if st.button("Enregistrer les votes de cette personne", type="primary"):
-            storage.set_presence(target["id"], target["name"], slot_state, selected)
-            st.success(f"Votes de {target['name']} enregistrés")
+            storage.set_presence(target["id"], target["pseudo"], slot_state, selected)
+            st.success(f"Votes de {target['pseudo']} enregistrés")
