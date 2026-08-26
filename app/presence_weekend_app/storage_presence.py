@@ -60,7 +60,7 @@ def get_tasks():
         tasks_tb = db.taches
         filtre_tb = {}
         selc_tb = {"tache": 1, "_id": 0}
-        resultats = tasks_tb.find(filtre_tb, selc_tb)
+        resultats = list(tasks_tb.find(filtre_tb, selc_tb))
        
     else :
         resultats ={}
