@@ -130,7 +130,8 @@ def _list_page(title, list_key, user):
             if st.form_submit_button("Envoyer la demande", type="primary") and n.strip():
                 storage.add_request(n, u, list_key, user["pseudo"])
                 st.success("Demande envoyée à l'administrateur")
-    games = storage.load_games(list_key)
+   
+    games = storage_jeux.load_games(list_key)
     if not games:
         st.info("Aucun jeu dans cette liste. Ajoutez des jeux dans le fichier JSON correspondant.")
     per_row = 3
