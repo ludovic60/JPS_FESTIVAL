@@ -33,34 +33,24 @@ def load_games(list_key):
     if   con_mongo : 
         db = cs.get_db()
         game_tb = db.jeux
-        if list_key == "est":
-            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL")}
+        if list_key == "est_selectionnable":
+            filtre_tb = {"est_selectionnable": list_key}
         else :
-
-            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL")}
-    
-    games = _read(config_bar_jeux.games_file(list_key), [])
-    for g in games:
-        if "id" not in g:
-            g["id"] = g.get("id_myludo") or uuid.uuid4().hex[:8]
-    return games
-
-def get_all_presence():
-    con_mongo = cs.mongo_enabled()
-    if   con_mongo : 
-        db = cs.get_db()
-        presence_tb = db.presence
-      
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL")}
-        selc_tb = { "user_id":1 ,"pseudo" :1,  "creneau": 1,"task_ids": 1, "_id": 1}
-        resultats = list(presence_tb.find(filtre_tb, selc_tb))
-
+            annee = list_key[:4]
+            mois = list_key[4:]
+            filtre_tb = {"annee_parution" : annee , "mois_sortie" : mois }
+        
+        resultats = list(game_tb.find(filtre_tb))
     else :
         resultats ={}
     return resultats 
-
+    
 
 # ---- Sélection admin / suggestions / demandes / prêts (partagés) ----
+
+def set_selection_game():
+  #selection_jeux_festival
+    
 def get_admin_selected():
     return set(cs.get_doc("jeux_admin_selected", []))
 
