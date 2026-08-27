@@ -85,13 +85,15 @@ def _game_card(g, list_key, user):
                 st.image(g["couverture"], use_container_width=True)
         with c2:
             title = g.get("nom_jeu_complet") or g.get("nom_jeu") or "Jeu"
-            badge_nouv = " 🆕" if str(g.get("est_nouveaute", "")).lower() in ("oui", "true", "1") else ""
-            st.markdown(f"#### {title}{badge_nouv}")
+            # badge_nouv = " 🆕" if str(g.get("est_nouveaute", "")).lower() in ("oui", "true", "1") else ""
+            # st.markdown(f"#### {title}{badge_nouv}")
+            st.markdown(f"#### {title}")
             meta = " · ".join([x for x in [
+                f"⭐ {g.get('note_finale','')}" if g.get("note_finale") else "",
                 f"👥 {g.get('nombre_joueurs','')}" if g.get("nombre_joueurs") else "",
                 f"🎂 {g.get('age_boite','')}" if g.get("age_boite") else "",
                 f"⏱ {g.get('duree','')}" if g.get("duree") else "",
-                f"⭐ {g.get('note_finale','')}" if g.get("note_finale") else "",
+                
             ] if x])
             if meta:
                 st.caption(meta)
