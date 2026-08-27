@@ -89,7 +89,7 @@ def _game_card(g, list_key, user):
             # st.markdown(f"#### {title}{badge_nouv}")
             st.markdown(f"#### {title}")
             meta = " · ".join([x for x in [
-                f"⭐ {g.get('note_finale','')}" if g.get("note_finale") else "",
+                f"⭐ {g.get('classement_jps_final','')}" if g.get("classement_jps_final") else "",
                 f"👥 {g.get('nombre_joueurs','')}" if g.get("nombre_joueurs") else "",
                 f"🎂 {g.get('age_boite','')}" if g.get("age_boite") else "",
                 f"⏱ {g.get('duree','')}" if g.get("duree") else "",
