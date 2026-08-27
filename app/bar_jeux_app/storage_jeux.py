@@ -24,61 +24,6 @@ _COVERS = [
 ]
 
 
-def _read(path, default):
-    if not path.exists():
-        return default
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except (json.JSONDecodeError, OSError):
-        return default
-
-
-def _write(path, data):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with _lock:
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
-
-
-def _make_game(**kw):
-    g = {k: "" for k in config.GAME_KEYS}
-    g.update(kw)
-    g["id"] = kw.get("id_myludo") or uuid.uuid4().hex[:8]
-    return g
-
-
-def _sample(name, sub, players, age, duree, cover, note="7.8", nouv="Oui"):
-    return _make_game(
-        nom_jeu=name, nom_jeu_complet=f"{name}" + (f" — {sub}" if sub else ""),
-        sous_titre=sub, nombre_joueurs=players, age_boite=age, duree=duree,
-        couverture=cover, note_finale=note, est_nouveaute=nouv, langue_principale="Français",
-        type_jeu="Jeu de société", url_myludo="https://www.myludo.fr/#!/games/news",
-        description=f"{name} — un excellent jeu à découvrir au bar à jeux.",
-    )
-
-
-def init_storage():
-    ccfg.DATA_DIR.mkdir(parents=True, exist_ok=True)
-    for key, _ in config_bar_jeux.month_keys():
-        if not config_bar_jeux.games_file(key).exists():
-            _write(config_bar_jeux.games_file(key), [])
-    if not _read(config_bar_jeux.games_file("2025_10"), []):
-        _write(config_bar_jeux.games_file("2025_10"), [
-            _sample("Wingspan", "Oiseaux", "1-5", "10+", "40-70 min", _COVERS[0], "8.1"),
-            _sample("Ticket to Ride", "Europe", "2-5", "8+", "30-60 min", _COVERS[2], "7.9"),
-            _sample("Tokyo Highway", "", "2-4", "8+", "30 min", _COVERS[1], "7.5", "Non"),
-        ])
-    if not _read(config_bar_jeux.games_file("2025_11"), []):
-        _write(config_bar_jeux.games_file("2025_11"), [
-            _sample("Splendor", "Duel", "2", "10+", "30 min", _COVERS[3], "7.6"),
-        ])
-    if not _read(config_bar_jeux.games_file(config.VIEUX_KEY), []):
-        _write(config_bar_jeux.games_file(config.VIEUX_KEY), [
-            _sample("Monopoly", "Classique", "2-6", "8+", "60-180 min", _COVERS[3], "5.5", "Non"),
-            _sample("Carcassonne", "", "2-5", "7+", "35 min", _COVERS[0], "7.4", "Non"),
-        ])
-
 
 
 
@@ -90,42 +35,6 @@ def load_games(list_key):
             g["id"] = g.get("id_myludo") or uuid.uuid4().hex[:8]
     return games
 
-
-# ---- Utilisateurs (partagés) ----
-def get_users():
-    return cs.get_users()
-
-
-def get_user_by_email(email):
-    return cs.get_user_by_email(email)
-
-def get_user_by_pseudo(pseudo):
-    return cs.get_user_by_pseudo(pseudo)
-
-def _seed_user(email, pseudo, password, role="user"):
-    u = {"_id": ObjectId(uuid.uuid4().hex), "email": email.lower(), "pseudo": pseudo.strip(),
-         "password_hash": hash_password(password), "role": role,
-         "created_at": datetime.now(timezone.utc).isoformat()}
-    cs.add_user(u)
-    return u
-
-
-def create_user(email, pseudo, password):
-    if cs.get_user_by_email(email):
-        return None, "Cet email est déjà utilisé"
-    return _seed_user(email, pseudo, password), None
-
-
-def check_credentials(mode, login, password):
-    if mode == "email":
-        u = cs.get_user_by_email(login)
-      
-    elif mode == "pseudo":
-        u = cs.get_user_by_pseudo(login)
-        
-    else :
-        u = None
-    return u if u and verify_password(password, u["password_hash"]) else None
 
 
 # ---- Sélection admin / suggestions / demandes / prêts (partagés) ----
