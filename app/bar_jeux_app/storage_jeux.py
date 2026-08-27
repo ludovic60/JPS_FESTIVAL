@@ -102,7 +102,7 @@ def get_suggestions():
 
 
 def toggle_suggestion(ckey, user_id, value):
-    s = get_suggestions()
+    #s = get_suggestions()
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
@@ -185,7 +185,13 @@ def add_request(type_request, game_name, myludo_url, comments, by_name):
 
 
 def remove_request(type_request, req_id):
-    cs.put_doc("jeux_requests", [r for r in get_requests() if r["id"] != req_id])
+ con_mongo = cs.mongo_enabled()
+ if   con_mongo : 
+    db = cs.get_db()
+    resquest_tb = db.request                                              
+    filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "id_request": ObjectId(req_id) }
+    resultat = resquest_tb.delete_many(filtre_tb)
+        
 
 
 def all_list_keys():
@@ -204,16 +210,34 @@ def final_games():
 
 
 def get_loans():
-    return cs.get_doc("jeux_loans", {})
+    con_mongo = cs.mongo_enabled()
+    if   con_mongo : 
+        db = cs.get_db()
+        game_loan_tb = db.prets_jeux
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") }  
+        resultats = list(game_loan_tb.find(filtre_tb))
 
 
 def toggle_loan(ckey, user_id, value):
-    loans = get_loans()
-    lst = set(loans.get(ckey, []))
-    lst.add(user_id) if value else lst.discard(user_id)
-    loans[ckey] = sorted(lst)
-    cs.put_doc("jeux_loans", loans)
+    con_mongo = cs.mongo_enabled()
+    if   con_mongo : 
+        db = cs.get_db()
+        game_loan_tb = db.prets_jeux
+
+        if value :
+            new_loan= {         
+                         "annee" : cs._secret("ANNEE_FESTIVAL"), 
+                         "id_jeux": ObjectId(ckey),
+                         "user_id":ObjectId(user_id)
+               }   
+        
+            resultat = game_loan_tb.insert_one(new_loan)
+         else :  
+            # deselectionne le jeu 
+    
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": ObjectId(ckey),"user_id":ObjectId(user_id)  }
+            resultat = game_loan_tb.delete_many(filtre_tb)
 
 
 def set_loan(ckey, user_id, value):
-    toggle_loan(ckey, user_id, value)
+    return {}
