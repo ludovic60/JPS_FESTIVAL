@@ -44,7 +44,6 @@ def main_app(user):
         _final_page(user)
 
 
-
 def _password_page(user):
     st.set_page_config(page_title="Générateur de Hash Bcrypt", page_icon="🔑")
     
