@@ -52,39 +52,139 @@ def set_selection_game():
   #selection_jeux_festival
     
 def get_admin_selected():
-    return set(cs.get_doc("jeux_admin_selected", []))
+    con_mongo = cs.mongo_enabled()
+    if   con_mongo : 
+        db = cs.get_db()
+        game_selec_tb = db.jeux_select
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL")  }
+        
+        resultats = list(game_tb.find(filtre_tb))
+    else :
+        resultats ={}
+    return resultats 
 
+
+    
 
 def toggle_admin_selected(ckey, value):
-    sel = get_admin_selected()
-    sel.add(ckey) if value else sel.discard(ckey)
-    cs.put_doc("jeux_admin_selected", sorted(sel))
+    #sel = get_admin_selected()
+    con_mongo = cs.mongo_enabled()
+    if   con_mongo : 
+        db = cs.get_db()
+        game_selec_tb = db.jeux_select
 
+    if value :
+        new_selection= {         
+                     "annee" : cs._secret("ANNEE_FESTIVAL"), 
+                     "id_jeux": ObjectId(ckey)
+           }   
+    
+        resultat = game_selec_tb.insert_one(new_selection)
+     else :  
+        # deselectionne le jeu 
+
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": ObjectId(ckey) }
+        resultat = game_selec_tb.delete_many(filtre_tb)
+    
 
 def get_suggestions():
-    return cs.get_doc("jeux_suggestions", {})
+    con_mongo = cs.mongo_enabled()
+    if   con_mongo : 
+        db = cs.get_db()
+        game_suggest_tb = db.jeux_suggestion
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL")  }
+        
+        resultats = list(game_suggest_tb.find(filtre_tb))
+    else :
+        resultats ={}
+    return resultats 
+
 
 
 def toggle_suggestion(ckey, user_id, value):
     s = get_suggestions()
-    lst = set(s.get(ckey, []))
-    lst.add(user_id) if value else lst.discard(user_id)
-    s[ckey] = sorted(lst)
-    cs.put_doc("jeux_suggestions", s)
+    con_mongo = cs.mongo_enabled()
+    if   con_mongo : 
+        db = cs.get_db()
+        game_suggest_tb = db.jeux_suggestion
+
+    if value :
+        new_selection= {         
+                     "annee" : cs._secret("ANNEE_FESTIVAL"), 
+                     "id_jeux": ObjectId(ckey),
+                     "user_id": ObjectId(user_id)
+            
+           }   
+    
+        resultat = game_suggest_tb.insert_one(new_selection)
+     else :  
+        # deselectionne le jeu 
+     
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": ObjectId(ckey),   "user_id": ObjectId(user_id) }
+        resultat = game_suggest_tb.delete_many(filtre_tb)
+    
+    
+    
 
 
-def get_requests():
-    return cs.get_doc("jeux_requests", [])
+def get_requests(type_request):
+    con_mongo = cs.mongo_enabled()
+    if type_request == "ajout jeux" :
+        if   con_mongo : 
+            db = cs.get_db()
+            resquest_tb = db.request
+            filtre_tb = {"type" : "ajout jeux"  }
+            
+            resultats = list(resquest_tb.find(filtre_tb))
+    elif type_request == "remarque fiche jeux" :
+        if   con_mongo : 
+            db = cs.get_db()
+            resquest_tb = db.request
+            filtre_tb = {"type" : "remarque fiche jeux"  }
+            
+            resultats = list(resquest_tb.find(filtre_tb))
+     else :
+         resultats ={}
+     return resultats 
 
 
-def add_request(name, myludo_url, list_key, by_name):
-    reqs = get_requests()
-    reqs.append({"id": uuid.uuid4().hex[:8], "name": name.strip(), "myludo_url": myludo_url.strip(),
-                 "list_key": list_key, "by": by_name, "created_at": datetime.now(timezone.utc).isoformat()})
-    cs.put_doc("jeux_requests", reqs)
+def add_request(type_request, game_name, myludo_url, comments, by_name):
+    # reqs = get_requests()
+
+    con_mongo = cs.mongo_enabled()
+    if type_request == "ajout jeux" :
+        if   con_mongo : 
+            db = cs.get_db()
+            resquest_tb = db.request
+            new_request= {                    
+                    "id_request": ObjectId(),
+                    "annee" : cs._secret("ANNEE_FESTIVAL"), 
+                    "type_request" : "ajout jeux", 
+                    "game_name": name.strip(), 
+                    "myludo_url": myludo_url.strip(),
+                    "comments" : "",
+                    "created_by": by_name,
+                    "created_at": datetime.now(timezone.utc).isoformat()
+            }   
+            resultat = resquest_tb.insert_one(new_request)
+     elif type_request == "remarque fiche jeux" :
+        if   con_mongo : 
+            db = cs.get_db()
+            resquest_tb = db.request
+            new_request= {                    
+                    "id_request": ObjectId(),
+                    "annee" : cs._secret("ANNEE_FESTIVAL"),
+                    "type_request" : "remarque fiche jeux", 
+                    "game_name": name.strip(), 
+                    "myludo_url": "",
+                    "comments" :comments,
+                    "created_by": by_name,
+                    "created_at": datetime.now(timezone.utc).isoformat()
+            }   
+            resultat = resquest_tb.insert_one(new_request
 
 
-def remove_request(req_id):
+def remove_request(type_request, req_id):
     cs.put_doc("jeux_requests", [r for r in get_requests() if r["id"] != req_id])
 
 
