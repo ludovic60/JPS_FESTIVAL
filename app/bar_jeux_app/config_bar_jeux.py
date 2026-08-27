@@ -29,19 +29,19 @@ def month_keys():
     return keys
 
 
-def games_file(list_key: str) -> Path:
-    return DATA_DIR / f"jeux_{list_key}.json"
 
 
 # Champs d'un jeu (clé interne -> libellé affiché)
 GAME_FIELDS = [
-    ("url", "URL"), ("id_myludo", "ID myludo"), ("code_barre", "Code barre"),
-    ("url_myludo", "URL myludo"), ("nom_jeu", "Nom jeu"), ("nom_jeu_fichier", "Nom jeu dans fichier"),
+		
+
+    ("_id","_id"), ("url_myludo", "URL myludo"), ("id_myludo", "ID myludo"), ("code_barre", "Code barre"),
+    ("nom_jeu", "Nom jeu"), ("nom_jeu_fichier", "Nom jeu dans fichier"),
     ("sous_titre", "Sous-titre jeu"), ("nom_jeu_complet", "Nom jeu complet"),
     ("type_jeu", "Type du jeu"), ("type_financement", "Type de financement"),
     ("detail_financement", "Détail du financement"), ("langue_principale", "Langue principale"),
-    ("langues", "Langues"), ("annee_parution", "Année de parution"), ("date_sortie", "Date de sortie"),
-    ("est_nouveaute", "Est nouveauté"), ("nombre_joueurs", "Nombre de joueurs"),
+    ("langues", "Langues"), ("annee_parution", "Année de parution"), ("mois_sortie", "Mois de sortie"),("date_sortie", "Date de sortie"),
+    ("est_selectionnable", "Est selectionnable"), ("nombre_joueurs", "Nombre de joueurs"),
     ("nbr_max_joueurs", "Nbr max joueurs"), ("age_boite", "Âge sur la boîte"), ("age_min", "Âge min"),
     ("duree", "Durée"), ("duree_min", "Durée min"), ("duree_max", "Durée max"),
     ("poids_boite", "Poids de la boîte"), ("dimension_boite", "Dimension boîte"),
@@ -53,5 +53,6 @@ GAME_FIELDS = [
     ("classement_jps_auto", "Classement JPS automatique"),
     ("classement_jps_correction", "Classement JPS correction manuelle"),
     ("classement_jps_final", "Classement JPS final"), ("classement_duree", "Classement par durée"),
+    ("stat_myludo", "stat de myludo"),
 ]
 GAME_KEYS = [k for k, _ in GAME_FIELDS]
