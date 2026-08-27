@@ -33,9 +33,7 @@ def month_keys():
 
 # Champs d'un jeu (clé interne -> libellé affiché)
 GAME_FIELDS = [
-		
-
-    ("_id","_id"), ("url_myludo", "URL myludo"), ("id_myludo", "ID myludo"), ("code_barre", "Code barre"),
+	("_id","_id"), ("url_myludo", "URL myludo"), ("id_myludo", "ID myludo"), ("code_barre", "Code barre"),
     ("nom_jeu", "Nom jeu"), ("nom_jeu_fichier", "Nom jeu dans fichier"),
     ("sous_titre", "Sous-titre jeu"), ("nom_jeu_complet", "Nom jeu complet"),
     ("type_jeu", "Type du jeu"), ("type_financement", "Type de financement"),
