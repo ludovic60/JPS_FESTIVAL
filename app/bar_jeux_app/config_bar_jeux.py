@@ -8,7 +8,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import commun.common_store as cs
 
 
-VIEUX_KEY = "vieux"
+VIEUX_KEY = "est_selectionnable"
 
 _MOIS_FR = {
     1: "Janvier", 2: "Février", 3: "Mars", 4: "Avril", 5: "Mai", 6: "Juin",
