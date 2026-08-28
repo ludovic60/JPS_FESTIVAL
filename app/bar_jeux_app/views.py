@@ -180,11 +180,11 @@ def _list_page(title, list_key, user):
         for g in filtered_games:
             _game_card(g, list_key, user)
     else:
-        if search_query
+        if search_query :
             st.info("Aucun jeu ne correspond à votre recherche.")
     #############################################################################"
      
-       else  
+       else  :
        ###affichage de la liste commplete des jeux 
             if not games:
                 st.info("Aucun jeu dans cette liste.")
