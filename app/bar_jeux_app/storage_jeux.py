@@ -116,18 +116,32 @@ def toggle_suggestion(ckey, user_id, value):
         game_suggest_tb = db.jeux_suggestion
 
     if value :
-        new_selection= {         
-                     "annee" : cs._secret("ANNEE_FESTIVAL"), 
-                     "id_jeux": str(ObjectId(ckey)),
-                     "user_id": str(ObjectId(user_id))
-            
-           }   
+        if  "::" in ckey : 
+            periode, id_jeu = ckey.split("::")
+            new_selection= {         
+                         "annee" : cs._secret("ANNEE_FESTIVAL"), 
+                         "periode_jeu" : periode,
+                         "id_jeux": str(ObjectId(id_jeu)),
+                         "user_id": str(ObjectId(user_id))
+                
+               } 
+         else :
+              new_selection= {         
+                         "annee" : cs._secret("ANNEE_FESTIVAL"), 
+                         "periode_jeu" : "",
+                         "id_jeux": str(ObjectId(ckey)),
+                         "user_id": str(ObjectId(user_id))
+                
+               } 
     
         resultat = game_suggest_tb.insert_one(new_selection)
     else :  
         # deselectionne le jeu 
-     
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)),   "user_id": str(ObjectId(user_id)) }
+        if  "::" in ckey :  
+            periode, id_jeu = ckey.split("::")
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "periode_jeu" : periode , "id_jeux": str(ObjectId(id_jeu)),   "user_id": str(ObjectId(user_id)) }
+        else :    
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "periode_jeu" : "" , "id_jeux": str(ObjectId(ckey)),   "user_id": str(ObjectId(user_id)) }
         resultat = game_suggest_tb.delete_many(filtre_tb)
     
     
