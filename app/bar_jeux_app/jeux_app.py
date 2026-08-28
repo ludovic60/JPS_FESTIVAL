@@ -17,7 +17,7 @@ import commun.auth, commun.common_store
 
 st.set_page_config(page_title="Bar à jeux", page_icon="🎲", layout="wide")
 inject()
-storage_jeux.init_storage()
+
 
 # Exécute la vérification (affiche le formulaire si besoin, puis stoppe)
 require_auth()
