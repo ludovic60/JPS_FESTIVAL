@@ -113,7 +113,7 @@ def _game_card(g, list_key, user):
                         storage_jeux.toggle_suggestion(ckey, user["id"], val)
                         st.rerun()
 
-                   if val :
+                    if val :
                         st.badge("suggestion à traiter")
                     
             with cc[1]:
