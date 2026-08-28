@@ -49,7 +49,8 @@ def load_games(list_key):
 # ---- Sélection admin / suggestions / demandes / prêts (partagés) ----
 
 def set_selection_game():
-  #selection_jeux_festival
+    #selection_jeux_festival
+    return {}    
     
 def get_admin_selected():
     con_mongo = cs.mongo_enabled()
