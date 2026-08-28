@@ -111,7 +111,7 @@ def _game_card(g, list_key, user):
                         storage_jeux.toggle_suggestion(ckey, user["id"], val)
                         st.rerun()
             with cc[1]:
-                if "::" in ckey
+                if "::" in ckey :
                     periode, id_jeu = ckey.split("::") 
                     list_sugg_this_game = [game for game in sugg if game["id_jeux"] == id_jeu]
 
