@@ -242,7 +242,7 @@ def toggle_loan(ckey, user_id, value):
         else :  
             # deselectionne le jeu 
     
-            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)),"user_id":str((ObjectId(user_id))  }
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)),"user_id":str((ObjectId(user_id)))}
             resultat = game_loan_tb.delete_many(filtre_tb)
 
 
