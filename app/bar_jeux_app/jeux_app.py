@@ -8,18 +8,24 @@ from views import  main_app
 import storage_jeux
 import os
 import sys
-# Ajoute le dossier parent à sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+
+# Ajoute le dossier parent (la racine du projet) à sys.path
+racine_projet = Path(__file__).resolve().parent.parent
+sys.path.append(str(racine_projet))
 from commun.design_system import inject
-
-import commun.auth, commun.common_store
-
-
-st.set_page_config(page_title="Bar à jeux", page_icon="🎲", layout="wide")
-inject()
-
+from commun.auth import require_auth, logout, current_user
 
 # Exécute la vérification (affiche le formulaire si besoin, puis stoppe)
 require_auth()
+
+# Lien de réinitialisation : ?token=...
+params = st.query_params
+token = params.get("token")
+
+user = current_user()
+
+st.set_page_config(page_title="Bar à jeux", page_icon="🎲", layout="wide")
+inject()
 
 main_app(user)
