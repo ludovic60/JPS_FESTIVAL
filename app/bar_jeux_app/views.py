@@ -30,12 +30,12 @@ def main_app(user):
             st.rerun()
 
     if page == "Jeux du mois":
-        months = config.month_keys()
+        months = config_bar_jeux.month_keys()
         label = st.selectbox("Mois", [l for _, l in months])
         key = next(k for k, l in months if l == label)
         _list_page(f"Jeux — {label}", key, user)
     elif page == "Vieux jeux":
-        _list_page("Vieux jeux", config.VIEUX_KEY, user)
+        _list_page("Vieux jeux", config_bar_jeux.VIEUX_KEY, user)
     elif page == "Demandes d'ajout":
         _requests_page(user)
     elif page == "Creation mot de passe":
@@ -75,8 +75,8 @@ def main_app(user):
 def _game_card(g, list_key, user):
     ckey = f"{list_key}::{g['id']}"
     is_admin = user["role"] == "admin"
-    admin_sel = storage.get_admin_selected()
-    sugg = storage.get_suggestions()
+    admin_sel = storage_jeux.get_admin_selected()
+    sugg = storage_jeux.get_suggestions()
     with st.container(border=True):
         c1, c2 = st.columns([1, 3])
         with c1:
@@ -101,20 +101,20 @@ def _game_card(g, list_key, user):
                 if is_admin:
                     val = st.checkbox("Retenir (admin)", value=ckey in admin_sel, key=f"adm_{ckey}")
                     if val != (ckey in admin_sel):
-                        storage.toggle_admin_selected(ckey, val)
+                        storage_jeux.toggle_admin_selected(ckey, val)
                         st.rerun()
                 else:
                     uids = set(sugg.get(ckey, []))
                     val = st.checkbox("Je suggère ce jeu", value=user["id"] in uids, key=f"sug_{ckey}")
                     if val != (user["id"] in uids):
-                        storage.toggle_suggestion(ckey, user["id"], val)
+                        storage_jeux.toggle_suggestion(ckey, user["id"], val)
                         st.rerun()
             with cc[1]:
                 st.caption(f"👍 {len(sugg.get(ckey, []))} suggestion(s)")
                 if is_admin:
                     st.caption("✅ Retenu" if ckey in admin_sel else "")
             with st.expander("Détails du jeu"):
-                for fk, fl in config.GAME_FIELDS:
+                for fk, fl in config_bar_jeux.GAME_FIELDS:
                     v = g.get(fk, "")
                     if v not in ("", None):
                         st.markdown(f"**{fl}** : {v}")
@@ -128,7 +128,7 @@ def _list_page(title, list_key, user):
             n = st.text_input("Nom du jeu")
             u = st.text_input("URL myludo")
             if st.form_submit_button("Envoyer la demande", type="primary") and n.strip():
-                storage.add_request(n, u, list_key, user["pseudo"])
+                storage_jeux.add_request(n, u, list_key, user["pseudo"])
                 st.success("Demande envoyée à l'administrateur")
    
     games = storage_jeux.load_games(list_key)
@@ -144,7 +144,7 @@ def _list_page(title, list_key, user):
 
 def _requests_page(user):
     st.title("Demandes d'ajout de jeux")
-    reqs = storage.get_requests()
+    reqs = storage_jeux.get_requests()
     if not reqs:
         st.info("Aucune demande.")
         return
@@ -156,16 +156,16 @@ def _requests_page(user):
                 c1.markdown(f"[Lien myludo]({r['myludo_url']}) · liste : `{r['list_key']}`")
             if user["role"] == "admin":
                 if c2.button("Retirer", key=f"rmreq_{r['id']}"):
-                    storage.remove_request(r["id"])
+                    storage_jeux.remove_request(r["id"])
                     st.rerun()
 
 
 def _final_page(user):
     st.title("Liste finale — Prêts")
     st.caption("Tableau croisé : jeux retenus par l'admin × personnes. Cochez les jeux que vous pouvez prêter.")
-    finals = storage.final_games()
-    users = storage.get_users()
-    loans = storage.get_loans()
+    finals = storage_jeux.final_games()
+    users = storage_jeux.get_users()
+    loans = storage_jeux.get_loans()
     current_user = user
     is_admin = current_user == "admin"
     # emplacement reservé pour le bouton de validation du pret par les utilisateurs
@@ -252,7 +252,7 @@ def _final_page(user):
             for r in edited.iterrows():
                 ckey = df.loc[df["Jeu"] == r["Jeu"], "_ckey"].values[0]
                 for u in users:
-                    storage.set_loan(ckey, u["id"], bool(r[u["pseudo"]]))
+                    storage_jeux.set_loan(ckey, u["id"], bool(r[u["pseudo"]]))
             st.success("Prêts enregistrés")
             #st.rerun()
       
