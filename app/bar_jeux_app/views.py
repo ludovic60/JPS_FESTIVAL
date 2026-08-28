@@ -80,7 +80,7 @@ def _game_card(g, list_key, user):
         c1, c2 = st.columns([1, 3])
         with c1:
             if g.get("couverture"):
-                st.image(g["couverture"], use_container_width=True)
+                st.image(g["couverture"], width="stretch")
         with c2:
             title = g.get("nom_jeu_complet") or g.get("nom_jeu") or "Jeu"
             # badge_nouv = " 🆕" if str(g.get("est_nouveaute", "")).lower() in ("oui", "true", "1") else ""
@@ -228,7 +228,7 @@ def _final_page(user):
                 "Total coché" : st.column_config.NumberColumn(disabled=True)
             },
             hide_index =True, 
-            use_container_width =True, 
+            width="stretch", 
             key ="loans_editor", 
             row_height=100 ,
             width="stretch"
