@@ -22,7 +22,7 @@ def main_app(user):
             st.markdown("<span class='ws-tag-admin'>Admin</span>", unsafe_allow_html=True)
             pages = ["Jeux du mois", "Vieux jeux", "Demandes d'ajout", "Creation mot de passe", "Liste finale"]
         else : 
-            pages = ["Jeux du mois", "Demandes d'ajout", "Creation mot de passe", "Liste finale"]
+            pages = ["Jeux du mois", "Vieux jeux", "Demandes d'ajout", "Liste finale"]
         page = st.radio("Navigation", pages, label_visibility="collapsed")
         st.divider()
         if st.button("Déconnexion"):
@@ -43,33 +43,32 @@ def main_app(user):
     else:
         _final_page(user)
 
-
-# def _password_page(user):
-#     st.set_page_config(page_title="Générateur de Hash Bcrypt", page_icon="🔑")
+def _password_page(user):
+     st.set_page_config(page_title="Générateur de Hash Bcrypt", page_icon="🔑")
     
-#     st.title("🔑 Générateur de Hash Bcrypt")
-#     st.write("Saisissez un mot de passe ci-dessous pour obtenir sa version hachée.")
+     st.title("🔑 Générateur de Hash Bcrypt")
+     st.write("Saisissez un mot de passe ci-dessous pour obtenir sa version hachée.")
     
-#     ## # Champ de saisie sécurisé
-#     password_input = st.text_input("Mot de passe à hacher", type="password")
+     ## # Champ de saisie sécurisé
+     password_input = st.text_input("Mot de passe à hacher", type="password")
     
-#     if st.button("Générer le hash"):
-#        if password_input:
-#             # Convertit le texte en octets
-#             password_bytes = password_input.encode('utf-8')
-#             # Génère un sel et hache le mot de passe
-#             salt = bcrypt.gensalt()
-#             hashed = bcrypt.hashpw(password_bytes, salt)
-#             # Retourne la chaîne encodée à stocker en base                 
-#             hashed_result = hashed.decode('utf-8') 
-#             st.success("Mot de passe haché avec succès !")
-#            
-#             # Affichage du résultat dans un bloc de code pour faciliter le copie-coller
-#             st.code(hashed_result, language="text")
-#              
-#             st.info("💡 **Remarque :** En raison du salage aléatoire de Bcrypt, chaque clic générera une empreinte différente, même pour un mot de passe identique.")
-#     else:
-#         st.warning("Veuillez saisir un mot de passe avant de cliquer.")
+     if st.button("Générer le hash"):
+        if password_input:
+             # Convertit le texte en octets
+             password_bytes = password_input.encode('utf-8')
+             # Génère un sel et hache le mot de passe
+             salt = bcrypt.gensalt()
+             hashed = bcrypt.hashpw(password_bytes, salt)
+             # Retourne la chaîne encodée à stocker en base                 
+             hashed_result = hashed.decode('utf-8') 
+             st.success("Mot de passe haché avec succès !")
+            
+             # Affichage du résultat dans un bloc de code pour faciliter le copie-coller
+             st.code(hashed_result, language="text")
+              
+             st.info("💡 **Remarque :** En raison du salage aléatoire de Bcrypt, chaque clic générera une empreinte différente, même pour un mot de passe identique.")
+     else:
+         st.warning("Veuillez saisir un mot de passe avant de cliquer.")
 
 
 def _game_card(g, list_key, user):
@@ -122,7 +121,7 @@ def _game_card(g, list_key, user):
 
 def _list_page(title, list_key, user):
     st.title(title)
-    st.caption("Fichier lu : `data/jeux/jeux_%s.json`" % list_key)
+    
     with st.expander("➕ Demander l'ajout d'un jeu"):
         with st.form(f"req_{list_key}", clear_on_submit=True):
             n = st.text_input("Nom du jeu")
@@ -130,10 +129,13 @@ def _list_page(title, list_key, user):
             if st.form_submit_button("Envoyer la demande", type="primary") and n.strip():
                 storage_jeux.add_request(n, u, list_key, user["pseudo"])
                 st.success("Demande envoyée à l'administrateur")
-   
+
+    print("list_key")
+    print(list_key)
+    
     games = storage_jeux.load_games(list_key)
     if not games:
-        st.info("Aucun jeu dans cette liste. Ajoutez des jeux dans le fichier JSON correspondant.")
+        st.info("Aucun jeu dans cette liste.")
     per_row = 3
     for i in range(0, len(games), per_row):
         cols = st.columns(per_row)
