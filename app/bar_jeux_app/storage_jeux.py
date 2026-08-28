@@ -125,7 +125,7 @@ def toggle_suggestion(ckey, user_id, value):
                          "user_id": str(ObjectId(user_id))
                 
                } 
-         else :
+        else :
               new_selection= {         
                          "annee" : cs._secret("ANNEE_FESTIVAL"), 
                          "periode_jeu" : "",
