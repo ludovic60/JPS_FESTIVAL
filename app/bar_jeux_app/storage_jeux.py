@@ -168,7 +168,7 @@ def add_request(type_request, game_name, myludo_url, comments, by_name):
                     "created_at": datetime.now(timezone.utc).isoformat()
             }   
             resultat = resquest_tb.insert_one(new_request)
-     elif type_request == "remarque fiche jeux" :
+    elif type_request == "remarque fiche jeux" :
         if   con_mongo : 
             db = cs.get_db()
             resquest_tb = db.request
