@@ -118,7 +118,7 @@ def toggle_suggestion(ckey, user_id, value):
            }   
     
         resultat = game_suggest_tb.insert_one(new_selection)
-     else :  
+    else :  
         # deselectionne le jeu 
      
         filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": ObjectId(ckey),   "user_id": ObjectId(user_id) }
@@ -144,7 +144,7 @@ def get_requests(type_request):
             filtre_tb = {"type" : "remarque fiche jeux"  }
             
             resultats = list(resquest_tb.find(filtre_tb))
-     else :
+    else :
          resultats ={}
      return resultats 
 
@@ -233,7 +233,7 @@ def toggle_loan(ckey, user_id, value):
                }   
         
             resultat = game_loan_tb.insert_one(new_loan)
-         else :  
+        else :  
             # deselectionne le jeu 
     
             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": ObjectId(ckey),"user_id":ObjectId(user_id)  }
