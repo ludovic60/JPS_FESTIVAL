@@ -10,7 +10,7 @@ import sys
 # Ajoute le dossier parent à sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-import commun.auth,  commun.config
+import commun.auth,  commun.config , commun.common_store
 
 
 def main_app(user):
@@ -164,7 +164,7 @@ def _final_page(user):
     st.title("Liste finale — Prêts")
     st.caption("Tableau croisé : jeux retenus par l'admin × personnes. Cochez les jeux que vous pouvez prêter.")
     finals = storage_jeux.final_games()
-    users = storage_jeux.get_users()
+    users = commun.common_store.get_users()
     loans = storage_jeux.get_loans()
     current_user = user
     is_admin = current_user == "admin"
