@@ -104,8 +104,8 @@ def _game_card(g, list_key, user):
                         st.rerun()
                 else:
                     uids=[]
-                    for list_sugg  in storage_jeux.get_suggest():
-                       uids.append(list_sugg["user_id")
+                    for list_sugg  in  sugg :
+                       uids.append(list_sugg["user_id"])
                     val = st.checkbox("Je suggère ce jeu", value=user["id"] in uids, key=f"sug_{ckey}")
                     if val != (user["id"] in uids):
                         storage_jeux.toggle_suggestion(ckey, user["id"], val)
