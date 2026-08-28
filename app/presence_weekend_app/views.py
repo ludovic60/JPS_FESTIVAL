@@ -93,15 +93,17 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
 
                 for period, plabel in PERIODS:
                     sk = _slot_key(day, period)
-                    if day in enumerate(DAYS_INSTALL)[0]: 
-                        if period in enumerate(PERIODS_INSTALL)[0] :
-                            pkey = period_keys[period]
-                            val = st.checkbox(plabel, key=pkey, disabled=full)
-                            slot_state[sk] = val
-                    else : 
-                         pkey = period_keys[period]
-                         val = st.checkbox(plabel, key=pkey, disabled=full)
-                         slot_state[sk] = val
+                    for day_inst in DAYS_INSTALL
+                        if day in day_inst[0]: 
+                            for period_inst in PERIODS_INSTALL
+                                if period == period_inst[0] :
+                                    pkey = period_keys[period]
+                                    val = st.checkbox(plabel, key=pkey, disabled=full)
+                                    slot_state[sk] = val
+                        else : 
+                             pkey = period_keys[period]
+                             val = st.checkbox(plabel, key=pkey, disabled=full)
+                             slot_state[sk] = val
                 
                 # Trait personnalisé : épaisseur 3px, couleur rouge (#FF4B4B)
                 st.markdown("<hr style='border-top: 3px solid #FF4B4B; margin: 15px 0;'>", unsafe_allow_html=True)   
