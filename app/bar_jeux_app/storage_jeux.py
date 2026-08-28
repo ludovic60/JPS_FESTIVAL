@@ -38,6 +38,9 @@ def load_games(list_key):
         else :
             annee = list_key[:4]
             mois = list_key[5:]
+            #gestion des numeros de mois avant octobre pour n'avoir qu'un chiffre
+            if mois[0]==0:
+                mois = mois[1]
             print(annee)
             print(mois)
             filtre_tb = {"annee_parution" : annee , "mois_sortie" : mois }
