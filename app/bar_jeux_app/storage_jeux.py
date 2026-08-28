@@ -82,14 +82,14 @@ def toggle_admin_selected(ckey, value):
     if value :
         new_selection= {         
                      "annee" : cs._secret("ANNEE_FESTIVAL"), 
-                     "id_jeux": ObjectId(ckey)
+                     "id_jeux": str(ObjectId(ckey))
            }   
     
         resultat = game_selec_tb.insert_one(new_selection)
     else :  
         # deselectionne le jeu 
 
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": ObjectId(ckey) }
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)) }
         resultat = game_selec_tb.delete_many(filtre_tb)
     
 
@@ -117,8 +117,8 @@ def toggle_suggestion(ckey, user_id, value):
     if value :
         new_selection= {         
                      "annee" : cs._secret("ANNEE_FESTIVAL"), 
-                     "id_jeux": ObjectId(ckey),
-                     "user_id": ObjectId(user_id)
+                     "id_jeux": str(ObjectId(ckey)),
+                     "user_id": str(ObjectId(user_id))
             
            }   
     
@@ -126,7 +126,7 @@ def toggle_suggestion(ckey, user_id, value):
     else :  
         # deselectionne le jeu 
      
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": ObjectId(ckey),   "user_id": ObjectId(user_id) }
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)),   "user_id": str(ObjectId(user_id)) }
         resultat = game_suggest_tb.delete_many(filtre_tb)
     
     
@@ -163,7 +163,7 @@ def add_request(type_request, game_name, myludo_url, comments, by_name):
             db = cs.get_db()
             resquest_tb = db.request
             new_request= {                    
-                    "id_request": ObjectId(),
+                    "id_request": str(ObjectId()),
                     "annee" : cs._secret("ANNEE_FESTIVAL"), 
                     "type_request" : "ajout jeux", 
                     "game_name": name.strip(), 
@@ -178,7 +178,7 @@ def add_request(type_request, game_name, myludo_url, comments, by_name):
             db = cs.get_db()
             resquest_tb = db.request
             new_request= {                    
-                    "id_request": ObjectId(),
+                    "id_request": str(ObjectId()),
                     "annee" : cs._secret("ANNEE_FESTIVAL"),
                     "type_request" : "remarque fiche jeux", 
                     "game_name": name.strip(), 
@@ -195,7 +195,7 @@ def remove_request(type_request, req_id):
  if   con_mongo : 
     db = cs.get_db()
     resquest_tb = db.request                                              
-    filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "id_request": ObjectId(req_id) }
+    filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "id_request": str(ObjectId(req_id)) }
     resultat = resquest_tb.delete_many(filtre_tb)
         
 
@@ -233,15 +233,15 @@ def toggle_loan(ckey, user_id, value):
         if value :
             new_loan= {         
                          "annee" : cs._secret("ANNEE_FESTIVAL"), 
-                         "id_jeux": ObjectId(ckey),
-                         "user_id":ObjectId(user_id)
+                         "id_jeux": str(ObjectId(ckey)),
+                         "user_id": str(ObjectId(user_id))
                }   
         
             resultat = game_loan_tb.insert_one(new_loan)
         else :  
             # deselectionne le jeu 
     
-            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": ObjectId(ckey),"user_id":ObjectId(user_id)  }
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)),"user_id":str((ObjectId(user_id))  }
             resultat = game_loan_tb.delete_many(filtre_tb)
 
 
