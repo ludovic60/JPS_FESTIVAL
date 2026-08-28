@@ -127,7 +127,7 @@ def _list_page(title, list_key, user):
             n = st.text_input("Nom du jeu")
             u = st.text_input("URL myludo")
             if st.form_submit_button("Envoyer la demande", type="primary") and n.strip():
-                storage_jeux.add_request(n, u, list_key, user["pseudo"])
+                storage_jeux.add_request("ajout jeux", n, u, list_key, user["pseudo"])
                 st.success("Demande envoyée à l'administrateur")
 
     print("list_key")
@@ -146,7 +146,7 @@ def _list_page(title, list_key, user):
 
 def _requests_page(user):
     st.title("Demandes d'ajout de jeux")
-    reqs = storage_jeux.get_requests()
+    reqs = storage_jeux.get_requests("ajout jeux")
     if not reqs:
         st.info("Aucune demande.")
         return
