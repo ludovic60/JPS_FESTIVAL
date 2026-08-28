@@ -64,7 +64,7 @@ def get_admin_selected():
         game_selec_tb = db.jeux_select
         filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL")  }
         
-        resultats = list(game_tb.find(filtre_tb))
+        resultats = list(game_selec_tb .find(filtre_tb))
     else :
         resultats ={}
     return resultats 
