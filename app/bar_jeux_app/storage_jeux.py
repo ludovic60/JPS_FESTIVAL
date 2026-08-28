@@ -37,7 +37,9 @@ def load_games(list_key):
             filtre_tb = {"est_selectionnable": list_key}
         else :
             annee = list_key[:4]
-            mois = list_key[4:]
+            mois = list_key[5:]
+            print(annee)
+            print(mois)
             filtre_tb = {"annee_parution" : annee , "mois_sortie" : mois }
         
         resultats = list(game_tb.find(filtre_tb))
