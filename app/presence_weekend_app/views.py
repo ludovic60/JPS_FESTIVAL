@@ -93,9 +93,9 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
 
                 for period, plabel in PERIODS:
                     sk = _slot_key(day, period)
-                    for day_inst in DAYS_INSTALL
+                    for day_inst in DAYS_INSTALL :
                         if day in day_inst[0]: 
-                            for period_inst in PERIODS_INSTALL
+                            for period_inst in PERIODS_INSTALL :
                                 if period == period_inst[0] :
                                     pkey = period_keys[period]
                                     val = st.checkbox(plabel, key=pkey, disabled=full)
