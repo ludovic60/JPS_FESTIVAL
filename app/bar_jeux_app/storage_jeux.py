@@ -62,7 +62,7 @@ def get_admin_selected():
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
-        game_selec_tb = db.jeux_select
+        game_selec_tb = db.selection_jeux_festival
         filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL")  }
         
         resultats = list(game_selec_tb .find(filtre_tb))
@@ -78,7 +78,7 @@ def toggle_admin_selected(ckey, value):
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
-        game_selec_tb = db.jeux_select
+        game_selec_tb = db.selection_jeux_festival
 
     if value :
         new_selection= {         
@@ -98,7 +98,7 @@ def get_suggestions():
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
-        game_suggest_tb = db.jeux_suggestion
+        game_suggest_tb = db.jeux_recommandes
         filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL")  }
         
         resultats = list(game_suggest_tb.find(filtre_tb))
@@ -113,7 +113,7 @@ def toggle_suggestion(ckey, user_id, value):
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
-        game_suggest_tb = db.jeux_suggestion
+        game_suggest_tb = db.jeux_recommandes
 
     if value :
         if  "::" in ckey : 
@@ -122,7 +122,8 @@ def toggle_suggestion(ckey, user_id, value):
                          "annee" : cs._secret("ANNEE_FESTIVAL"), 
                          "periode_jeu" : periode,
                          "id_jeux": str(ObjectId(id_jeu)),
-                         "user_id": str(ObjectId(user_id))
+                         "user_id": str(ObjectId(user_id)),
+                         "statut" : "a traiter"
                 
                } 
         else :
@@ -130,7 +131,8 @@ def toggle_suggestion(ckey, user_id, value):
                          "annee" : cs._secret("ANNEE_FESTIVAL"), 
                          "periode_jeu" : "",
                          "id_jeux": str(ObjectId(ckey)),
-                         "user_id": str(ObjectId(user_id))
+                         "user_id": str(ObjectId(user_id)),
+                         "statut" : "a traiter"
                 
                } 
     
@@ -153,14 +155,14 @@ def get_requests(type_request):
     if type_request == "ajout jeux" :
         if   con_mongo : 
             db = cs.get_db()
-            resquest_tb = db.request
+            resquest_tb = db.demandes
             filtre_tb = {"type" : "ajout jeux"  }
             
             resultats = list(resquest_tb.find(filtre_tb))
     elif type_request == "remarque fiche jeux" :
         if   con_mongo : 
             db = cs.get_db()
-            resquest_tb = db.request
+            resquest_tb = db.demandes
             filtre_tb = {"type" : "remarque fiche jeux"  }
             
             resultats = list(resquest_tb.find(filtre_tb))
@@ -176,7 +178,7 @@ def add_request(type_request, game_name, myludo_url, comments, by_name):
     if type_request == "ajout jeux" :
         if   con_mongo : 
             db = cs.get_db()
-            resquest_tb = db.request
+            resquest_tb = db.demandes
             new_request= {                    
                     "id_request": str(ObjectId()),
                     "annee" : cs._secret("ANNEE_FESTIVAL"), 
@@ -191,7 +193,7 @@ def add_request(type_request, game_name, myludo_url, comments, by_name):
     elif type_request == "remarque fiche jeux" :
         if   con_mongo : 
             db = cs.get_db()
-            resquest_tb = db.request
+            resquest_tb = db.demandes
             new_request= {                    
                     "id_request": str(ObjectId()),
                     "annee" : cs._secret("ANNEE_FESTIVAL"),
@@ -209,7 +211,7 @@ def remove_request(type_request, req_id):
  con_mongo = cs.mongo_enabled()
  if   con_mongo : 
     db = cs.get_db()
-    resquest_tb = db.request                                              
+    resquest_tb = db.demandes                                              
     filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "id_request": str(ObjectId(req_id)) }
     resultat = resquest_tb.delete_many(filtre_tb)
         
