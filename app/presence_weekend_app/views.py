@@ -57,7 +57,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     task_ids = data.get("task_ids", [])
 
 
-    cols = st.columns(2)
+    cols = st.columns(3)
     slot_state = {}
 
     for i, (day, day_label) in enumerate(DAYS):
