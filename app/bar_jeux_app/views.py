@@ -72,7 +72,7 @@ def _password_page(user):
 
 
 def _game_card(g, list_key, user):
-    ckey = f"{list_key}::{g['id']}"
+    ckey = f"{list_key}::{str(g['_id'])}"
     is_admin = user["role"] == "admin"
     admin_sel = storage_jeux.get_admin_selected()
     sugg = storage_jeux.get_suggestions()
