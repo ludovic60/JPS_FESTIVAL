@@ -96,18 +96,21 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                     pkey = period_keys[period]
                     val = st.checkbox(plabel, key=pkey, disabled=full)
                     slot_state[sk] = val
+                
+                # Trait personnalisé : épaisseur 3px, couleur rouge (#FF4B4B)
+                st.markdown("<hr style='border-top: 3px solid #FF4B4B; margin: 15px 0;'>", unsafe_allow_html=True)   
 
-    st.markdown("#### Tâches souhaitées")
-    tasks = get_tasks()
-
-    selected = []
-    if not tasks:
-        st.info("Aucune tâche disponible. L'administrateur doit en ajouter.")
-    for t in tasks:
-        checked = str(t["_id"]) in task_ids
-        if st.checkbox(t["tache"], value=checked, key=f"{key_prefix}_task_{str(t['_id'])}"):
-            selected.append(str(t["_id"]))
-
+                st.markdown("#### Tâches souhaitées")
+                tasks = get_tasks()
+                
+                selected = []
+                if not tasks:
+                    st.info("Aucune tâche disponible. L'administrateur doit en ajouter.")
+                for t in tasks:
+                    checked = str(t["_id"]) in task_ids
+                    if st.checkbox(t["tache"], value=checked, key=f"{key_prefix}_task_{str(t['_id'])}"):
+                        selected.append(str(t["_id"]))
+                
     return slot_state, selected
 
 
