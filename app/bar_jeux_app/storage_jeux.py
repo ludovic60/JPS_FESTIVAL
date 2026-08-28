@@ -146,7 +146,7 @@ def get_requests(type_request):
             resultats = list(resquest_tb.find(filtre_tb))
     else :
          resultats ={}
-     return resultats 
+    return resultats 
 
 
 def add_request(type_request, game_name, myludo_url, comments, by_name):
