@@ -164,7 +164,7 @@ def _list_page(title, list_key, user):
 
     # Filtrage de la liste de jeux (games_list est ta liste d'origine de jeux)
     filtered_games = []
-    for g in games_list:
+    for g in games:
         # 1. Extraction des noms
         title = (g.get("nom_jeu_complet") or g.get("nom_jeu") or "").lower()
         
