@@ -112,6 +112,10 @@ def _game_card(g, list_key, user):
                     if val != (user["id"] in uids):
                         storage_jeux.toggle_suggestion(ckey, user["id"], val)
                         st.rerun()
+
+                   if val :
+                        st.badge("suggestion à traiter")
+                    
             with cc[1]:
                 if "::" in ckey :
                     periode, id_jeu = ckey.split("::") 
