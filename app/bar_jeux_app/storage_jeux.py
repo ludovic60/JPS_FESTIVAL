@@ -182,7 +182,7 @@ def add_request(type_request, game_name, myludo_url, comments, by_name):
                     "created_by": by_name,
                     "created_at": datetime.now(timezone.utc).isoformat()
             }   
-            resultat = resquest_tb.insert_one(new_request
+            resultat = resquest_tb.insert_one(new_request)
 
 
 def remove_request(type_request, req_id):
