@@ -81,7 +81,7 @@ def toggle_admin_selected(ckey, value):
            }   
     
         resultat = game_selec_tb.insert_one(new_selection)
-     else :  
+    else :  
         # deselectionne le jeu 
 
         filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": ObjectId(ckey) }
