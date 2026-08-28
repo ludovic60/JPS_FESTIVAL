@@ -98,7 +98,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                             pkey = period_keys[period]
                             val = st.checkbox(plabel, key=pkey, disabled=full)
                             slot_state[sk] = val
-                     else : 
+                    else : 
                          pkey = period_keys[period]
                          val = st.checkbox(plabel, key=pkey, disabled=full)
                          slot_state[sk] = val
