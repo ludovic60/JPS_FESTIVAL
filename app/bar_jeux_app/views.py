@@ -20,24 +20,26 @@ def main_app(user):
         st.caption(user["email"])
         if user["role"] == "admin":
             st.markdown("<span class='ws-tag-admin'>Admin</span>", unsafe_allow_html=True)
-            pages = ["Jeux du mois", "Vieux jeux", "Demandes d'ajout", "Creation mot de passe", "Liste finale"]
+            pages = ["Jeux sortis depuis dernier festival", "Jeux sortis avant dernier festival", "Demandes d'ajout", "Liste suggestions", "Creation mot de passe", "Liste finale"]
         else : 
-            pages = ["Jeux du mois", "Vieux jeux", "Demandes d'ajout", "Liste finale"]
+            pages = ["Jeux sortis depuis dernier festival", "Jeux sortis avant dernier festival", "Demandes d'ajout", "Liste finale"]
         page = st.radio("Navigation", pages, label_visibility="collapsed")
         st.divider()
         if st.button("Déconnexion"):
             commun.auth.logout()
             st.rerun()
 
-    if page == "Jeux du mois":
+    if page == "Jeux sortis depuis dernier festival":
         months = config_bar_jeux.month_keys()
         label = st.selectbox("Mois", [l for _, l in months])
         key = next(k for k, l in months if l == label)
         _list_page(f"Jeux — {label}", key, user)
-    elif page == "Vieux jeux":
+    elif page == "Jeux sortis avant dernier festival":
         _list_page("Vieux jeux", config_bar_jeux.VIEUX_KEY, user)
     elif page == "Demandes d'ajout":
         _requests_page(user)
+    elif page == "Liste suggestions":
+        _requests_suggestion_page(user)    
     elif page == "Creation mot de passe":
         _password_page(user)
     else:
@@ -154,6 +156,10 @@ def _list_page(title, list_key, user):
         for j, g in enumerate(games[i:i + per_row]):
             with cols[j]:
                 _game_card(g, list_key, user)
+
+   
+def requests_suggestion_page(user):
+    st.title("liste des suggestions par les joueurs")
 
 
 def _requests_page(user):
