@@ -230,8 +230,7 @@ def _final_page(user):
             hide_index =True, 
             width="stretch", 
             key ="loans_editor", 
-            row_height=100 ,
-            width="stretch"
+            row_height=100 
             
     )
 
