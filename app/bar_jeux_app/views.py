@@ -111,7 +111,12 @@ def _game_card(g, list_key, user):
                         storage_jeux.toggle_suggestion(ckey, user["id"], val)
                         st.rerun()
             with cc[1]:
-                st.caption(f"👍 {len(sugg.get(ckey, []))} suggestion(s)")
+                list_sugg_this_game = [game for game in sugg if game[1] == ckey]
+
+                # 2. Compter combien il y en a
+                nb_sugg = len(list_sugg_this_game)
+                
+                st.caption(f"👍 {nb_sugg} suggestion(s)")
                 if is_admin:
                     st.caption("✅ Retenu" if ckey in admin_sel else "")
             with st.expander("Détails du jeu"):
