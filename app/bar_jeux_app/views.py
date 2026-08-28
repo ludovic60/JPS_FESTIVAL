@@ -26,7 +26,7 @@ def main_app(user):
         page = st.radio("Navigation", pages, label_visibility="collapsed")
         st.divider()
         if st.button("Déconnexion"):
-            auth.logout()
+            commun.auth.logout()
             st.rerun()
 
     if page == "Jeux du mois":
