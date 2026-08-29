@@ -82,6 +82,10 @@ def _game_card(g, list_key, user):
 
     print("SUGG")
     print(sugg)
+
+    ids = [str(g['_id']) for g in games_list]
+    if len(ids) != len(set(ids)):
+        print("Attention : il y a des doublons d'IDs dans la liste !")
     
     with st.container(border=True):
         c1, c2 = st.columns([1, 3])
@@ -105,9 +109,9 @@ def _game_card(g, list_key, user):
             cc = st.columns(2)
             with cc[0]:
                 if is_admin:
-                    val = st.checkbox("Retenir (admin)", value=ckey in admin_sel, key=f"adm_{ckey_sugg}")
+                    val = st.checkbox("Retenir (admin)", value=ckey_sugg in admin_sel, key=f"adm_{ckey_sugg}")
                     if val != (ckey_sugg in admin_sel):
-                        storage_jeux.toggle_admin_selected(ckey, val)
+                        storage_jeux.toggle_admin_selected(ckey_sugg, val)
                         st.rerun()
                 else:
                     uids=[]
@@ -164,6 +168,11 @@ def _list_page(title, list_key, user):
 
     # Filtrage de la liste de jeux (games_list est ta liste d'origine de jeux)
     filtered_games = []
+
+    ids = [str(g['_id']) for g in games]
+    if len(ids) != len(set(ids)):
+        print("Attention : il y a des doublons d'IDs dans la liste !")
+            
     for g in games:
         # 1. Extraction des noms
         title = (g.get("nom_jeu_complet") or g.get("nom_jeu") or "").lower()
