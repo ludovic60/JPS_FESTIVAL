@@ -83,7 +83,7 @@ def _game_card(g, list_key, user):
     print("SUGG")
     print(sugg)
 
-    print(g[_id])
+    print(g)
     
     with st.container(border=True):
         c1, c2 = st.columns([1, 3])
