@@ -177,8 +177,11 @@ def _list_page(title, list_key, user):
 
     # Affichage des cartes filtrées
     if filtered_games:
-        for g in filtered_games:
-            _game_card(g, list_key, user)
+        per_row = 3
+        for i in range(0, len(games), per_row):
+            cols = st.columns(per_row)
+            for g in filtered_games:
+                _game_card(g, list_key, user)
     else:
         if search_query :
             st.info("Aucun jeu ne correspond à votre recherche.")
