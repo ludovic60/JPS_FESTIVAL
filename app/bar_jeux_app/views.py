@@ -75,7 +75,7 @@ def _password_page(user):
 
 def _game_card(g, list_key, user):
     #ckey = f"{list_key}::{str(g['_id'])}"
-    ckey_sugg = f"{str(g['_id'])}"
+    ckey_this_game = f"{str(g['_id'])}"
     is_admin = user["role"] == "admin"
     admin_sel = storage_jeux.get_admin_selected()
     sugg = storage_jeux.get_suggestions()
@@ -104,7 +104,7 @@ def _game_card(g, list_key, user):
             with cc[0]:
                 if is_admin:
                      # 1. On ne garde que les suggestions spécifiques à CE jeu
-                    select_this_game = [adsel for adsel in admin_sel if str(adsel.get("id_jeux")) == ckey_admin_sel]
+                    select_this_game = [adsel for adsel in admin_sel if str(adsel.get("id_jeux")) == ckey_this_game]
                     
                     # 2. On extrait les IDs des utilisateurs ayant suggéré CE jeu
                     uids_select_this_game = [sadmin["user_id"] for sadmin in select_this_game]
@@ -112,13 +112,13 @@ def _game_card(g, list_key, user):
                     # 3. admin a retenu ce jeu ?
                     has_selected = user["id"] in uids_select_this_game
                     
-                    val_admin = st.checkbox("Retenir (admin)", value=has_selected, key=f"s_admin_{ckey_admin_sel}")
+                    val_admin = st.checkbox("Retenir (admin)", value=has_selected, key=f"s_admin_{ckey_this_game}")
                     if val != has_selected:
-                        storage_jeux.toggle_admin_selected(ckey_sugg, val)
+                        storage_jeux.toggle_admin_selected(ckey_this_game, val)
                         st.rerun()
                 else:
                      # 1. On ne garde que les suggestions spécifiques à CE jeu
-                    select_this_game = [adsel for adsel in admin_sel if str(adsel.get("id_jeux")) == ckey_admin_sel]
+                    select_this_game = [adsel for adsel in admin_sel if str(adsel.get("id_jeux")) == ckey_this_game]
                     
                     # 2. On extrait les IDs des utilisateurs ayant suggéré CE jeu
                     uids_select_this_game = [sadmin["user_id"] for sadmin in select_this_game]
@@ -129,7 +129,7 @@ def _game_card(g, list_key, user):
                         val_admin = st.label("retenu dans selection final")
                     
                     # 1. On ne garde que les suggestions spécifiques à CE jeu
-                    sugg_this_game = [s for s in sugg if str(s.get("id_jeux")) == ckey_sugg]
+                    sugg_this_game = [s for s in sugg if str(s.get("id_jeux")) == ckey_this_game]
                     
                     # 2. On extrait les IDs des utilisateurs ayant suggéré CE jeu
                     uids_this_game = [s["user_id"] for s in sugg_this_game]
@@ -138,25 +138,25 @@ def _game_card(g, list_key, user):
                     has_suggested = user["id"] in uids_this_game
                     
                     # 4. Affichage de la checkbox avec la bonne valeur
-                    val = st.checkbox("Je suggère ce jeu", value=has_suggested, key=f"sug_{ckey_sugg}")
+                    val = st.checkbox("Je suggère ce jeu", value=has_suggested, key=f"sug_{ckey_this_game}")
                     
                     # 5. Détection du clic réel (changement d'état pour ce jeu précis)
                     if val != has_suggested:
-                        storage_jeux.toggle_suggestion(ckey_sugg, user["id"], val)
+                        storage_jeux.toggle_suggestion(ckey_this_game, user["id"], val)
                         st.rerun()
                 
                     if val:
                         st.badge("suggestion à traiter")
                     
             with cc[1]:
-                list_sugg_this_game = [game for game in sugg if game["id_jeux"] == ckey_sugg]
+                list_sugg_this_game = [game for game in sugg if game["id_jeux"] == ckey_this_game]
     
                 # 2. Compter combien il y en a
                 nb_sugg = len(list_sugg_this_game)
                     
                 st.caption(f"👍 {nb_sugg} suggestion(s)")
                 if is_admin:
-                    st.badge("✅ Retenu" if ckey_sugg in admin_sel else "")
+                    st.badge("✅ Retenu" if ckey_this_game in admin_sel else "")
             with st.expander("Détails du jeu"):
                 for fk, fl in config_bar_jeux.GAME_FIELDS:
                     v = g.get(fk, "")
