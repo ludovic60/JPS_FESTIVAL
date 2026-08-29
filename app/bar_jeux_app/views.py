@@ -74,7 +74,8 @@ def _password_page(user):
 
 
 def _game_card(g, list_key, user):
-    ckey = f"{list_key}::{str(g['_id'])}"
+    #ckey = f"{list_key}::{str(g['_id'])}"
+    ckey_sugg = f"{str(g['_id'])}"
     is_admin = user["role"] == "admin"
     admin_sel = storage_jeux.get_admin_selected()
     sugg = storage_jeux.get_suggestions()
@@ -100,8 +101,8 @@ def _game_card(g, list_key, user):
             cc = st.columns(2)
             with cc[0]:
                 if is_admin:
-                    val = st.checkbox("Retenir (admin)", value=ckey in admin_sel, key=f"adm_{ckey}")
-                    if val != (ckey in admin_sel):
+                    val = st.checkbox("Retenir (admin)", value=ckey in admin_sel, key=f"adm_{ckey_sugg}")
+                    if val != (ckey_sugg in admin_sel):
                         storage_jeux.toggle_admin_selected(ckey, val)
                         st.rerun()
                 else:
@@ -117,19 +118,14 @@ def _game_card(g, list_key, user):
                         st.badge("suggestion à traiter")
                     
             with cc[1]:
-                if "::" in ckey :
-                    periode, id_jeu = ckey.split("::") 
-                    list_sugg_this_game = [game for game in sugg if game["id_jeux"] == id_jeu]
-
-                else :
-                    list_sugg_this_game = [game for game in sugg if game["id_jeux"] == ckey]
+                   list_sugg_this_game = [game for game in sugg if game["id_jeux"] == ckey_sugg]
 
                 # 2. Compter combien il y en a
                 nb_sugg = len(list_sugg_this_game)
                 
                 st.caption(f"👍 {nb_sugg} suggestion(s)")
                 if is_admin:
-                    st.caption("✅ Retenu" if ckey in admin_sel else "")
+                    st.caption("✅ Retenu" if ckey_sugg in admin_sel else "")
             with st.expander("Détails du jeu"):
                 for fk, fl in config_bar_jeux.GAME_FIELDS:
                     v = g.get(fk, "")
