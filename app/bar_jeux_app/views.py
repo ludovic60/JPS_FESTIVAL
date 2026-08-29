@@ -118,14 +118,14 @@ def _game_card(g, list_key, user):
                         st.badge("suggestion à traiter")
                     
             with cc[1]:
-                   list_sugg_this_game = [game for game in sugg if game["id_jeux"] == ckey_sugg]
-
+                list_sugg_this_game = [game for game in sugg if game["id_jeux"] == ckey_sugg]
+    
                 # 2. Compter combien il y en a
                 nb_sugg = len(list_sugg_this_game)
-                
+                    
                 st.caption(f"👍 {nb_sugg} suggestion(s)")
                 if is_admin:
-                    st.caption("✅ Retenu" if ckey_sugg in admin_sel else "")
+                    st.badge("✅ Retenu" if ckey_sugg in admin_sel else "")
             with st.expander("Détails du jeu"):
                 for fk, fl in config_bar_jeux.GAME_FIELDS:
                     v = g.get(fk, "")
