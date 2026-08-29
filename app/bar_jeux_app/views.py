@@ -83,7 +83,7 @@ def _game_card(g, list_key, user):
     print("SUGG")
     print(sugg)
 
-    ids = [str(jeu['_id']) for jeu in g]
+    ids = [(jeu['_id']) for jeu in g]
     if len(ids) != len(set(ids)):
         print("Attention : il y a des doublons d'IDs dans la liste !")
     
@@ -169,7 +169,7 @@ def _list_page(title, list_key, user):
     # Filtrage de la liste de jeux (games_list est ta liste d'origine de jeux)
     filtered_games = []
 
-    ids = [str(g['_id']) for g in games]
+    ids = [(g['_id']) for g in games]
     if len(ids) != len(set(ids)):
         print("Attention : il y a des doublons d'IDs dans la liste !")
             
