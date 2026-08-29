@@ -98,7 +98,7 @@ def get_suggestions():
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
-        game_suggest_tb = db.jeux_recommandes
+        game_suggest_tb = db.jeux_suggestions
         filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL")  }
         
         resultats = list(game_suggest_tb.find(filtre_tb))
@@ -106,15 +106,13 @@ def get_suggestions():
         resultats ={}
     return resultats 
 
-def toggle_suggestion(ckey, user_id, value):
-    return ""
 
 def toggle_suggestion(ckey, user_id, value):
     #s = get_suggestions()
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
-        game_suggest_tb = db.jeux_recommandes
+        game_suggest_tb = db.jeux_suggestions
 
     if value :
         new_selection= {         
