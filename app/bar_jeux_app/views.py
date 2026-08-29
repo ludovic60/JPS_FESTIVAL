@@ -108,17 +108,25 @@ def _game_card(g, list_key, user):
                         storage_jeux.toggle_admin_selected(ckey_sugg, val)
                         st.rerun()
                 else:
-                    uids=[]
-                    for list_sugg  in  sugg :
-                       uids.append(list_sugg["user_id"])
-                    val = st.checkbox("Je suggère ce jeu", value=user["id"] in uids, key=f"sug_{ckey_sugg}")
-                    if val != (user["id"] in uids):
-                        print("appel de l insert de suggestion")
-                        print(val)
+
+                    # 1. On ne garde que les suggestions spécifiques à CE jeu
+                    sugg_this_game = [s for s in sugg if str(s.get("id_jeux")) == ckey_sugg]
+                    
+                    # 2. On extrait les IDs des utilisateurs ayant suggéré CE jeu
+                    uids_this_game = [s["user_id"] for s in sugg_this_game]
+                    
+                    # 3. L'utilisateur a-t-il suggéré CE jeu ?
+                    has_suggested = user["id"] in uids_this_game
+                    
+                    # 4. Affichage de la checkbox avec la bonne valeur
+                    val = st.checkbox("Je suggère ce jeu", value=has_suggested, key=f"sug_{ckey_sugg}")
+                    
+                    # 5. Détection du clic réel (changement d'état pour ce jeu précis)
+                    if val != has_suggested:
                         storage_jeux.toggle_suggestion(ckey_sugg, user["id"], val)
                         st.rerun()
-
-                    if val :
+                
+                    if val:
                         st.badge("suggestion à traiter")
                     
             with cc[1]:
