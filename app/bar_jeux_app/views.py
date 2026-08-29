@@ -79,6 +79,10 @@ def _game_card(g, list_key, user):
     is_admin = user["role"] == "admin"
     admin_sel = storage_jeux.get_admin_selected()
     sugg = storage_jeux.get_suggestions()
+
+    print("SUGG")
+    print(sugg)
+    
     with st.container(border=True):
         c1, c2 = st.columns([1, 3])
         with c1:
