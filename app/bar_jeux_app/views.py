@@ -165,10 +165,7 @@ def _list_page(title, list_key, user):
     # Filtrage de la liste de jeux (games_list est ta liste d'origine de jeux)
     filtered_games = []
 
-    ids = [(g['_id']) for g in games]
-    if len(ids) != len(set(ids)):
-        print("Attention : il y a des doublons d'IDs dans la liste !")
-            
+    
     for g in games:
         # 1. Extraction des noms
         title = (g.get("nom_jeu_complet") or g.get("nom_jeu") or "").lower()
@@ -179,7 +176,9 @@ def _list_page(title, list_key, user):
         # 3. Validation si le terme recherché est présent
         if not search_query or (search_query in title or search_query in url):
             filtered_games.append(g)
-
+    print("fin de la liste filtered gammes")
+    print(filtered_games)
+         
     # Affichage des cartes filtrées
     if filtered_games:
         per_row = 3
