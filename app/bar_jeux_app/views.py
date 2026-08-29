@@ -184,7 +184,7 @@ def _list_page(title, list_key, user):
     if filtered_games:
         per_row = 3
 
-        print(### passage dans filtered gammes)
+        print("passage dans filtered gammes")
         for i in range(0, len(games), per_row):
             cols = st.columns(per_row)
             for g in filtered_games:
@@ -196,7 +196,7 @@ def _list_page(title, list_key, user):
      
         else  :
         ###affichage de la liste commplete des jeux 
-            print(### passage dans le non filtered gammes)
+            print( "passage dans le non filtered gammes")
             if not games:
                 st.info("Aucun jeu dans cette liste.")
             per_row = 3
