@@ -156,7 +156,7 @@ def _list_page(title, list_key, user):
     games = storage_jeux.load_games(list_key)
     #############################################################"
     #############ajout fonction de recherche d'un jeu 
-    #############################################################"
+    #############################################################" 
     
     
     # Champ de saisie utilisateur
