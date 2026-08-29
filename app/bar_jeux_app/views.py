@@ -178,7 +178,11 @@ def _list_page(title, list_key, user):
             filtered_games.append(g)
     print("fin de la liste filtered gammes")
     print(filtered_games)
-         
+    k=0
+    for i in filtered_games:
+        k=k+1
+    print(k)    
+    print("fin dee filtered gammes")     
     # Affichage des cartes filtrées
     if filtered_games:
         per_row = 3
