@@ -185,10 +185,14 @@ def _list_page(title, list_key, user):
         per_row = 3
 
         print("passage dans filtered gammes")
+        print(filtered_games)
+        
         for i in range(0, len(games), per_row):
             cols = st.columns(per_row)
-            for g in filtered_games:
-                _game_card(g, list_key, user)
+            for j, g in enumerate(filtered_games[i:i + per_row]):
+                with cols[j]:
+                        _game_card(g, list_key, user)
+               
     else:
         if search_query :
             st.info("Aucun jeu ne correspond à votre recherche.")
