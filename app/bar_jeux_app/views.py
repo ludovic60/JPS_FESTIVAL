@@ -103,12 +103,31 @@ def _game_card(g, list_key, user):
             cc = st.columns(2)
             with cc[0]:
                 if is_admin:
-                    val = st.checkbox("Retenir (admin)", value=ckey_sugg in admin_sel, key=f"adm_{ckey_sugg}")
-                    if val != (ckey_sugg in admin_sel):
+                     # 1. On ne garde que les suggestions spécifiques à CE jeu
+                    select_this_game = [adsel for adsel in admin_sel if str(adsel.get("id_jeux")) == ckey_admin_sel]
+                    
+                    # 2. On extrait les IDs des utilisateurs ayant suggéré CE jeu
+                    uids_select_this_game = [sadmin["user_id"] for sadmin in select_this_game]
+
+                    # 3. admin a retenu ce jeu ?
+                    has_selected = user["id"] in uids_select_this_game
+                    
+                    val_admin = st.checkbox("Retenir (admin)", value=has_selected, key=f"s_admin_{ckey_admin_sel}")
+                    if val != has_selected:
                         storage_jeux.toggle_admin_selected(ckey_sugg, val)
                         st.rerun()
                 else:
+                     # 1. On ne garde que les suggestions spécifiques à CE jeu
+                    select_this_game = [adsel for adsel in admin_sel if str(adsel.get("id_jeux")) == ckey_admin_sel]
+                    
+                    # 2. On extrait les IDs des utilisateurs ayant suggéré CE jeu
+                    uids_select_this_game = [sadmin["user_id"] for sadmin in select_this_game]
 
+                    # 3. admin a retenu ce jeu ?
+                    has_selected = user["id"] in uids_select_this_game
+                    if has_selected :
+                        val_admin = st.label("retenu dans selection final")
+                    
                     # 1. On ne garde que les suggestions spécifiques à CE jeu
                     sugg_this_game = [s for s in sugg if str(s.get("id_jeux")) == ckey_sugg]
                     
