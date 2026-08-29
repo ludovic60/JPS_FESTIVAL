@@ -148,70 +148,41 @@ def _list_page(title, list_key, user):
                 storage_jeux.add_request("ajout jeux", n, u, list_key, user["pseudo"])
                 st.success("Demande envoyée à l'administrateur")
 
-
     games = storage_jeux.load_games(list_key)
-    #############################################################"
-    #############ajout fonction de recherche d'un jeu 
-    #############################################################" 
     
-    
+    if not games:
+        st.info("Aucun jeu dans cette liste.")
+        return
+
     # Champ de saisie utilisateur
     search_query = st.text_input(
         "🔎 Rechercher un jeu (nom ou URL)",
         placeholder="Ex: Catan, https://...",
-        key="game_search_input"
+        key=f"game_search_input_{list_key}"  # Clé rendue unique par list_key
     ).strip().lower()
 
-    # Filtrage de la liste de jeux (games_list est ta liste d'origine de jeux)
+    # Filtrage de la liste de jeux
     filtered_games = []
 
-    
     for g in games:
-        # 1. Extraction des noms
         title = (g.get("nom_jeu_complet") or g.get("nom_jeu") or "").lower()
+        url = (g.get("url_myludo") or "").lower()  # Sécurisé avec str vide si None
         
-        # 2. Extraction des champs de détails (recherche de l'URL ou d'autres champs)
-        url = g.get("url_myludo")
-    
-        # 3. Validation si le terme recherché est présent
+        # Validation si le terme recherché est présent
         if not search_query or (search_query in title or search_query in url):
             filtered_games.append(g)
-    print("fin de la liste filtered gammes")
-    print(filtered_games)
-    k=0
-    for i in filtered_games:
-        k=k+1
-    print(k)    
-    print("fin dee filtered gammes")     
+
     # Affichage des cartes filtrées
     if filtered_games:
         per_row = 3
-
-        print("passage dans filtered gammes")
-        print(filtered_games)
-        
-        for i in range(0, len(games), per_row):
+        # FIX : On utilise len(filtered_games) ici !
+        for i in range(0, len(filtered_games), per_row):
             cols = st.columns(per_row)
             for j, g in enumerate(filtered_games[i:i + per_row]):
                 with cols[j]:
-                        _game_card(g, list_key, user)
-               
+                    _game_card(g, list_key, user)
     else:
-        if search_query :
-            st.info("Aucun jeu ne correspond à votre recherche.")
-    #############################################################################"
-     
-        else  :
-        ###affichage de la liste commplete des jeux 
-            print( "passage dans le non filtered gammes")
-            if not games:
-                st.info("Aucun jeu dans cette liste.")
-            per_row = 3
-            for i in range(0, len(games), per_row):
-                cols = st.columns(per_row)
-                for j, g in enumerate(games[i:i + per_row]):
-                    with cols[j]:
-                        _game_card(g, list_key, user)
+        st.info("Aucun jeu ne correspond à votre recherche.")
 
    
 def requests_suggestion_page(user):
