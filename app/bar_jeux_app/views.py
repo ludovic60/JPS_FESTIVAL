@@ -83,9 +83,7 @@ def _game_card(g, list_key, user):
     print("SUGG")
     print(sugg)
 
-    ids = [(jeu['_id']) for jeu in g]
-    if len(ids) != len(set(ids)):
-        print("Attention : il y a des doublons d'IDs dans la liste !")
+    print(g[_id])
     
     with st.container(border=True):
         c1, c2 = st.columns([1, 3])
