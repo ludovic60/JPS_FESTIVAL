@@ -116,7 +116,7 @@ def _game_card(g, list_key, user):
 
                     if has_selected_this_game :
                              
-                        val_admin = st.checkbox("Retenir (admin)", value=has_selected_this_game key=f"s_admin_{ckey_this_game}")
+                        val_admin = st.checkbox("Retenir (admin)", value=has_selected_this_game, key=f"s_admin_{ckey_this_game}")
             
                     
                     if val_admin != has_selected_this_game :
