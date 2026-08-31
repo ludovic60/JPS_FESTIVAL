@@ -106,6 +106,7 @@ def _game_card(g, list_key, user):
                      # 1. On ne garde que les suggestions spécifiques à CE jeu
                     select_this_game = [adsel for adsel in admin_sel if str(adsel.get("id_jeux")) == ckey_this_game]
                     print(select_this_game)
+                    print(select_this_game[id_jeux]
                     if select_this_game :            
                         val_admin = st.checkbox("Retenir (admin)", value=true, key=f"s_admin_{ckey_this_game}")
                     else :
