@@ -114,7 +114,7 @@ def _game_card(g, list_key, user):
                     
                     val_admin = st.checkbox("Retenir (admin)", value=has_selected, key=f"s_admin_{ckey_this_game}")
                     if val_admin != has_selected:
-                        storage_jeux.toggle_admin_selected(ckey_this_game, val)
+                        storage_jeux.toggle_admin_selected(ckey_this_game, val_admin)
                         st.rerun()
 
                     
@@ -156,10 +156,13 @@ def _game_card(g, list_key, user):
                 nb_sugg = len(list_sugg_this_game)
                     
                 st.caption(f"👍 {nb_sugg} suggestion(s)")
-                if val_check_suggest :
-                    st.badge("suggestion à traiter")
-                else :
-                    st.badge("✅ suggestion Retenu" if ckey_this_game in admin_sel else "")
+                if nb_sugg > 0  :
+                    
+                    if ckey_this_game in admin_sel: 
+                        st.badge("✅ suggestion Retenu")
+                    else : 
+                        st.badge("suggestion à traiter")
+
             with st.expander("Détails du jeu"):
                 for fk, fl in config_bar_jeux.GAME_FIELDS:
                     v = g.get(fk, "")
