@@ -156,7 +156,6 @@ def _game_card(g, list_key, user):
                 nb_sugg = len(list_sugg_this_game)
                     
                 st.caption(f"👍 {nb_sugg} suggestion(s)")
-
                 if val_check_suggest :
                     st.badge("suggestion à traiter")
                 else 
