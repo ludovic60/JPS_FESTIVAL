@@ -107,13 +107,12 @@ def _game_card(g, list_key, user):
                     select_this_game = [adsel for adsel in admin_sel if str(adsel.get("id_jeux")) == ckey_this_game]
                     print(select_this_game)
                     print("id jeu")
-                    print(select_this_game[id_jeux])
+                    print(select_this_game["id_jeux"])
                     if select_this_game :            
-                        val_admin = st.checkbox("Retenir (admin)", value=true, key=f"s_admin_{ckey_this_game}")
-                    else :
-                        val_admin = st.checkbox("Retenir (admin)", value=false, key=f"s_admin_{ckey_this_game}")
+                        val_admin = st.checkbox("Retenir (admin)", value=select_this_game["id_jeux"], key=f"s_admin_{ckey_this_game}")
+            
                     
-                    if val_admin :
+                    if val_admin != select_this_game["id_jeux"] :
                        storage_jeux.toggle_admin_selected(ckey_this_game, val_admin)
                        st.rerun()
 
