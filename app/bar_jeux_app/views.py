@@ -109,11 +109,17 @@ def _game_card(g, list_key, user):
                     print(select_this_game)
                     print("id jeu")
                     print(select_this_game[0])
-                    if select_this_game :            
-                        val_admin = st.checkbox("Retenir (admin)", value=select_this_game["id_jeux"], key=f"s_admin_{ckey_this_game}")
+
+                  
+                    # 2.admin a retenu ce jeu ?
+                    has_selected_this_game = [admin_sel["id_jeux"] for sadmin in select_this_game]
+
+                    if has_selected_this_game :
+                             
+                        val_admin = st.checkbox("Retenir (admin)", value=has_selected_this_game key=f"s_admin_{ckey_this_game}")
             
                     
-                    if val_admin != select_this_game["id_jeux"] :
+                    if val_admin != has_selected_this_game :
                        storage_jeux.toggle_admin_selected(ckey_this_game, val_admin)
                        st.rerun()
 
@@ -122,12 +128,10 @@ def _game_card(g, list_key, user):
                      # 1. On ne garde que les suggestions spécifiques à CE jeu
                     select_this_game = [adsel for adsel in admin_sel if str(adsel.get("id_jeux")) == ckey_this_game]
                     
-                    # 2. On extrait les IDs des utilisateurs ayant suggéré CE jeu
-                    uids_select_this_game = [sadmin["user_id"] for sadmin in select_this_game]
+                    # 2.admin a retenu ce jeu ?
+                    has_selected_this_game = [admin_sel["id_jeux"] for sadmin in select_this_game]
 
-                    # 3. admin a retenu ce jeu ?
-                    has_selected = user["id"] in uids_select_this_game
-                    if has_selected :
+                    if has_selected_this_game :
                         val_admin = st.label("retenu dans selection final")
                     
                     # 1. On ne garde que les suggestions spécifiques à CE jeu
@@ -143,7 +147,7 @@ def _game_card(g, list_key, user):
                     val_check_suggest = st.checkbox("Je suggère ce jeu", value=has_suggested, key=f"sug_{ckey_this_game}")
                     
                     # 5. Détection du clic réel (changement d'état pour ce jeu précis)
-                    if val_check_suggest != has_suggested:
+                     if val_check_suggest != has_suggested:
                         storage_jeux.toggle_suggestion(ckey_this_game, user["id"], val)
                         st.rerun()
                 
