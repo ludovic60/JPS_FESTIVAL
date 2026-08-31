@@ -147,7 +147,7 @@ def _game_card(g, list_key, user):
                     val_check_suggest = st.checkbox("Je suggère ce jeu", value=has_suggested, key=f"sug_{ckey_this_game}")
                     
                     # 5. Détection du clic réel (changement d'état pour ce jeu précis)
-                     if val_check_suggest != has_suggested:
+                    if val_check_suggest != has_suggested:
                         storage_jeux.toggle_suggestion(ckey_this_game, user["id"], val)
                         st.rerun()
                 
