@@ -113,11 +113,11 @@ def _game_card(g, list_key, user):
                     has_selected = user["id"] in uids_select_this_game
                     
                     val_admin = st.checkbox("Retenir (admin)", value=has_selected, key=f"s_admin_{ckey_this_game}")
-                    if val != has_selected:
+                    if val_admin != has_selected:
                         storage_jeux.toggle_admin_selected(ckey_this_game, val)
                         st.rerun()
 
-                    # 4af
+                    
                 else:
                      # 1. On ne garde que les suggestions spécifiques à CE jeu
                     select_this_game = [adsel for adsel in admin_sel if str(adsel.get("id_jeux")) == ckey_this_game]
