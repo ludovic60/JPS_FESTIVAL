@@ -116,6 +116,8 @@ def _game_card(g, list_key, user):
                     if val != has_selected:
                         storage_jeux.toggle_admin_selected(ckey_this_game, val)
                         st.rerun()
+
+                    # 4af
                 else:
                      # 1. On ne garde que les suggestions spécifiques à CE jeu
                     select_this_game = [adsel for adsel in admin_sel if str(adsel.get("id_jeux")) == ckey_this_game]
@@ -138,15 +140,14 @@ def _game_card(g, list_key, user):
                     has_suggested = user["id"] in uids_this_game
                     
                     # 4. Affichage de la checkbox avec la bonne valeur
-                    val = st.checkbox("Je suggère ce jeu", value=has_suggested, key=f"sug_{ckey_this_game}")
+                    val_check_suggest = st.checkbox("Je suggère ce jeu", value=has_suggested, key=f"sug_{ckey_this_game}")
                     
                     # 5. Détection du clic réel (changement d'état pour ce jeu précis)
-                    if val != has_suggested:
+                    if val_check_suggest != has_suggested:
                         storage_jeux.toggle_suggestion(ckey_this_game, user["id"], val)
                         st.rerun()
                 
-                    if val:
-                        st.badge("suggestion à traiter")
+                   
                     
             with cc[1]:
                 list_sugg_this_game = [game for game in sugg if game["id_jeux"] == ckey_this_game]
@@ -155,8 +156,11 @@ def _game_card(g, list_key, user):
                 nb_sugg = len(list_sugg_this_game)
                     
                 st.caption(f"👍 {nb_sugg} suggestion(s)")
-                if is_admin:
-                    st.badge("✅ Retenu" if ckey_this_game in admin_sel else "")
+
+                 if val_check_suggest :
+                    st.badge("suggestion à traiter")
+                 else 
+                    st.badge("✅ suggestion Retenu" if ckey_this_game in admin_sel else "")
             with st.expander("Détails du jeu"):
                 for fk, fl in config_bar_jeux.GAME_FIELDS:
                     v = g.get(fk, "")
