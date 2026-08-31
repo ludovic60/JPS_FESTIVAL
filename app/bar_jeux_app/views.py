@@ -108,7 +108,7 @@ def _game_card(g, list_key, user):
                     print(" select")
                     print(select_this_game)
                     print("id jeu")
-                    print(select_this_game["id_jeux"])
+                    print(select_this_game[0])
                     if select_this_game :            
                         val_admin = st.checkbox("Retenir (admin)", value=select_this_game["id_jeux"], key=f"s_admin_{ckey_this_game}")
             
