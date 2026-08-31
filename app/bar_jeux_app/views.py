@@ -158,7 +158,7 @@ def _game_card(g, list_key, user):
                 st.caption(f"👍 {nb_sugg} suggestion(s)")
                 if val_check_suggest :
                     st.badge("suggestion à traiter")
-                else 
+                else :
                     st.badge("✅ suggestion Retenu" if ckey_this_game in admin_sel else "")
             with st.expander("Détails du jeu"):
                 for fk, fl in config_bar_jeux.GAME_FIELDS:
