@@ -54,7 +54,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     # get_presence renvoie une liste (résultat Mongo find) -> on prend le 1er élément
     data = raw[0] if raw else {}
     creneau = data.get("creneau", {})
-    task_ids = data.get("task_ids", [])
+    task_ids =  
 
     print(len(DAYS))
     cols = st.columns(3)
@@ -94,6 +94,13 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                 for period, plabel in PERIODS:
                     sk = _slot_key(day, period)
                     for day_inst in DAYS_INSTALL :
+                        if length(DAYS_INSTALL) = PERIODS_ENTIERE :
+                            full = st.checkbox(
+                                    "Journée entière",
+                                    key=full_key,
+                                    on_change=on_full_change,
+                                    )
+                            
                         if day in day_inst[0]: 
                             for period_inst in PERIODS_INSTALL :
                                 if period == period_inst[0] :
@@ -117,7 +124,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                 for t in tasks:
                     checked = str(t["_id"]) in task_ids
                     if st.checkbox(t["tache"], value=checked, key=f"{key_prefix}_{period_keys}_task_{str(t['_id'])}"):
-                        selected.append(str(t["_id"]))
+                        selected.append({period_keys}_task_{str(t['_id']))
                 
     return slot_state, selected
 
