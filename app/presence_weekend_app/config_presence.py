@@ -3,6 +3,9 @@
 import os
 from pathlib import Path
 
+TYPE_TASK_INSTALL ="installation"
+TYPE_TASK_ANIMATION ="animation"
+
 DAYS_INSTALL = [("vendredi", "Vendredi")]
 PERIODS_INSTALL = [("apres_midi", "Après-midi")]
 SLOT_KEYS_INSTALL = [f"{d}_{p}" for d, _ in DAYS_INSTALL for p, _ in PERIODS_INSTALL]
