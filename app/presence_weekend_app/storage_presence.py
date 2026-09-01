@@ -54,12 +54,16 @@ _lock = Lock()
 
 # ----  gestion de la table Tâche  ----
 
-def get_tasks():
+def get_tasks(type):
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
         tasks_tb = db.taches
-        filtre_tb = {}
+        if type : 
+            
+            filtre_tb = {"type":type}
+        else :
+            filtre_tb = {}
         selc_tb = {"tache": 1, "_id": 1, "type":1}
         resultats = list(tasks_tb.find(filtre_tb, selc_tb))
        
