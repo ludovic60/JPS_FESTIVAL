@@ -52,10 +52,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     
     raw = get_presence(user_id)
     # get_presence renvoie une liste (résultat Mongo find) -> on prend le 1er élément
-    data = raw[0] if raw else {}
-    creneau = data.get("creneau", {})
-    task_ids =  
-
+    
     print(len(DAYS))
     cols = st.columns(3)
     slot_state = {}
