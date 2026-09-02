@@ -294,7 +294,7 @@ def admin_page():
                 add_task(new_label)
                 st.rerun()
 
-        for t in get_tasks():
+        for t in get_tasks("all"):
             c1, c2, c3 = st.columns([4, 1, 1])
             label = c1.text_input("t", value=t["tache"], key=f"edit_{t['id']}",
                                    label_visibility="collapsed")
