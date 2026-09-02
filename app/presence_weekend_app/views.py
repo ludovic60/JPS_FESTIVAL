@@ -95,12 +95,12 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                             #application de ce status sur les differentes periodes de la journee
                             st.session_state[f"{day}_{pk}"] = new_val
                             
-                 if length(Periods) == PERIODS_ENTIERE :
-                            full = st.checkbox(
-                                        "Journée entière",
-                                        key=day,
-                                        on_change=on_full_change,
-                                        )
+                if length(Periods) == PERIODS_ENTIERE :
+                    full = st.checkbox(
+                        "Journée entière",
+                        key=day,
+                        on_change=on_full_change,
+                    )
                                 
                 
                 # creation des checkbox des periods       
@@ -144,7 +144,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                         checked = str(t["_id"]) in task_ids
                         st.checkbox(t["tache"], value=checked, key=f"task_{day}_task_{str(t['_id'])}"):
                         
-                 selected = []
+                selected = []
                 list_period_coche = [
                     key.split('_')[1] for key in st.session_state 
                     if key.startswith("period_") and st.session_state[key]
