@@ -55,15 +55,14 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     creneau_selc = get_presence(user_id)
     
     cols = st.columns(3)
+    tasks=[]
+    liste_periode=[]
+    liste_taches=[]
     
-
     for i, (day, day_label) in enumerate(DAYS):
         # recuperation des presence en base 
-        liste_periode=[]
-        liste_taches=[]
-    
-        for lstcre in creneau_selc :
-            
+     
+        for lstcre in creneau_selc :         
      
             for creneaux in lstcre["creneau"] :
                 if creneaux[0].split('_')[0] == day :
@@ -74,19 +73,22 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
         # gestion des differents type de jour
         Periods = ""
         slot_periode = ""
-        tasks=[]
+        
         for j, j_label in DAYS_INSTALL :
             if day == j :
                 Periods = PERIODS_INSTALL
                 slot_periode = SLOT_KEYS_INSTALL
                 tasks = get_tasks(TYPE_TASK_INSTALL)
+                print("les taches extraites")
+                print(tasks)
                     
         for j, j_label in DAYS_ANIMATION :       
             if day == j :
                 Periods = PERIODS_ANIMATION
                 slot_periode = SLOT_KEYS_ANIMATION
                 tasks = get_tasks(TYPE_TASK_ANIMATION)
-        
+                print("les taches extraites")
+                print(tasks)    
 
         
         # gestion de l'affichage     
