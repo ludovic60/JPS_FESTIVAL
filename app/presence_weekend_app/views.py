@@ -142,7 +142,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                         for task in creneau_selc :
                             task_ids.append( task[1])
                         checked = str(t["_id"]) in task_ids
-                        st.checkbox(t["tache"], value=checked, key=f"task_{day}_task_{str(t['_id'])}"):
+                        st.checkbox(t["tache"], value=checked, key=f"task_{day}_task_{str(t['_id'])}")
                         
                selected = []
                list_period_coche = [
