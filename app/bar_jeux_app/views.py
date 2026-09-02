@@ -163,7 +163,7 @@ def _game_card(g, list_key, user):
                 st.caption(f"👍 {nb_sugg} suggestion(s)")
                 if nb_sugg > 0  :
                     
-                    if ckey_this_game in game  for game  in admin_sel : 
+                    if ckey_this_game in game["id_jeux"]  for game  in admin_sel : 
                         st.badge("✅ suggestion Retenu")
                     else : 
                         st.badge("suggestion à traiter")
