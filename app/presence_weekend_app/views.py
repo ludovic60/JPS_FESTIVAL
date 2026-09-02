@@ -170,9 +170,10 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
 
 def presence_page(user: dict):
     st.title("Ma présence")
-    st.caption("Cochez vos créneaux de disponibilité (Samedi & Dimanche) et vos tâches souhaitées.")
+    st.caption("Cochez vos créneaux de disponibilité et vos tâches souhaitées.")
  
     selected = presence_editor(user["id"], user["pseudo"], "self")
+    print(selected)
     if st.button("Enregistrer", type="primary"):
         set_presence(user["id"], user["pseudo"],  selected)
         st.success("Présence enregistrée")
