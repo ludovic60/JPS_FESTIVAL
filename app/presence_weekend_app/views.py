@@ -38,7 +38,7 @@ def main_app(user: dict):
 
     if page == "Ma présence":
         presence_page(user)
-        st.rerun()
+
     elif page == "Récapitulatif":
         recap_page()
     else:
@@ -202,7 +202,7 @@ def presence_page(user: dict):
         for k in keys_to_del:
             del st.session_state[k]
 
-        st.rerun()  # Recharge l'application immédiatement
+    st.rerun()  # Recharge l'application immédiatement
 
 def recap_page():
     st.title("Tableau récapitulatif")
