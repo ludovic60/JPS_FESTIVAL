@@ -100,7 +100,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                         #application de ce status sur les differentes periodes de la journee
                         st.session_state[f"{day}_{pk}"] = new_val
                             
-                if length(Periods) == PERIODS_ENTIERE :
+                if len(Periods) == PERIODS_ENTIERE :
                     full = st.checkbox(
                         "Journée entière",
                         key=day,
@@ -111,7 +111,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                 for period, plabel in Periods:
                   
                    pkey = f"period_{day}_{period}"
-                   if length(Periods) == PERIODS_ENTIERE :
+                   if len(Periods) == PERIODS_ENTIERE :
                        # gestion de son affichage en fonction de la checkbox journee entiere 
                        val = st.checkbox(plabel, key=pkey, disabled=full)
                    else :
