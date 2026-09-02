@@ -316,16 +316,16 @@ def admin_page():
         choice = st.selectbox("Personne", list(options))
         print("choice")
         print(choice)
-        target = [
-            u
-            for u in users
-            if f"({u["pseudo"]}) ({u["email"]})" == choice  
-        ]    
+#        target = [
+#            u
+#            for u in users
+#            if f"({u["pseudo"]}) ({u["email"]})" == choice  
+#        ]    
 
         target = [
             u
             for u in users
-            if f"({u["pseudo"]})" == "(ludo)"
+            if u["pseudo"] == "ludo"
         ]   
         print("target")
         print(target)
