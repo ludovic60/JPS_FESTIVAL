@@ -112,14 +112,16 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                                 
                 # creation des checkbox des periods       
                 if len(Periods) == PERIODS_ENTIERE :
-                    pkey = f"period_{day}_{period}"
+                    
                    
-                    for period, plabel in Periods:                  
-                       # gestion de son affichage en fonction de la checkbox journee entiere 
-                       val = st.checkbox(plabel, key=pkey, disabled=full)
+                    for period, plabel in Periods:   
+                        pkey = f"period_{day}_{period}"
+                        # gestion de son affichage en fonction de la checkbox journee entiere 
+                        val = st.checkbox(plabel, key=pkey, disabled=full)
                 else :
                     for period, plabel in Periods:  
-                       val = st.checkbox(plabel, key=pkey)
+                        pkey = f"period_{day}_{period}"
+                        val = st.checkbox(plabel, key=pkey)
 
                 # alimentation avec les anciennes valeurs 
                 k=0
