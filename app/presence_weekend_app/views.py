@@ -319,10 +319,11 @@ def admin_page():
         target = [
             u
             for u in users
-            if f"({u['pseudo']}) ({u['email']})" == choice  # Comparaison directe avec le format du selectbox
+            if f"({u["pseudo"]}) ({u["email"]})" == choice  # Comparaison directe avec le format du selectbox
         ]    
 
         print("target")
+        print(target)
         print(target[0]["_id"])
                 
         if st.button(f"Réinitialiser les votes de {target[0]["pseudo"]}"):
