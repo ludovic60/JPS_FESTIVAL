@@ -279,10 +279,12 @@ def admin_page():
             
             if c2.button("Modifier", key=f"modif_{t["_id"]}"):
                 update_task(t["_id"], label, choice)
+                print(t["_id"])
                 st.rerun()
             # if c3.button("Supprimer"):
             if c3.button("Supprimer", key=f"supprim_{t["_id"]}"):
                 delete_task(t["_id"])
+                print(t["_id"])
                 st.rerun()
 
     # ---- Votes ----
