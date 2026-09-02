@@ -25,31 +25,6 @@ from commun.security import hash_password, verify_password, token_hash
 _lock = Lock()
 
 
-# def _read(path, default):
-#     if not path.exists():
-#         return default
-#     try:
-#         with open(path, "r", encoding="utf-8") as f:
-#             return json.load(f)
-#     except (json.JSONDecodeError, OSError):
-#         return default
-
-
-# def _write(path, data):
-#     path.parent.mkdir(parents=True, exist_ok=True)
-#     with _lock:
-#         with open(path, "w", encoding="utf-8") as f:
-#             json.dump(data, f, ensure_ascii=False, indent=2)
-
-
-# def init_storage():
-#     cfg.DATA_DIR.mkdir(parents=True, exist_ok=True)
-#     if not cfg.TASKS_FILE.exists():
-#         _write(cfg.TASKS_FILE, [])
-#     admin_email = str(cfg._secret("ADMIN_EMAIL", "admin@weekend.fr")).lower()
-#     admin_password = str(cfg.get_secret("ADMIN_PASSWORD", "admin123"))
-#     if cs.get_user_by_email(admin_email) is None:
-#         _seed_user(admin_email, "Administrateur", admin_password, role="admin")
 
 
 # ----  gestion de la table Tâche  ----
@@ -79,7 +54,7 @@ def add_task(label , type ):
     if   con_mongo : 
         db = cs.get_db()
         tasks_tb = db.taches
-        new_task = {"_id": str(ObjectId()), "tache": label.strip() , "type":type.strip()}
+        new_task = {"_id": ObjectId(), "tache": label.strip() , "type":type.strip()}
         filtre_tb = {}
         ins_tb = {}
         resultat = tasks_tb.insert_one(new_task)
