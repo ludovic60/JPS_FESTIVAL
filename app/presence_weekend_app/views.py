@@ -6,6 +6,7 @@ from  storage_presence import get_presence, clear_user_presence, clear_all_prese
 import sys
 from pathlib import Path
 from config_presence import DAYS, PERIODS, PERIOD_LABELS, SLOT_KEYS, DAYS_INSTALL, PERIODS_INSTALL,TYPE_TASK_INSTALL , TYPE_TASK_ANIMATION ,DAYS_ANIMATION , PERIODS_ANIMATION ,PERIODS_ENTIERE, SLOT_KEYS_INSTALL ,SLOT_KEYS_ANIMATION
+import time 
 
 # Ajoute le dossier parent (la racine du projet) à sys.path
 racine_projet = Path(__file__).resolve().parent.parent
@@ -174,6 +175,9 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
             selected.append([period, t_id])
 
     return selected
+
+
+
 def presence_page(user: dict):
     st.title("Ma présence")
     st.caption("Cochez vos créneaux de disponibilité et vos tâches souhaitées.")
@@ -184,7 +188,7 @@ def presence_page(user: dict):
         print(selected)
         set_presence(user["id"], user["pseudo"], selected)
         st.success("Présence enregistrée")
-
+        time.sleep(2)
         # 1. Supprimer le cache BDD
         bdd_key = f"db_loaded_self_{user['id']}"
         if bdd_key in st.session_state:
