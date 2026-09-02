@@ -113,17 +113,22 @@ def _game_card(g, list_key, user):
                     # 2.admin a retenu ce jeu ?
                     has_selected_this_game = [admin_sel[0]["id_jeux"] for sadmin in select_this_game]
                     val_admin=""  
-                    if has_selected_this_game :
-                             
-                               val_admin = st.checkbox("Retenir (admin)", value= 1==1, key=f"s_admin_{ckey_this_game}")
-                    else :            
-                  
-                               val_admin = st.checkbox("Retenir (admin)", value= 1==0, key=f"s_admin_{ckey_this_game}")
-                    
-                    if val_admin  :
+
+                    def on_admin_change(d=day, p_list=Periods):
                        logging.info(f"clic sur la checkbox retenu admin ")
                        storage_jeux.toggle_admin_selected(ckey_this_game, val_admin)
-                       st.rerun()
+                       st.rerun()     
+
+                           
+                    if has_selected_this_game :
+                             
+                               val_admin = st.checkbox("Retenir (admin)", value= 1==1, key=f"s_admin_{ckey_this_game}", on_change:on_admin_change)
+                    else :            
+                  
+                               val_admin = st.checkbox("Retenir (admin)", value= 1==0, key=f"s_admin_{ckey_this_game}", on_change:on_admin_change)
+                    
+                   
+                       
 
                     
                 else:
