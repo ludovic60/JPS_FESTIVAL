@@ -49,24 +49,31 @@ def main_app(user: dict):
 def presence_editor(user_id: str, user_name: str, key_prefix: str):
     """Éditeur de présence réutilisable."""
 
-    creneau_selc = get_presence(user_id)
-    # Récupération des présences existantes en BDD
-    periode_db = set()
-    taches_db = set()
-    for lstcre in creneau_selc:
-        for creneaux in lstcre.get("creneau", []):
-            periode_db.add(creneaux[0])  # ex: 'samedi_matin'
-            taches_db.add(str(creneaux[1]))  # ID tâche en string
+    # 1. CHARGEMENT DE LA BDD (Uniquement la première fois qu'on ouvre la page)
+    # On stocke les valeurs BDD sous une clé dédiée "db_data_user_id"
+    bdd_key = f"db_loaded_{key_prefix}_{user_id}"
 
-    # VÉRIFICATION / CHARGEMENT INITIAL DES DONNÉES DE LA BDD
-    force_reload = not st.session_state.get("data_loaded", False)
+    if bdd_key not in st.session_state:
+        creneau_selc = get_presence(user_id)
+        periode_db = set()
+        taches_db = set()
 
+        for lstcre in creneau_selc:
+            for creneaux in lstcre.get("creneau", []):
+                periode_db.add(creneaux[0])  # ex: 'samedi_matin'
+                taches_db.add(str(creneaux[1]))  # ID tâche
+
+        # On sauvegarde les ensembles initialisés
+        st.session_state[bdd_key] = {"periodes": periode_db, "taches": taches_db}
+
+    # Données chargées initialement
+    initial_periodes = st.session_state[bdd_key]["periodes"]
+    initial_taches = st.session_state[bdd_key]["taches"]
 
     cols = st.columns(3)
 
     for i, (day, day_label) in enumerate(DAYS):
 
-        # Détermination du type de jour
         Periods = []
         tasks = []
         for j, _ in DAYS_INSTALL:
@@ -79,12 +86,11 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                 Periods = PERIODS_ANIMATION
                 tasks = get_tasks(TYPE_TASK_ANIMATION)
 
-        # Affichage dans la colonne
         with cols[i]:
             with st.container(border=True):
                 st.markdown(f"#### {day_label}")
 
-                # Gestion checkbox "Journée entière"
+                # Gestion Journée Entière
                 def on_full_change(d=day, p_list=Periods):
                     new_val = st.session_state[f"{key_prefix}_full_{d}"]
                     for pk, _ in p_list:
@@ -98,20 +104,19 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                         "Journée entière", key=full_key, on_change=on_full_change
                     )
 
-                # Checkboxes des périodes
+                # Checkboxes Périodes
                 for period, plabel in Periods:
                     pkey = f"{key_prefix}_period_{day}_{period}"
-                    valeur_bdd = f"{day}_{period}" in periode_db
+                    default_val = f"{day}_{period}" in initial_periodes
 
-                    # Si on charge la page ou que la clé n'existe pas encore
-                    if force_reload or pkey not in st.session_state:
-                        st.session_state[pkey] = valeur_bdd
-
-       
                     is_disabled = st.session_state.get(
                         f"{key_prefix}_full_{day}", False
                     )
-                    st.checkbox(plabel, key=pkey, disabled=is_disabled)
+
+                    # Utiliser value= au lieu d'écrire manuellement dans st.session_state
+                    st.checkbox(
+                        plabel, key=pkey, value=default_val, disabled=is_disabled
+                    )
 
                 st.markdown(
                     "<hr style='border-top: 3px solid #FF4B4B; margin: 15px 0;'>",
@@ -125,56 +130,45 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                 for t in tasks:
                     t_id = str(t["_id"])
                     tkey = f"{key_prefix}_task_{day}_{t_id}"
-                    valeur_bdd = t_id in taches_db
+                    default_task_val = t_id in initial_taches
 
-                    if force_reload or tkey not in st.session_state:
-                        st.session_state[tkey] = valeur_bdd
+                    st.checkbox(t["tache"], key=tkey, value=default_task_val)
 
-                    st.checkbox(t["tache"], key=tkey)
-
-    # --- RÉCUPÉRATION DES SÉLECTIONS ---
+    # --- SÉLECTION FINALE ---
     selected = []
 
-    # 1. Récupère toutes les périodes cochées
-    # Clé type: 'self_period_samedi_matin' -> découpe à partir de 'period_'
     list_period_coche = [
-        key.split(f"{key_prefix}_period_")[1]
+        key.replace(f"{key_prefix}_period_", "")
         for key in st.session_state
         if key.startswith(f"{key_prefix}_period_") and st.session_state[key]
     ]
 
-    # 2. Récupère toutes les tâches cochées
-    # Clé type: 'self_task_samedi_6a8ea959...' -> extrait l'ID après le dernier '_'
     list_task_coche = [
         key.split("_")[-1]
         for key in st.session_state
         if key.startswith(f"{key_prefix}_task_") and st.session_state[key]
     ]
 
-    # Croisement des résultats
     for period in list_period_coche:
         for task in list_task_coche:
             selected.append([period, task])
 
     return selected
 
-
 def presence_page(user: dict):
     st.title("Ma présence")
     st.caption("Cochez vos créneaux de disponibilité et vos tâches souhaitées.")
-
-    # Variable de contrôle pour savoir si on vient de charger la page
-    if "data_loaded" not in st.session_state:
-        st.session_state["data_loaded"] = False
 
     selected = presence_editor(user["id"], user["pseudo"], "self")
 
     if st.button("Enregistrer", type="primary"):
         set_presence(user["id"], user["pseudo"], selected)
         st.success("Présence enregistrée")
-        # On réinitialise pour forcer un rechargement frais la prochaine fois
-        st.session_state["data_loaded"] = False
 
+        # On supprime le cache de données pour forcer un rechargement frais de la BDD lors du prochain affichage
+        bdd_key = f"db_loaded_self_{user['id']}"
+        if bdd_key in st.session_state:
+            del st.session_state[bdd_key]
 
 def recap_page():
     st.title("Tableau récapitulatif")
