@@ -319,7 +319,7 @@ def admin_page():
         target = [
             u
             for u in users
-            if f"{u['pseudo']} ({u['email']})" == choice  # Comparaison directe avec le format du selectbox
+            if f"({u['pseudo']}) ({u['email']})" == choice  # Comparaison directe avec le format du selectbox
         ]    
 
         print("target")
