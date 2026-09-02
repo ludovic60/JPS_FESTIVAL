@@ -50,14 +50,17 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     """Éditeur de présence réutilisable."""
 
     creneau_selc = get_presence(user_id)
-
-    # Récupération des présences existantes en BDD pour initialiser si besoin
+    # Récupération des présences existantes en BDD
     periode_db = set()
     taches_db = set()
     for lstcre in creneau_selc:
         for creneaux in lstcre.get("creneau", []):
             periode_db.add(creneaux[0])  # ex: 'samedi_matin'
             taches_db.add(str(creneaux[1]))  # ID tâche en string
+
+    # VÉRIFICATION / CHARGEMENT INITIAL DES DONNÉES DE LA BDD
+    force_reload = not st.session_state.get("data_loaded", False)
+
 
     cols = st.columns(3)
 
@@ -98,13 +101,13 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                 # Checkboxes des périodes
                 for period, plabel in Periods:
                     pkey = f"{key_prefix}_period_{day}_{period}"
+                    valeur_bdd = f"{day}_{period}" in periode_db
 
-                    # Initialisation depuis la BDD uniquement au 1er chargement
-                    if pkey not in st.session_state:
-                        st.session_state[pkey] = (
-                            f"{day}_{period}" in periode_db
-                        )
+                    # Si on charge la page ou que la clé n'existe pas encore
+                    if force_reload or pkey not in st.session_state:
+                        st.session_state[pkey] = valeur_bdd
 
+       
                     is_disabled = st.session_state.get(
                         f"{key_prefix}_full_{day}", False
                     )
@@ -122,10 +125,10 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                 for t in tasks:
                     t_id = str(t["_id"])
                     tkey = f"{key_prefix}_task_{day}_{t_id}"
+                    valeur_bdd = t_id in taches_db
 
-                    # Initialisation BDD
-                    if tkey not in st.session_state:
-                        st.session_state[tkey] = t_id in taches_db
+                    if force_reload or tkey not in st.session_state:
+                        st.session_state[tkey] = valeur_bdd
 
                     st.checkbox(t["tache"], key=tkey)
 
@@ -159,12 +162,18 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
 def presence_page(user: dict):
     st.title("Ma présence")
     st.caption("Cochez vos créneaux de disponibilité et vos tâches souhaitées.")
- 
+
+    # Variable de contrôle pour savoir si on vient de charger la page
+    if "data_loaded" not in st.session_state:
+        st.session_state["data_loaded"] = False
+
     selected = presence_editor(user["id"], user["pseudo"], "self")
 
     if st.button("Enregistrer", type="primary"):
-        set_presence(user["id"], user["pseudo"],  selected)
+        set_presence(user["id"], user["pseudo"], selected)
         st.success("Présence enregistrée")
+        # On réinitialise pour forcer un rechargement frais la prochaine fois
+        st.session_state["data_loaded"] = False
 
 
 def recap_page():
