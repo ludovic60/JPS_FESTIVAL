@@ -144,7 +144,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                         
                         if tache_coche :
                             print(str(tache_coche[0]))
-                            st.session_state[tkey] = str(tache_coche[0])
+                            st.session_state[tkey] = tache_coche[0] ==tache_coche[0]
 
                     # ON NE PASSE PLUS value= ICI
                     st.checkbox(t["tache"], key=tkey)
