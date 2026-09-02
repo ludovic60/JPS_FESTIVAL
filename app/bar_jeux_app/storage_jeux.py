@@ -210,7 +210,7 @@ def final_games():
     out = []
     for lk in all_list_keys():
         for g in load_games(lk):
-            ckey = f"{lk}::{g['id']}"
+            ckey = f"{lk}::{g["_id"]}"
             if ckey in sel:
                 out.append((ckey, g))
     return out
