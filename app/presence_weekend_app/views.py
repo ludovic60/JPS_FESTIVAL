@@ -154,9 +154,9 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     list_period_coche = [
         key.split('_')[1] for key in st.session_state 
         if key.startswith("period_") and st.session_state[key]
-   ]
+    ]
                 
-   list_task_coche = [
+    list_task_coche = [
        key.split('_')[1] for key in st.session_state 
        if key.startswith("task_") and st.session_state[key]
     ]
