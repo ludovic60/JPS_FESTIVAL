@@ -316,7 +316,8 @@ def admin_page():
             for u in users
             if f"{u['pseudo']} ({u['email']})" == choice  # Comparaison directe avec le format du selectbox
         ]    
-
+        print(target)
+        print(target["pseudo"])
         if st.button(f"Réinitialiser les votes de {target["pseudo"]}"):
             clear_user_presence(target["_id"])
             st.success(f"Votes de {target['pseudo']} réinitialisés")
