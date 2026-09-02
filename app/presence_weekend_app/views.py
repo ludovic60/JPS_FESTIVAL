@@ -274,11 +274,11 @@ def admin_page():
             label = c1.text_input("t", value=t["tache"], key=f"edit_{t['_id']}",
                                    label_visibility="collapsed")
             
-            if c2.button("Modifier"):
+            if c2.button("Modifier", key=f"modif_{t['_id']}"):
                 update_task(t["_id"], label)
                 st.rerun()
             # if c3.button("Supprimer"):
-            if c3.button("Supprimer"):
+            if c3.button("Supprimer", key=f"supprim_{t['_id']}"):
                 delete_task(t["id"])
                 st.rerun()
 
