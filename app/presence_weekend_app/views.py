@@ -60,7 +60,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
         for lstcre in creneau_selc:
             for creneaux in lstcre.get("creneau", []):
                 periode_db.add(creneaux[0])  # ex: 'samedi_matin'
-                taches_db.add(f"{str(creneaux[1])}_{str(creneaux[0]).split("_")[0]})  # ID tâche
+                taches_db.add(f"{str(creneaux[1])}_{str(creneaux[0]).split("_")[0]}")  # ID tâche
 
         st.session_state[bdd_key] = {"periodes": periode_db, "taches": taches_db}
 
