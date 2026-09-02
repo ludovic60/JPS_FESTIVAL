@@ -120,7 +120,8 @@ def _game_card(g, list_key, user):
                   
                                val_admin = st.checkbox("Retenir (admin)", value= 1==0, key=f"s_admin_{ckey_this_game}")
                     
-                    if val_admin == has_selected_this_game :
+                    if val_admin  :
+                       logging.info(f"clic sur la checkbox retenu admin ")
                        storage_jeux.toggle_admin_selected(ckey_this_game, val_admin)
                        st.rerun()
 
@@ -249,6 +250,7 @@ def _final_page(user):
     st.title("Liste finale — Prêts")
     st.caption("Tableau croisé : jeux retenus par l'admin × personnes. Cochez les jeux que vous pouvez prêter.")
     finals = storage_jeux.final_games()
+    logging.info(f"liste des jeux selec {finals}")
     users = commun.common_store.get_users()
     loans = storage_jeux.get_loans()
     current_user = user
