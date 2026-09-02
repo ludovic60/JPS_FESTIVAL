@@ -53,10 +53,10 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     list_presence_user = get_presence(user_id)
     # get_presence renvoie une liste (résultat Mongo find) -> on prend le 1er élément
 
-    get_presence(user_id)
+    creneau_selc = get_presence(user_id)
   
     cols = st.columns(3)
-    slot_state = {}
+    
 
     for i, (day, day_label) in enumerate(DAYS):
         # gestion des jours d'installation
@@ -64,35 +64,14 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
             with cols[i]:     
                 with st.container(border=True):
                     st.markdown(f"#### {day_label}")
-    
-                    full_key = f"{key_prefix}_full_{day}"
-                    period_keys = {p: f"{key_prefix}_{_slot_key(day, p)}" for p, _ in PERIODS}
-    
-                    # Initialisation UNIQUE (au premier rendu seulement)
-                    if full_key not in st.session_state:
-                        st.session_state[full_key] = bool(creneau) and all(
-                            creneau.get(_slot_key(day, p), False) for p, _ in PERIODS
-                        )
-                    for p, _ in PERIODS:
-                        pk = period_keys[p]
-                        if pk not in st.session_state:
-                            st.session_state[pk] = creneau.get(_slot_key(day, p), False)
-    
-                    # Callback : quand on coche/décoche "Journée entière",
-                    # on force explicitement l'état des 3 créneaux
-                    def on_full_change(period_keys=period_keys, full_key=full_key):
-                        new_val = st.session_state[full_key]
-                        for pk in period_keys.values():
-                            st.session_state[pk] = new_val
-
-    
-                    for period, plabel in PERIODS:
+                      
+                    for period, plabel in PERIODS_INSTALL:
                         sk = _slot_key(day, period)
-                        for day_inst in DAYS_INSTALL :
-                            if length(DAYS_INSTALL) = PERIODS_ENTIERE :
-                                full = st.checkbox(
+                        PERIODS_INSTALL
+                        if length(DAYS_INSTALL) = PERIODS_ENTIERE :
+                            full = st.checkbox(
                                         "Journée entière",
-                                        key=full_key,
+                                        key=day,
                                         on_change=on_full_change,
                                         )
                                 
