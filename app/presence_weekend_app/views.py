@@ -110,7 +110,8 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                         on_change=on_full_change,
                     )
                                 
-                # creation des checkbox des periods       
+                # creation des checkbox des periods    
+                pkey=""
                 if len(Periods) == PERIODS_ENTIERE :
                     
                    
