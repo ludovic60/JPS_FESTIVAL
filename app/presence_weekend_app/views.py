@@ -189,7 +189,7 @@ def presence_page(user: dict):
         print(selected)
         set_presence(user["id"], user["pseudo"], selected)
         st.success("Présence enregistrée")
-        time.sleep(2)
+        time.sleep(1)
         # 1. Supprimer le cache BDD
         bdd_key = f"db_loaded_self_{user['id']}"
         if bdd_key in st.session_state:
