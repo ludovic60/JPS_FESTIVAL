@@ -305,7 +305,7 @@ def admin_page():
         if not users:
             st.info("Aucun utilisateur.")
             return
-        options = {f"{u['pseudo']} ({u['email']})": u for u in users}
+        options = {f"({u['pseudo']}) ({u['email']})": u for u in users}
         choice = st.selectbox("Personne", list(options.keys()))
         target = options[choice]
 
