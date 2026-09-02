@@ -130,13 +130,13 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                 st.markdown("<hr style='border-top: 3px solid #FF4B4B; margin: 15px 0;'>", unsafe_allow_html=True)   
     
                 st.markdown("#### Tâches souhaitées")
-                
+                tasks={}
                 if day in DAYS_INSTALL :
                     tasks = get_tasks(TYPE_TASK_INSTALL)
                 elif    day in DAYS_ANIMATION  :
                     tasks = get_tasks(TYPE_TASK_ANIMATION)
                 else :
-                    taks =  get_tasks("")
+                    tasks =  get_tasks("")
                     
                
                 task_ids = []
