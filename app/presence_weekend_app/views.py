@@ -310,7 +310,7 @@ def admin_page():
        
         
         choice = st.selectbox("Personne", list(options))
-        target = options[choice]
+        target = {u for u in users if u["pseudo"] == choice.split(" ")[0].replace("(", "").replace(")", "")  and u["email"] == choice.split(" ")[1].replace("(", "").replace(")", "") }
 
         if st.button(f"Réinitialiser les votes de {target["pseudo"]}"):
             clear_user_presence(target["_id"])
