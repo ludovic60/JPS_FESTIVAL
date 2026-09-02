@@ -43,8 +43,7 @@ def main_app(user: dict):
         admin_page()
 
 
-def _slot_key(day, period):
-    return f"{day}_{period}"
+
 
 
 def presence_editor(user_id: str, user_name: str, key_prefix: str):
@@ -92,11 +91,11 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
 
                 # affichage ou non de la checkbox journee entiere
                 def on_full_change():
-                        #status de la checkbox global
-                        new_val = st.session_state[day]
-                        for pk,pk_label in Periods :
-                            #application de ce status sur les differentes periodes de la journee
-                            st.session_state[f"{day}_{pk}"] = new_val
+                    #status de la checkbox global
+                    new_val = st.session_state[day]
+                    for pk,pk_label in Periods :
+                        #application de ce status sur les differentes periodes de la journee
+                        st.session_state[f"{day}_{pk}"] = new_val
                             
                 if length(Periods) == PERIODS_ENTIERE :
                     full = st.checkbox(
@@ -105,9 +104,8 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                         on_change=on_full_change,
                     )
                                 
-                
                 # creation des checkbox des periods       
-               for period, plabel in Periods:
+                for period, plabel in Periods:
                   
                    pkey = f"period_{day}_{period}"
                    if length(Periods) == PERIODS_ENTIERE :
@@ -117,8 +115,8 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                        val = st.checkbox(plabel, key=pkey)
 
                 # alimentation avec les anciennes valeurs 
-               k=0
-               for i in liste_periode :
+                k=0
+                for i in liste_periode :
                     st.session_state[f"{day}_{i}"] = "true"
                     k=k+1
                     if k == PERIODS_ENTIERE : 
