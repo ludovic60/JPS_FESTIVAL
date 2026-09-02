@@ -47,125 +47,111 @@ def main_app(user: dict):
 
 
 def presence_editor(user_id: str, user_name: str, key_prefix: str):
-    """Éditeur de présence réutilisable (soi-même ou, pour l'admin, une autre personne)."""
-    
-    list_presence_user = get_presence(user_id)
-    # get_presence renvoie une liste (résultat Mongo find) -> on prend le 1er élément
+    """Éditeur de présence réutilisable."""
 
     creneau_selc = get_presence(user_id)
-    
-    cols = st.columns(3)
-    tasks=[]
-    liste_periode=[]
-    liste_taches=[]
-    selected = []
-    
-    for i, (day, day_label) in enumerate(DAYS):
-        # recuperation des presence en base 
-     
-        for lstcre in creneau_selc :         
-     
-            for creneaux in lstcre["creneau"] :
-                if creneaux[0].split('_')[0] == day :
-                    liste_periode.append(creneaux[0].split('_')[0])
-                    liste_taches.append(creneaux[1])
-            
-        
-        # gestion des differents type de jour
-        Periods = ""
-        slot_periode = ""
-        
-        for j, j_label in DAYS_INSTALL :
-            if day == j :
-                Periods = PERIODS_INSTALL
-                slot_periode = SLOT_KEYS_INSTALL
-                tasks = get_tasks(TYPE_TASK_INSTALL)
-       
-                    
-        for j, j_label in DAYS_ANIMATION :       
-            if day == j :
-                Periods = PERIODS_ANIMATION
-                slot_periode = SLOT_KEYS_ANIMATION
-                tasks = get_tasks(TYPE_TASK_ANIMATION)
-   
 
-        
-        # gestion de l'affichage     
-        with cols[i]:     
+    # Récupération des présences existantes en BDD pour initialiser si besoin
+    periode_db = set()
+    taches_db = set()
+    for lstcre in creneau_selc:
+        for creneaux in lstcre.get("creneau", []):
+            periode_db.add(creneaux[0])  # ex: 'samedi_matin'
+            taches_db.add(str(creneaux[1]))  # ID tâche en string
+
+    cols = st.columns(3)
+
+    for i, (day, day_label) in enumerate(DAYS):
+
+        # Détermination du type de jour
+        Periods = []
+        tasks = []
+        for j, _ in DAYS_INSTALL:
+            if day == j:
+                Periods = PERIODS_INSTALL
+                tasks = get_tasks(TYPE_TASK_INSTALL)
+
+        for j, _ in DAYS_ANIMATION:
+            if day == j:
+                Periods = PERIODS_ANIMATION
+                tasks = get_tasks(TYPE_TASK_ANIMATION)
+
+        # Affichage dans la colonne
+        with cols[i]:
             with st.container(border=True):
                 st.markdown(f"#### {day_label}")
 
+                # Gestion checkbox "Journée entière"
+                def on_full_change(d=day, p_list=Periods):
+                    new_val = st.session_state[f"{key_prefix}_full_{d}"]
+                    for pk, _ in p_list:
+                        st.session_state[
+                            f"{key_prefix}_period_{d}_{pk}"
+                        ] = new_val
 
-                # affichage ou non de la checkbox journee entiere
-                def on_full_change():
-                    #status de la checkbox global
-                    new_val = st.session_state[day]
-                    for pk,pk_label in Periods :
-                        #application de ce status sur les differentes periodes de la journee
-                        st.session_state[f"{day}_{pk}"] = new_val
-          
-                if len(Periods) == PERIODS_ENTIERE :
-                    full = st.checkbox(
-                        "Journée entière",
-                        key=day,
-                        on_change=on_full_change,
+                if len(Periods) == PERIODS_ENTIERE:
+                    full_key = f"{key_prefix}_full_{day}"
+                    st.checkbox(
+                        "Journée entière", key=full_key, on_change=on_full_change
                     )
-                                
-                # creation des checkbox des periods    
-                pkey=""
-                if len(Periods) == PERIODS_ENTIERE :
-                    
-                   
-                    for period, plabel in Periods:   
-                        pkey = f"period_{day}_{period}"
-                        # gestion de son affichage en fonction de la checkbox journee entiere 
-                        val = st.checkbox(plabel, key=pkey, disabled=full)
-                else :
-                    for period, plabel in Periods:  
-                        pkey = f"period_{day}_{period}"
-                        val = st.checkbox(plabel, key=pkey)
 
-                # alimentation avec les anciennes valeurs 
-                k=0
-                for i in liste_periode :
-                    st.session_state[f"{day}_{i}"] = "true"
-                    k=k+1
-                    #if k == PERIODS_ENTIERE : 
-                    #     st.session_state[day] = "true"
-                         
-                    
-                # Trait personnalisé : épaisseur 3px, couleur rouge (#FF4B4B)
-                st.markdown("<hr style='border-top: 3px solid #FF4B4B; margin: 15px 0;'>", unsafe_allow_html=True)   
-    
+                # Checkboxes des périodes
+                for period, plabel in Periods:
+                    pkey = f"{key_prefix}_period_{day}_{period}"
+
+                    # Initialisation depuis la BDD uniquement au 1er chargement
+                    if pkey not in st.session_state:
+                        st.session_state[pkey] = (
+                            f"{day}_{period}" in periode_db
+                        )
+
+                    is_disabled = st.session_state.get(
+                        f"{key_prefix}_full_{day}", False
+                    )
+                    st.checkbox(plabel, key=pkey, disabled=is_disabled)
+
+                st.markdown(
+                    "<hr style='border-top: 3px solid #FF4B4B; margin: 15px 0;'>",
+                    unsafe_allow_html=True,
+                )
                 st.markdown("#### Tâches souhaitées")
 
-
-                task_ids = []
                 if not tasks:
-                        st.info("Aucune tâche disponible. L'administrateur doit en ajouter.")
+                    st.info("Aucune tâche disponible.")
+
                 for t in tasks:
-                   for lstcre in creneau_selc :                      
-                       for creneaux in lstcre["creneau"] :
-                            task_ids.append( creneaux[1])
-                   checked = str(t["_id"]) in task_ids
-                   st.checkbox(t["tache"], value=checked, key=f"task_{day}_task_{str(t['_id'])}")
+                    t_id = str(t["_id"])
+                    tkey = f"{key_prefix}_task_{day}_{t_id}"
 
-    for key in st.session_state :
-        print("liste des statuts")
-        print(key)
+                    # Initialisation BDD
+                    if tkey not in st.session_state:
+                        st.session_state[tkey] = t_id in taches_db
 
+                    st.checkbox(t["tache"], key=tkey)
+
+    # --- RÉCUPÉRATION DES SÉLECTIONS ---
+    selected = []
+
+    # 1. Récupère toutes les périodes cochées
+    # Clé type: 'self_period_samedi_matin' -> découpe à partir de 'period_'
     list_period_coche = [
-        key.split('_')[1] for key in st.session_state 
-        if key.startswith("period_") and st.session_state[key]
+        key.split(f"{key_prefix}_period_")[1]
+        for key in st.session_state
+        if key.startswith(f"{key_prefix}_period_") and st.session_state[key]
     ]
-           
+
+    # 2. Récupère toutes les tâches cochées
+    # Clé type: 'self_task_samedi_6a8ea959...' -> extrait l'ID après le dernier '_'
     list_task_coche = [
-       key.split('_')[1] for key in st.session_state 
-       if key.startswith("task_") and st.session_state[key]
+        key.split("_")[-1]
+        for key in st.session_state
+        if key.startswith(f"{key_prefix}_task_") and st.session_state[key]
     ]
-    for period in  list_period_coche :
-        for  task in list_task_coche : 
-            selected.append( [period ,task ])
+
+    # Croisement des résultats
+    for period in list_period_coche:
+        for task in list_task_coche:
+            selected.append([period, task])
 
     return selected
 
