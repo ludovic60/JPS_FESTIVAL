@@ -73,13 +73,13 @@ def get_tasks(type):
     return resultats
 
 
-def add_task(label):
-    tasks = get_tasks()
+def add_task(label , type ):
+    tasks = get_tasks(type)
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
         tasks_tb = db.taches
-        new_task = {"_id": str(ObjectId()), "tache": label.strip()}
+        new_task = {"_id": str(ObjectId()), "tache": label.strip() , "type":type.strip()}
         filtre_tb = {}
         ins_tb = {}
         resultat = tasks_tb.insert_one(new_task)
@@ -87,7 +87,7 @@ def add_task(label):
 
 
 
-def update_task(task_id, label):
+def update_task(task_id, label, type):
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
@@ -95,7 +95,7 @@ def update_task(task_id, label):
     
         upd_task_id = ObjectId(task_id)
     
-        resultats =  tasks_tb.update_one({"_id": upd_task_id}, {"$set": {"tache": label}})
+        resultats =  tasks_tb.update_one({"_id": upd_task_id}, {"$set": {"tache": label ,"type": type} })
  
 
 
