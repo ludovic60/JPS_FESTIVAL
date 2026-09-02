@@ -261,6 +261,8 @@ def admin_page():
 
     # ---- Tâches ----
     with tab_tasks:
+
+        choice = st.selectbox("type de tache ", list(options))
         st.subheader("Liste des tâches")
         with st.form("add_task_form", clear_on_submit=True):
             c1, c2 = st.columns([4, 1])
