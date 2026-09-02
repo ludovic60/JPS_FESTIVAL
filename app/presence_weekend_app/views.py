@@ -306,18 +306,17 @@ def admin_page():
         if not users:
             st.info("Aucun utilisateur.")
             return
-        # options = {f"({u['pseudo']}) ({u['email']})" for u in users}
-        options = {u['pseudo'] for u in users}
+        options = {f"({u["pseudo"]}) ({u["email"]})" for u in users}
         choice = st.selectbox("Personne", list(options.keys()))
         target = options[choice]
 
-        if st.button(f"Réinitialiser les votes de {target['pseudo']}"):
+        if st.button(f"Réinitialiser les votes de {target["pseudo"]}"):
             clear_user_presence(target["_id"])
             st.success(f"Votes de {target['pseudo']} réinitialisés")
             st.rerun()
 
         st.markdown("**Modifier les votes de cette personne :**")
-        slot_state, selected = presence_editor(target["_id"], target["pseudo"], f"admin_{target['_id']}")
+        slot_state, selected = presence_editor(target["_id"], target["pseudo"], f"admin_{target["_id"]}")
         if st.button("Enregistrer les votes de cette personne", type="primary"):
             set_presence(target["_id"], target["pseudo"], slot_state, selected)
-            st.success(f"Votes de {target['pseudo']} enregistrés")
+            st.success(f"Votes de {target["pseudo"]} enregistrés")
