@@ -333,9 +333,7 @@ def admin_page():
 
         # 2. Pour afficher l'ID contenu dans target[0] :
         logging.info(target[0]["_id"])
-        print("target")
-        print(target)
-        print(target[0]["_id"])
+ 
                 
         if st.button(f"Réinitialiser les votes de {target[0]["pseudo"]}"):
             clear_user_presence(target[0]["_id"])
