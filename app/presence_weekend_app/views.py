@@ -141,6 +141,8 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                         st.info("Aucune tâche disponible. L'administrateur doit en ajouter.")
                 for t in tasks:
                    for lstcre in creneau_selc :
+                       print(lstcre)
+                       print(lstcre[0])
                        for creneaux in lstcre[0]["creneau"] :
                             task_ids.append( task[1])
                    checked = str(t["_id"]) in task_ids
