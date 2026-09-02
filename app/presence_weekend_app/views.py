@@ -327,10 +327,10 @@ def admin_page():
             for u in users
             if u["pseudo"] == "ludo"
         ]   
-       logging.basicConfig(
+        logging.basicConfig(
             level=logging.INFO,
             format="%(asctime)s - %(levelname)s - %(message)s",
-       )
+        )
 
         # 1. Pour afficher simplement la variable target :
         logging.info("target")
