@@ -335,3 +335,4 @@ def admin_page():
         if st.button("Enregistrer les votes de cette personne", type="primary"):
             set_presence(target[0]["_id"], target[0]["pseudo"], selected)
             st.success(f"Votes de {target[0]["pseudo"]} enregistrés")
+            st.rerun()
