@@ -312,37 +312,90 @@ def admin_page():
             return
         options = {f"({u["pseudo"]}) ({u["email"]})" for u in users}
        
-        
-        choice = st.selectbox("Personne", list(options))
-        print("choice")
-        print(choice)
-        target = [
-            u
-            for u in users
-            if f"({u["pseudo"]}) ({u["email"]})" == choice  
-        ]    
 
-        logging.basicConfig(
-            level=logging.INFO,
-            format="%(asctime)s - %(levelname)s - %(message)s",
+       ###############################################################################################""
+
+
+        # 1. Sélection directe de l'objet utilisateur (plus besoin de filtrer target avec list comprehension)
+        target_user = st.selectbox(
+            "Personne",
+            options=users,
+            format_func=lambda u: f"({u['pseudo']}) ({u['email']})",
         )
+        
+        if target_user:
+            logging.info(
+                f"Utilisateur sélectionné : {target_user['pseudo']} (ID: {target_user['_id']})"
+            )
+        
+            # Bouton de réinitialisation
+            if st.button(f"Réinitialiser les votes de {target_user['pseudo']}"):
+                clear_user_presence(target_user["_id"])
+                st.success(f"Votes de {target_user['pseudo']} réinitialisés")
+        
+                # Supprime le cache de l'éditeur pour forcer un rechargement propre
+                bdd_key = f"db_loaded_admin_{target_user['_id']}"
+                if bdd_key in st.session_state:
+                    del st.session_state[bdd_key]
+        
+                st.rerun()
+        
+            st.markdown("**Modifier les votes de cette personne :**")
+        
+            # Important : on utilise le prefix "admin" pour ne pas entrer en conflit
+            # avec la page "Ma présence" qui utilise "self"
+            selected = presence_editor(
+                target_user["_id"], target_user["pseudo"], key_prefix="admin"
+            )
+        
+            if st.button("Enregistrer les votes de cette personne", type="primary"):
+                set_presence(target_user["_id"], target_user["pseudo"], selected)
+                st.success(f"Votes de {target_user['pseudo']} enregistrés")
+        
+                # Nettoyage du cache après enregistrement
+                bdd_key = f"db_loaded_admin_{target_user['_id']}"
+                if bdd_key in st.session_state:
+                    del st.session_state[bdd_key]
+        
+                st.rerun()
 
-        # 1. Pour afficher simplement la variable target :
-        logging.info("target")
-        logging.info(target)
 
-        # 2. Pour afficher l'ID contenu dans target[0] :
-        logging.info(target[0]["_id"])
+
+
+
+
+
+        ########################################################################################"""
+   #     choice = st.selectbox("Personne", list(options))
+   #     print("choice")
+   #     print(choice)
+   #     target = [
+   #         u
+   #         for u in users
+   #         if f"({u["pseudo"]}) ({u["email"]})" == choice  
+   #     ]    
+
+   #     logging.basicConfig(
+   #         level=logging.INFO,
+   #         format="%(asctime)s - %(levelname)s - %(message)s",
+   #     )
+
+   #     # 1. Pour afficher simplement la variable target :
+   #     logging.info("target")
+   #     logging.info(target)
+
+   #     # 2. Pour afficher l'ID contenu dans target[0] :
+   #     logging.info(target[0]["_id"])
  
                 
-        if st.button(f"Réinitialiser les votes de {target[0]["pseudo"]}"):
-            clear_user_presence(target[0]["_id"])
-            st.success(f"Votes de {target[0]['pseudo']} réinitialisés")
-            st.rerun()
+   #     if st.button(f"Réinitialiser les votes de {target[0]["pseudo"]}"):
+   #         clear_user_presence(target[0]["_id"])
+   #         st.success(f"Votes de {target[0]['pseudo']} réinitialisés")
+   #         st.rerun()
 
-        st.markdown("**Modifier les votes de cette personne :**")
-        selected = presence_editor(target[0]["_id"], target[0]["pseudo"], "admin")
-        if st.button("Enregistrer les votes de cette personne", type="primary"):
-            set_presence(target[0]["_id"], target[0]["pseudo"], selected)
-            st.success(f"Votes de {target[0]["pseudo"]} enregistrés")
-            st.rerun()
+   #     st.markdown("**Modifier les votes de cette personne :**")
+   #     selected = presence_editor(target[0]["_id"], target[0]["pseudo"], "admin")
+   #     if st.button("Enregistrer les votes de cette personne", type="primary"):
+   #         set_presence(target[0]["_id"], target[0]["pseudo"], selected)
+   #         st.success(f"Votes de {target[0]["pseudo"]} enregistrés")
+   #         st.rerun()
