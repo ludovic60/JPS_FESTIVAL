@@ -65,8 +65,8 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
         for lstcre in creneau_selc :
             
             print(lstcre)
-            print(lstcre[0])
-            for creneaux in lstcre[0]["creneau"] :
+  
+            for creneaux in lstcre["creneau"] :
                 print(creneaux)
                 if creneaux[0].split('_')[0] == day :
                     liste_periode.append(creneaux[0].split('_')[0])
@@ -144,9 +144,8 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                         st.info("Aucune tâche disponible. L'administrateur doit en ajouter.")
                 for t in tasks:
                    for lstcre in creneau_selc :
-                       print(lstcre)
-                       print(lstcre[0])
-                       for creneaux in lstcre[0]["creneau"] :
+                      
+                       for creneaux in lstcre["creneau"] :
                             task_ids.append( task[1])
                    checked = str(t["_id"]) in task_ids
                    st.checkbox(t["tache"], value=checked, key=f"task_{day}_task_{str(t['_id'])}")
