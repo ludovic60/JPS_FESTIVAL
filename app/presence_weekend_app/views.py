@@ -148,12 +148,15 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
         for key in st.session_state
         if key.startswith(f"{key_prefix}_task_") and st.session_state[key]
     ]
-    print(list_task_coche)
+
     
     for period in list_period_coche:
-        for task,day in list_task_coche:
-            if day == period.split("_")[0] :
-                selected.append([period, task])
+        for item in list_task_coche:
+            print(item[0])
+            print(item[1])
+            print(period.split("_")[0])
+            if item[0] == period.split("_")[0] :
+                selected.append([period, item[1]])
 
     return selected
 
