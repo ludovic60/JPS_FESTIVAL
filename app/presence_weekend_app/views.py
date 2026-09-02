@@ -62,9 +62,9 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
         # recuperation des presence en base 
         liste_periode=[]
         liste_taches=[]
-        print(creneau_selc)
+        print(length(creneau_selc))
         print(creneau_selc["creneau"])
-        for creneaux in creneau_selc["creneau"] :
+        for creneaux in creneau_selc[0]["creneau"] :
             print(creneaux)
             if creneaux[0].split('_')[0] == day :
                 liste_periode.append(creneaux[0].split('_')[0])
