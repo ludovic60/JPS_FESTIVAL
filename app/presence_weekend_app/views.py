@@ -166,8 +166,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     for period in  list_period_coche :
         for  task in list_task_coche : 
             selected.append( [period ,task ])
-    print("selected")
-    print(selected)
+
     return selected
 
 
@@ -176,10 +175,8 @@ def presence_page(user: dict):
     st.caption("Cochez vos créneaux de disponibilité et vos tâches souhaitées.")
  
     selected = presence_editor(user["id"], user["pseudo"], "self")
-    print(selected)
+
     if st.button("Enregistrer", type="primary"):
-        selected = presence_editor(user["id"], user["pseudo"], "self")
-        print(selected)
         set_presence(user["id"], user["pseudo"],  selected)
         st.success("Présence enregistrée")
 
