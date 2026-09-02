@@ -64,10 +64,8 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     
         for lstcre in creneau_selc :
             
-            print(lstcre)
-  
+     
             for creneaux in lstcre["creneau"] :
-                print(creneaux)
                 if creneaux[0].split('_')[0] == day :
                     liste_periode.append(creneaux[0].split('_')[0])
                     liste_taches.append(creneaux[1])
@@ -99,7 +97,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                     for pk,pk_label in Periods :
                         #application de ce status sur les differentes periodes de la journee
                         st.session_state[f"{day}_{pk}"] = new_val
-                            
+                print(len(Periods))           
                 if len(Periods) == PERIODS_ENTIERE :
                     full = st.checkbox(
                         "Journée entière",
