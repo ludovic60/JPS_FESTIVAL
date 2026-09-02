@@ -194,6 +194,18 @@ def presence_page(user: dict):
         bdd_key = f"db_loaded_self_{user['id']}"
         if bdd_key in st.session_state:
             del st.session_state[bdd_key]
+        # 2 recreation du nouveau cache 
+        if bdd_key not in st.session_state:
+            creneau_selc = get_presence(user_id)
+            periode_db = set()
+            taches_db = set()
+    
+            for lstcre in creneau_selc:
+                for creneaux in lstcre.get("creneau", []):
+                    periode_db.add(creneaux[0])  # ex: 'samedi_matin'
+                    taches_db.add(f"{str(creneaux[1])}_{str(creneaux[0]).split("_")[0]}")  # ID tâche
+    
+            st.session_state[bdd_key] = {"periodes": periode_db, "taches": taches_db}
 
         # 2. Nettoyer les clés des checkboxes pour forcer le rechargement BDD
         keys_to_del = [
