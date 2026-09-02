@@ -176,18 +176,24 @@ def presence_page(user: dict):
     st.caption("Cochez vos créneaux de disponibilité et vos tâches souhaitées.")
 
     selected = presence_editor(user["id"], user["pseudo"], "self")
-    
 
     if st.button("Enregistrer", type="primary"):
         set_presence(user["id"], user["pseudo"], selected)
-        print("selected")
-        print(selected)
         st.success("Présence enregistrée")
 
-        # On supprime le cache de données pour forcer un rechargement frais de la BDD lors du prochain affichage
+        # 1. Supprimer le cache BDD
         bdd_key = f"db_loaded_self_{user['id']}"
         if bdd_key in st.session_state:
             del st.session_state[bdd_key]
+
+        # 2. Nettoyer les clés des checkboxes pour forcer le rechargement BDD
+        keys_to_del = [
+            k for k in st.session_state if k.startswith("self_")
+        ]
+        for k in keys_to_del:
+            del st.session_state[k]
+
+        st.rerun()  # Recharge l'application immédiatement
 
 def recap_page():
     st.title("Tableau récapitulatif")
