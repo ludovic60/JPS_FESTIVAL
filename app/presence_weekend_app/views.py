@@ -331,7 +331,7 @@ def admin_page():
             st.rerun()
 
         st.markdown("**Modifier les votes de cette personne :**")
-        selected = presence_editor(target[0]["_id"], target[0]["pseudo"], f"admin_{target[0]["_id"]}")
+        selected = presence_editor(target[0]["_id"], target[0]["pseudo"], "self")
         if st.button("Enregistrer les votes de cette personne", type="primary"):
             set_presence(target[0]["_id"], target[0]["pseudo"], selected)
             st.success(f"Votes de {target[0]["pseudo"]} enregistrés")
