@@ -62,14 +62,14 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
         # recuperation des presence en base 
         liste_periode=[]
         liste_taches=[]
-        print(length(creneau_selc))
-        print(creneau_selc["creneau"])
-        for creneaux in creneau_selc[0]["creneau"] :
-            print(creneaux)
-            if creneaux[0].split('_')[0] == day :
-                liste_periode.append(creneaux[0].split('_')[0])
-                liste_taches.append(creneaux[1])
-        
+    
+        for lstcre in creneau_selc
+            for creneaux in lstcre[0]["creneau"] :
+                print(creneaux)
+                if creneaux[0].split('_')[0] == day :
+                    liste_periode.append(creneaux[0].split('_')[0])
+                    liste_taches.append(creneaux[1])
+            
         
         # gestion des differents type de jour
     
@@ -142,7 +142,8 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                if not tasks:
                         st.info("Aucune tâche disponible. L'administrateur doit en ajouter.")
                for t in tasks:
-                        for task in creneau_selc["creneau"] :
+                   for lstcre in creneau_selc
+                       for creneaux in lstcre[0]["creneau"] :
                             task_ids.append( task[1])
                         checked = str(t["_id"]) in task_ids
                         st.checkbox(t["tache"], value=checked, key=f"task_{day}_task_{str(t['_id'])}")
