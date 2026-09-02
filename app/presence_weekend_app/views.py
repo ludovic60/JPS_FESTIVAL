@@ -188,6 +188,7 @@ def presence_page(user: dict):
     selected = presence_editor(user["id"], user["pseudo"], "self")
 
     if st.button("Enregistrer", type="primary"):
+        print(selected)
         set_presence(user["id"], user["pseudo"], selected)
         st.success("Présence enregistrée")
 
