@@ -63,6 +63,9 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
         liste_taches=[]
     
         for lstcre in creneau_selc :
+            
+            print(lstcre)
+            print(lstcre[0])
             for creneaux in lstcre[0]["creneau"] :
                 print(creneaux)
                 if creneaux[0].split('_')[0] == day :
