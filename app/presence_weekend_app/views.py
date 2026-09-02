@@ -316,17 +316,12 @@ def admin_page():
         choice = st.selectbox("Personne", list(options))
         print("choice")
         print(choice)
-#        target = [
-#            u
-#            for u in users
-#            if f"({u["pseudo"]}) ({u["email"]})" == choice  
-#        ]    
-
         target = [
             u
             for u in users
-            if u["pseudo"] == "ludo"
-        ]   
+            if f"({u["pseudo"]}) ({u["email"]})" == choice  
+        ]    
+
         logging.basicConfig(
             level=logging.INFO,
             format="%(asctime)s - %(levelname)s - %(message)s",
