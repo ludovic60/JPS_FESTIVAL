@@ -62,7 +62,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
         # recuperation des presence en base 
         liste_periode=[]
         liste_taches==[]
-        for creneau in creneau_selc
+        for creneau in creneau_selc :
             if creneau[0].split('_')[0] = day :
                 liste_periode.append(creneau[0].split('_')[0])
                 liste_taches.append(creneau[1])
@@ -110,7 +110,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                    if length(Periods) = PERIODS_ENTIERE :
                        # gestion de son affichage en fonction de la checkbox journee entiere 
                        val = st.checkbox(plabel, key=pkey, disabled=full)
-                   else
+                   else :
                        val = st.checkbox(plabel, key=pkey)
 
                 # alimentation avec les anciennes valeurs 
