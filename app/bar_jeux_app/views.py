@@ -116,7 +116,7 @@ def _game_card(g, list_key, user):
 
                   
                     # 2.admin a retenu ce jeu ?
-                    has_selected_this_game = [admin_sel["id_jeux"] for sadmin in select_this_game]
+                    has_selected_this_game = [admin_sel[0]["id_jeux"] for sadmin in select_this_game]
 
                     if has_selected_this_game :
                              
