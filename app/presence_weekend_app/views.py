@@ -13,6 +13,7 @@ racine_projet = Path(__file__).resolve().parent.parent
 sys.path.append(str(racine_projet))
 
 import commun.auth
+import commun.commmon_store
 
 def on_page_change():
     """Déclenché automatiquement dès que l'utilisateur change de page dans la sidebar."""
@@ -300,7 +301,7 @@ def admin_page():
 
         st.divider()
         st.subheader("Modifier / réinitialiser les votes d'une personne")
-        users = [u for u in commun.auth.get_users()]
+        users = [u for u in commmon_store.get_users()]
         if not users:
             st.info("Aucun utilisateur.")
             return
