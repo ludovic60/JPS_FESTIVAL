@@ -181,7 +181,7 @@ def recap_page():
     st.title("Tableau récapitulatif")
     st.caption("Tâches (lignes) × Jours & créneaux (colonnes). Les personnes présentes apparaissent dans chaque cellule.")
 
-    tasks = get_tasks()
+    tasks = get_tasks("all")
     print("TACHE")
     print(tasks)
     presence = get_all_presence()
