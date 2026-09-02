@@ -122,10 +122,10 @@ def _game_card(g, list_key, user):
                            
                     if has_selected_this_game :
                              
-                               val_admin = st.checkbox("Retenir (admin)", value= 1==1, key=f"s_admin_{ckey_this_game}", on_change:on_admin_change)
+                               val_admin = st.checkbox("Retenir (admin)", value= 1==1, key=f"s_admin_{ckey_this_game}", on_change=on_admin_change)
                     else :            
                   
-                               val_admin = st.checkbox("Retenir (admin)", value= 1==0, key=f"s_admin_{ckey_this_game}", on_change:on_admin_change)
+                               val_admin = st.checkbox("Retenir (admin)", value= 1==0, key=f"s_admin_{ckey_this_game}", on_change=on_admin_change)
                     
                    
                        
