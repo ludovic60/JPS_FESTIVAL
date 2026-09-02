@@ -310,10 +310,12 @@ def admin_page():
        
         
         choice = st.selectbox("Personne", list(options))
-        target={}
-        for u in users if u["pseudo"] == choice.split(" ")[0].replace("(", "").replace(")", "")  and u["email"] == choice.split(" ")[1].replace("(", "").replace(")", "") :
-            print(u)
-            target.append(u)
+    
+        target = [
+            u
+            for u in users
+            if f"{u['pseudo']} ({u['email']})" == choice  # Comparaison directe avec le format du selectbox
+        ]    
 
         if st.button(f"Réinitialiser les votes de {target["pseudo"]}"):
             clear_user_presence(target["_id"])
