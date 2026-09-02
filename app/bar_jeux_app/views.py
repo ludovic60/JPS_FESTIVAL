@@ -1,4 +1,8 @@
 """Vues Streamlit pour Bar à jeux."""
+
+
+           
+import logging
 import pandas as pd
 import streamlit as st
 import bcrypt
@@ -220,7 +224,7 @@ def _list_page(title, list_key, user):
                     _game_card(g, list_key, user)
     else:
         st.info("Aucun jeu ne correspond à votre recherche.")
-
+     logging.info(f"Utilisateur sélectionné : {user_pseudo} (ID: {user_id})")
    
 def requests_suggestion_page(user):
     st.title("liste des suggestions par les joueurs")
