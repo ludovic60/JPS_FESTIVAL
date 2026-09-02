@@ -54,67 +54,118 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     # get_presence renvoie une liste (résultat Mongo find) -> on prend le 1er élément
 
     creneau_selc = get_presence(user_id)
-  
+    
     cols = st.columns(3)
     
 
     for i, (day, day_label) in enumerate(DAYS):
-        # gestion des jours d'installation
+        # recuperation des presence en base 
+        liste_periode=[]
+        liste_taches==[]
+        for creneau in creneau_selc
+            if creneau[0].split('_')[0] = day :
+                liste_periode.append(creneau[0].split('_')[0])
+                liste_taches.append(creneau[1])
+        
+        
+        # gestion des differents type de jour
+    
         if day in DAYS_INSTALL :
-            with cols[i]:     
-                with st.container(border=True):
-                    st.markdown(f"#### {day_label}")
-                      
-                    for period, plabel in PERIODS_INSTALL:
-                        sk = _slot_key(day, period)
-                        PERIODS_INSTALL
-                        if length(DAYS_INSTALL) = PERIODS_ENTIERE :
+            Periods = PERIODS_INSTALL
+            slot_periode = SLOT_KEYS_INSTALL
+        elif    day in DAYS_ANIMATION  :
+            Periods = PERIODS_INSTALL
+            slot_periode = SLOT_KEYS_INSTALL
+        else :
+            Periods = ""
+            slot_periode = ""
+
+        
+        # gestion de l'affichage     
+        with cols[i]:     
+            with st.container(border=True):
+                st.markdown(f"#### {day_label}")
+
+
+                # affichage ou non de la checkbox journee entiere
+                def on_full_change():
+                        #status de la checkbox global
+                        new_val = st.session_state[day]
+                        for pk,pk_label in Periods :
+                            #application de ce status sur les differentes periodes de la journee
+                            st.session_state[f"{day}_{pk}"] = new_val
+                            
+                 if length(Periods) = PERIODS_ENTIERE :
                             full = st.checkbox(
                                         "Journée entière",
                                         key=day,
                                         on_change=on_full_change,
                                         )
                                 
-                            if day in day_inst[0]: 
-                                for period_inst in PERIODS_INSTALL :
-                                    if period == period_inst[0] :
-                                        pkey = period_keys[period]
-                                        val = st.checkbox(plabel, key=pkey, disabled=full)
-                                        slot_state[sk] = val
-                            else : 
-                                 pkey = period_keys[period]
-                                 val = st.checkbox(plabel, key=pkey, disabled=full)
-                                 slot_state[sk] = val
-                    
-                    # Trait personnalisé : épaisseur 3px, couleur rouge (#FF4B4B)
-                    st.markdown("<hr style='border-top: 3px solid #FF4B4B; margin: 15px 0;'>", unsafe_allow_html=True)   
-    
-                    st.markdown("#### Tâches souhaitées")
-                    tasks = get_tasks()
-                    
-                    selected = []
-                    if not tasks:
-                        st.info("Aucune tâche disponible. L'administrateur doit en ajouter.")
-                    for t in tasks:
-                        checked = str(t["_id"]) in task_ids
-                        if st.checkbox(t["tache"], value=checked, key=f"{key_prefix}_{period_keys}_task_{str(t['_id'])}"):
-                            selected.append({period_keys}_task_{str(t['_id']))
+                
+                # creation des checkbox des periods       
+                for period, plabel in Periods:
+                  
+                   pkey = f"period_{day}_{period}"
+                   if length(Periods) = PERIODS_ENTIERE :
+                       # gestion de son affichage en fonction de la checkbox journee entiere 
+                       val = st.checkbox(plabel, key=pkey, disabled=full)
+                   else
+                       val = st.checkbox(plabel, key=pkey)
 
-                                                                
-        # gestion des jours d'animation
-        else  day in DAYS_ANIMATION :                    
-   
+                # alimentation avec les anciennes valeurs 
+                k=0
+                for i in liste_periode :
+                    st.session_state[f"{day}_{i}"] = "true"
+                    k=k+1
+                    if k == PERIODS_ENTIERE : 
+                         st.session_state[day] = "true"
+                         
+                    
+                 # Trait personnalisé : épaisseur 3px, couleur rouge (#FF4B4B)
+                 st.markdown("<hr style='border-top: 3px solid #FF4B4B; margin: 15px 0;'>", unsafe_allow_html=True)   
     
-        else :
-            selected={}
-    return slot_state, selected
+                 st.markdown("#### Tâches souhaitées")
+                
+                if day in DAYS_INSTALL :
+                    tasks = get_tasks(TYPE_TASK_INSTALL)
+                elif    day in DAYS_ANIMATION  :
+                    tasks = get_tasks(TYPE_TASK_ANIMATION)
+                else :
+                    taks =  get_tasks("")
+                    
+               
+                task_ids = []
+                if not tasks:
+                        st.info("Aucune tâche disponible. L'administrateur doit en ajouter.")
+                for t in tasks:
+                        for task in creneau_selc
+                            task_ids.append( task[1]))
+                        checked = str(t["_id"]) in task_ids
+                        st.checkbox(t["tache"], value=checked, key=f"task_{day}_task_{str(t['_id'])}"):
+                        
+                 selected = []
+                list_period_coche = [
+                    key.split('_')[1] for key in st.session_state 
+                    if key.startswith("period_") and st.session_state[key]
+                ]
+                
+                list_task_coche = [
+                    key.split('_')[1] for key in st.session_state 
+                    if key.startswith("task_") and st.session_state[key]
+                ]
+                for period in  list_period_coche :
+                    for  task in list_task_coche : 
+                        selected.append( [period ,task ])
+   
+    return selected
 
 
 def presence_page(user: dict):
     st.title("Ma présence")
     st.caption("Cochez vos créneaux de disponibilité (Samedi & Dimanche) et vos tâches souhaitées.")
  
-    slot_state, selected = presence_editor(user["id"], user["pseudo"], "self")
+    selected = presence_editor(user["id"], user["pseudo"], "self")
     if st.button("Enregistrer", type="primary"):
         set_presence(user["id"], user["pseudo"], slot_state, selected)
         st.success("Présence enregistrée")
