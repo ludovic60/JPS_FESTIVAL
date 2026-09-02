@@ -316,7 +316,7 @@ def admin_page():
        ###############################################################################################""
 
 
-        # 1. Sélection directe de l'objet utilisateur (plus besoin de filtrer target avec list comprehension)
+        # 1. Sélection de l'utilisateur
         target_user = st.selectbox(
             "Personne",
             options=users,
@@ -324,17 +324,22 @@ def admin_page():
         )
         
         if target_user:
-            logging.info(
-                f"Utilisateur sélectionné : {target_user['pseudo']} (ID: {target_user['_id']})"
-            )
+            user_id = str(target_user["_id"])
+            user_pseudo = target_user["pseudo"]
         
-            # Bouton de réinitialisation
-            if st.button(f"Réinitialiser les votes de {target_user['pseudo']}"):
-                clear_user_presence(target_user["_id"])
-                st.success(f"Votes de {target_user['pseudo']} réinitialisés")
+            # ON DYNAMISE LE PREFIX AVEC L'ID :
+            # Cela garantit que chaque utilisateur a ses propres clés d'état
+            dynamic_prefix = f"admin_{user_id}"
         
-                # Supprime le cache de l'éditeur pour forcer un rechargement propre
-                bdd_key = f"db_loaded_admin_{target_user['_id']}"
+            logging.info(f"Utilisateur sélectionné : {user_pseudo} (ID: {user_id})")
+        
+            # Bouton Réinitialiser
+            if st.button(f"Réinitialiser les votes de {user_pseudo}"):
+                clear_user_presence(user_id)
+                st.success(f"Votes de {user_pseudo} réinitialisés")
+        
+                # Invalidation du cache propre à CET utilisateur
+                bdd_key = f"db_loaded_{dynamic_prefix}_{user_id}"
                 if bdd_key in st.session_state:
                     del st.session_state[bdd_key]
         
@@ -342,23 +347,22 @@ def admin_page():
         
             st.markdown("**Modifier les votes de cette personne :**")
         
-            # Important : on utilise le prefix "admin" pour ne pas entrer en conflit
-            # avec la page "Ma présence" qui utilise "self"
+            # 2. Appel de l'éditeur avec le prefixe dynamique
             selected = presence_editor(
-                target_user["_id"], target_user["pseudo"], key_prefix="admin"
+                user_id, user_pseudo, key_prefix=dynamic_prefix
             )
         
+            # Bouton Enregistrer
             if st.button("Enregistrer les votes de cette personne", type="primary"):
-                set_presence(target_user["_id"], target_user["pseudo"], selected)
-                st.success(f"Votes de {target_user['pseudo']} enregistrés")
+                set_presence(user_id, user_pseudo, selected)
+                st.success(f"Votes de {user_pseudo} enregistrés")
         
-                # Nettoyage du cache après enregistrement
-                bdd_key = f"db_loaded_admin_{target_user['_id']}"
+                # Invalidation du cache pour forcer la re-lecture BDD au prochain tour
+                bdd_key = f"db_loaded_{dynamic_prefix}_{user_id}"
                 if bdd_key in st.session_state:
                     del st.session_state[bdd_key]
         
                 st.rerun()
-
 
 
 
