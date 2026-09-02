@@ -327,9 +327,17 @@ def admin_page():
             for u in users
             if u["pseudo"] == "ludo"
         ]   
-        logging.basicConfig(    level=logging.INFO, format="%(asctime)s - %(levelname)s - %target")
-        logging.basicConfig(    level=logging.INFO, format="%(asctime)s - %(levelname)s - %{target}")
-        logging.basicConfig(    level=logging.INFO, format="%(asctime)s - %(levelname)s - %{target[0]["_id"]}")
+       logging.basicConfig(
+            level=logging.INFO,
+            format="%(asctime)s - %(levelname)s - %(message)s",
+       )
+
+        # 1. Pour afficher simplement la variable target :
+        logging.info("target")
+        logging.info(target)
+
+        # 2. Pour afficher l'ID contenu dans target[0] :
+        logging.info(target[0]["_id"])
         print("target")
         print(target)
         print(target[0]["_id"])
