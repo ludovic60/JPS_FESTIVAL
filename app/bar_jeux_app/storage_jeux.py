@@ -202,7 +202,7 @@ def remove_request(type_request, req_id):
 
 
 def all_list_keys():
-    return [k for k, _ in config.month_keys()] + [config.VIEUX_KEY]
+    return [k for k, _ in config_bar_jeux.month_keys()] + [config_bar_jeux.VIEUX_KEY]
 
 
 def final_games():
