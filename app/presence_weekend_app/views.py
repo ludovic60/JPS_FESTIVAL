@@ -84,7 +84,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
         # gestion de l'affichage     
         with cols[i]:     
             with st.container(border=True):
-                st.markdown(f"#### {day_label}")
+               st.markdown(f"#### {day_label}")
 
 
                 # affichage ou non de la checkbox journee entiere
