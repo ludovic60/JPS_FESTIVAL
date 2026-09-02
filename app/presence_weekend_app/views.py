@@ -229,16 +229,16 @@ def presence_page(user: dict):
 
     # st.rerun()  # Recharge l'application immédiatement
 
+
+############### page de recap de toutes les presences 
 def recap_page():
     st.title("Tableau récapitulatif")
     st.caption("Tâches (lignes) × Jours & créneaux (colonnes). Les personnes présentes apparaissent dans chaque cellule.")
 
     tasks = get_tasks("all")
-    print("TACHE")
-    print(tasks)
+
     presence = get_all_presence()
-    print("presence")
-    print(presence)
+
 
 
 
@@ -247,14 +247,11 @@ def recap_page():
     matrix = {str(t["_id"]): {c[0]: [] for c in columns} for t in tasks}
     for p in presence :
         name = p["pseudo"]
-        for tid in p["task_ids"]:
+        for sk , tid in p["creneau"]:
             if str(tid) in matrix:
-                for sk, statut in p["creneau"].items() :
-                    if statut:
-                        if  sk in matrix[tid]:
-                            matrix[tid][sk].append(name)
-    print("matrix")
-    print(matrix)
+                if  sk in matrix[tid]:
+                    matrix[tid][sk].append(name)
+   
     head = "<tr><th>Tâche</th>" + "".join(
         f"<th>{c[1]}<br><span style='font-weight:400;font-size:11px;opacity:.7'>{c[2]}</span></th>"
         for c in columns
