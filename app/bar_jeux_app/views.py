@@ -114,7 +114,7 @@ def _game_card(g, list_key, user):
                     has_selected_this_game = [admin_sel[0]["id_jeux"] for sadmin in select_this_game]
                     val_admin=""  
 
-                    def on_admin_change(ckey_this_game,  val_admin):
+                    def on_admin_change():
                        logging.info(f"clic sur la checkbox retenu admin ")
                        storage_jeux.toggle_admin_selected(ckey_this_game, val_admin)
                        st.rerun()     
