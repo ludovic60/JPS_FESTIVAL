@@ -118,9 +118,9 @@ def _game_card(g, list_key, user):
                     val_admin = st.checkbox("Retenir (admin)", value= 1==0, key=f"s_admin_{ckey_this_game}")
             
                     
-                    if val_admin != has_selected_this_game :
-                       storage_jeux.toggle_admin_selected(ckey_this_game, val_admin)
-                       st.rerun()
+                    #if val_admin != has_selected_this_game :
+                    #   storage_jeux.toggle_admin_selected(ckey_this_game, val_admin)
+                    #   st.rerun()
 
                     
                 else:
