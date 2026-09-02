@@ -133,7 +133,7 @@ def _game_card(g, list_key, user):
                     select_this_game = [adsel for adsel in admin_sel if str(adsel.get("id_jeux")) == ckey_this_game]
                     
                     # 2.admin a retenu ce jeu ?
-                    has_selected_this_game = [admin_sel["id_jeux"] for sadmin in select_this_game]
+                    has_selected_this_game = [admin_sel[0]["id_jeux"] for sadmin in select_this_game]
 
                     if has_selected_this_game :
                         val_admin = st.label("retenu dans selection final")
