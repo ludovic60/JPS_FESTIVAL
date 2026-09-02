@@ -136,7 +136,7 @@ def _game_card(g, list_key, user):
                     has_selected_this_game = [admin_sel[0]["id_jeux"] for sadmin in select_this_game]
 
                     if has_selected_this_game :
-                        val_admin = st.label("retenu dans selection final")
+                        val_admin = st.text("retenu dans selection final")
                     
                     # 1. On ne garde que les suggestions spécifiques à CE jeu
                     sugg_this_game = [s for s in sugg if str(s.get("id_jeux")) == ckey_this_game]
