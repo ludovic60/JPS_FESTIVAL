@@ -59,8 +59,9 @@ def get_tasks(type):
     if   con_mongo : 
         db = cs.get_db()
         tasks_tb = db.taches
-        if type : 
-            
+        if type == "all": 
+            filtre_tb = {}
+        elif type :
             filtre_tb = {"type":type}
         else :
             filtre_tb = {}
