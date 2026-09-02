@@ -109,18 +109,13 @@ def _game_card(g, list_key, user):
                 if is_admin:
                      # 1. On ne garde que les suggestions spécifiques à CE jeu
                     select_this_game = [adsel for adsel in admin_sel if str(adsel.get("id_jeux")) == ckey_this_game]
-                    print(" select")
-                    print(select_this_game)
-                    print("id jeu")
-                    print(select_this_game[0])
-
                   
                     # 2.admin a retenu ce jeu ?
                     has_selected_this_game = [admin_sel[0]["id_jeux"] for sadmin in select_this_game]
 
                     if has_selected_this_game :
                              
-                        val_admin = st.checkbox("Retenir (admin)", value=has_selected_this_game, key=f"s_admin_{ckey_this_game}")
+                        val_admin = st.checkbox("Retenir (admin)", value= 1==1, key=f"s_admin_{ckey_this_game}")
             
                     
                     if val_admin != has_selected_this_game :
@@ -226,7 +221,7 @@ def _list_page(title, list_key, user):
         st.info("Aucun jeu ne correspond à votre recherche.")
     logging.info(f"Utilisateur sélectionné : )")
    
-def requests_suggestion_page(user):
+def _requests_suggestion_page(user):
     st.title("liste des suggestions par les joueurs")
 
 
