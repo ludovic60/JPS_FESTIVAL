@@ -134,7 +134,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
 
                     # Si la clé n'existe pas encore dans session_state, on l'initialise
                     if tkey not in st.session_state:
-                        tache_coche = str([item.split("_")[0] for item in initial_taches if item.split("_")[1] == day and item.split("_")[0] == t_id][0])
+                        tache_coche = ([item.split("_")[0] for item in initial_taches if item.split("_")[1] == day and item.split("_")[0] == t_id])
                         #tache_coche = [item for item in initial_taches if item.split("_")[1] == day]
                         tache_coche2 = [item for item in initial_taches]
                         
@@ -143,7 +143,8 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                         print(tache_coche2)
                         
                         if tache_coche :
-                            st.session_state[tkey] = tache_coche
+                            print(str(tache_coche[0]))
+                            st.session_state[tkey] = str(tache_coche[0])
 
                     # ON NE PASSE PLUS value= ICI
                     st.checkbox(t["tache"], key=tkey)
