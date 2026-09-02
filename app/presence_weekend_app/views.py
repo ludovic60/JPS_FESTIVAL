@@ -1,6 +1,6 @@
 """Vues / écrans Streamlit."""
 import html
-
+import logging
 import streamlit as st
 from  storage_presence import get_presence, clear_user_presence, clear_all_presence, get_all_presence, get_tasks, add_task, update_task, delete_task, set_presence
 import sys
@@ -327,6 +327,9 @@ def admin_page():
             for u in users
             if u["pseudo"] == "ludo"
         ]   
+        logging.basicConfig(    level=logging.INFO, format="%(asctime)s - %(levelname)s - %target")
+        logging.basicConfig(    level=logging.INFO, format="%(asctime)s - %(levelname)s - %{target}")
+        logging.basicConfig(    level=logging.INFO, format="%(asctime)s - %(levelname)s - %{target[0]["_id"]}")
         print("target")
         print(target)
         print(target[0]["_id"])
