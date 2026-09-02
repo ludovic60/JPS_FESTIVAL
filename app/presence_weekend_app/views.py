@@ -146,7 +146,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                    for lstcre in creneau_selc :
                       
                        for creneaux in lstcre["creneau"] :
-                            task_ids.append( t[1])
+                            task_ids.append( creneaux[1])
                    checked = str(t["_id"]) in task_ids
                    st.checkbox(t["tache"], value=checked, key=f"task_{day}_task_{str(t['_id'])}")
                         
