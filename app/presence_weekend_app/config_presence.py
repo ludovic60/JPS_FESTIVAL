@@ -5,6 +5,7 @@ from pathlib import Path
 
 TYPE_TASK_INSTALL ="installation"
 TYPE_TASK_ANIMATION ="animation"
+LIST_TYPE_TASK = [ "installation" , "animation"]
 
 DAYS_INSTALL = [("vendredi", "Vendredi")]
 PERIODS_INSTALL = [("apres_midi", "Après-midi")]
