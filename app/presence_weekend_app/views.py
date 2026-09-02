@@ -152,8 +152,11 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     
     for period in list_period_coche:
         for item in list_task_coche:
+            print("jour tache")
             print(item[0])
+            print("tache")
             print(item[1])
+            print("jour")
             print(period.split("_")[0])
             if item[0] == period.split("_")[0] :
                 selected.append([period, item[1]])
@@ -165,9 +168,12 @@ def presence_page(user: dict):
     st.caption("Cochez vos créneaux de disponibilité et vos tâches souhaitées.")
 
     selected = presence_editor(user["id"], user["pseudo"], "self")
+    
 
     if st.button("Enregistrer", type="primary"):
         set_presence(user["id"], user["pseudo"], selected)
+        print("selected")
+        print(selected)
         st.success("Présence enregistrée")
 
         # On supprime le cache de données pour forcer un rechargement frais de la BDD lors du prochain affichage
