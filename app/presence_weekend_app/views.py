@@ -202,32 +202,32 @@ def presence_page(user: dict):
         print(selected)
         set_presence(user["id"], user["pseudo"], selected)
         st.success("Présence enregistrée")
-        time.sleep(1)
-        # 1. Supprimer le cache BDD
-        bdd_key = f"db_loaded_self_{user['id']}"
-        if bdd_key in st.session_state:
-            del st.session_state[bdd_key]
-        # 2 recreation du nouveau cache 
-        if bdd_key not in st.session_state:
-            creneau_selc = get_presence(user_id)
-            periode_db = set()
-            taches_db = set()
-    
-            for lstcre in creneau_selc:
-                for creneaux in lstcre.get("creneau", []):
-                    periode_db.add(creneaux[0])  # ex: 'samedi_matin'
-                    taches_db.add(f"{str(creneaux[1])}_{str(creneaux[0]).split("_")[0]}")  # ID tâche
-    
-            st.session_state[bdd_key] = {"periodes": periode_db, "taches": taches_db}
+    #    time.sleep(1)
+    #    # 1. Supprimer le cache BDD
+    #    bdd_key = f"db_loaded_self_{user['id']}"
+    #    if bdd_key in st.session_state:
+    #        del st.session_state[bdd_key]
+    #    # 2 recreation du nouveau cache 
+    #    if bdd_key not in st.session_state:
+    #        creneau_selc = get_presence(user_id)
+    #        periode_db = set()
+    #        taches_db = set()
+    # 
+    #        for lstcre in creneau_selc:
+    #            for creneaux in lstcre.get("creneau", []):
+    #                periode_db.add(creneaux[0])  # ex: 'samedi_matin'
+    #                taches_db.add(f"{str(creneaux[1])}_{str(creneaux[0]).split("_")[0]}")  # ID tâche
+    #
+    #        st.session_state[bdd_key] = {"periodes": periode_db, "taches": taches_db}
+    #
+    #    # 2. Nettoyer les clés des checkboxes pour forcer le rechargement BDD
+    #    keys_to_del = [
+    #        k for k in st.session_state if k.startswith("self_")
+    #    ]
+    #    for k in keys_to_del:
+    #        del st.session_state[k]
 
-        # 2. Nettoyer les clés des checkboxes pour forcer le rechargement BDD
-        keys_to_del = [
-            k for k in st.session_state if k.startswith("self_")
-        ]
-        for k in keys_to_del:
-            del st.session_state[k]
-
-    st.rerun()  # Recharge l'application immédiatement
+    # st.rerun()  # Recharge l'application immédiatement
 
 def recap_page():
     st.title("Tableau récapitulatif")
