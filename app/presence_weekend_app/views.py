@@ -88,14 +88,14 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
 
 
                 # affichage ou non de la checkbox journee entiere
-                def on_full_change():
+               def on_full_change():
                         #status de la checkbox global
                         new_val = st.session_state[day]
                         for pk,pk_label in Periods :
                             #application de ce status sur les differentes periodes de la journee
                             st.session_state[f"{day}_{pk}"] = new_val
                             
-                if length(Periods) == PERIODS_ENTIERE :
+               if length(Periods) == PERIODS_ENTIERE :
                     full = st.checkbox(
                         "Journée entière",
                         key=day,
@@ -104,7 +104,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                                 
                 
                 # creation des checkbox des periods       
-                for period, plabel in Periods:
+               for period, plabel in Periods:
                   
                    pkey = f"period_{day}_{period}"
                    if length(Periods) == PERIODS_ENTIERE :
@@ -114,8 +114,8 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                        val = st.checkbox(plabel, key=pkey)
 
                 # alimentation avec les anciennes valeurs 
-                k=0
-                for i in liste_periode :
+               k=0
+               for i in liste_periode :
                     st.session_state[f"{day}_{i}"] = "true"
                     k=k+1
                     if k == PERIODS_ENTIERE : 
@@ -123,38 +123,38 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                          
                     
                  # Trait personnalisé : épaisseur 3px, couleur rouge (#FF4B4B)
-                 st.markdown("<hr style='border-top: 3px solid #FF4B4B; margin: 15px 0;'>", unsafe_allow_html=True)   
+               st.markdown("<hr style='border-top: 3px solid #FF4B4B; margin: 15px 0;'>", unsafe_allow_html=True)   
     
-                 st.markdown("#### Tâches souhaitées")
+               st.markdown("#### Tâches souhaitées")
                 
-                if day in DAYS_INSTALL :
+               if day in DAYS_INSTALL :
                     tasks = get_tasks(TYPE_TASK_INSTALL)
-                elif    day in DAYS_ANIMATION  :
+               elif    day in DAYS_ANIMATION  :
                     tasks = get_tasks(TYPE_TASK_ANIMATION)
-                else :
+               else :
                     taks =  get_tasks("")
                     
                
-                task_ids = []
-                if not tasks:
+               task_ids = []
+               if not tasks:
                         st.info("Aucune tâche disponible. L'administrateur doit en ajouter.")
-                for t in tasks:
+               for t in tasks:
                         for task in creneau_selc
                             task_ids.append( task[1]))
                         checked = str(t["_id"]) in task_ids
                         st.checkbox(t["tache"], value=checked, key=f"task_{day}_task_{str(t['_id'])}"):
                         
-                selected = []
-                list_period_coche = [
+               selected = []
+               list_period_coche = [
                     key.split('_')[1] for key in st.session_state 
                     if key.startswith("period_") and st.session_state[key]
-                ]
+               ]
                 
-                list_task_coche = [
+               list_task_coche = [
                     key.split('_')[1] for key in st.session_state 
                     if key.startswith("task_") and st.session_state[key]
-                ]
-                for period in  list_period_coche :
+               ]
+               for period in  list_period_coche :
                     for  task in list_task_coche : 
                         selected.append( [period ,task ])
    
