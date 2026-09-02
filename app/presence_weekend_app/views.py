@@ -282,7 +282,7 @@ def admin_page():
                 st.rerun()
             # if c3.button("Supprimer"):
             if c3.button("Supprimer", key=f"supprim_{t['_id']}"):
-                delete_task(t["id"])
+                delete_task(t["_id"])
                 st.rerun()
 
     # ---- Votes ----
