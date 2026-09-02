@@ -5,7 +5,7 @@ import streamlit as st
 from  storage_presence import get_presence, clear_user_presence, clear_all_presence, get_all_presence, get_tasks, add_task, update_task, delete_task, set_presence
 import sys
 from pathlib import Path
-from config_presence import DAYS, PERIODS, PERIOD_LABELS, SLOT_KEYS, DAYS_INSTALL, PERIODS_INSTALL,TYPE_TASK_INSTALL , TYPE_TASK_ANIMATION ,DAYS_ANIMATION , PERIODS_ANIMATION ,PERIODS_ENTIERE, SLOT_KEYS_INSTALL ,SLOT_KEYS_ANIMATION
+from config_presence import DAYS, PERIODS, PERIOD_LABELS, SLOT_KEYS, DAYS_INSTALL, PERIODS_INSTALL,TYPE_TASK_INSTALL , TYPE_TASK_ANIMATION ,DAYS_ANIMATION , PERIODS_ANIMATION ,PERIODS_ENTIERE, SLOT_KEYS_INSTALL ,SLOT_KEYS_ANIMATION, LIST_TYPE_TASK
 import time 
 
 # Ajoute le dossier parent (la racine du projet) à sys.path
@@ -262,14 +262,14 @@ def admin_page():
     # ---- Tâches ----
     with tab_tasks:
 
-        choice = st.selectbox("type de tache ", list(options))
+        choice = st.selectbox("type de tache ", list(LIST_TYPE_TASK))
         st.subheader("Liste des tâches")
         with st.form("add_task_form", clear_on_submit=True):
             c1, c2 = st.columns([4, 1])
             new_label = c1.text_input("Nouvelle tâche", label_visibility="collapsed",
                                       placeholder="Nom de la nouvelle tâche")
             if c2.form_submit_button("Ajouter", type="primary") and new_label.strip():
-                add_task(new_label)
+                add_task(new_label,choice)
                 st.rerun()
 
         for t in get_tasks("all"):
@@ -278,7 +278,7 @@ def admin_page():
                                    label_visibility="collapsed")
             
             if c2.button("Modifier", key=f"modif_{t['_id']}"):
-                update_task(t["_id"], label)
+                update_task(t["_id"], label, choice)
                 st.rerun()
             # if c3.button("Supprimer"):
             if c3.button("Supprimer", key=f"supprim_{t['_id']}"):
