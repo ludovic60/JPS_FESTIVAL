@@ -137,6 +137,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                 else :
                     tasks =  get_tasks("")
                 print(day)    
+                print("les taches")
                 print(tasks)
                 task_ids = []
                 if not tasks:
