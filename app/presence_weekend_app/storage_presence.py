@@ -121,7 +121,7 @@ def get_all_presence():
         presence_tb = db.presence
       
         filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL")}
-        selc_tb = { "user_id":1 ,"pseudo" :1,  "creneau": 1,"task_ids": 1, "_id": 1}
+        selc_tb = { "user_id":1 ,"pseudo" :1,  "creneau": 1, "_id": 1}
         resultats = list(presence_tb.find(filtre_tb, selc_tb))
 
     else :
@@ -135,7 +135,7 @@ def get_presence(user_id):
         db = cs.get_db()
         presence_tb = db.presence
         filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") , "user_id" : ObjectId(user_id)}
-        selc_tb = { "creneau": 1,"task_ids": 1}
+        selc_tb = { "creneau": 1}
         resultats = list(presence_tb.find(filtre_tb, selc_tb))
 
  
@@ -143,7 +143,7 @@ def get_presence(user_id):
         resultats ={}
     return resultats 
     
-def set_presence(user_id, pseudo, slots, task_ids):
+def set_presence(user_id, pseudo, slots):
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
@@ -154,8 +154,7 @@ def set_presence(user_id, pseudo, slots, task_ids):
                      "annee" : cs._secret("ANNEE_FESTIVAL"), 
                      "user_id": ObjectId(user_id),
                      "pseudo" : pseudo,
-                     "creneau": {k: bool(slots.get(k, False)) for k in cfg_pres.SLOT_KEYS},
-                     "task_ids": task_ids,
+                     "creneau": slots,
                      "updated_at": datetime.now(timezone.utc).isoformat()}
     
     
