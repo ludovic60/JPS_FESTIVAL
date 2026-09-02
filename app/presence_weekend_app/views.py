@@ -316,15 +316,14 @@ def admin_page():
             for u in users
             if f"{u['pseudo']} ({u['email']})" == choice  # Comparaison directe avec le format du selectbox
         ]    
-        print(target)
-        print(target."pseudo")
-        if st.button(f"Réinitialiser les votes de {target["pseudo"]}"):
-            clear_user_presence(target["_id"])
-            st.success(f"Votes de {target['pseudo']} réinitialisés")
+      
+        if st.button(f"Réinitialiser les votes de {target[0]["pseudo"]}"):
+            clear_user_presence(target[0]["_id"])
+            st.success(f"Votes de {target[0]['pseudo']} réinitialisés")
             st.rerun()
 
         st.markdown("**Modifier les votes de cette personne :**")
-        selected = presence_editor(target["_id"], target["pseudo"], f"admin_{target["_id"]}")
+        selected = presence_editor(target[0]["_id"], target[0]["pseudo"], f"admin_{target[0]["_id"]}")
         if st.button("Enregistrer les votes de cette personne", type="primary"):
-            set_presence(target["_id"], target["pseudo"], selected)
-            st.success(f"Votes de {target["pseudo"]} enregistrés")
+            set_presence(target[0]["_id"], target[0]["pseudo"], selected)
+            st.success(f"Votes de {target[0]["pseudo"]} enregistrés")
