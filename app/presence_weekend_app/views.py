@@ -323,7 +323,7 @@ def admin_page():
         ]    
 
         print("target")
-        print(target)
+        print(target[0]["_id"])
                 
         if st.button(f"Réinitialiser les votes de {target[0]["pseudo"]}"):
             clear_user_presence(target[0]["_id"])
