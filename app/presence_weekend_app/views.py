@@ -302,6 +302,7 @@ def admin_page():
         st.divider()
         st.subheader("Modifier / réinitialiser les votes d'une personne")
         users = [u for u in commun.common_store.get_users()]
+        print(users)
         if not users:
             st.info("Aucun utilisateur.")
             return
