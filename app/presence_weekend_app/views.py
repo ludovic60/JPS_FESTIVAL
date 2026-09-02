@@ -83,8 +83,8 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                     
         for j, j_label in DAYS_ANIMATION :       
             if day == j :
-                Periods = PERIODS_INSTALL
-                slot_periode = SLOT_KEYS_INSTALL
+                Periods = PERIODS_ANIMATION
+                slot_periode = SLOT_KEYS_ANIMATION
                 tasks = get_tasks(TYPE_TASK_ANIMATION)
         
 
