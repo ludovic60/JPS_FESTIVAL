@@ -14,11 +14,24 @@ sys.path.append(str(racine_projet))
 
 import commun.auth
 
+def on_page_change():
+    """Déclenché automatiquement dès que l'utilisateur change de page dans la sidebar."""
+    # Si on quitte ou revient sur "Ma présence", on nettoie le cache BDD et les checkboxes
+    bdd_key = f"db_loaded_self_{st.session_state.get('user_id_current', '')}"
+
+    if bdd_key in st.session_state:
+        del st.session_state[bdd_key]
+
+    # Supprime toutes les clés associées aux checkboxes de présence
+    keys_to_clear = [k for k in st.session_state if k.startswith("self_")]
+    for k in keys_to_clear:
+        del st.session_state[k]
 
 # ==========================================================================
 # APPLICATION PRINCIPALE
 # ==========================================================================
 def main_app(user: dict):
+    st.session_state["user_id_current"] = user["id"]
     with st.sidebar:
         st.markdown("### 📅 Week-end")
         st.write(f"**{user['pseudo']}**")
@@ -29,7 +42,7 @@ def main_app(user: dict):
         pages = ["Ma présence", "Récapitulatif"]
         if user["role"] == "admin":
             pages.append("Administration")
-        page = st.radio("Navigation", pages, label_visibility="collapsed")
+        page = st.radio("Navigation", pages, label_visibility="collapsed", on_change=on_page_change)
 
         st.divider()
         if st.button("Déconnexion"):
