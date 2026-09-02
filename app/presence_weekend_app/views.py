@@ -49,8 +49,7 @@ def main_app(user: dict):
 def presence_editor(user_id: str, user_name: str, key_prefix: str):
     """Éditeur de présence réutilisable."""
 
-    # 1. CHARGEMENT DE LA BDD (Uniquement la première fois qu'on ouvre la page)
-    # On stocke les valeurs BDD sous une clé dédiée "db_data_user_id"
+    # 1. CHARGEMENT INITIAL (Exécuté une seule fois par session utilisateur)
     bdd_key = f"db_loaded_{key_prefix}_{user_id}"
 
     if bdd_key not in st.session_state:
@@ -63,10 +62,8 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                 periode_db.add(creneaux[0])  # ex: 'samedi_matin'
                 taches_db.add(str(creneaux[1]))  # ID tâche
 
-        # On sauvegarde les ensembles initialisés
         st.session_state[bdd_key] = {"periodes": periode_db, "taches": taches_db}
 
-    # Données chargées initialement
     initial_periodes = st.session_state[bdd_key]["periodes"]
     initial_taches = st.session_state[bdd_key]["taches"]
 
@@ -90,7 +87,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
             with st.container(border=True):
                 st.markdown(f"#### {day_label}")
 
-                # Gestion Journée Entière
+                # Callback Journée Entière
                 def on_full_change(d=day, p_list=Periods):
                     new_val = st.session_state[f"{key_prefix}_full_{d}"]
                     for pk, _ in p_list:
@@ -104,19 +101,22 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                         "Journée entière", key=full_key, on_change=on_full_change
                     )
 
-                # Checkboxes Périodes
+                # --- CHECKBOXES PÉRIODES ---
                 for period, plabel in Periods:
                     pkey = f"{key_prefix}_period_{day}_{period}"
-                    default_val = f"{day}_{period}" in initial_periodes
+
+                    # Si la clé n'existe pas encore dans session_state, on l'initialise
+                    if pkey not in st.session_state:
+                        st.session_state[pkey] = (
+                            f"{day}_{period}" in initial_periodes
+                        )
 
                     is_disabled = st.session_state.get(
                         f"{key_prefix}_full_{day}", False
                     )
 
-                    # Utiliser value= au lieu d'écrire manuellement dans st.session_state
-                    st.checkbox(
-                        plabel, key=pkey, value=default_val, disabled=is_disabled
-                    )
+                    # ON NE PASSE PLUS value= ICI
+                    st.checkbox(plabel, key=pkey, disabled=is_disabled)
 
                 st.markdown(
                     "<hr style='border-top: 3px solid #FF4B4B; margin: 15px 0;'>",
@@ -127,42 +127,50 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                 if not tasks:
                     st.info("Aucune tâche disponible.")
 
+                # --- CHECKBOXES TÂCHES ---
                 for t in tasks:
                     t_id = str(t["_id"])
                     tkey = f"{key_prefix}_task_{day}_{t_id}"
-                    default_task_val = t_id in initial_taches
 
-                    st.checkbox(t["tache"], key=tkey, value=default_task_val)
+                    # Si la clé n'existe pas encore dans session_state, on l'initialise
+                    if tkey not in st.session_state:
+                        st.session_state[tkey] = t_id in initial_taches
+
+                    # ON NE PASSE PLUS value= ICI
+                    st.checkbox(t["tache"], key=tkey)
 
     # --- SÉLECTION FINALE ---
     selected = []
 
-    list_period_coche = [
+    # Récupère toutes les périodes cochées : ['samedi_matin', 'dimanche_apres_midi', ...]
+    periodes_cochees = [
         key.replace(f"{key_prefix}_period_", "")
         for key in st.session_state
         if key.startswith(f"{key_prefix}_period_") and st.session_state[key]
     ]
 
-    list_task_coche = [
-        (key.split("_")[2],key.split("_")[3])
-        for key in st.session_state
-        if key.startswith(f"{key_prefix}_task_") and st.session_state[key]
-    ]
+    # Récupère les tâches cochées par jour : { 'samedi': ['id_tache1', 'id_tache2'], ... }
+    taches_par_jour = {}
+    for key in st.session_state:
+        if key.startswith(f"{key_prefix}_task_") and st.session_state[key]:
+            # Exemple de clé: 'self_task_samedi_6a8ea959d094f4012f19dfa9'
+            parts = key.split("_")
+            jour = parts[2]
+            tache_id = parts[3]
 
-    
-    for period in list_period_coche:
-        for item in list_task_coche:
-            print("jour tache")
-            print(item[0])
-            print("tache")
-            print(item[1])
-            print("jour")
-            print(period.split("_")[0])
-            if item[0] == period.split("_")[0] :
-                selected.append([period, item[1]])
+            if jour not in taches_par_jour:
+                taches_par_jour[jour] = []
+            taches_par_jour[jour].append(tache_id)
+
+    # Association période <-> tâche du même jour
+    for period in periodes_cochees:
+        jour_du_creneau = period.split("_")[0]  # ex: 'samedi'
+        taches_du_jour = taches_par_jour.get(jour_du_creneau, [])
+
+        for t_id in taches_du_jour:
+            selected.append([period, t_id])
 
     return selected
-
 def presence_page(user: dict):
     st.title("Ma présence")
     st.caption("Cochez vos créneaux de disponibilité et vos tâches souhaitées.")
