@@ -58,6 +58,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     tasks=[]
     liste_periode=[]
     liste_taches=[]
+    selected = []
     
     for i, (day, day_label) in enumerate(DAYS):
         # recuperation des presence en base 
@@ -79,16 +80,14 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                 Periods = PERIODS_INSTALL
                 slot_periode = SLOT_KEYS_INSTALL
                 tasks = get_tasks(TYPE_TASK_INSTALL)
-                print("les taches extraites")
-                print(tasks)
+       
                     
         for j, j_label in DAYS_ANIMATION :       
             if day == j :
                 Periods = PERIODS_ANIMATION
                 slot_periode = SLOT_KEYS_ANIMATION
                 tasks = get_tasks(TYPE_TASK_ANIMATION)
-                print("les taches extraites")
-                print(tasks)    
+   
 
         
         # gestion de l'affichage     
@@ -104,7 +103,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                     for pk,pk_label in Periods :
                         #application de ce status sur les differentes periodes de la journee
                         st.session_state[f"{day}_{pk}"] = new_val
-                print(len(Periods))           
+          
                 if len(Periods) == PERIODS_ENTIERE :
                     full = st.checkbox(
                         "Journée entière",
@@ -140,11 +139,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     
                 st.markdown("#### Tâches souhaitées")
 
-                
-        
-                print(day)    
-                print("les taches")
-                print(tasks)
+
                 task_ids = []
                 if not tasks:
                         st.info("Aucune tâche disponible. L'administrateur doit en ajouter.")
@@ -155,20 +150,21 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                    checked = str(t["_id"]) in task_ids
                    st.checkbox(t["tache"], value=checked, key=f"task_{day}_task_{str(t['_id'])}")
                         
-                selected = []
-                list_period_coche = [
-                    key.split('_')[1] for key in st.session_state 
-                    if key.startswith("period_") and st.session_state[key]
-                ]
+
+    list_period_coche = [
+        key.split('_')[1] for key in st.session_state 
+        if key.startswith("period_") and st.session_state[key]
+   ]
                 
-                list_task_coche = [
-                    key.split('_')[1] for key in st.session_state 
-                    if key.startswith("task_") and st.session_state[key]
-                ]
-                for period in  list_period_coche :
-                    for  task in list_task_coche : 
-                        selected.append( [period ,task ])
-   
+   list_task_coche = [
+       key.split('_')[1] for key in st.session_state 
+       if key.startswith("task_") and st.session_state[key]
+    ]
+    for period in  list_period_coche :
+        for  task in list_task_coche : 
+            selected.append( [period ,task ])
+    print("selected")
+    print(selected)
     return selected
 
 
