@@ -149,13 +149,16 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                             task_ids.append( creneaux[1])
                    checked = str(t["_id"]) in task_ids
                    st.checkbox(t["tache"], value=checked, key=f"task_{day}_task_{str(t['_id'])}")
-                        
+
+    for key in st.session_state :
+        print("liste des statuts")
+        print(key)
 
     list_period_coche = [
         key.split('_')[1] for key in st.session_state 
         if key.startswith("period_") and st.session_state[key]
     ]
-                
+           
     list_task_coche = [
        key.split('_')[1] for key in st.session_state 
        if key.startswith("task_") and st.session_state[key]
