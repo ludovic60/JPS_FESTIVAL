@@ -72,16 +72,21 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
             
         
         # gestion des differents type de jour
-    
-        if day in DAYS_INSTALL :
-            Periods = PERIODS_INSTALL
-            slot_periode = SLOT_KEYS_INSTALL
-        elif    day in DAYS_ANIMATION  :
-            Periods = PERIODS_INSTALL
-            slot_periode = SLOT_KEYS_INSTALL
-        else :
-            Periods = ""
-            slot_periode = ""
+        Periods = ""
+        slot_periode = ""
+        tasks=[]
+        for j, j_label in DAYS_INSTALL :
+            if day == j :
+                Periods = PERIODS_INSTALL
+                slot_periode = SLOT_KEYS_INSTALL
+                tasks = get_tasks(TYPE_TASK_INSTALL)
+                    
+        for j, j_label in DAYS_ANIMATION :       
+            if day == j :
+                Periods = PERIODS_INSTALL
+                slot_periode = SLOT_KEYS_INSTALL
+                tasks = get_tasks(TYPE_TASK_ANIMATION)
+        
 
         
         # gestion de l'affichage     
@@ -129,13 +134,9 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                 st.markdown("<hr style='border-top: 3px solid #FF4B4B; margin: 15px 0;'>", unsafe_allow_html=True)   
     
                 st.markdown("#### Tâches souhaitées")
-                tasks={}
-                if day in DAYS_INSTALL :
-                    tasks = get_tasks(TYPE_TASK_INSTALL)
-                elif    day in DAYS_ANIMATION  :
-                    tasks = get_tasks(TYPE_TASK_ANIMATION)
-                else :
-                    tasks =  get_tasks("")
+
+                
+        
                 print(day)    
                 print("les taches")
                 print(tasks)
@@ -143,8 +144,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                 if not tasks:
                         st.info("Aucune tâche disponible. L'administrateur doit en ajouter.")
                 for t in tasks:
-                   for lstcre in creneau_selc :
-                      
+                   for lstcre in creneau_selc :                      
                        for creneaux in lstcre["creneau"] :
                             task_ids.append( creneaux[1])
                    checked = str(t["_id"]) in task_ids
