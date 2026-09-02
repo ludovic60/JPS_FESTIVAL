@@ -37,8 +37,8 @@ def main_app(user: dict):
             st.rerun()
 
     if page == "Ma présence":
-        st.rerun()
         presence_page(user)
+        st.rerun()
     elif page == "Récapitulatif":
         recap_page()
     else:
