@@ -134,7 +134,8 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
 
                     # Si la clé n'existe pas encore dans session_state, on l'initialise
                     if tkey not in st.session_state:
-                        tache_coche = [item[0] for item in initial_taches if item[1] == day and item[0] == t_id] 
+                        #tache_coche = [item[0] for item in initial_taches if item[1] == day and item[0] == t_id] 
+                        tache_coche = [item[0] for item in initial_taches if item[1] == day]
                         print("tache coche")
                         print(tache_coche)
                         if tache_coche :
