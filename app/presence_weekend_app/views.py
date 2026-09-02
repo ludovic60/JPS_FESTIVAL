@@ -129,8 +129,8 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
                 for i in liste_periode :
                     st.session_state[f"{day}_{i}"] = "true"
                     k=k+1
-                    if k == PERIODS_ENTIERE : 
-                         st.session_state[day] = "true"
+                    #if k == PERIODS_ENTIERE : 
+                    #     st.session_state[day] = "true"
                          
                     
                 # Trait personnalisé : épaisseur 3px, couleur rouge (#FF4B4B)
