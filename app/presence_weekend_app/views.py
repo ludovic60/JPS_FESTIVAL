@@ -195,7 +195,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
 
 def presence_page(user: dict):
     st.title("Ma présence")
-    st.caption("Cochez vos créneaux de disponibilité et vos tâches souhaitées.")
+    st.caption("Cochez vos créneaux de disponibilité et vos tâches souhaitées. ATTENTION si vous ne cochez pas un créneau , les taches de ce jour ne seront pas enregistrées")
 
     selected = presence_editor(user["id"], user["pseudo"], "self")
 
@@ -368,38 +368,3 @@ def admin_page():
 
 
 
-
-        ########################################################################################"""
-   #     choice = st.selectbox("Personne", list(options))
-   #     print("choice")
-   #     print(choice)
-   #     target = [
-   #         u
-   #         for u in users
-   #         if f"({u["pseudo"]}) ({u["email"]})" == choice  
-   #     ]    
-
-   #     logging.basicConfig(
-   #         level=logging.INFO,
-   #         format="%(asctime)s - %(levelname)s - %(message)s",
-   #     )
-
-   #     # 1. Pour afficher simplement la variable target :
-   #     logging.info("target")
-   #     logging.info(target)
-
-   #     # 2. Pour afficher l'ID contenu dans target[0] :
-   #     logging.info(target[0]["_id"])
- 
-                
-   #     if st.button(f"Réinitialiser les votes de {target[0]["pseudo"]}"):
-   #         clear_user_presence(target[0]["_id"])
-   #         st.success(f"Votes de {target[0]['pseudo']} réinitialisés")
-   #         st.rerun()
-
-   #     st.markdown("**Modifier les votes de cette personne :**")
-   #     selected = presence_editor(target[0]["_id"], target[0]["pseudo"], "admin")
-   #     if st.button("Enregistrer les votes de cette personne", type="primary"):
-   #         set_presence(target[0]["_id"], target[0]["pseudo"], selected)
-   #         st.success(f"Votes de {target[0]["pseudo"]} enregistrés")
-   #         st.rerun()
