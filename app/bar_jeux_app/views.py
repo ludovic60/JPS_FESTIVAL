@@ -275,7 +275,7 @@ def _final_page(user):
         
         g = storage_jeux.get_info_games( game.get('id_jeux'))
       
-        if ( (g[0].get("mois_sortie")  and  g[0].get("annee_parution") ) :      
+        if ( g[0].get("mois_sortie")  and  g[0].get("annee_parution") ) :      
        
                    periode_parution = int(str(g[0].get("annee_parution"))) *100 +  int(str(g[0].get("mois_sortie")) )
                    periode_dernier_festival = (int( cs._secret("ANNEE_FESTIVAL"))-1) *100 + int(cs._secret("MOIS_FESTIVAL") )
