@@ -223,7 +223,7 @@ def final_games():
         game_selec_tb = db.selection_jeux_festival
         filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") }  
         resultats = list(game_selec_tb.find(filtre_tb))
-
+    return resultats 
 
 
 def get_loans():
@@ -233,7 +233,7 @@ def get_loans():
         game_loan_tb = db.prets_jeux
         filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") }  
         resultats = list(game_loan_tb.find(filtre_tb))
-
+    return resultats 
 
 def toggle_loan(ckey, user_id, value):
     con_mongo = cs.mongo_enabled()
