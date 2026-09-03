@@ -277,7 +277,7 @@ def _final_page(user):
     for game in finals:
         print(game.get('id_jeux'))
         g = storage_jeux.get_info_games( game.get('id_jeux'))
-        print( (str(g[0].get("annee_parution"))))
+        print( int(str(g[0].get("annee_parution"))) *100)
         print((str(g[0].get("mois_sortie")) ))
 
         logging.info(f"annee parution {g[0].get("annee_parution")}")
