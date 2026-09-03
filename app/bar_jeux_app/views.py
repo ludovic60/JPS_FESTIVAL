@@ -116,6 +116,8 @@ def _game_card(g, list_key, user):
             with cc[0]:
                      
                 if is_admin:
+                    # 1
+                    select_this_game = [adsel for adsel in admin_sel if str(adsel.get("id_jeux")) == ckey_this_game]
                     # 2.admin a deja retenu auparavant 
                     has_selected_this_game = [admin_sel[0]["id_jeux"] for sadmin in select_this_game]  
 
