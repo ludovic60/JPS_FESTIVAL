@@ -289,7 +289,7 @@ def _final_page(user):
         logging.info(f"annee parution en int  {int(g[0].get("annee_parution"))}")
         logging.info(f"lmois de apurtion {g[0].get("mois_sortie")}")
         logging.info(f"lmois de parution en int {int(g[0].get("mois_sortie"))}")        
-        if  ( int(str(g[0].get("annee_parution"))) *100 +  int(str(g[0].get("mois_sortie")) )  )  >  ( (int( cs._secret("ANNEE_FESTIVAL"))-1) *100  + int(cs._secret("MOIS_FESTIVAL") )   ) 
+        if  ( int(str(g[0].get("annee_parution"))) *100 +  int(str(g[0].get("mois_sortie")) )  )  >  ( (int( cs._secret("ANNEE_FESTIVAL"))-1) *100  + int(cs._secret("MOIS_FESTIVAL") )   ) :
                     New = "NOUVEAUTE"
         else :   
                     New = ""
