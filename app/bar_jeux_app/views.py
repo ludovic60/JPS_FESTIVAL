@@ -89,8 +89,10 @@ def _game_card(g, list_key, user):
     admin_sel = storage_jeux.get_admin_selected()
     logging.info(f"liste jeu selectionne {admin_sel}")
     sugg = storage_jeux.get_suggestions()
+    has_selected_this_game=""  
+    select_this_game=""
 
-   
+           
     with st.container(border=True):
         c1, c2 = st.columns([1, 3])
         with c1:
@@ -112,7 +114,7 @@ def _game_card(g, list_key, user):
                 st.caption(meta)
             cc = st.columns(2)
             with cc[0]:
-                has_selected_this_game=""        
+                     
                 if is_admin:
                     # 2.admin a deja retenu auparavant 
                     has_selected_this_game = [admin_sel[0]["id_jeux"] for sadmin in select_this_game]  
