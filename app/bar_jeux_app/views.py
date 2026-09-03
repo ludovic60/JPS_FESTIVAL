@@ -274,8 +274,10 @@ def _final_page(user):
         st.info("Aucun jeu retenu par l'admin pour l'instant.")
         return
     rows = []
-    for ckey, g in finals:
-        row = {"Nouveauté": g.get("est nouveauté"), "Categorie jeu": g.get("classement JPS final")or g.get("classement JPS correction manuelle")or g.get("classement JPS automatique"), "Couverture Jeu": g.get("couverture"), "Jeu": g.get("nom_jeu_complet") or g.get("nom_jeu"), "_ckey": ckey}
+    for ckey, id_game in finals:
+
+               
+        row = {"nouveaute" : , "Annee": g.get("annee"), "Categorie jeu": g.get("classement JPS final")or g.get("classement JPS correction manuelle")or g.get("classement JPS automatique"), "Couverture Jeu": g.get("couverture"), "Jeu": g.get("nom_jeu_complet") or g.get("nom_jeu"), "_ckey": ckey}
         for u in users:
             row[u["pseudo"]] = u["id"] in set(loans.get(ckey, []))
         rows.append(row)
