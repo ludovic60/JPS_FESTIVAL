@@ -205,14 +205,13 @@ def all_list_keys():
 
 
 def final_games():
-    sel = get_admin_selected()
-    out = []
-    for lk in all_list_keys():
-        for g in load_games(lk):
-            ckey = f"{lk}::{g["_id"]}"
-            if ckey in sel:
-                out.append((ckey, g))
-    return out
+    con_mongo = cs.mongo_enabled()
+    if   con_mongo : 
+        db = cs.get_db()
+        game_loan_tb = db.selection_jeux_festival
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") }  
+        resultats = list(game_loan_tb.find(filtre_tb))
+
 
 
 def get_loans():
