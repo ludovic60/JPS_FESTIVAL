@@ -14,7 +14,8 @@ import sys
 # Ajoute le dossier parent à sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-import commun.auth,  commun.config , commun.common_store
+import commun.auth,  commun.config 
+import commun.common_store as cs
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
@@ -263,7 +264,7 @@ def _final_page(user):
     print("finals")
     print(finals)
     logging.info(f"liste des jeux selec {finals} ")
-    users = commun.common_store.get_users()
+    users = cs.get_users()
     loans = storage_jeux.get_loans()
     current_user = user
     is_admin = current_user == "admin"
