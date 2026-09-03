@@ -277,12 +277,12 @@ def _final_page(user):
     for game in finals:
         print(game.get('id_jeux'))
         g = storage_jeux.get_info_games( game.get('id_jeux'))
-        print( (str(g[0].get("annee"))))
+        print( (str(g[0].get("annee_parution"))))
         print((str(g[0].get("mois_sortie")) ))
-        # if  ( int(str(g[0].get("annee")))*100 +  int(str((g[0].get("mois_sortie")) )))>    int( (cs._secret("ANNEE_FESTIVAL")-1)*100 + int(cs._secret("MOIS_FESTIVAL") ):
-        #            New = "NOUVEAUTE"
-        # else :   
-        #            New = ""
+        if  ( int(str(g[0].get("annee_parution")))*100 +  int(str((g[0].get("mois_sortie")) )))>    int( (cs._secret("ANNEE_FESTIVAL")-1)*100 + int(cs._secret("MOIS_FESTIVAL") ):
+                    New = "NOUVEAUTE"
+        else :   
+                    New = ""
                
                
         row = {"nouveaute" : new, "Annee": g[0].get("annee"), "Categorie jeu": g[0].get("classement JPS final"), "Couverture Jeu": g[0].get("couverture"), "Jeu": g[0].get("nom_jeu_complet"), "Total coché": "" }
