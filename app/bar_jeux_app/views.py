@@ -276,15 +276,23 @@ def _final_page(user):
     rows = []
     for game in finals:
         print(game.get('id_jeux'))
-        g = storage_jeux.get_info_games( game.get('id_jeux'))  
+        g = storage_jeux.get_info_games( game.get('id_jeux'))
+        
+        if  ( g[0].get("annee")*100 +  g[0].get("mois") )>    202510  :
+                   New = "NOUVEAUTE"
+        else :   
+                   New = ""
                
-        row = {"nouveaute" : "", "Annee": g[0].get("annee"), "Categorie jeu": g[0].get("classement JPS final"), "Couverture Jeu": g[0].get("couverture"), "Jeu": g[0].get("nom_jeu_complet") }
+               
+        row = {"nouveaute" : new, "Annee": g[0].get("annee"), "Categorie jeu": g[0].get("classement JPS final"), "Couverture Jeu": g[0].get("couverture"), "Jeu": g[0].get("nom_jeu_complet"), "Total coché"= "" }
         for u in users:
-            row[u["pseudo"]] = u["_id"] in set( for u in loans if "_id" == g[0].get("_id"))
+                   for ul in loans:   
+                              if ul[0].get("_id") =   u[0].get("_id") and    ul[0].get("_id")   == g[0].get("_id")  :  
+                                  row[u[0].get("pseudo")] = 1
         rows.append(row)
     df = pd.DataFrame(rows)
     users_list = [u["pseudo"] for u in users]
-    display_cols = ["Nouveauté"] +["Categorie jeu"] +["Couverture Jeu"] +["Jeu"] +["Total coché"]+ users_list
+    display_cols = ["Nouveauté"] +["Annee"] +["Categorie jeu"] +["Couverture Jeu"] +["Jeu"] +["Total coché"]+ users_list
 
     # Calcul du compteur par ligne
     st.session_state.df["Total coché"] = st.session_state.df[users_list].sum(axis=1)
