@@ -80,12 +80,19 @@ def toggle_admin_selected(ckey, value):
         game_selec_tb = db.selection_jeux_festival
 
     if value :
-        new_selection= {         
-                     "annee" : cs._secret("ANNEE_FESTIVAL"), 
-                     "id_jeux": str(ObjectId(ckey))
-           }   
-    
-        resultat = game_selec_tb.insert_one(new_selection)
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)) }
+        
+        resultats = list(game_suggest_tb.find(filtre_tb))
+        if resultats :
+            print(" jeux deja present")
+        else : 
+        
+            new_selection= {         
+                         "annee" : cs._secret("ANNEE_FESTIVAL"), 
+                         "id_jeux": str(ObjectId(ckey))
+               }   
+        
+            resultat = game_selec_tb.insert_one(new_selection)
     else :  
         # deselectionne le jeu 
 
