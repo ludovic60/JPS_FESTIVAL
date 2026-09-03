@@ -83,7 +83,7 @@ def toggle_admin_selected(ckey, value):
     if value :
         filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)) }
         
-        resultats = list(game_suggest_tb.find(filtre_tb))
+        resultats = list(game_selec_tb.find(filtre_tb))
         if resultats :
             print(" jeux deja present")
         else : 
