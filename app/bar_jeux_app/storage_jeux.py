@@ -121,7 +121,7 @@ def toggle_suggestion(ckey, user_id, value):
         db = cs.get_db()
         game_suggest_tb = db.jeux_suggestions
 
-    if value :
+    if value == "insert":
         new_selection= {         
             "annee" : cs._secret("ANNEE_FESTIVAL"), 
             "periode_jeu" : "",
@@ -132,7 +132,7 @@ def toggle_suggestion(ckey, user_id, value):
         }
          
         resultat = game_suggest_tb.insert_one(new_selection)
-    else :  
+    elif value == "delete":  
         # deselectionne le jeu 
         filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "periode_jeu" : "" , "id_jeux": str(ObjectId(ckey)),   "user_id": str(ObjectId(user_id)) }
         resultat = game_suggest_tb.delete_many(filtre_tb)
