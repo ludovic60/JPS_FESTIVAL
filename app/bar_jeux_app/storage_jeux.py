@@ -79,26 +79,30 @@ def toggle_admin_selected(ckey, value):
     if   con_mongo : 
         db = cs.get_db()
         game_selec_tb = db.selection_jeux_festival
-
-    if value :
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)) }
+        logging.info(f"ajout jeu selection")
+        if value =="insert" :
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)) }
+            
+            resultats = list(game_selec_tb.find(filtre_tb))
+            if resultats :
+                logging.info(f" jeux deja present")
+            else : 
+                logging.info(f" jeux ajout")
+                new_selection= {         
+                             "annee" : cs._secret("ANNEE_FESTIVAL"), 
+                             "id_jeux": str(ObjectId(ckey))
+                   }   
+            
+                resultat = game_selec_tb.insert_one(new_selection)
+        elif value =="delete" :
+            # deselectionne le jeu 
+            logging.info(f" jeux suppression")
+    
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)) }
+            resultat = game_selec_tb.delete_many(filtre_tb)
+        else :
+            resultat = {}
         
-        resultats = list(game_selec_tb.find(filtre_tb))
-        if resultats :
-            print(" jeux deja present")
-        else : 
-        
-            new_selection= {         
-                         "annee" : cs._secret("ANNEE_FESTIVAL"), 
-                         "id_jeux": str(ObjectId(ckey))
-               }   
-        
-            resultat = game_selec_tb.insert_one(new_selection)
-    else :  
-        # deselectionne le jeu 
-
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)) }
-        resultat = game_selec_tb.delete_many(filtre_tb)
     
 
 def get_suggestions():
