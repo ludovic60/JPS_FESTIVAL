@@ -113,27 +113,24 @@ def _game_card(g, list_key, user):
             cc = st.columns(2)
             with cc[0]:
                 if is_admin:
-                     # 1. On ne garde que les suggestions spécifiques à CE jeu
-                    select_this_game = [adsel for adsel in admin_sel if str(adsel.get("id_jeux")) == ckey_this_game]
-                  
-                    # 2.admin a retenu ce jeu ?
-                    has_selected_this_game = [admin_sel[0]["id_jeux"] for sadmin in select_this_game]
-                    val_admin=""  
 
-                    def on_admin_change(ckey_this_game,mode):
-                       logging.info(f"clic sur la checkbox retenu admin ")
-                       storage_jeux.toggle_admin_selected(ckey_this_game, mode)
-                       st.rerun()     
 
-                           
-                    if has_selected_this_game :
-                             
-                               val_admin = st.checkbox("Retenir (admin)", value= 1==1, key=f"s_admin_{ckey_this_game}", on_change=on_admin_change(ckey_this_game,"insert"))
-                    else :            
-                  
-                               val_admin = st.checkbox("Retenir (admin)", value= 1==0, key=f"s_admin_{ckey_this_game}", on_change=on_admin_change(ckey_this_game,"delete"))
-                    
-                   
+                    # Callback exécuté uniquement lors d'un VRAI clic utilisateur
+                    def on_admin_change(game_id, currently_selected):
+                        mode = "delete" if currently_selected else "insert"
+                        logging.info(
+                            f"Clic toggle admin sur {game_id} -> mode {mode}"
+                        )
+                        storage_jeux.toggle_admin_selected(game_id, mode)
+
+                    # Passe la fonction SANS les parenthèses () et utilise args=
+                    st.checkbox(
+                        "Retenir (admin)",
+                        value=has_selected_this_game,
+                        key=f"s_admin_{ckey_this_game}",
+                        on_change=on_admin_change,
+                        args=(ckey_this_game, has_selected_this_game),
+                    )                                
                        
 
                     
@@ -261,8 +258,7 @@ def _final_page(user):
     st.title("Liste finale — Prêts")
     st.caption("Tableau croisé : jeux retenus par l'admin × personnes. Cochez les jeux que vous pouvez prêter.")
     finals = storage_jeux.final_games()
-    print("finals")
-    print(finals)
+   
     logging.info(f"liste des jeux selec {finals} ")
     users = cs.get_users()
     loans = storage_jeux.get_loans()
@@ -276,24 +272,21 @@ def _final_page(user):
         return
     rows = []
     for game in finals:
-        print(game.get('id_jeux'))
+        
         g = storage_jeux.get_info_games( game.get('id_jeux'))
-        print( int(str(g[0].get("annee_parution"))) *100)
-        print( int(str(g[0].get("mois_sortie")) ))
-        print ( int(str(g[0].get("annee_parution"))) *100 +  int(str(g[0].get("mois_sortie")) ))       
-        periode_parution = int(str(g[0].get("annee_parution"))) *100 +  int(str(g[0].get("mois_sortie")) )
-
-
-        print((int( cs._secret("ANNEE_FESTIVAL"))-1) *100 )
-        print( int(cs._secret("MOIS_FESTIVAL") )   )  
-        logging.info(f"annee parution {g[0].get("annee_parution")}")
-        logging.info(f"annee parution en int  {int(g[0].get("annee_parution"))}")
-        logging.info(f"lmois de apurtion {g[0].get("mois_sortie")}")
-        logging.info(f"lmois de parution en int {int(g[0].get("mois_sortie"))}")        
-        if  ( int(str(g[0].get("annee_parution"))) *100 +  int(str(g[0].get("mois_sortie")) )  )  >  ( (int( cs._secret("ANNEE_FESTIVAL"))-1) *100  + int(cs._secret("MOIS_FESTIVAL") )   ) :
-                    New = "NOUVEAUTE"
-        else :   
-                    New = ""
+      
+        if ( (g[0].get("mois_sortie")  and  g[0].get("annee_parution") ) :      
+       
+                   periode_parution = int(str(g[0].get("annee_parution"))) *100 +  int(str(g[0].get("mois_sortie")) )
+                   periode_dernier_festival = (int( cs._secret("ANNEE_FESTIVAL"))-1) *100 + int(cs._secret("MOIS_FESTIVAL") )
+           
+                      
+                   if periode_parution  >  periode_dernier_festival :
+                               New = "NOUVEAUTE"
+                   else :   
+                               New = ""
+          else :
+                     New = ""                    
                
                
         row = {"nouveaute" : New, "Annee": g[0].get("annee"), "Categorie jeu": g[0].get("classement JPS final"), "Couverture Jeu": g[0].get("couverture"), "Jeu": g[0].get("nom_jeu_complet"), "Total coché": "" }
