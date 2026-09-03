@@ -1,5 +1,6 @@
 """Stockage App2 (Bar à jeux) — utilisateurs & données mutables partagés via common_store.
 Les listes de jeux restent des fichiers plats JSON nommés par mois (exigence)."""
+import logging
 import json
 import uuid
 from datetime import datetime, timezone
