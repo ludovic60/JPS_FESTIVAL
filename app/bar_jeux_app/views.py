@@ -285,8 +285,8 @@ def _final_page(user):
                                New = "NOUVEAUTE"
                    else :   
                                New = ""
-          else :
-                     New = ""                    
+        else :
+                   New = ""                    
                
                
         row = {"nouveaute" : New, "Annee": g[0].get("annee"), "Categorie jeu": g[0].get("classement JPS final"), "Couverture Jeu": g[0].get("couverture"), "Jeu": g[0].get("nom_jeu_complet"), "Total coché": "" }
