@@ -275,7 +275,7 @@ def _final_page(user):
         return
     rows = []
     for ckey, id_game in finals:
-        g = get_info_games( id_game)  
+        g = storage_jeux.get_info_games( id_game)  
                
         row = {"nouveaute" : "", "Annee": g.get("annee"), "Categorie jeu": g.get("classement JPS final")or g.get("classement JPS correction manuelle")or g.get("classement JPS automatique"), "Couverture Jeu": g.get("couverture"), "Jeu": g.get("nom_jeu_complet") or g.get("nom_jeu"), "_ckey": ckey}
         for u in users:
