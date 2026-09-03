@@ -113,7 +113,8 @@ def _game_card(g, list_key, user):
             cc = st.columns(2)
             with cc[0]:
                 if is_admin:
-
+                    # 2.admin a deja retenu auparavant 
+                    has_selected_this_game = [admin_sel[0]["id_jeux"] for sadmin in select_this_game]  
 
                     # Callback exécuté uniquement lors d'un VRAI clic utilisateur
                     def on_admin_change(game_id, currently_selected):
