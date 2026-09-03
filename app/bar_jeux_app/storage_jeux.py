@@ -223,7 +223,7 @@ def final_games():
         game_selec_tb = db.selection_jeux_festival
         selc_tb = {"id_jeux": 1, "_id": 1}
         filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") }  
-        resultats = list(game_selec_tb.find(selc_tb , filtre_tb))
+        resultats = list(game_selec_tb.find( filtre_tb, selc_tb ))
     return resultats 
 
 
