@@ -274,7 +274,7 @@ def _final_page(user):
         st.info("Aucun jeu retenu par l'admin pour l'instant.")
         return
     rows = []
-    for ckey, id_game in finals:
+    for id_game, ckey in finals:
         g = storage_jeux.get_info_games( id_game)  
                
         row = {"nouveaute" : "", "Annee": g.get("annee"), "Categorie jeu": g.get("classement JPS final")or g.get("classement JPS correction manuelle")or g.get("classement JPS automatique"), "Couverture Jeu": g.get("couverture"), "Jeu": g.get("nom_jeu_complet") or g.get("nom_jeu"), "_ckey": ckey}
