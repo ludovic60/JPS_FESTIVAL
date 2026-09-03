@@ -208,9 +208,9 @@ def final_games():
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
-        game_loan_tb = db.selection_jeux_festival
+        game_selec_tb = db.selection_jeux_festival
         filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") }  
-        resultats = list(game_loan_tb.find(filtre_tb))
+        resultats = list(game_selec_tb.find(filtre_tb))
 
 
 
