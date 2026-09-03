@@ -277,8 +277,9 @@ def _final_page(user):
     for game in finals:
         print(game.get('id_jeux'))
         g = storage_jeux.get_info_games( game.get('id_jeux'))
-        
-        if  ( int(str(g[0].get("annee")))*100 +  intstr((g[0].get("mois")) ))>    int( (cs._secret("ANNEE_FESTIVAL")-1)*100 + int(cs._secret("MOIS_FESTIVAL") ):
+        print( int(str(g[0].get("annee"))))
+        print(int(str(g[0].get("mois")) ))
+        if  ( int(str(g[0].get("annee")))*100 +  int(str((g[0].get("mois")) )))>    int( (cs._secret("ANNEE_FESTIVAL")-1)*100 + int(cs._secret("MOIS_FESTIVAL") ):
                    New = "NOUVEAUTE"
         else :   
                    New = ""
