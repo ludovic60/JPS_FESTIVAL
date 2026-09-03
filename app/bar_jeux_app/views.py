@@ -284,10 +284,10 @@ def _final_page(user):
                    New = ""
                
                
-        row = {"nouveaute" : new, "Annee": g[0].get("annee"), "Categorie jeu": g[0].get("classement JPS final"), "Couverture Jeu": g[0].get("couverture"), "Jeu": g[0].get("nom_jeu_complet"), "Total coché"= "" }
+        row = {"nouveaute" : new, "Annee": g[0].get("annee"), "Categorie jeu": g[0].get("classement JPS final"), "Couverture Jeu": g[0].get("couverture"), "Jeu": g[0].get("nom_jeu_complet"), "Total coché": "" }
         for u in users:
                    for ul in loans:   
-                              if ul[0].get("_id") =   u[0].get("_id") and    ul[0].get("_id")   == g[0].get("_id")  :  
+                              if ul[0].get("_id") ==   u[0].get("_id") and    ul[0].get("_id")   == g[0].get("_id")  :  
                                   row[u[0].get("pseudo")] = 1
         rows.append(row)
     df = pd.DataFrame(rows)
