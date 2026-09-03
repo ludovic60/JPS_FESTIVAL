@@ -56,7 +56,7 @@ def get_info_games(id_game):
     if   con_mongo : 
         db = cs.get_db()
         game_tb = db.jeux
-        filtre_tb = {"_id" : str(objectif(id_game))  }
+        filtre_tb = {"_id" : str(ObjectId(id_game))  }
         
         resultats = list(game_tb.find(filtre_tb))
     else :
