@@ -260,7 +260,9 @@ def _final_page(user):
     st.title("Liste finale — Prêts")
     st.caption("Tableau croisé : jeux retenus par l'admin × personnes. Cochez les jeux que vous pouvez prêter.")
     finals = storage_jeux.final_games()
-    logging.info(f"liste des jeux selec {finals}")
+    print("finals")
+    print(finals)
+    logging.info(f"liste des jeux selec {finals} ")
     users = commun.common_store.get_users()
     loans = storage_jeux.get_loans()
     current_user = user
