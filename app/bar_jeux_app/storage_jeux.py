@@ -29,7 +29,7 @@ _COVERS = [
 
 
 
-# ---- Jeux (fichiers plats) ----
+# ---- Jeux  ----
 def load_games(list_key):
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
@@ -45,6 +45,18 @@ def load_games(list_key):
                 mois = mois[1]
 
             filtre_tb = {"annee_parution" : annee , "mois_sortie" : mois }
+        
+        resultats = list(game_tb.find(filtre_tb))
+    else :
+        resultats ={}
+    return resultats 
+
+def get_info_games(id_game):
+    con_mongo = cs.mongo_enabled()
+    if   con_mongo : 
+        db = cs.get_db()
+        game_tb = db.jeux
+        filtre_tb = {"_id" : str(objectif(id_game))  }
         
         resultats = list(game_tb.find(filtre_tb))
     else :
