@@ -82,6 +82,7 @@ def _game_card(g, list_key, user):
     ckey_this_game = f"{str(g['_id'])}"
     is_admin = user["role"] == "admin"
     admin_sel = storage_jeux.get_admin_selected()
+    logging.info(f"liste jeu selectionne {admin_sel}")
     sugg = storage_jeux.get_suggestions()
 
    
