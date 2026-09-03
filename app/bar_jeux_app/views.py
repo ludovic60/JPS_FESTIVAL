@@ -279,7 +279,7 @@ def _final_page(user):
         g = storage_jeux.get_info_games( game.get('id_jeux'))
         print( int(str(g[0].get("annee_parution"))) *100)
         print( int(str(g[0].get("mois_sortie")) ))
-        print ( int(str(g[0].get("annee_parution"))) *100 +  nt(str(g[0].get("mois_sortie")) ))       
+        print ( int(str(g[0].get("annee_parution"))) *100 +  int(str(g[0].get("mois_sortie")) ))       
 
         logging.info(f"annee parution {g[0].get("annee_parution")}")
         logging.info(f"annee parution en int  {int(g[0].get("annee_parution"))}")
