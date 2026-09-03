@@ -278,9 +278,9 @@ def _final_page(user):
         print(game.get('id_jeux'))
         g = storage_jeux.get_info_games( game.get('id_jeux'))  
                
-        row = {"nouveaute" : "", "Annee": g[0].get("annee"), "Categorie jeu": g[0].get("classement JPS final"), "Couverture Jeu": g[0].get("couverture"), "Jeu": g[0].get("nom_jeu_complet") , "_ckey": ckey}
+        row = {"nouveaute" : "", "Annee": g[0].get("annee"), "Categorie jeu": g[0].get("classement JPS final"), "Couverture Jeu": g[0].get("couverture"), "Jeu": g[0].get("nom_jeu_complet") }
         for u in users:
-            row[u["pseudo"]] = u["id"] in set(loans.get(ckey, []))
+            row[u["pseudo"]] = u["id"] in set(loans.get( g[0].get("_id"), []))
         rows.append(row)
     df = pd.DataFrame(rows)
     users_list = [u["pseudo"] for u in users]
