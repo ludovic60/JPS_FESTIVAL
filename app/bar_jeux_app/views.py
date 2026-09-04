@@ -369,10 +369,10 @@ def _final_page(user):
     
     totaux_par_personne = liste_jeux[users_list].sum().to_dict()
     total_general = sum(totaux_par_personne.values())
-    
+    print(totaux_par_personne)
     # Création du DataFrame récapitulatif
     df_recap = pd.DataFrame(
-        list(totaux_par_personne.items()), 
+        totaux_par_personne, 
         columns=["Personne", "Nombre de coches"]
     )
     # Affichage avec ligne de Total Général via les metrics ou un tableau
