@@ -368,7 +368,7 @@ def _final_page(user):
     st.subheader("📊 Récapitulatif des validations")
     
     totaux_par_personne = liste_jeux[users_list].sum().to_dict()
-   total_general = sum(totaux_par_personne.values())
+    total_general = sum(totaux_par_personne.values())
     
     # Création du DataFrame récapitulatif
     df_recap = pd.DataFrame(
