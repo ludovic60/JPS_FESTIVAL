@@ -113,6 +113,8 @@ def toggle_admin_selected(ckey, value):
             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)) }
             resultat = game_selec_tb.delete_many(filtre_tb)
         else :
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)) }
+            resultat = game_selec_tb.updateMany(filtre_tb, { $set: { statut: "actif", age: 30 } })
             resultat = {}
         
     
@@ -142,6 +144,13 @@ def get_game_suggestions(id_game):
         resultats ={}
     return resultats 
 
+def get_game_nb_suggestions(id_game):
+    con_mongo = cs.mongo_enabled()
+    if   con_mongo : 
+        db = cs.get_db()
+        game_suggest_tb = db.jeux_suggestions
+        resultats = game_suggest_tb.countDocuments({"annee": cs._secret("ANNEE_FESTIVAL") ,"id_jeux" :id_game  })
+    return resultats
 def toggle_suggestion(ckey, user_id, value):
     #s = get_suggestions()
     con_mongo = cs.mongo_enabled()
@@ -165,7 +174,10 @@ def toggle_suggestion(ckey, user_id, value):
         filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "periode_jeu" : "" , "id_jeux": str(ObjectId(ckey)),   "user_id": str(ObjectId(user_id)) }
         resultat = game_suggest_tb.delete_many(filtre_tb)
     
-    
+    elif value == "update":  
+        # deselectionne le jeu 
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)) }
+        resultat = game_suggest_tb.delete_many(filtre_tb)
     
 
 
