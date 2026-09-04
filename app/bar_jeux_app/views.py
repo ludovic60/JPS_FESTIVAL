@@ -128,6 +128,8 @@ def _game_card(g, list_key, user):
                             f"Clic toggle admin sur {game_id} -> mode {mode}"
                         )
                         storage_jeux.toggle_admin_selected(game_id, mode)
+                        if mode == insert :
+                                   
 
                     # Passe la fonction SANS les parenthèses () et utilise args=
                     st.checkbox(
