@@ -304,7 +304,7 @@ def _final_page(user):
         rows.append(row)
     print(rows)
     df = pd.DataFrame(rows)
-    pseudo_list = [list(u["pseudo"] for u in users ]       
+    pseudo_list = [list(u["pseudo"] for u in users) ]       
 
 
     # Initialisation dans la session
@@ -319,14 +319,14 @@ def _final_page(user):
         # Génération automatique des cases à cocher pour chaque personne
         config[ u["pseudo"]] = st.column_config.CheckboxColumn( pseudo.capitalize(), default=False)
 
-    # 4. Configuration dynamique des colonnes du tableau
+    # Configuration dynamique des colonnes du tableau
     config = {
         "Couverture Jeu": st.column_config.ImageColumn("Visuel"),
         "Total coché": st.column_config.NumberColumn("Total coché", disabled=True)
     }
 
 
-    # 5. Affichage du tableau interactif
+    # Affichage du tableau interactif
     edited_df = st.data_editor(
         st.session_state["df"],
         column_config=config,
@@ -334,7 +334,7 @@ def _final_page(user):
         key="editor"
     )
 
-    # 6. Recalcul de la somme basé sur la liste dynamique
+    # Recalcul de la somme basé sur la liste dynamique
     edited_df["Total coché"] = edited_df[pseudo].sum(axis=1)
 
     # Synchronisation de la session
