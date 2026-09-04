@@ -46,7 +46,7 @@ def load_games(list_key):
 
             filtre_tb = {"annee_parution" : annee , "mois_sortie" : mois }
         
-        resultats = list(game_tb.find(filtre_tb))
+        resultats = list(game_tb.find(filtre_tb).sort({"nom_jeu_fichier":1}))
     else :
         resultats ={}
     return resultats 
