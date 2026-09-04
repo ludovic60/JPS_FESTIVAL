@@ -327,7 +327,7 @@ def _final_page(user):
 
 
     # Affichage du tableau interactif
-    edited_df = st.data_editor(
+    liste_jeux = st.data_editor(
         st.session_state["df"],
         column_config=config,
         use_container_width=True,
@@ -335,10 +335,10 @@ def _final_page(user):
     )
 
     # Recalcul de la somme basé sur la liste dynamique
-    edited_df["Total coché"] = edited_df[pseudo].sum(axis=1)
+    liste_jeux["Total coché"] = liste_jeux[pseudo].sum(axis=1)
 
     # Synchronisation de la session
-    st.session_state["df"] = edited_df       
+    st.session_state["df"] = liste_jeux       
   
     st.markdown(
         """
@@ -363,26 +363,12 @@ def _final_page(user):
 
 
         
-       
-    edited = st.dataframe(
-            df[display_cols +["_ckey"]],
-            column_config={
-                "Couverture Jeu": st.column_config.ImageColumn(width=100),
-                "Jeu": st.column_config.TextColumn(disabled=True) , 
-                "Total coché" : st.column_config.NumberColumn(disabled=True)
-            },
-            hide_index =True, 
-            width="stretch", 
-            key ="loans_editor", 
-            row_height=100 
-            
-    )
 
     # 5. TABLEAU RÉCAPITULATIF PAR PERSONNE ET TOTAL
     st.subheader("📊 Récapitulatif des validations")
     
-    totaux_par_personne = df_edite[users_list].sum().to_dict()
-    total_general = sum(totaux_par_personne.values())
+    totaux_par_personne = liste_jeux[users_list].sum().to_dict()
+   total_general = sum(totaux_par_personne.values())
     
     # Création du DataFrame récapitulatif
     df_recap = pd.DataFrame(
