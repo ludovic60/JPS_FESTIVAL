@@ -306,7 +306,7 @@ def _final_page(user):
    
     pseudo_list = [list(u["pseudo"] for u in users) ]       
 
-
+    print(pseudo_list)
     # Initialisation dans la session
     if "df" not in st.session_state:
                df = pd.DataFrame(rows)
