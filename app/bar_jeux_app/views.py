@@ -304,11 +304,41 @@ def _final_page(user):
         rows.append(row)
     print(rows)
     df = pd.DataFrame(rows)
-    users_list = [u["pseudo"] for u in users]
-    display_cols = ["Nouveauté"] +["Annee"] +["Categorie jeu"] +["Couverture Jeu"] +["Jeu"] +["Total coché"]+ users_list
+    pseudo_list = [list(u["pseudo"] for u in users ]       
 
-    # Calcul du compteur par ligne
-    df["Total coché"] = df[users_list].sum(axis=1)
+
+    # Initialisation dans la session
+    if "df" not in st.session_state:
+               df = pd.DataFrame(data)
+               st.session_state["df"] = df
+
+    # Ajout dynamique des nouvelles colonnes si la liste évolue
+    for pseudo in pseudo_list
+        if  pseudo] not in st.session_state["df"].columns:
+            st.session_state["df"][pseudo] = False
+        # Génération automatique des cases à cocher pour chaque personne
+        config[ u["pseudo"]] = st.column_config.CheckboxColumn( pseudo.capitalize(), default=False)
+
+    # 4. Configuration dynamique des colonnes du tableau
+    config = {
+        "Couverture Jeu": st.column_config.ImageColumn("Visuel"),
+        "Total coché": st.column_config.NumberColumn("Total coché", disabled=True)
+    }
+
+
+    # 5. Affichage du tableau interactif
+    edited_df = st.data_editor(
+        st.session_state["df"],
+        column_config=config,
+        use_container_width=True,
+        key="editor"
+    )
+
+    # 6. Recalcul de la somme basé sur la liste dynamique
+    edited_df["Total coché"] = edited_df[pseudo].sum(axis=1)
+
+    # Synchronisation de la session
+    st.session_state["df"] = edited_df       
   
     st.markdown(
         """
