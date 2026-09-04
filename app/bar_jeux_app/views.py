@@ -277,6 +277,7 @@ def _final_page(user):
         st.info("Aucun jeu retenu par l'admin pour l'instant.")
         return
     rows = []
+    print (finals)
     for game in finals:
         
         g = storage_jeux.get_info_games( game.get('id_jeux'))
