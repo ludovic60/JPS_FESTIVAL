@@ -303,13 +303,13 @@ def _final_page(user):
         #                          row[u[0].get("pseudo")] = 1
         rows.append(row)
     print(rows)
-    df = pd.DataFrame(rows)
+   
     pseudo_list = [list(u["pseudo"] for u in users) ]       
 
 
     # Initialisation dans la session
     if "df" not in st.session_state:
-               df = pd.DataFrame(data)
+               df = pd.DataFrame(rows)
                st.session_state["df"] = df
 
     # Ajout dynamique des nouvelles colonnes si la liste évolue
