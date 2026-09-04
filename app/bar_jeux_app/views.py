@@ -129,8 +129,8 @@ def _game_card(g, list_key, user):
                         )
                         storage_jeux.toggle_admin_selected(game_id, mode)
                         if mode == insert :
+                                   toggle_admin_selected(game_id, "update")
                                    
-
                     # Passe la fonction SANS les parenthèses () et utilise args=
                     st.checkbox(
                         "Retenir (admin)",
@@ -192,6 +192,8 @@ def get_game_nb_suggestions(id_game):
                 st.caption(f"👍 {nb_sugg} suggestion(s)")
                 if nb_sugg > 0  :
                     statut = get_game_nb_suggestions(ckey_this_game)[0].get("statut")
+                    print("statut")
+                    print(statut)
                     if statut = "suggestion Retenuz"
                                st.badge("✅ suggestion Retenu")
                     elif statut = "suggestion refusée":   
