@@ -314,10 +314,10 @@ def _final_page(user):
 
     # Ajout dynamique des nouvelles colonnes si la liste évolue
     for pseudo in pseudo_list
-        if  pseudo] not in st.session_state["df"].columns:
+        if  pseudo not in st.session_state["df"].columns:
             st.session_state["df"][pseudo] = False
         # Génération automatique des cases à cocher pour chaque personne
-        config[ u["pseudo"]] = st.column_config.CheckboxColumn( pseudo.capitalize(), default=False)
+        config[pseudo] = st.column_config.CheckboxColumn( pseudo.capitalize(), default=False)
 
     # Configuration dynamique des colonnes du tableau
     config = {
