@@ -306,7 +306,7 @@ def _final_page(user):
     display_cols = ["Nouveauté"] +["Annee"] +["Categorie jeu"] +["Couverture Jeu"] +["Jeu"] +["Total coché"]+ users_list
 
     # Calcul du compteur par ligne
-    st.session_state.df["Total coché"] = st.session_state.df[users_list].sum(axis=1)
+    df["Total coché"] = df[users_list].sum(axis=1)
   
     st.markdown(
         """
