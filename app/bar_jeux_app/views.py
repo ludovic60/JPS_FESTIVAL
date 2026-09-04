@@ -182,6 +182,8 @@ def _game_card(g, list_key, user):
                         st.badge("✅ suggestion Retenu")
                     else : 
                         st.badge("suggestion à traiter")
+                                st.badge("❌ suggestion refusée")
+                               
 
             with st.expander("Détails du jeu"):
                 for fk, fl in config_bar_jeux.GAME_FIELDS:
