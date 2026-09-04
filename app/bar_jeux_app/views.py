@@ -301,6 +301,7 @@ def _final_page(user):
         #                      if ul[0].get("_id") ==   u[0].get("_id") and    ul[0].get("_id")   == g[0].get("_id")  :  
         #                          row[u[0].get("pseudo")] = 1
         rows.append(row)
+    print(rows)
     df = pd.DataFrame(rows)
     users_list = [u["pseudo"] for u in users]
     display_cols = ["Nouveauté"] +["Annee"] +["Categorie jeu"] +["Couverture Jeu"] +["Jeu"] +["Total coché"]+ users_list
