@@ -170,19 +170,33 @@ def _game_card(g, list_key, user):
                    
                     
             with cc[1]:
-                list_sugg_this_game = [game for game in sugg if game["id_jeux"] == ckey_this_game]
-    
+def get_game_suggestions(id_game):
+    con_mongo = cs.mongo_enabled()
+    if   con_mongo : 
+        db = cs.get_db()
+        game_suggest_tb = db.jeux_suggestions
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") ,"id_jeux" :id_game  }
+        
+        resultats = list(game_suggest_tb.find(filtre_tb))
+    else :
+        resultats ={}
+    return resultats 
+
+def get_game_nb_suggestions(id_game):
+           
                 # 2. Compter combien il y en a
-                nb_sugg = len(list_sugg_this_game)
+                nb_sugg = get_game_nb_suggestions(ckey_this_game)
                     
                 st.caption(f"👍 {nb_sugg} suggestion(s)")
                 if nb_sugg > 0  :
-                    
-                    if any(ckey_this_game in game["id_jeux"] for game in admin_sel): 
-                        st.badge("✅ suggestion Retenu")
-                    else : 
-                        st.badge("suggestion à traiter")
+                    statut = get_game_nb_suggestions(ckey_this_game)[0].get("statut")
+                    if statut = "suggestion Retenuz"
+                               st.badge("✅ suggestion Retenu")
+                    elif statut = "suggestion refusée":   
+                       
                                 st.badge("❌ suggestion refusée")
+                    else :
+                                st.badge("suggestion à traiter")
                                
 
             with st.expander("Détails du jeu"):
