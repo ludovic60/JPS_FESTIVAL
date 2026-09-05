@@ -273,7 +273,8 @@ def _requests_page(user):
 
 def _final_page(user):
     st.title("Liste finale — Prêts")
-    st.caption("Tableau croisé : jeux retenus par l'admin × personnes. Cochez les jeux que vous pouvez prêter.")
+    # --- EXTRACTION DES DONNEES UTILES ---
+        #--- liste des jeux
     finals = storage_jeux.final_games()
    
     logging.info(f"liste des jeux selec {finals} ")
@@ -281,14 +282,17 @@ def _final_page(user):
     loans = storage_jeux.get_loans()
     current_user = user
     is_admin = current_user == "admin"
+
+    pseudo_list = list(u["pseudo"] for u in users)
+
+           
     # emplacement reservé pour le bouton de validation du pret par les utilisateurs
-    button_container = st.container()
-    
     if not finals:
         st.info("Aucun jeu retenu par l'admin pour l'instant.")
-        return
+        return           
+    
+    # creation des lignes du futur tableau croisé         
     rows = []
-    print (finals)
     for game in finals:
         
         g = storage_jeux.get_info_games( game.get('id_jeux'))
@@ -307,84 +311,270 @@ def _final_page(user):
                    New = ""                    
                
                
-        row = {"nouveaute" : New, "Annee": g[0].get("annee"), "Categorie jeu": g[0].get("classement JPS final"), "Couverture Jeu": g[0].get("couverture"), "Jeu": g[0].get("nom_jeu_complet"), "Total coché": "" }
-        #for u in users:
-        #           for ul in loans:   
-        #                      if ul[0].get("_id") ==   u[0].get("_id") and    ul[0].get("_id")   == g[0].get("_id")  :  
-        #                          row[u[0].get("pseudo")] = 1
-        rows.append(row)
-    print(rows)
-   
-    pseudo_list = list(u["pseudo"] for u in users)      
+        row = {"nouveaute" : New, "Annee": g[0].get("annee"), "Categorie jeu": g[0].get("classement JPS final"), "Couverture Jeu": g[0].get("couverture"), "Jeu": g[0].get("nom_jeu_complet"), "Total coché par joueur": "" , "Total coché validé par admin": "" }
+        row_jeux.append(row)
+               
+    #if "df_jeux" not in st.is_distinct:   
+    st.session_state.df_jeux = pd.DataFrame(row_jeux)   
+               
+    # creation des colonnes du futur tableau croisé   avec preparation des checkbox
+      
+    if "grid_state" not in st.session_state:
+         st.session_state.grid_state = {
+         (select_joueur, valid_admin): [False, False]
+         for select_joueur in st.session_state.df_jeux["Jeu"]
+         for valid_admin in pseudo_list
+     }
+           
 
-    print(pseudo_list)
-    # Initialisation dans la session
-    if "df" not in st.session_state:
-               df = pd.DataFrame(rows)
-               st.session_state["df"] = df
-
-    # Configuration dynamique des colonnes du tableau
-    config = {
-        "Couverture Jeu": st.column_config.ImageColumn("Visuel"),
-        "Total coché": st.column_config.NumberColumn("Total coché", disabled=True)
-    }       
-    # Ajout dynamique des nouvelles colonnes si la liste évolue
-    for pseudo in pseudo_list :
-        if  pseudo not in st.session_state["df"].columns:
-            st.session_state["df"][pseudo] = False
-        # Génération automatique des cases à cocher pour chaque personne
-        config[pseudo] = st.column_config.CheckboxColumn( pseudo.capitalize(), default=False)
+   #           for ul in loans:   
+   #                           if ul[0].get("_id") ==   u[0].get("_id") and    ul[0].get("_id")   == g[0].get("_id")  :  
+   #                          row[u[0].get("pseudo")] = 1      
 
 
+   # --- CALCUL DES DONNÉES COMPLÉMENTAIRES ---
+   # df_p = st.session_state.df_produits.copy()
+
+   # Traitement des compteurs
+   for j in pseudo_list:
+         st.session_state.df_jeux[f"{j}_user"] = df_p["jeu"].apply(
+            lambda pid: st.session_state.grid_state[(pid, j)][0]
+         )
+         st.session_state.df_jeux[f"{j}_admin"] = df_p["id"].apply(
+            lambda pid: st.session_state.grid_state[(pid, j)][1]
+        )
+
+   # Compteurs par jeux
+   st.session_state.df_jeux["Total coché par joueur": ""] = st.session_state.df_jeux[[f"{j}_user" for j in pseudo_list]].sum(axis=1)
+   st.session_state.df_jeux["Total coché validé par admin"] = st.session_state.df_jeux[[f"{j}_admin" for j in pseudo_list]].sum(axis=1) 
+
+   # Compteurs par joueur
+   user_by_player = {j: st.session_state.df_jeux[f"{j}_user"].sum() for j in pseudo_list}
+   admin_by_player = {j: st.session_state.df_jeux[f"{j}_admin"].sum() for j in pseudo_list}
+
+    # --- PARTIE SUPERIEURE : GRAPHIQUES ---
+
+    col_graph1, col_graph2, col_graph3 = st.columns(3)
 
 
-    # Affichage du tableau interactif
-    liste_jeux = st.data_editor(
-        st.session_state["df"],
-        column_config=config,
-        use_container_width=True,
-        key="editor"
-    )
+           #---- 1. Histogramme par joueur (Validés vs Cochés Utilisateur)
 
-    # Recalcul de la somme basé sur la liste dynamique
-    #liste_jeux["Total coché"] = liste_jeux[pseudo].sum(axis=1)
+    with col_graph1:
+    
+          st.subheader("Validations par Joueur")
+          nb_jeux_histogramme = []
+          for u in pseudo_list:
+                   nb_jeux_histogramme.append(
+                       {"Utilisateur": u, "Nb jeux": "pret par user", "Valeur": user_by_player[j]}
+                   )
+                   nb_jeux_histogramme.append({"Utilisateur": u, "Nb jeux": "pret validé (Admin)", "Valeur": admin_by_player[j]})
+          df_jeux_histogramme  = pd.DataFrame(nb_jeux_hitosgramme)
+               
+          fig_hist = px.bar(
+              df_jeux_histogramme,
+              x="Utilisateur",
+              y="Valeur",
+              color="Nb jeux",
+              barmode="group",
+              color_discrete_map={"pret par user": "#636EFA", "pret validé (Admin)": "#2CA02C"},
+          )
+          st.plotly_chart(fig_hist, use_container_width=True)
+
+              #---- 2. Camembert Nouveautés (jeux cochés au moins une fois par un utilisateur)
+    with col_graph2:
+          st.subheader("Produits cochés par Nouveauté")
+          df_cochis = df_jeux_histogramme[df_jeux_histogramme["total_user"] > 0]
+          if not df_cochis.empty:
+              df_nov = (
+                  df_cochis["nouveaute"]
+                  .map({True: "Nouveauté", False: "Ancien"})
+                  .value_counts()
+                  .reset_index()
+              )
+              df_nov.columns = ["Type", "Nombre"]
+              fig_pie_nov = px.pie(df_nov, names="Type", values="Nombre", hole=0.3)
+              st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+              st.info("Aucun jeu coché pour le moment.")
+
+           # 3. Camembert Catégories (Produits cochés au moins une fois par un utilisateur)
+      with col_graph3:
+          st.subheader("Jeux cochés par Catégorie")
+          if not df_cochis.empty:
+              df_cat = df_cochis["categorie"].value_counts().reset_index()
+              df_cat.columns = ["Catégorie", "Nombre"]
+              fig_pie_cat = px.pie(df_cat, names="Catégorie", values="Nombre", hole=0.3)
+              st.plotly_chart(fig_pie_cat, use_container_width=True)
+          else:
+              st.info("Aucun produit coché pour le moment.")
+
+    st.divider()
+    st.caption("Tableau croisé : jeux retenus par l'admin × personnes. Cochez les jeux que vous pouvez prêter.")
 
 
-    # Création du tableau croisé avec la somme
-    pivot_df = pd.pivot_table(
-        liste_jeux,
-        values=liste_jeux[pseudo],
-        #index=index_col,
-        columns=liste_jeux[pseudo],
-        aggfunc='sum',      # La somme des 1 compte les cases cochées
-        fill_value=0,
-        margins=True,
-        margins_name="Total coché"
-    )       
 
-    # Synchronisation de la session
-    st.session_state["df"] = liste_jeux       
+    # En-tête du tableau
+    cols_header = st.columns([2, 1.5,  2 , 3 , 2 , 1 , 1 ] + [1.5] * len(pseudo_list) )r
+
+     
+    cols_header[0].markdown("nouveaute")
+    cols_header[1].markdown("Annee")
+    cols_header[2].markdown("Categorie jeu*")
+    cols_header[3].markdown("Couverture Jeu")
+    cols_header[4].markdown("Jeu")
+    cols_header[5].markdown("Total coché par joueur")
+    cols_header[6].markdown("Total coché validé par admin")
+    for idx, j in enumerate(pseudo_list):
+        cols_header[6 + idx].markdown(f"**{j}**  \n*(U / A)*")
+
+    cols_spec = st.columns([2, 1.5,  2 , 3 , 2 , 1 , 1 ] + [3] * len(pseudo_list) )r
+
+    cols_spec[0].markdown(" ")
+    cols_spec[1].markdown(" ")
+    cols_spec[2].markdown(" ")
+    cols_header[3].markdown(" ")
+    cols_header[4].markdown(" ")
+    cols_header[5].markdown(" ")
+    cols_header[6].markdown(" ")
+    for idx, j in enumerate(pseudo_list):
+        cols_header[6 + idx].markdown("Total Validé / Coché")
+    
+               
+    st.divider()  # Séparateur visuel avant la liste des jeux
+    -----------------------
   
-    st.markdown(
-        """
-        <style>
-        /* Agrandit la hauteur des cellules et conteneurs du tableau */
-        [data-testid="stTable"] td, 
-        div[data-testid="stDataEditor"] div[role="grid"] div[role="row"] {
-            min-height: 100px !important;
-            height: 500px !important;
-        }
-        /* Permet à l'image de prendre toute la hauteur disponible */
-        div[data-testid="stDataEditor"] img {
-            max-height: 5000px !important;
-            object-fit: contain;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
 
-    st.subheader("📋 Grille de suivi")
+    # Lignes du tableau
+
+    for _, row in df_jeux_histogramme.iterrows():
+        p_id = row["jeu"]
+        cols = st.columns([2, 1.5,  2 , 3 , 2 , 1 , 1 ] + [3] * len(pseudo_list) )r
+
+
+        cols[0].write(row["nouveaute"])
+        cols[1].write(row["Annee"])    
+        cols[2].write(row["Categorie jeu"])    
+        cols[3].write(row["Couverture Jeu"])    
+        cols[4].write(row["Jeu"])       
+        cols[5].write(row["("Total coché par joueur""]) 
+        cols[6].write(row["Total coché validé par admin"]) 
+
+
+               
+
+        # Cellules Joueurs
+        for idx, j in enumerate(pseudo_list):
+            u_val, a_val = st.session_state.grid_state[(p_id, j)]
+
+            with cols[6 + idx]:
+                # Fond vert si validé par l'admin
+                bg_color = "#d4edda" if a_val else "transparent"
+                container = st.container()
+
+                with container:
+                    st.markdown(
+                        f"""
+                        <div style="background-color: {bg_color}; padding: 5px; border-radius: 5px; border: 1px solid #ddd;">
+                        """,
+                        unsafe_allow_html=True,
+                    )
+
+                    c1, c2 = st.columns(2)
+                    # Checkbox Utilisateur
+                    new_u = c1.checkbox(
+                        "U",
+                        value=u_val,
+                        key=f"u_{p_id}_{j}",
+                        label_visibility="collapsed",
+                    )
+                    # Checkbox Admin
+                    new_a = c2.checkbox(
+                        "A",
+                        value=a_val,
+                        key=f"a_{p_id}_{j}",
+                        disabled=not is_admin,
+                        label_visibility="collapsed",
+                    )
+
+                    st.markdown("</div>", unsafe_allow_html=True)
+
+                    # Mise à jour de l'état si modification
+                    if new_u != u_val or new_a != a_val:
+                        st.session_state.grid_state[(p_id, j)] = [new_u, new_a]
+                        st.rerun()
+
+
+   
+####    pseudo_list = list(u["pseudo"] for u in users)      
+
+####    print(pseudo_list)
+####    # Initialisation dans la session
+####    if "df" not in st.session_state:
+####               df = pd.DataFrame(rows)
+####               st.session_state["df"] = df
+
+####    # Configuration dynamique des colonnes du tableau
+####    config = {
+####        "Couverture Jeu": st.column_config.ImageColumn("Visuel"),
+####        "Total coché": st.column_config.NumberColumn("Total coché", disabled=True)
+####    }       
+####    # Ajout dynamique des nouvelles colonnes si la liste évolue
+####    for pseudo in pseudo_list :
+####        if  pseudo not in st.session_state["df"].columns:
+####            st.session_state["df"][pseudo] = False
+####        # Génération automatique des cases à cocher pour chaque personne
+####        config[pseudo] = st.column_config.CheckboxColumn( pseudo.capitalize(), default=False)
+
+
+
+
+####    # Affichage du tableau interactif
+####    liste_jeux = st.data_editor(
+####        st.session_state["df"],
+####        column_config=config,
+####        use_container_width=True,
+####        key="editor"
+####    )
+
+####    # Recalcul de la somme basé sur la liste dynamique
+####    #liste_jeux["Total coché"] = liste_jeux[pseudo].sum(axis=1)
+
+
+####    # Création du tableau croisé avec la somme
+####    pivot_df = pd.pivot_table(
+####       liste_jeux,
+####        values=liste_jeux[pseudo],
+####        #index=index_col,
+####        columns=liste_jeux[pseudo],
+####        aggfunc='sum',      # La somme des 1 compte les cases cochées
+####        fill_value=0,
+####        margins=True,
+####        margins_name="Total coché"
+####    )       
+
+####    # Synchronisation de la session
+####    st.session_state["df"] = liste_jeux       
+  
+####    st.markdown(
+####        """
+####        <style>
+####        /* Agrandit la hauteur des cellules et conteneurs du tableau */
+####        [data-testid="stTable"] td, 
+####        div[data-testid="stDataEditor"] div[role="grid"] div[role="row"] {
+####            min-height: 100px !important;
+####            height: 500px !important;
+####        }
+####        /* Permet à l'image de prendre toute la hauteur disponible */
+####        div[data-testid="stDataEditor"] img {
+####            max-height: 5000px !important;
+####            object-fit: contain;
+####        }
+####        </style>
+####        """,
+####        unsafe_allow_html=True,
+####    )
+
+####    st.subheader("📋 Grille de suivi")
 
 
         
