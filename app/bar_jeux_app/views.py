@@ -1,7 +1,7 @@
 """Vues Streamlit pour Bar à jeux."""
 
 
-from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode           
+from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode, JsCode        
 import logging
 import plotly.express as px
 import pandas as pd
