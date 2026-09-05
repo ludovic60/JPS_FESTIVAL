@@ -438,10 +438,8 @@ def _final_page(user):
     
                
     st.divider()  # Séparateur visuel avant la liste des jeux
-    -----------------------
-  
-
-    # Lignes du tableau
+    #####################-----------------------
+    ###################### Lignes du tableau
 
     for _, row in df_jeux_histogramme.iterrows():
         p_id = row["jeu"]
