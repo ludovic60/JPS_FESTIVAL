@@ -180,6 +180,7 @@ def _game_card(g, list_key, user):
                 st.caption(f"👍 {nb_sugg} suggestion(s)")
                 if nb_sugg > 0  :
                     print("statut")
+                    print(ckey_this_game)
                     print( storage_jeux.get_game_nb_suggestions(ckey_this_game))
                     statut = storage_jeux.get_game_nb_suggestions(ckey_this_game)[0].get("statut")
                    
