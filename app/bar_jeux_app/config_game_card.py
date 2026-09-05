@@ -1,5 +1,11 @@
 import config_bar_jeux
 import storage_jeux
+# Ajoute le dossier parent à sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+import commun.auth,  commun.config 
+import commun.common_store as cs
+
 
 
 def mise_forme_categorie(categorie) :
@@ -51,8 +57,7 @@ def _game_card(g, list_key, user):
                 st.image(g["couverture"], width="stretch")
         with c2:
             title = g.get("nom_jeu_complet") or g.get("nom_jeu") or "Jeu"
-            # badge_nouv = " 🆕" if str(g.get("est_nouveaute", "")).lower() in ("oui", "true", "1") else ""
-            # st.markdown(f"#### {title}{badge_nouv}")
+
             st.markdown(f"#### {title}")
 
             ##### gestion du classement =      
