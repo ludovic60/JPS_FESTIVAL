@@ -118,7 +118,6 @@ def toggle_admin_selected(ckey, value):
             resultat = {}
         
     
-
 def get_suggestions():
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
@@ -131,14 +130,12 @@ def get_suggestions():
         resultats ={}
     return resultats 
 
-
 def get_game_suggestions(id_game):
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
         game_suggest_tb = db.jeux_suggestions
         filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") ,"id_jeux" :id_game  }
-        
         resultats = list(game_suggest_tb.find(filtre_tb))
     else :
         resultats ={}
@@ -151,6 +148,7 @@ def get_game_nb_suggestions(id_game):
         game_suggest_tb = db.jeux_suggestions
         resultats = game_suggest_tb.countDocuments({"annee": cs._secret("ANNEE_FESTIVAL") ,"id_jeux" :id_game  })
     return resultats
+
 def toggle_suggestion(ckey, user_id, value):
     #s = get_suggestions()
     con_mongo = cs.mongo_enabled()
