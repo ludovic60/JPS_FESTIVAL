@@ -349,10 +349,7 @@ def _final_page(user):
                 {
                     "field": f"{player_key}_admin",
                     "headerName": "Validé",
-                    if user["role"] == "admin": 
-                        "editable": True
-                    else :
-                        "editable": False,
+                    "editable": (user["role"] == "admin"),
                     "cellRenderer": "agCheckboxCellRenderer",
                     "width": 140,
                     # Style conditionnel : Vert si la case est cochée
