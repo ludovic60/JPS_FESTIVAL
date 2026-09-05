@@ -522,11 +522,7 @@ def _final_page(user):
     )
     
 
-    gb.configure_column(
-        "Couverture Jeu",
-        cellRenderer=image_renderer,
-        width=150,
-   ) 
+
     # Applique un thème complet avec bordures
     gridOptions = gb.build()
 
