@@ -440,6 +440,57 @@ def _final_page(user):
     st.caption("Tableau croisé : jeux retenus par l'admin × personnes. Cochez les jeux que vous pouvez prêter.")
 
 
+    ###################################################################################################
+    ###########  gestion du tableau des prêts   
+    ###################################################################################################
+    # Colonnes fixes de gauche
+    column_defs = [
+        {"field": "nouveaute", "headerName": "nouveaute", "width": 150},
+        {"field": "Annee", "headerName": "Annee", "width": 80},
+        {"field": "Categorie jeu", "headerName": "Categorie jeu", "width": 110},
+        {"field": "Couverture Jeu", "headerName": "Couverture Jeu", "width": 110},
+        {"field": "Jeu", "headerName": "Jeu", "width": 110},
+        {"field": "Total coché par joueur", "headerName": "Total coché par joueur", "width": 110},
+        {"field": "Total coché validé par admi", "headerName": "Total coché validé par admi", "width": 110},
+        
+    ]
+
+
+    for idx, j in enumerate(joueurs)::
+        player_key = f"j{idx+1}"
+        group_col = {
+            "headerName": j,  # Première ligne d'en-tête (Nom du Joueur)
+            "children": [
+                {
+                    "field": f"{player_key}_prete",
+                    "headerName": "Je prête",  # Seconde ligne d'en-tête
+                    "editable": True,
+                    "cellRenderer": "agCheckboxCellRenderer",  # Case à cocher native
+                    "width": 110,
+                },
+                {
+                    "field": f"{player_key}_admin",
+                    "headerName": "Validé par admin",
+                    "editable": True,
+                    "cellRenderer": "agCheckboxCellRenderer",
+                    "width": 140,
+                    # Style conditionnel : Vert si la case est cochée
+                    "cellStyle": {
+                        "styleConditions": [
+                            {
+                                "condition": "x === true",
+                                "style": {
+                                    "backgroundColor": "#d4edda",
+                                    "color": "#155724",
+                                },
+                            }
+                        ]
+                    },
+                },
+            ],
+        }
+    column_defs.append(group_col)
+    
 
     # Configuration du tableau avec AgGrid
     gb = GridOptionsBuilder.from_dataframe(df_jeux)
@@ -488,203 +539,4 @@ def _final_page(user):
 
 
 
-           
-    # En-tête du tableau
-    cols_header = st.columns([2, 1.5,  2 , 3 , 2 , 1 , 1 ] + [1.5] * len(pseudo_list) )
-
      
-    cols_header[0].markdown("nouveaute")
-    cols_header[1].markdown("Annee")
-    cols_header[2].markdown("Categorie jeu*")
-    cols_header[3].markdown("Couverture Jeu")
-    cols_header[4].markdown("Jeu")
-    cols_header[5].markdown("Total coché par joueur")
-    cols_header[6].markdown("Total coché validé par admin")
-    for idx, j in enumerate(pseudo_list):
-        cols_header[6 + idx].markdown(f"**{j}**  \n*(U / A)*")
-
-    cols_spec = st.columns([2, 1.5,  2 , 3 , 2 , 1 , 1 ] + [3] * len(pseudo_list) )
-
-    cols_spec[0].markdown(" ")
-    cols_spec[1].markdown(" ")
-    cols_spec[2].markdown(" ")
-    cols_header[3].markdown(" ")
-    cols_header[4].markdown(" ")
-    cols_header[5].markdown(" ")
-    cols_header[6].markdown(" ")
-    for idx, j in enumerate(pseudo_list):
-        cols_header[6 + idx].markdown("Total Validé / Coché")
-    
-               
-    st.divider()  # Séparateur visuel avant la liste des jeux
-    #####################-----------------------
-    ###################### Lignes du tableau
-
-    for index, row in df_jeux.iterrows():
-        cols = st.columns([2, 1.5,  2 , 3 , 2 , 1 , 1 ] + [3] * len(pseudo_list) )
-        print(row)
-
-        cols[0].write(row['nouveaute'])
-        cols[1].write(row["Annee"])    
-        cols[2].write(row["Categorie jeu"])    
-        cols[3].write(row["Couverture Jeu"])    
-        cols[4].write(row["Jeu"])       
-        cols[5].write(row["Total coché par joueur"]) 
-        cols[6].write(row["Total coché validé par admin"]) 
-
-
-               
-
-        # Cellules Joueurs
-        for idx, j in enumerate(pseudo_list):
-            u_val, a_val = st.session_state.grid_state[(row["Jeu"], j)]
-
-            with cols[6 + idx]:
-                # Fond vert si validé par l'admin
-                bg_color = "#d4edda" if a_val else "transparent"
-                container = st.container()
-
-                with container:
-                    st.markdown(
-                        f"""
-                        <div style="background-color: {bg_color}; padding: 5px; border-radius: 5px; border: 1px solid #ddd;">
-                        """,
-                        unsafe_allow_html=True,
-                    )
-
-                    c1, c2 = st.columns(2)
-                    # Checkbox Utilisateur
-                    new_u = c1.checkbox(
-                        "U",
-                        value=u_val,
-                        key=f"u_{row["Jeu"]}_{j}",
-                        label_visibility="collapsed",
-                    )
-                    # Checkbox Admin
-                    new_a = c2.checkbox(
-                        "A",
-                        value=a_val,
-                        key=f"a_{row["Jeu"]}_{j}",
-                        disabled=not is_admin,
-                        label_visibility="collapsed",
-                    )
-
-                    st.markdown("</div>", unsafe_allow_html=True)
-
-                    # Mise à jour de l'état si modification
-                    if new_u != u_val or new_a != a_val:
-                        st.session_state.grid_state[(row["Jeu"], j)] = [new_u, new_a]
-                        st.rerun()
-
-
-
-
-
-   
-####    pseudo_list = list(u["pseudo"] for u in users)      
-
-####    print(pseudo_list)
-####    # Initialisation dans la session
-####    if "df" not in st.session_state:
-####               df = pd.DataFrame(rows)
-####               st.session_state["df"] = df
-
-####    # Configuration dynamique des colonnes du tableau
-####    config = {
-####        "Couverture Jeu": st.column_config.ImageColumn("Visuel"),
-####        "Total coché": st.column_config.NumberColumn("Total coché", disabled=True)
-####    }       
-####    # Ajout dynamique des nouvelles colonnes si la liste évolue
-####    for pseudo in pseudo_list :
-####        if  pseudo not in st.session_state["df"].columns:
-####            st.session_state["df"][pseudo] = False
-####        # Génération automatique des cases à cocher pour chaque personne
-####        config[pseudo] = st.column_config.CheckboxColumn( pseudo.capitalize(), default=False)
-
-
-
-
-####    # Affichage du tableau interactif
-####    liste_jeux = st.data_editor(
-####        st.session_state["df"],
-####        column_config=config,
-####        use_container_width=True,
-####        key="editor"
-####    )
-
-####    # Recalcul de la somme basé sur la liste dynamique
-####    #liste_jeux["Total coché"] = liste_jeux[pseudo].sum(axis=1)
-
-
-####    # Création du tableau croisé avec la somme
-####    pivot_df = pd.pivot_table(
-####       liste_jeux,
-####        values=liste_jeux[pseudo],
-####        #index=index_col,
-####        columns=liste_jeux[pseudo],
-####        aggfunc='sum',      # La somme des 1 compte les cases cochées
-####        fill_value=0,
-####        margins=True,
-####        margins_name="Total coché"
-####    )       
-
-####    # Synchronisation de la session
-####    st.session_state["df"] = liste_jeux       
-  
-####    st.markdown(
-####        """
-####        <style>
-####        /* Agrandit la hauteur des cellules et conteneurs du tableau */
-####        [data-testid="stTable"] td, 
-####        div[data-testid="stDataEditor"] div[role="grid"] div[role="row"] {
-####            min-height: 100px !important;
-####            height: 500px !important;
-####        }
-####        /* Permet à l'image de prendre toute la hauteur disponible */
-####        div[data-testid="stDataEditor"] img {
-####            max-height: 5000px !important;
-####            object-fit: contain;
-####        }
-####        </style>
-####        """,
-####        unsafe_allow_html=True,
-####    )
-
-####    st.subheader("📋 Grille de suivi")
-
-
-        
-
-####    # 5. TABLEAU RÉCAPITULATIF PAR PERSONNE ET TOTAL
-####    st.subheader("📊 Récapitulatif des validations")
-    
-####    totaux_par_personne = liste_jeux[users_list].sum().to_dict()
-####    total_general = sum(totaux_par_personne.values())
-####    print(totaux_par_personne)
-####    # Création du DataFrame récapitulatif
-####    df_recap = pd.DataFrame(
-####        totaux_par_personne, 
-####        columns=["Personne", "Nombre de coches"]
-####    )
-####    # Affichage avec ligne de Total Général via les metrics ou un tableau
-####    col1, col2 = st.columns([2, 1])
-
-####    with col1:
-####        st.dataframe(df_recap, hide_index=True, width="stretch")
-
-####    with col2:
-####        st.metric(label="🎯 Total Général", value=total_general)
-    
-
-####    with button_container:
-####        if st.button("Enregistrer les prêts", type="primary"):
-####            for r in edited.iterrows():
-####                ckey = df.loc[df["Jeu"] == r["Jeu"], "_ckey"].values[0]
-####                for u in users:
-####                    storage_jeux.set_loan(ckey, u["id"], bool(r[u["pseudo"]]))
-####            st.success("Prêts enregistrés")
-####            #st.rerun()
-      
-    
-        
-
