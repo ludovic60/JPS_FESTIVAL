@@ -531,28 +531,19 @@ def _final_page(user):
 
     grid_options["columnDefs"] = column_defs
 
-    st.markdown(
-        """
-        <style>
-        /* Bordures verticales sur chaque cellule de la grille */
-        .ag-theme-balham .ag-cell, 
-        .ag-theme-alpine .ag-cell {
-            border-right: 1px solid #d9d9d9 !important;
-        }
-        
-        /* Bordures verticales sur les en-têtes */
-        .ag-theme-balham .ag-header-cell, 
-        .ag-theme-alpine .ag-header-cell {
-            border-right: 1px solid #d9d9d9 !important;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
+    custom_css = {
+        ".ag-cell": {
+            "border-right": "1px solid #c6c6c6 !important",
+        },
+        ".ag-header-cell, .ag-header-group-cell": {
+            "border-right": "1px solid #c6c6c6 !important",
+        },
+    }
 
     AgGrid(
        df_jeux,
        gridOptions=grid_options,
+       custom_css=custom_css, 
        theme="balham",  # Thème avec bordures et grille bien visibles
        update_mode=GridUpdateMode.MODEL_CHANGED,
        allow_unsafe_jscode=True, ## pour gerer l'affichage des images grace aux url
