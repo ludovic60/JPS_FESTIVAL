@@ -146,7 +146,7 @@ def get_game_nb_suggestions(id_game):
     if   con_mongo : 
         db = cs.get_db()
         game_suggest_tb = db.jeux_suggestions
-        resultats = game_suggest_tb.countDocuments({"annee": cs._secret("ANNEE_FESTIVAL") ,"id_jeux" :id_game  })
+        resultats = game_suggest_tb.count_documents({"annee": cs._secret("ANNEE_FESTIVAL") ,"id_jeux" :id_game  })
     return resultats
 
 def toggle_suggestion(ckey, user_id, value):
