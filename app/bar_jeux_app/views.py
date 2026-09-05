@@ -372,7 +372,7 @@ def _final_page(user):
         )
 
     # Compteurs par jeux
-    st.session_state.df_jeux["Total coché par joueur": ""] = st.session_state.df_jeux[[f"{j}_user" for j in pseudo_list]].sum(axis=1)
+    st.session_state.df_jeux["Total coché par joueur"] = st.session_state.df_jeux[[f"{j}_user" for j in pseudo_list]].sum(axis=1)
     st.session_state.df_jeux["Total coché validé par admin"] = st.session_state.df_jeux[[f"{j}_admin" for j in pseudo_list]].sum(axis=1) 
 
     # Compteurs par joueur
