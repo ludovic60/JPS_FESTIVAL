@@ -509,6 +509,7 @@ def _final_page(user):
 
     # Configuration du tableau avec AgGrid
     gb = GridOptionsBuilder.from_dataframe(df_jeux)
+    
     gb.configure_default_column(
          resizable=True,
          filterable=True,
@@ -524,7 +525,7 @@ def _final_page(user):
 
 
     # Applique un thème complet avec bordures
-    gridOptions = gb.build()
+    grid_options = gb.build()
 
     AgGrid(
        df_jeux,
