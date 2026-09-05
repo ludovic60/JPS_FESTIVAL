@@ -411,7 +411,7 @@ def _final_page(user):
        theme="balham",  # Thème avec bordures et grille bien visibles
        allow_unsafe_jscode=True, ## pour gerer l'affichage des images grace aux url
        update_mode=GridUpdateMode.VALUE_CHANGED,  # Déclenche une mise à jour à chaque clic
-       data_return_mode=DataReturnMode.AS_INPUT,
+       # data_return_mode=DataReturnMode.AS_INPUT,
        fit_columns_on_grid_load=True,
     )
 
