@@ -364,10 +364,10 @@ def _final_page(user):
    # Traitement des compteurs
 
     for j in pseudo_list:
-         st.session_state.df_jeux[f"{j}_user"] = df_jeux["jeu"].apply(
+         st.session_state.df_jeux[f"{j}_user"] = df_jeux["Jeu"].apply(
             lambda pid: st.session_state.grid_state[(pid, j)][0]
          )
-         st.session_state.df_jeux[f"{j}_admin"] = df_jeux["id"].apply(
+         st.session_state.df_jeux[f"{j}_admin"] = df_jeux["Jeu"].apply(
             lambda pid: st.session_state.grid_state[(pid, j)][1]
         )
 
