@@ -395,7 +395,7 @@ def _final_page(user):
               st.info("Aucun jeu coché pour le moment.")
 
       ###########----3. Camembert Catégories (Produits cochés au moins une fois par un utilisateur)
-      with col_graph3:
+    with col_graph3:
           st.subheader("Jeux cochés par Catégorie")
           if not df_cochis.empty:
               df_cat = df_cochis["categorie"].value_counts().reset_index()
