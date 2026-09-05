@@ -179,12 +179,10 @@ def _game_card(g, list_key, user):
                     
                 st.caption(f"👍 {nb_sugg} suggestion(s)")
                 if nb_sugg > 0  :
-                    print("statut")
-                    print(ckey_this_game)
-                    print( storage_jeux.get_game_suggestions(ckey_this_game))
+ 
                     statut = storage_jeux.get_game_suggestions(ckey_this_game)[0].get("statut")
                    
-                    print(statut)
+ 
                     if statut == "suggestion Retenue":
                                st.badge("✅ suggestion Retenu")
                     elif statut == "suggestion refusée":   
@@ -579,35 +577,35 @@ def _final_page(user):
 
         
 
-    # 5. TABLEAU RÉCAPITULATIF PAR PERSONNE ET TOTAL
-    st.subheader("📊 Récapitulatif des validations")
+####    # 5. TABLEAU RÉCAPITULATIF PAR PERSONNE ET TOTAL
+####    st.subheader("📊 Récapitulatif des validations")
     
-    totaux_par_personne = liste_jeux[users_list].sum().to_dict()
-    total_general = sum(totaux_par_personne.values())
-    print(totaux_par_personne)
-    # Création du DataFrame récapitulatif
-    df_recap = pd.DataFrame(
-        totaux_par_personne, 
-        columns=["Personne", "Nombre de coches"]
-    )
-    # Affichage avec ligne de Total Général via les metrics ou un tableau
-    col1, col2 = st.columns([2, 1])
+####    totaux_par_personne = liste_jeux[users_list].sum().to_dict()
+####    total_general = sum(totaux_par_personne.values())
+####    print(totaux_par_personne)
+####    # Création du DataFrame récapitulatif
+####    df_recap = pd.DataFrame(
+####        totaux_par_personne, 
+####        columns=["Personne", "Nombre de coches"]
+####    )
+####    # Affichage avec ligne de Total Général via les metrics ou un tableau
+####    col1, col2 = st.columns([2, 1])
 
-    with col1:
-        st.dataframe(df_recap, hide_index=True, width="stretch")
+####    with col1:
+####        st.dataframe(df_recap, hide_index=True, width="stretch")
 
-    with col2:
-        st.metric(label="🎯 Total Général", value=total_general)
+####    with col2:
+####        st.metric(label="🎯 Total Général", value=total_general)
     
 
-    with button_container:
-        if st.button("Enregistrer les prêts", type="primary"):
-            for r in edited.iterrows():
-                ckey = df.loc[df["Jeu"] == r["Jeu"], "_ckey"].values[0]
-                for u in users:
-                    storage_jeux.set_loan(ckey, u["id"], bool(r[u["pseudo"]]))
-            st.success("Prêts enregistrés")
-            #st.rerun()
+####    with button_container:
+####        if st.button("Enregistrer les prêts", type="primary"):
+####            for r in edited.iterrows():
+####                ckey = df.loc[df["Jeu"] == r["Jeu"], "_ckey"].values[0]
+####                for u in users:
+####                    storage_jeux.set_loan(ckey, u["id"], bool(r[u["pseudo"]]))
+####            st.success("Prêts enregistrés")
+####            #st.rerun()
       
     
         
