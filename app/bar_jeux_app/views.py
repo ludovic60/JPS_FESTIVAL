@@ -448,7 +448,31 @@ def _final_page(user):
          filterable=True,
          editable=True,
      )
+    gb.configure_grid_options(
+        wrapHeaderText=True,
+        autoHeaderHeight=True,
+        rowHeight=60,  # Augmente la hauteur des lignes pour bien voir les images
+    )
+    image_renderer = JsCode(
+        """
+        class ImageRenderer {
+                init(params) {
+                    this.eGui = document.createElement('img');
+                    this.eGui.setAttribute('src', params.value);
+                    this.eGui.setAttribute('style', 'height: 45px; width: auto; border-radius: 4px; vertical-align: middle;');
+                }
+                getGui() {
+                    return this.eGui;
+                }
+        }
+        """
+    )
 
+    gb.configure_column(
+        "Aperçu de l'image du produit",
+        cellRenderer=image_renderer,
+        width=150,
+   ) 
     # Applique un thème complet avec bordures
     gridOptions = gb.build()
 
