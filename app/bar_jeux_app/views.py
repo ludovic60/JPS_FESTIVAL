@@ -341,7 +341,7 @@ def _final_page(user):
         row_jeux.append(row)
                
     #if "df_jeux" not in st.is_distinct:   
-    st.session_state.df_jeux = pd.DataFrame(row_jeux)   
+    df_jeux = st.session_state.df_jeux = pd.DataFrame(row_jeux)   
                
     # creation des colonnes du futur tableau croisé   avec preparation des checkbox
       
