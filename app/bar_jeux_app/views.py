@@ -473,7 +473,7 @@ def _final_page(user):
     ###################### Lignes du tableau
 
     for _, row in df_jeux_histogramme.iterrows():
-        p_id = row["jeu"]
+        p_id = row["Jeu"]
         cols = st.columns([2, 1.5,  2 , 3 , 2 , 1 , 1 ] + [3] * len(pseudo_list) )
 
 
