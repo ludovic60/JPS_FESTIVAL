@@ -482,14 +482,14 @@ def _final_page(user):
                 {
                     "field": f"{player_key}_prete",
                     "headerName": "Je prête",  # Seconde ligne d'en-tête
-                    "editable": True,
+                    "editable": False,
                     "cellRenderer": "agCheckboxCellRenderer",  # Case à cocher native
                     "width": 110,
                 },
                 {
                     "field": f"{player_key}_admin",
                     "headerName": "Validé par admin",
-                    "editable": True,
+                    "editable": False,
                     "cellRenderer": "agCheckboxCellRenderer",
                     "width": 140,
                     # Style conditionnel : Vert si la case est cochée
@@ -516,7 +516,7 @@ def _final_page(user):
     gb.configure_default_column(
          resizable=True,
          filterable=True,
-         editable=True,
+         editable=False,
      )
     gb.configure_grid_options(
         wrapHeaderText=True,
