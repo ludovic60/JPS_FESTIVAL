@@ -354,7 +354,7 @@ def _final_page(user):
     pivot_df = pd.pivot_table(
         liste_jeux,
         values=liste_jeux[pseudo],
-        index=index_col,
+        #index=index_col,
         columns=liste_jeux[pseudo],
         aggfunc='sum',      # La somme des 1 compte les cases cochées
         fill_value=0,
