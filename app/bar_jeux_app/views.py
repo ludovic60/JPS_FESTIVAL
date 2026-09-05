@@ -166,7 +166,7 @@ def _final_page(user):
     finals = storage_jeux.final_games()
    
    
-    users = cs.get_users()
+    users = cs.get_users_non_admin()
     loans = storage_jeux.get_loans()
     current_user = user
     is_admin = current_user == "admin"
@@ -215,15 +215,14 @@ def _final_page(user):
          for valid_admin in pseudo_list
      }
            
-
+   # st.session_state.grid_state={}
    #           for ul in loans:   
    #                           if ul[0].get("_id") ==   u[0].get("_id") and    ul[0].get("_id")   == g[0].get("_id")  :  
-   #                          row[u[0].get("pseudo")] = 1      
+   #                          row[u[0].get("pseudo")] = 1  
+   # st.session_state.grid_state[(game, pseudo)] = (True, True)
 
 
    # --- CALCUL DES DONNÉES COMPLÉMENTAIRES ---
-   # df_p = st.session_state.df_produits.copy()
-
    # Traitement des compteurs
 
     for j in pseudo_list:
@@ -350,7 +349,10 @@ def _final_page(user):
                 {
                     "field": f"{player_key}_admin",
                     "headerName": "Validé",
-                    "editable": True,
+                    if user["role"] == "admin": 
+                        "editable": True
+                    else :
+                        "editable": False,
                     "cellRenderer": "agCheckboxCellRenderer",
                     "width": 140,
                     # Style conditionnel : Vert si la case est cochée
@@ -405,17 +407,46 @@ def _final_page(user):
         },
     }
 
-    AgGrid(
+    grid_response = AgGrid(
        df_jeux,
        gridOptions=grid_options,
        custom_css=custom_css, 
        theme="balham",  # Thème avec bordures et grille bien visibles
        update_mode=GridUpdateMode.MODEL_CHANGED,
        allow_unsafe_jscode=True, ## pour gerer l'affichage des images grace aux url
+       update_mode=GridUpdateMode.VALUE_CHANGED,  # Déclenche une mise à jour à chaque clic
+       data_return_mode=DataReturnMode.AS_INPUT,
+       fit_columns_on_grid_load=True,
     )
 
-           
+    # Récupération du tableau mis à jour
+    updated_df = grid_response["data"]
 
+    # Comparaison avec l'état précédent pour identifier la modification
+    if "previous_df" in st.session_state:
+        prev_df = st.session_state["previous_df"]
+    
+        # Détection des changements cellule par cellule
+        diff = (updated_df != prev_df) & ~(updated_df.isna() & prev_df.isna())
+    
+        for col in diff.columns:
+            if diff[col].any():
+                # Une valeur a changé dans la colonne `col`
+                ligne_modifiee = diff[diff[col]].index[0]
+                nouvelle_valeur = updated_df.loc[ligne_modifiee, col]
+            
+                # --- Action A : Coche "Je prête" ---
+                if col.endswith("_prete"):
+                    st.toast(f"Action Prêt ({col}) : nouvelle valeur = {nouvelle_valeur}")
+                    # Insérez ici votre fonction spécifique (ex: mise à jour BDD prêt)
+                
+                # --- Action B : Coche "Validé" (Admin) ---
+                elif col.endswith("_admin"):
+                    st.toast(f"Action Validation Admin ({col}) : nouvelle valeur = {nouvelle_valeur}")
+                    # Insérez ici votre fonction spécifique (ex: envoi mail/validation)
+
+    # Sauvegarde de l'état actuel pour le prochain tour
+    st.session_state["previous_df"] = updated_df
 
 
      
