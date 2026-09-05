@@ -97,8 +97,8 @@ def _clean(u):
 def get_users_non_admin():
     db = get_db()
     if db is not None:
-        filter(
-        return [_clean(u) for u in db.users.find()]
+        filtre_tb = {"role": {"$ne":"admin"}}
+        return [_clean(u) for u in db.users.find(filtre_tb)]
     return get_doc("shared_users", [])
 
 def get_users():
