@@ -411,7 +411,7 @@ def _final_page(user):
     ###########----2. Camembert Nouveautés (jeux cochés au moins une fois par un utilisateur)
     with col_graph2:
           st.subheader("Produits cochés par Nouveauté")
-          df_cochis = df_jeux_histogramme[df_jeux_histogramme["total_user"] > 0]
+          df_cochis = df_jeux_histogramme[df_jeux_histogramme["Nb jeux"] > 0]
           if not df_cochis.empty:
               df_nov = (
                   df_cochis["nouveaute"]
