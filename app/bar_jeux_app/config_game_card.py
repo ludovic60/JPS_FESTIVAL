@@ -64,7 +64,7 @@ def _game_card(g, list_key, user):
             st.markdown(f"#### {title}")
 
             ##### gestion du classement =      
-            classement = mise_forme_categorie(categorie)
+            classement = mise_forme_categorie(g[0].get("classement JPS final"))
             
             meta = " · ".join([x for x in [
                classement,
