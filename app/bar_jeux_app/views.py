@@ -451,7 +451,7 @@ def _final_page(user):
         cols[2].write(row["Categorie jeu"])    
         cols[3].write(row["Couverture Jeu"])    
         cols[4].write(row["Jeu"])       
-        cols[5].write(row["("Total coché par joueur""]) 
+        cols[5].write(row["Total coché par joueur"]) 
         cols[6].write(row["Total coché validé par admin"]) 
 
 
