@@ -411,7 +411,7 @@ def _final_page(user):
 
 
     # En-tête du tableau
-    cols_header = st.columns([2, 1.5,  2 , 3 , 2 , 1 , 1 ] + [1.5] * len(pseudo_list) )r
+    cols_header = st.columns([2, 1.5,  2 , 3 , 2 , 1 , 1 ] + [1.5] * len(pseudo_list) )
 
      
     cols_header[0].markdown("nouveaute")
@@ -424,7 +424,7 @@ def _final_page(user):
     for idx, j in enumerate(pseudo_list):
         cols_header[6 + idx].markdown(f"**{j}**  \n*(U / A)*")
 
-    cols_spec = st.columns([2, 1.5,  2 , 3 , 2 , 1 , 1 ] + [3] * len(pseudo_list) )r
+    cols_spec = st.columns([2, 1.5,  2 , 3 , 2 , 1 , 1 ] + [3] * len(pseudo_list) )
 
     cols_spec[0].markdown(" ")
     cols_spec[1].markdown(" ")
@@ -445,7 +445,7 @@ def _final_page(user):
 
     for _, row in df_jeux_histogramme.iterrows():
         p_id = row["jeu"]
-        cols = st.columns([2, 1.5,  2 , 3 , 2 , 1 , 1 ] + [3] * len(pseudo_list) )r
+        cols = st.columns([2, 1.5,  2 , 3 , 2 , 1 , 1 ] + [3] * len(pseudo_list) )
 
 
         cols[0].write(row["nouveaute"])
