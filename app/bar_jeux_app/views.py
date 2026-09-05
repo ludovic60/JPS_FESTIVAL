@@ -456,7 +456,7 @@ def _final_page(user):
     ]
 
 
-    for idx, j in enumerate(joueurs):
+    for idx, j in enumerate(pseudo_list):
         player_key = f"j{idx+1}"
         group_col = {
             "headerName": j,  # Première ligne d'en-tête (Nom du Joueur)
