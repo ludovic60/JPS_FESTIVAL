@@ -288,7 +288,7 @@ def _final_page(user):
         return           
     
     # creation des lignes du futur tableau croisé         
-    rows = []
+    row_jeux = []
     for game in finals:
         
         g = storage_jeux.get_info_games( game.get('id_jeux'))
