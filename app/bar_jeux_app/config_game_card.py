@@ -35,8 +35,8 @@ def mise_forme_categorie(categorie) :
                                    categorie_formate = f"❓ {categorie}"
                         else : 
                                    categorie_formate = f"❓❓❓ {categorie}"
-                else :
-                             categorie_formate = ""           
+    else :
+                        categorie_formate = ""           
 
     return categorie_formate    
 
