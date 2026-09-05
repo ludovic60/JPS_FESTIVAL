@@ -179,8 +179,10 @@ def _game_card(g, list_key, user):
                     
                 st.caption(f"👍 {nb_sugg} suggestion(s)")
                 if nb_sugg > 0  :
-                    statut = storage_jeux.get_game_nb_suggestions(ckey_this_game)[0].get("statut")
                     print("statut")
+                    print( storage_jeux.get_game_nb_suggestions(ckey_this_game))
+                    statut = storage_jeux.get_game_nb_suggestions(ckey_this_game)[0].get("statut")
+                   
                     print(statut)
                     if statut == "suggestion Retenue":
                                st.badge("✅ suggestion Retenu")
@@ -344,7 +346,7 @@ def _final_page(user):
     )
 
     # Recalcul de la somme basé sur la liste dynamique
-    liste_jeux["Total coché"] = liste_jeux[pseudo].sum(axis=1)
+    #liste_jeux["Total coché"] = liste_jeux[pseudo].sum(axis=1)
 
 
     # Création du tableau croisé avec la somme
