@@ -1,7 +1,7 @@
 """Vues Streamlit pour Bar à jeux."""
 
 
-           
+from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode           
 import logging
 import plotly.express as px
 import pandas as pd
@@ -441,6 +441,29 @@ def _final_page(user):
 
 
 
+   # Configuration du tableau avec AgGrid
+   gb = GridOptionsBuilder.from_dataframe(df_jeux)
+   gb.configure_default_column(
+         resizable=True,
+         filterable=True,
+         editable=True,
+    )
+
+   # Applique un thème complet avec bordures
+   gridOptions = gb.build()
+
+   AgGrid(
+       df_jeux,
+       gridOptions=gridOptions,
+       theme="balham",  # Thème avec bordures et grille bien visibles
+       update_mode=GridUpdateMode.MODEL_CHANGED,
+   )
+
+           
+
+
+
+           
     # En-tête du tableau
     cols_header = st.columns([2, 1.5,  2 , 3 , 2 , 1 , 1 ] + [1.5] * len(pseudo_list) )
 
@@ -527,6 +550,9 @@ def _final_page(user):
                     if new_u != u_val or new_a != a_val:
                         st.session_state.grid_state[(row["Jeu"], j)] = [new_u, new_a]
                         st.rerun()
+
+
+
 
 
    
