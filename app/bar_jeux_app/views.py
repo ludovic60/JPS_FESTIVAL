@@ -443,12 +443,27 @@ def _final_page(user):
     ###################################################################################################
     ###########  gestion du tableau des prêts   
     ###################################################################################################
+    image_renderer = JsCode(
+        """
+        class ImageRenderer {
+                init(params) {
+                    this.eGui = document.createElement('img');
+                    this.eGui.setAttribute('src', params.value);
+                    this.eGui.setAttribute('style', 'height: 45px; width: auto; border-radius: 4px; vertical-align: middle;');
+                }
+                getGui() {
+                    return this.eGui;
+                }
+        }
+        """
+    )
+    
     # Colonnes fixes de gauche
     column_defs = [
         {"field": "nouveaute", "headerName": "nouveaute", "width": 150},
         {"field": "Annee", "headerName": "Annee", "width": 80},
         {"field": "Categorie jeu", "headerName": "Categorie jeu", "width": 110},
-        {"field": "Couverture Jeu", "headerName": "Couverture Jeu", "width": 110},
+        {"field": "Couverture Jeu", "cellRenderer": image_renderer,"headerName": "Couverture Jeu", "width": 110},
         {"field": "Jeu", "headerName": "Jeu", "width": 110},
         {"field": "Total coché par joueur", "headerName": "Total coché par joueur", "width": 110},
         {"field": "Total coché validé par admi", "headerName": "Total coché validé par admi", "width": 110},
@@ -505,20 +520,7 @@ def _final_page(user):
         autoHeaderHeight=True,
         rowHeight=60,  # Augmente la hauteur des lignes pour bien voir les images
     )
-    image_renderer = JsCode(
-        """
-        class ImageRenderer {
-                init(params) {
-                    this.eGui = document.createElement('img');
-                    this.eGui.setAttribute('src', params.value);
-                    this.eGui.setAttribute('style', 'height: 45px; width: auto; border-radius: 4px; vertical-align: middle;');
-                }
-                getGui() {
-                    return this.eGui;
-                }
-        }
-        """
-    )
+    
 
     gb.configure_column(
         "Couverture Jeu",
