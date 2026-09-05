@@ -12,7 +12,7 @@ import storage_jeux
 import export
 import os
 import sys
-from game_card import 
+from config_game_card import game_card
 # Ajoute le dossier parent à sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
