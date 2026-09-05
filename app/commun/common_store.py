@@ -92,6 +92,15 @@ def _clean(u):
     return u
 
 
+
+
+def get_users_non_admin():
+    db = get_db()
+    if db is not None:
+        filter(
+        return [_clean(u) for u in db.users.find()]
+    return get_doc("shared_users", [])
+
 def get_users():
     db = get_db()
     if db is not None:
