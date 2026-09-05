@@ -170,6 +170,7 @@ def _final_page(user):
     loans = storage_jeux.get_loans()
     current_user = user
     is_admin = current_user == "admin"
+    
 
     pseudo_list = list(u["pseudo"] for u in users)
 
@@ -342,14 +343,14 @@ def _final_page(user):
                 {
                     "field": f"{player_key}_prete",
                     "headerName": "Je prête",  # Seconde ligne d'en-tête
-                    "editable": False,
+                    "editable": True,
                     "cellRenderer": "agCheckboxCellRenderer",  # Case à cocher native
                     "width": 110,
                 },
                 {
                     "field": f"{player_key}_admin",
-                    "headerName": "Validé par admin",
-                    "editable": False,
+                    "headerName": "Validé",
+                    "editable": True,
                     "cellRenderer": "agCheckboxCellRenderer",
                     "width": 140,
                     # Style conditionnel : Vert si la case est cochée
