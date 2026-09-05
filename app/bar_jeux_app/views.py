@@ -195,12 +195,12 @@ def _final_page(user):
                    if periode_parution  >  periode_dernier_festival :
                                New = "NOUVEAUTE"
                    else :   
-                               New = ""
+                               New = "Ancien"
         else :
-                   New = ""                    
+                   New = "inconnu"                    
                
                
-        row = {"nouveaute" : New, "Annee": g[0].get("annee"), "Categorie jeu": mise_forme_categorie(g[0].get("classement JPS final")), "Couverture Jeu": g[0].get("couverture"), "Jeu": g[0].get("nom_jeu_complet"), "Total coché par joueur": "" , "Total coché validé par admin": "" }
+        row = {"nouveaute" : New, "Annee": g[0].get("annee_parution"), "Categorie jeu": mise_forme_categorie(g[0].get("classement_jps_final")), "Couverture Jeu": g[0].get("couverture"), "Jeu": g[0].get("nom_jeu_complet"), "Total coché par joueur": "" , "Total coché validé par admin": "" }
         row_jeux.append(row)
                
     #if "df_jeux" not in st.is_distinct:   
