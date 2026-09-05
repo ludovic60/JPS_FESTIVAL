@@ -1,5 +1,5 @@
 """Vues Streamlit pour Bar à jeux."""
-
+ 
 
 from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode, JsCode        
 import logging
