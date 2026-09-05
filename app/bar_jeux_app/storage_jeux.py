@@ -91,7 +91,7 @@ def toggle_admin_selected(ckey, value):
     if   con_mongo : 
         db = cs.get_db()
         game_selec_tb = db.selection_jeux_festival
-        logging.info(f"ajout jeu selection")
+        
         if value =="insert" :
             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)) }
             
@@ -99,7 +99,7 @@ def toggle_admin_selected(ckey, value):
             if resultats :
                 logging.info(f" jeux deja present")
             else : 
-                logging.info(f" jeux ajout")
+               
                 new_selection= {         
                              "annee" : cs._secret("ANNEE_FESTIVAL"), 
                              "id_jeux": str(ObjectId(ckey))
@@ -108,7 +108,7 @@ def toggle_admin_selected(ckey, value):
                 resultat = game_selec_tb.insert_one(new_selection)
         elif value =="delete" :
             # deselectionne le jeu 
-            logging.info(f" jeux suppression")
+            
     
             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)) }
             resultat = game_selec_tb.delete_many(filtre_tb)
