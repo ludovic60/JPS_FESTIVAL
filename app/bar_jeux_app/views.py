@@ -105,45 +105,36 @@ def _game_card(g, list_key, user):
             st.markdown(f"#### {title}")
 
             ##### gestion du classement =      
-                   if g.get("classement_jps_final") :
-                         if g.get("classement_jps_final") == "FAMILLE":
-                               
+            if g.get("classement_jps_final") :
+                    if g.get("classement_jps_final") == "FAMILLE":
                                classement = f"⚪⚪⚪ {g.get('classement_jps_final','')}"
-
-
-                         elif g.get("classement_jps_final") == "INITIE":
+                    elif g.get("classement_jps_final") == "INITIE":
                                classement = f"🟡⚪⚪ {g.get('classement_jps_final','')}"
-                         elif g.get("classement_jps_final") == "EXPERT":
+                    elif g.get("classement_jps_final") == "EXPERT":
                                classement = f"🔴🔴⚪ {g.get('classement_jps_final','')}"
-                         elif g.get("classement_jps_final") == "EXPERT+":
+                    elif g.get("classement_jps_final") == "EXPERT+":
                                classement = f"🔴🔴🔴 {g.get('classement_jps_final','')}"
-                         elif g.get("classement_jps_final") == "ENFANT":
+                    elif g.get("classement_jps_final") == "ENFANT":
                                classement = f"🧸 {g.get('classement_jps_final','')}"                                        
-                         elif g.get("classement_jps_final") == "JEU DUO":
+                    elif g.get("classement_jps_final") == "JEU DUO":
                                 classement = f"👥 {g.get('classement_jps_final','')}"                                       
-                         elif g.get("classement_jps_final") == "COOP/SEMI COOP"":
+                    elif g.get("classement_jps_final") == "COOP/SEMI COOP"":
                                classement = f"🤝 {g.get('classement_jps_final','')}"                             
-                         elif g.get("classement_jps_final") == "ENQUETE/ESCAPE/ENIGME/CASSETETE":
+                    elif g.get("classement_jps_final") == "ENQUETE/ESCAPE/ENIGME/CASSETETE":
                                classement = f"🕵️ {g.get('classement_jps_final','')}"                            
-
-                         elif g.get("classement_jps_final") == "AMBIANCE":
+                    elif g.get("classement_jps_final") == "AMBIANCE":
                                classement = f"🎉 {g.get('classement_jps_final','')}"
-
-                         elif g.get("classement_jps_final") == "NON CLASSE":
+                    elif g.get("classement_jps_final") == "NON CLASSE":
                                classement = f"🤔 {g.get('classement_jps_final','')}"
-
-                         elif g.get("classement_jps_final") == "PBM CLASSEMENT":
+                    elif g.get("classement_jps_final") == "PBM CLASSEMENT":
                                classement = f"❓ {g.get('classement_jps_final','')}"
-                         else : 
+                    else : 
                                classement = f"❓❓❓ {g.get('classement_jps_final','')}"
-
-                                    
-                   else :
+            else :
                          classement = ""           
-            meta = " · ".join([x for x in [
-                f"⭐ {g.get('classement_jps_final','')}" if g.get("classement_jps_final") else "",
-                if g.get("classement_jps_final") :
 
+               meta = " · ".join([x for x in [
+               classement,
                 f"👥 {g.get('nombre_joueurs','')}" if g.get("nombre_joueurs") else "",
                 f"🎂 {g.get('age_boite','')}" if g.get("age_boite") else "",
                 f"⏱ {g.get('duree','')}" if g.get("duree") else "",
