@@ -118,7 +118,7 @@ def _game_card(g, list_key, user):
                                classement = f"🧸 {g.get('classement_jps_final','')}"                                        
                     elif g.get("classement_jps_final") == "JEU DUO":
                                 classement = f"👥 {g.get('classement_jps_final','')}"                                       
-                    elif g.get("classement_jps_final") == "COOP/SEMI COOP"":
+                    elif g.get("classement_jps_final") == "COOP/SEMI COOP":
                                classement = f"🤝 {g.get('classement_jps_final','')}"                             
                     elif g.get("classement_jps_final") == "ENQUETE/ESCAPE/ENIGME/CASSETETE":
                                classement = f"🕵️ {g.get('classement_jps_final','')}"                            
