@@ -472,11 +472,11 @@ def _final_page(user):
     #####################-----------------------
     ###################### Lignes du tableau
 
-    for index, row in df_jeux_histogramme.iterrows():
+    for index, row in df_jeux.iterrows():
         cols = st.columns([2, 1.5,  2 , 3 , 2 , 1 , 1 ] + [3] * len(pseudo_list) )
         print(row)
 
-        cols[0].write(row["nouveaute"])
+        cols[0].write(row['nouveaute'])
         cols[1].write(row["Annee"])    
         cols[2].write(row["Categorie jeu"])    
         cols[3].write(row["Couverture Jeu"])    
