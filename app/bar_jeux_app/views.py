@@ -489,7 +489,7 @@ def _final_page(user):
 
         # Cellules Joueurs
         for idx, j in enumerate(pseudo_list):
-            u_val, a_val = st.session_state.grid_state[(p_id, j)]
+            u_val, a_val = st.session_state.grid_state[(row["Jeu"], j)]
 
             with cols[6 + idx]:
                 # Fond vert si validé par l'admin
@@ -509,14 +509,14 @@ def _final_page(user):
                     new_u = c1.checkbox(
                         "U",
                         value=u_val,
-                        key=f"u_{p_id}_{j}",
+                        key=f"u_{row["Jeu"]}_{j}",
                         label_visibility="collapsed",
                     )
                     # Checkbox Admin
                     new_a = c2.checkbox(
                         "A",
                         value=a_val,
-                        key=f"a_{p_id}_{j}",
+                        key=f"a_{row["Jeu"]}_{j}",
                         disabled=not is_admin,
                         label_visibility="collapsed",
                     )
