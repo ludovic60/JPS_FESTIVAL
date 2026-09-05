@@ -525,7 +525,7 @@ def _final_page(user):
 
                     # Mise à jour de l'état si modification
                     if new_u != u_val or new_a != a_val:
-                        st.session_state.grid_state[(p_id, j)] = [new_u, new_a]
+                        st.session_state.grid_state[(row["Jeu"], j)] = [new_u, new_a]
                         st.rerun()
 
 
