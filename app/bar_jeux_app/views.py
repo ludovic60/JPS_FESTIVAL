@@ -406,7 +406,7 @@ def _final_page(user):
               barmode="group",
               color_discrete_map={"pret par user": "#636EFA", "pret validé (Admin)": "#2CA02C"},
           )
-          st.plotly_chart(fig_hist, use_container_width=True)
+          st.plotly_chart(fig_hist, width=True)
 
     ###########----2. Camembert Nouveautés (jeux cochés au moins une fois par un utilisateur)
     with col_graph2:
@@ -421,7 +421,7 @@ def _final_page(user):
               )
               df_nov.columns = ["Type", "Nombre"]
               fig_pie_nov = px.pie(df_nov, names="Type", values="Nombre", hole=0.3)
-              st.plotly_chart(fig_pie_nov, use_container_width=True)
+              st.plotly_chart(fig_pie_nov, width=True)
           else:
               st.info("Aucun jeu coché pour le moment.")
 
@@ -432,7 +432,7 @@ def _final_page(user):
               df_cat = df_cochis["categorie"].value_counts().reset_index()
               df_cat.columns = ["Catégorie", "Nombre"]
               fig_pie_cat = px.pie(df_cat, names="Catégorie", values="Nombre", hole=0.3)
-              st.plotly_chart(fig_pie_cat, use_container_width=True)
+              st.plotly_chart(fig_pie_cat, width=True)
           else:
               st.info("Aucun produit coché pour le moment.")
 
@@ -504,7 +504,7 @@ def _final_page(user):
                 },
             ],
         }
-    column_defs.append(group_col)
+        column_defs.append(group_col)
     
 
     # Configuration du tableau avec AgGrid
