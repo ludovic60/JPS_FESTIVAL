@@ -175,11 +175,11 @@ def _game_card(g, list_key, user):
 
            
                 # 2. Compter combien il y en a
-                nb_sugg = get_game_nb_suggestions(ckey_this_game)
+                nb_sugg = storage_jeux.get_game_nb_suggestions(ckey_this_game)
                     
                 st.caption(f"👍 {nb_sugg} suggestion(s)")
                 if nb_sugg > 0  :
-                    statut = get_game_nb_suggestions(ckey_this_game)[0].get("statut")
+                    statut = storage_jeux.get_game_nb_suggestions(ckey_this_game)[0].get("statut")
                     print("statut")
                     print(statut)
                     if statut == "suggestion Retenue":
@@ -312,7 +312,7 @@ def _final_page(user):
         rows.append(row)
     print(rows)
    
-    pseudo_list = [list(u["pseudo"] for u in users) ]       
+    pseudo_list = list(u["pseudo"] for u in users)      
 
     print(pseudo_list)
     # Initialisation dans la session
