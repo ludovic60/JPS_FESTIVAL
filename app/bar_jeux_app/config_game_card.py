@@ -1,6 +1,8 @@
 import config_bar_jeux
 import storage_jeux
 import streamlit as st
+import os
+import sys
 # Ajoute le dossier parent à sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
