@@ -481,6 +481,7 @@ def _final_page(user):
        gridOptions=gridOptions,
        theme="balham",  # Thème avec bordures et grille bien visibles
        update_mode=GridUpdateMode.MODEL_CHANGED,
+       allow_unsafe_jscode=True, ## pour gerer l'affichage des images grace aux url
     )
 
            
