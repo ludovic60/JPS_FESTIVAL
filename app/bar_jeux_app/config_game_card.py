@@ -12,33 +12,33 @@ import commun.common_store as cs
 
 
 def mise_forme_categorie(categorie) :
-    if g.get("classement_jps_final") :
-                        if g.get("classement_jps_final") == "FAMILLE":
-                                   categorie_formate = f"⚪⚪⚪ {categorie}"
-                        elif g.get("classement_jps_final") == "INITIE":
-                                   categorie_formate = f"🟡⚪⚪ {categorie}"
-                        elif g.get("classement_jps_final") == "EXPERT":
-                                   categorie_formate = f"🔴🔴⚪ {categorie}"
-                        elif g.get("classement_jps_final") == "EXPERT+":
-                                   categorie_formate = f"🔴🔴🔴 {categorie}"
-                        elif g.get("classement_jps_final") == "ENFANT":
-                                   categorie_formate = f"🧸 {categorie}"                                        
-                        elif g.get("classement_jps_final") == "JEU DUO":
-                                    categorie_formate = f"👥 {categorie}"                                       
-                        elif g.get("classement_jps_final") == "COOP/SEMI COOP":
-                                   categorie_formate = f"🤝 {categorie}"                             
-                        elif g.get("classement_jps_final") == "ENQUETE/ESCAPE/ENIGME/CASSETETE":
-                                   categorie_formate = f"🕵️ {categorie}"                            
-                        elif g.get("classement_jps_final") == "AMBIANCE":
-                                   categorie_formate = f"🎉 {categorie}"
-                        elif g.get("classement_jps_final") == "NON CLASSE":
-                                   categorie_formate = f"🤔 {categorie}"
-                        elif g.get("classement_jps_final") == "PBM CLASSEMENT":
-                                   categorie_formate = f"❓ {categorie}"
-                        else : 
-                                   categorie_formate = f"❓❓❓ {categorie}"
+    if categorie :
+        if categorie == "FAMILLE":
+                  categorie_formate = f"⚪⚪⚪ {categorie}"
+        elif categorie == "INITIE":
+                  categorie_formate = f"🟡⚪⚪ {categorie}"
+        elif categorie == "EXPERT":
+                  categorie_formate = f"🔴🔴⚪ {categorie}"
+        elif categorie == "EXPERT+":
+                  categorie_formate = f"🔴🔴🔴 {categorie}"
+        elif categorie == "ENFANT":
+                  categorie_formate = f"🧸 {categorie}"                                        
+        elif categorie == "JEU DUO":
+                   categorie_formate = f"👥 {categorie}"                                       
+        elif categorie == "COOP/SEMI COOP":
+                  categorie_formate = f"🤝 {categorie}"                             
+        elif categorie == "ENQUETE/ESCAPE/ENIGME/CASSETETE":
+                  categorie_formate = f"🕵️ {categorie}"                            
+        elif categorie == "AMBIANCE":
+                  categorie_formate = f"🎉 {categorie}"
+        elif categorie == "NON CLASSE":
+                  categorie_formate = f"🤔 {categorie}"
+        elif categorie == "PBM CLASSEMENT":
+                  categorie_formate = f"❓ {categorie}"
+        else : 
+                  categorie_formate = f"❓❓❓ {categorie}"
     else :
-                        categorie_formate = ""           
+                  categorie_formate = ""           
 
     return categorie_formate    
 
@@ -64,7 +64,7 @@ def _game_card(g, list_key, user):
             st.markdown(f"#### {title}")
 
             ##### gestion du classement =      
-            classement = mise_forme_categorie(g.get("classement_jps_final"))
+            classement = mise_forme_categorie(categorie)
             
             meta = " · ".join([x for x in [
                classement,
