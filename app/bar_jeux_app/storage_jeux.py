@@ -114,7 +114,7 @@ def toggle_admin_selected(ckey, value):
             resultat = game_selec_tb.delete_many(filtre_tb)
         else :
             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)) }
-            resultat = game_selec_tb.updateMany(filtre_tb, { $set: { statut: "actif", age: 30 } })
+            resultat = game_selec_tb.updateMany(filtre_tb, { $set: { "statut": value } })
             resultat = {}
         
     
