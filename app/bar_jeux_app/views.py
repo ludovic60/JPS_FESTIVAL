@@ -12,7 +12,7 @@ import storage_jeux
 import export
 import os
 import sys
-from config_game_card import game_card
+from config_game_card import game_card , mise_forme_categorie
 # Ajoute le dossier parent à sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -199,7 +199,7 @@ def _final_page(user):
                    New = ""                    
                
                
-        row = {"nouveaute" : New, "Annee": g[0].get("annee"), "Categorie jeu": g[0].get("classement JPS final"), "Couverture Jeu": g[0].get("couverture"), "Jeu": g[0].get("nom_jeu_complet"), "Total coché par joueur": "" , "Total coché validé par admin": "" }
+        row = {"nouveaute" : New, "Annee": g[0].get("annee"), "Categorie jeu": mise_forme_categorie(g[0].get("classement JPS final")), "Couverture Jeu": g[0].get("couverture"), "Jeu": g[0].get("nom_jeu_complet"), "Total coché par joueur": "" , "Total coché validé par admin": "" }
         row_jeux.append(row)
                
     #if "df_jeux" not in st.is_distinct:   
