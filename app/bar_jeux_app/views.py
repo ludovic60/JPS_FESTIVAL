@@ -441,23 +441,23 @@ def _final_page(user):
 
 
 
-   # Configuration du tableau avec AgGrid
-   gb = GridOptionsBuilder.from_dataframe(df_jeux)
-   gb.configure_default_column(
+    # Configuration du tableau avec AgGrid
+    gb = GridOptionsBuilder.from_dataframe(df_jeux)
+    gb.configure_default_column(
          resizable=True,
          filterable=True,
          editable=True,
-    )
+     )
 
-   # Applique un thème complet avec bordures
-   gridOptions = gb.build()
+    # Applique un thème complet avec bordures
+    gridOptions = gb.build()
 
-   AgGrid(
+    AgGrid(
        df_jeux,
        gridOptions=gridOptions,
        theme="balham",  # Thème avec bordures et grille bien visibles
        update_mode=GridUpdateMode.MODEL_CHANGED,
-   )
+    )
 
            
 
