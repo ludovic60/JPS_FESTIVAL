@@ -182,9 +182,9 @@ def _game_card(g, list_key, user):
                     statut = get_game_nb_suggestions(ckey_this_game)[0].get("statut")
                     print("statut")
                     print(statut)
-                    if statut = "suggestion Retenuz"
+                    if statut == "suggestion Retenuz"
                                st.badge("✅ suggestion Retenu")
-                    elif statut = "suggestion refusée":   
+                    elif statut == "suggestion refusée":   
                        
                                 st.badge("❌ suggestion refusée")
                     else :
