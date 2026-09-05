@@ -516,7 +516,6 @@ def _final_page(user):
          editable=True,
      )
     gb.configure_grid_options(
-        columnDefs=column_defs,
         wrapHeaderText=True,
         autoHeaderHeight=True,
         rowHeight=60,  # Augmente la hauteur des lignes pour bien voir les images
@@ -526,6 +525,8 @@ def _final_page(user):
 
     # Applique un thème complet avec bordures
     grid_options = gb.build()
+
+    grid_options["columnDefs"] = column_defs
 
     AgGrid(
        df_jeux,
