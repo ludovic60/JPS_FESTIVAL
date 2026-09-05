@@ -172,19 +172,7 @@ def _game_card(g, list_key, user):
                    
                     
             with cc[1]:
-def get_game_suggestions(id_game):
-    con_mongo = cs.mongo_enabled()
-    if   con_mongo : 
-        db = cs.get_db()
-        game_suggest_tb = db.jeux_suggestions
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") ,"id_jeux" :id_game  }
-        
-        resultats = list(game_suggest_tb.find(filtre_tb))
-    else :
-        resultats ={}
-    return resultats 
 
-def get_game_nb_suggestions(id_game):
            
                 # 2. Compter combien il y en a
                 nb_sugg = get_game_nb_suggestions(ckey_this_game)
