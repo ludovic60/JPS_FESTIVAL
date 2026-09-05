@@ -320,6 +320,11 @@ def _final_page(user):
                df = pd.DataFrame(rows)
                st.session_state["df"] = df
 
+    # Configuration dynamique des colonnes du tableau
+    config = {
+        "Couverture Jeu": st.column_config.ImageColumn("Visuel"),
+        "Total coché": st.column_config.NumberColumn("Total coché", disabled=True)
+    }       
     # Ajout dynamique des nouvelles colonnes si la liste évolue
     for pseudo in pseudo_list :
         if  pseudo not in st.session_state["df"].columns:
@@ -327,11 +332,7 @@ def _final_page(user):
         # Génération automatique des cases à cocher pour chaque personne
         config[pseudo] = st.column_config.CheckboxColumn( pseudo.capitalize(), default=False)
 
-    # Configuration dynamique des colonnes du tableau
-    config = {
-        "Couverture Jeu": st.column_config.ImageColumn("Visuel"),
-        "Total coché": st.column_config.NumberColumn("Total coché", disabled=True)
-    }
+
 
 
     # Affichage du tableau interactif
