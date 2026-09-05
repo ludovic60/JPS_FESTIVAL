@@ -87,7 +87,7 @@ def _game_card(g, list_key, user):
     ckey_this_game = f"{str(g['_id'])}"
     is_admin = user["role"] == "admin"
     admin_sel = storage_jeux.get_admin_selected()
-    logging.info(f"liste jeu selectionne {admin_sel}")
+    
     sugg = storage_jeux.get_suggestions()
     has_selected_this_game=""  
     select_this_game=""
@@ -124,9 +124,7 @@ def _game_card(g, list_key, user):
                     # Callback exécuté uniquement lors d'un VRAI clic utilisateur
                     def on_admin_change(game_id, currently_selected):
                         mode = "delete" if currently_selected else "insert"
-                        logging.info(
-                            f"Clic toggle admin sur {game_id} -> mode {mode}"
-                        )
+                
                         storage_jeux.toggle_admin_selected(game_id, mode)
                         if mode == insert :
                                    toggle_admin_selected(game_id, "update")
@@ -245,7 +243,7 @@ def _list_page(title, list_key, user):
                     _game_card(g, list_key, user)
     else:
         st.info("Aucun jeu ne correspond à votre recherche.")
-    logging.info(f"Utilisateur sélectionné : )")
+  
    
 def _requests_suggestion_page(user):
     st.title("liste des suggestions par les joueurs")
@@ -275,7 +273,7 @@ def _final_page(user):
         #--- liste des jeux
     finals = storage_jeux.final_games()
    
-    logging.info(f"liste des jeux selec {finals} ")
+   
     users = cs.get_users()
     loans = storage_jeux.get_loans()
     current_user = user
