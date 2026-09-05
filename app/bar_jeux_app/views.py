@@ -346,6 +346,19 @@ def _final_page(user):
     # Recalcul de la somme basé sur la liste dynamique
     liste_jeux["Total coché"] = liste_jeux[pseudo].sum(axis=1)
 
+
+    # Création du tableau croisé avec la somme
+    pivot_df = pd.pivot_table(
+        liste_jeux,
+        values=liste_jeux[pseudo],
+        index=index_col,
+        columns=liste_jeux[pseudo],
+        aggfunc='sum',      # La somme des 1 compte les cases cochées
+        fill_value=0,
+        margins=True,
+        margins_name="Total coché"
+    )       
+
     # Synchronisation de la session
     st.session_state["df"] = liste_jeux       
   
