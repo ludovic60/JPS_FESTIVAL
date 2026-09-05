@@ -469,7 +469,7 @@ def _final_page(user):
     )
 
     gb.configure_column(
-        "Aperçu de l'image du produit",
+        "Couverture Jeu",
         cellRenderer=image_renderer,
         width=150,
    ) 
