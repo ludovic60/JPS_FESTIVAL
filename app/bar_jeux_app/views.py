@@ -133,7 +133,7 @@ def _game_card(g, list_key, user):
             else :
                          classement = ""           
 
-               meta = " · ".join([x for x in [
+            meta = " · ".join([x for x in [
                classement,
                 f"👥 {g.get('nombre_joueurs','')}" if g.get("nombre_joueurs") else "",
                 f"🎂 {g.get('age_boite','')}" if g.get("age_boite") else "",
