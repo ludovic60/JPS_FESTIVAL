@@ -5,3 +5,4 @@ pymongo>=4.6.3
 pandas>=2.2.0
 streamlit-cookies-controller==0.0.4
 plotly>=5.18.0
+streamlit-aggrid>=1.0.5
