@@ -532,6 +532,10 @@ def _final_page(user):
     grid_options["columnDefs"] = column_defs
 
     custom_css = {
+        ".ag-header-group-cell": {
+            "border-right": "none !important",
+            "border-left": "none !important",
+        },
         ".ag-cell": {
             "border-right": "1px solid #c6c6c6 !important",
         },
