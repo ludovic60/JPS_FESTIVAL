@@ -332,7 +332,8 @@ def _final_page(user):
    # df_p = st.session_state.df_produits.copy()
 
    # Traitement des compteurs
-   for j in pseudo_list:
+
+    for j in pseudo_list:
          st.session_state.df_jeux[f"{j}_user"] = df_p["jeu"].apply(
             lambda pid: st.session_state.grid_state[(pid, j)][0]
          )
@@ -340,20 +341,20 @@ def _final_page(user):
             lambda pid: st.session_state.grid_state[(pid, j)][1]
         )
 
-   # Compteurs par jeux
-   st.session_state.df_jeux["Total coché par joueur": ""] = st.session_state.df_jeux[[f"{j}_user" for j in pseudo_list]].sum(axis=1)
-   st.session_state.df_jeux["Total coché validé par admin"] = st.session_state.df_jeux[[f"{j}_admin" for j in pseudo_list]].sum(axis=1) 
+    # Compteurs par jeux
+    st.session_state.df_jeux["Total coché par joueur": ""] = st.session_state.df_jeux[[f"{j}_user" for j in pseudo_list]].sum(axis=1)
+    st.session_state.df_jeux["Total coché validé par admin"] = st.session_state.df_jeux[[f"{j}_admin" for j in pseudo_list]].sum(axis=1) 
 
-   # Compteurs par joueur
-   user_by_player = {j: st.session_state.df_jeux[f"{j}_user"].sum() for j in pseudo_list}
-   admin_by_player = {j: st.session_state.df_jeux[f"{j}_admin"].sum() for j in pseudo_list}
+    # Compteurs par joueur
+    user_by_player = {j: st.session_state.df_jeux[f"{j}_user"].sum() for j in pseudo_list}
+    admin_by_player = {j: st.session_state.df_jeux[f"{j}_admin"].sum() for j in pseudo_list}
 
     # --- PARTIE SUPERIEURE : GRAPHIQUES ---
 
     col_graph1, col_graph2, col_graph3 = st.columns(3)
 
 
-           #---- 1. Histogramme par joueur (Validés vs Cochés Utilisateur)
+    ###########---- 1. Histogramme par joueur (Validés vs Cochés Utilisateur)
 
     with col_graph1:
     
@@ -376,7 +377,7 @@ def _final_page(user):
           )
           st.plotly_chart(fig_hist, use_container_width=True)
 
-              #---- 2. Camembert Nouveautés (jeux cochés au moins une fois par un utilisateur)
+    ###########----2. Camembert Nouveautés (jeux cochés au moins une fois par un utilisateur)
     with col_graph2:
           st.subheader("Produits cochés par Nouveauté")
           df_cochis = df_jeux_histogramme[df_jeux_histogramme["total_user"] > 0]
@@ -393,7 +394,7 @@ def _final_page(user):
           else:
               st.info("Aucun jeu coché pour le moment.")
 
-           # 3. Camembert Catégories (Produits cochés au moins une fois par un utilisateur)
+      ###########----3. Camembert Catégories (Produits cochés au moins une fois par un utilisateur)
       with col_graph3:
           st.subheader("Jeux cochés par Catégorie")
           if not df_cochis.empty:
