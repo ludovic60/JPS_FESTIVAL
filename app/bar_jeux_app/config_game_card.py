@@ -1,5 +1,37 @@
+import config_bar_jeux
+import storage_jeux
 
 
+def mise_forme_categorie(categorie) :
+    if g.get("classement_jps_final") :
+                        if g.get("classement_jps_final") == "FAMILLE":
+                                   categorie_formate = f"⚪⚪⚪ {categorie}"
+                        elif g.get("classement_jps_final") == "INITIE":
+                                   categorie_formate = f"🟡⚪⚪ {categorie}"
+                        elif g.get("classement_jps_final") == "EXPERT":
+                                   categorie_formate = f"🔴🔴⚪ {categorie}"
+                        elif g.get("classement_jps_final") == "EXPERT+":
+                                   categorie_formate = f"🔴🔴🔴 {categorie}"
+                        elif g.get("classement_jps_final") == "ENFANT":
+                                   categorie_formate = f"🧸 {categorie}"                                        
+                        elif g.get("classement_jps_final") == "JEU DUO":
+                                    categorie_formate = f"👥 {categorie}"                                       
+                        elif g.get("classement_jps_final") == "COOP/SEMI COOP":
+                                   categorie_formate = f"🤝 {categorie}"                             
+                        elif g.get("classement_jps_final") == "ENQUETE/ESCAPE/ENIGME/CASSETETE":
+                                   categorie_formate = f"🕵️ {categorie}"                            
+                        elif g.get("classement_jps_final") == "AMBIANCE":
+                                   categorie_formate = f"🎉 {categorie}"
+                        elif g.get("classement_jps_final") == "NON CLASSE":
+                                   categorie_formate = f"🤔 {categorie}"
+                        elif g.get("classement_jps_final") == "PBM CLASSEMENT":
+                                   categorie_formate = f"❓ {categorie}"
+                        else : 
+                                   categorie_formate = f"❓❓❓ {categorie}"
+                else :
+                             categorie_formate = ""           
+
+    return categorie_formate    
 
 def _game_card(g, list_key, user):
     #ckey = f"{list_key}::{str(g['_id'])}"
@@ -24,34 +56,8 @@ def _game_card(g, list_key, user):
             st.markdown(f"#### {title}")
 
             ##### gestion du classement =      
-            if g.get("classement_jps_final") :
-                    if g.get("classement_jps_final") == "FAMILLE":
-                               classement = f"⚪⚪⚪ {g.get('classement_jps_final','')}"
-                    elif g.get("classement_jps_final") == "INITIE":
-                               classement = f"🟡⚪⚪ {g.get('classement_jps_final','')}"
-                    elif g.get("classement_jps_final") == "EXPERT":
-                               classement = f"🔴🔴⚪ {g.get('classement_jps_final','')}"
-                    elif g.get("classement_jps_final") == "EXPERT+":
-                               classement = f"🔴🔴🔴 {g.get('classement_jps_final','')}"
-                    elif g.get("classement_jps_final") == "ENFANT":
-                               classement = f"🧸 {g.get('classement_jps_final','')}"                                        
-                    elif g.get("classement_jps_final") == "JEU DUO":
-                                classement = f"👥 {g.get('classement_jps_final','')}"                                       
-                    elif g.get("classement_jps_final") == "COOP/SEMI COOP":
-                               classement = f"🤝 {g.get('classement_jps_final','')}"                             
-                    elif g.get("classement_jps_final") == "ENQUETE/ESCAPE/ENIGME/CASSETETE":
-                               classement = f"🕵️ {g.get('classement_jps_final','')}"                            
-                    elif g.get("classement_jps_final") == "AMBIANCE":
-                               classement = f"🎉 {g.get('classement_jps_final','')}"
-                    elif g.get("classement_jps_final") == "NON CLASSE":
-                               classement = f"🤔 {g.get('classement_jps_final','')}"
-                    elif g.get("classement_jps_final") == "PBM CLASSEMENT":
-                               classement = f"❓ {g.get('classement_jps_final','')}"
-                    else : 
-                               classement = f"❓❓❓ {g.get('classement_jps_final','')}"
-            else :
-                         classement = ""           
-
+            classement = mise_forme_categorie(g.get("classement_jps_final"))
+            
             meta = " · ".join([x for x in [
                classement,
                 f"👥 {g.get('nombre_joueurs','')}" if g.get("nombre_joueurs") else "",
