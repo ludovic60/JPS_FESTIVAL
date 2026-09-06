@@ -343,9 +343,9 @@ def _final_page(user):
      }
       
      # --- Détection des changements ---
-     old_df = st.session_state.get("old_grid_df")
+    old_df = st.session_state.get("old_grid_df")
      
-     if old_df is not None:
+    if old_df is not None:
          checkbox_cols = [c for c in new_df.columns if c.endswith(("_prete", "_admin")) or c == "multi_exemplaires"]
          for i in new_df.index:
              game_id = new_df.at[i, "_id"]
@@ -362,12 +362,12 @@ def _final_page(user):
                      elif col == "multi_exemplaires":
                          on_change_plusieurs_exemplaires(game_id, new_val)
      
-     st.session_state["old_grid_df"] = new_df.copy()
+    st.session_state["old_grid_df"] = new_df.copy()
 
-     # --- CALCUL DES DONNÉES COMPLÉMENTAIRES ---
-     # Traitement des compteurs
+    # --- CALCUL DES DONNÉES COMPLÉMENTAIRES ---
+    # Traitement des compteurs
 
-     for j in pseudo_list:
+    for j in pseudo_list:
          st.session_state.df_jeux[f"{j}_user"] = df_jeux["Jeu"].apply(
             lambda pid: st.session_state.grid_state[(pid, j)][0]
          )
@@ -375,59 +375,54 @@ def _final_page(user):
             lambda pid: st.session_state.grid_state[(pid, j)][1]
         )
 
-     # Compteurs par jeux
-     st.session_state.df_jeux["Total coché par joueur"] = st.session_state.df_jeux[[f"{j}_user" for j in pseudo_list]].sum(axis=1)
-     st.session_state.df_jeux["Total coché validé par admin"] = st.session_state.df_jeux[[f"{j}_admin" for j in pseudo_list]].sum(axis=1) 
+    # Compteurs par jeux
+    st.session_state.df_jeux["Total coché par joueur"] = st.session_state.df_jeux[[f"{j}_user" for j in pseudo_list]].sum(axis=1)
+    st.session_state.df_jeux["Total coché validé par admin"] = st.session_state.df_jeux[[f"{j}_admin" for j in pseudo_list]].sum(axis=1) 
 
-     # Compteurs par joueur
-     user_by_player = {j: st.session_state.df_jeux[f"{j}_user"].sum() for j in pseudo_list}
-     admin_by_player = {j: st.session_state.df_jeux[f"{j}_admin"].sum() for j in pseudo_list}
-
-
-
-
-
-
-
+    # Compteurs par joueur
+    user_by_player = {j: st.session_state.df_jeux[f"{j}_user"].sum() for j in pseudo_list}
+    admin_by_player = {j: st.session_state.df_jeux[f"{j}_admin"].sum() for j in pseudo_list}
 
 
 # --- Colonnes ---
-gb = GridOptionsBuilder.from_dataframe(df)
-gb.configure_column("multi_exemplaires", editable=True, cellRenderer="agCheckboxCellRenderer")
 
-for idx, j in enumerate(pseudo_list):
-    player_key = f"j{idx+1}"
-    gb.configure_column(
-        f"{player_key}_prete",
-        headerName=j,
-        editable=True,
-        cellRenderer="agCheckboxCellRenderer",
-    )
-    gb.configure_column(
-        f"{player_key}_admin",
-        headerName="Validé",
-        editable=(user["role"] == "admin"),
-        cellRenderer="agCheckboxCellRenderer",
-    )
-
-grid_options = gb.build()
-
-grid_response = AgGrid(
-    df,
-    gridOptions=grid_options,
-    update_mode=GridUpdateMode.VALUE_CHANGED,   # renvoie dès qu'une cellule change
-    data_return_mode=DataReturnMode.AS_INPUT,
-    allow_unsafe_jscode=True,
-    fit_columns_on_grid_load=True,
-)
-
-new_df = pd.DataFrame(grid_response["data"])
+    gb = GridOptionsBuilder.from_dataframe(df)
+    gb.configure_column("multi_exemplaires", editable=True, cellRenderer="agCheckboxCellRenderer")
 
 
+    for idx, j in enumerate(pseudo_list):
+         player_key = f"j{idx+1}"
+         gb.configure_column(
+             f"{player_key}_prete",
+             headerName=j,
+             editable=True,
+             cellRenderer="agCheckboxCellRenderer",
+         )
+         gb.configure_column(
+             f"{player_key}_admin",
+             headerName="Validé",
+             editable=(user["role"] == "admin"),
+             cellRenderer="agCheckboxCellRenderer",
+         )
+
+     grid_options = gb.build()
+
+     grid_response = AgGrid(
+         df,
+         gridOptions=grid_options,
+         update_mode=GridUpdateMode.VALUE_CHANGED,   # renvoie dès qu'une cellule change
+         data_return_mode=DataReturnMode.AS_INPUT,
+         allow_unsafe_jscode=True,
+         fit_columns_on_grid_load=True,
+     )
+
+     new_df = pd.DataFrame(grid_response["data"])
 
 
 
-image_renderer = JsCode(
+
+
+     image_renderer = JsCode(
         """
         class ImageRenderer {
                 init(params) {
@@ -440,9 +435,9 @@ image_renderer = JsCode(
                 }
         }
         """
-    )
+     )
     
-  ###  # Colonnes fixes de gauche
+     ###  # Colonnes fixes de gauche
   ###  column_defs = [
   ###      {"field": "nouveaute", "headerName": "nouveaute", "width": 150},
   ###      {"field": "Annee", "headerName": "Annee", "width": 80},
