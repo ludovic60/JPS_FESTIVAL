@@ -166,7 +166,7 @@ def _final_page(user):
     finals = storage_jeux.final_games()
    
    
-    users = cs.get_users_non_admin()
+    users = cs.get_users_loaner()
     loans = storage_jeux.get_loans()
     current_user = user
     is_admin = current_user == "admin"
