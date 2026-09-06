@@ -11,7 +11,7 @@ les données applicatives mutables dans `app_data` sous forme {_id: <nom>, data:
 import json
 import os
 from pathlib import Path
-
+from datetime import datetime
 from bson import ObjectId
 
 try:
@@ -21,6 +21,13 @@ except Exception:
 
 ROOT = Path(__file__).resolve().parent
 FALLBACK_DIR = ROOT / "data" / "_store"
+
+
+
+
+# Obtenir la date exacte au format complet du système
+today = datetime.now()
+
 
 
 def _secret(key, default=None):
@@ -56,34 +63,6 @@ def mongo_enabled():
 
 
 # --------------------------------------------------------------------------
-# Données applicatives génériques (partagées quand Mongo est actif)
-# --------------------------------------------------------------------------
-# def get_doc(name, default):
-#     db = get_db()
-#     if db is not None:
-#         d = db.app_data.find_one({"_id": name})
-#         return d["data"] if d else default
-#     p = FALLBACK_DIR / f"{name}.json"
-#     if not p.exists():
-#         return default
-#     try:
-#         with open(p, "r", encoding="utf-8") as f:
-#             return json.load(f)
-#     except (json.JSONDecodeError, OSError):
-#         return default
-
-
-# def put_doc(name, data):
-#     db = get_db()
-#     if db is not None:
-#         db.app_data.update_one({"_id": name}, {"$set": {"data": data}}, upsert=True)
-#         return
-#     FALLBACK_DIR.mkdir(parents=True, exist_ok=True)
-#     with open(FALLBACK_DIR / f"{name}.json", "w", encoding="utf-8") as f:
-#        json.dump(data, f, ensure_ascii=False, indent=2)
-
-
-# --------------------------------------------------------------------------
 # Utilisateurs (base commune)
 # --------------------------------------------------------------------------
 def _clean(u):
@@ -92,25 +71,44 @@ def _clean(u):
     return u
 
 
-get_users_loaner
 
 def get_users_loaner():
     db = get_db()
     if db is not None:
-        filtre_tb = {"role": {"$ne":"admin"} ,"prete_jeu" :"true" }
+        filtre_tb = {"role": {"$ne":"admin"} ,
+                     "prete_jeu" :"true" , 
+                     "$or": [
+                        {"desactived_at": ""},
+                        {"desactived_at": None},  # Bonne pratique : inclure les valeurs nulles ou absentes
+                        {"desactived_at": {"$gte": today}}
+                       ]
+                    }
         return [_clean(u) for u in db.users.find(filtre_tb)]
     return get_doc("shared_users", [])
 
 def get_users_non_admin():
     db = get_db()
     if db is not None:
-        filtre_tb = {"role": {"$ne":"admin"}}
+        filtre_tb = {"role": {"$ne":"admin"},         
+                     "$or": [
+                        {"desactived_at": ""},
+                        {"desactived_at": None},  # Bonne pratique : inclure les valeurs nulles ou absentes
+                        {"desactived_at": {"$gte": today}}
+                       ]
+                    }
+                    
         return [_clean(u) for u in db.users.find(filtre_tb)]
     return get_doc("shared_users", [])
 
 def get_users():
     db = get_db()
     if db is not None:
+        filtre_tb = {"$or": [
+                        {"desactived_at": ""},
+                        {"desactived_at": None},  # Bonne pratique : inclure les valeurs nulles ou absentes
+                        {"desactived_at": {"$gte": today}}
+                       ]
+                    }
         return [_clean(u) for u in db.users.find()]
     return get_doc("shared_users", [])
 
