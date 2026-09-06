@@ -289,7 +289,7 @@ def _final_page(user):
                "Categorie jeu": mise_forme_categorie(g[0].get("classement_jps_final")),
                "Couverture Jeu": g[0].get("couverture"),
                "Jeu": g[0].get("nom_jeu_complet"),
-               "Plusieurs exmplaires souhaitées":"False"
+               "Plusieurs exmplaires souhaitées":"False",
                "Total coché par joueur": "" ,
                "Total coché validé par admin": "" }
         #####################  
