@@ -92,7 +92,14 @@ def _clean(u):
     return u
 
 
+get_users_loaner
 
+def get_users_loaner():
+    db = get_db()
+    if db is not None:
+        filtre_tb = {"role": {"$ne":"admin"} ,"prete_jeu" :"true" }
+        return [_clean(u) for u in db.users.find(filtre_tb)]
+    return get_doc("shared_users", [])
 
 def get_users_non_admin():
     db = get_db()
