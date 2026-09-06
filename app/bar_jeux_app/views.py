@@ -257,9 +257,12 @@ def _final_page(user):
     # creation des lignes du futur tableau croisé         
     row_jeux = []
 
-    def on_change_plusieurs_exemplaires(game_id, currently_selected):
-          toggle_admin_selected(game_id, currently_selected)
-
+    def on_change_plusieurs_exemplaires(game_id, player_key, new_val):
+          toggle_admin_selected(game_id, new_val)
+     def on_change_prete(game_id, player_key, new_val):
+                   
+     def on_change_admin(game_id, player_key, new_val):
+                   
  
     for game in finals:
         
@@ -286,13 +289,7 @@ def _final_page(user):
                "Categorie jeu": mise_forme_categorie(g[0].get("classement_jps_final")),
                "Couverture Jeu": g[0].get("couverture"),
                "Jeu": g[0].get("nom_jeu_complet"),
-               "Plusieurs exmplaires souhaitées":st.checkbox(
-                        "",
-                        value=has_selected_this_game,
-                        key=f"s_admin_{str(g[0].get("_id"))}",
-                        on_change=on_change_plusieurs_exemplaires,
-                        args=(str(g[0].get("_id")), has_selected_this_game),
-                    ), 
+               "Plusieurs exmplaires souhaitées":"False"
                "Total coché par joueur": "" ,
                "Total coché validé par admin": "" }
         #####################  
@@ -308,7 +305,7 @@ def _final_page(user):
         
         # --- Colonnes ---
         gb = GridOptionsBuilder.from_dataframe(df)
-        gb.configure_column("multi_exemplaires", editable=True, cellRenderer="agCheckboxCellRenderer")
+        gb.configure_column("Plusieurs exmplaires souhaitées", editable=True, cellRenderer="agCheckboxCellRenderer")
         
         for idx, j in enumerate(pseudo_list):
             player_key = f"j{idx+1}"
@@ -345,7 +342,27 @@ def _final_page(user):
          for valid_admin in pseudo_list
      }
       
- 
+     # --- Détection des changements ---
+     old_df = st.session_state.get("old_grid_df")
+     
+     if old_df is not None:
+         checkbox_cols = [c for c in new_df.columns if c.endswith(("_prete", "_admin")) or c == "multi_exemplaires"]
+         for i in new_df.index:
+             game_id = new_df.at[i, "_id"]
+             for col in checkbox_cols:
+                 old_val = old_df.at[i, col]
+                 new_val = new_df.at[i, col]
+                 if old_val != new_val:
+                     if col.endswith("_prete"):
+                         player_key = col.replace("_prete", "")
+                         on_change_prete(game_id, player_key, new_val)
+                     elif col.endswith("_admin"):
+                         player_key = col.replace("_admin", "")
+                         on_change_admin(game_id, player_key, new_val)
+                     elif col == "multi_exemplaires":
+                         on_change_plusieurs_exemplaires(game_id, new_val)
+     
+     st.session_state["old_grid_df"] = new_df.copy()
 
      # --- CALCUL DES DONNÉES COMPLÉMENTAIRES ---
      # Traitement des compteurs
@@ -425,129 +442,129 @@ image_renderer = JsCode(
         """
     )
     
-    # Colonnes fixes de gauche
-    column_defs = [
-        {"field": "nouveaute", "headerName": "nouveaute", "width": 150},
-        {"field": "Annee", "headerName": "Annee", "width": 80},
-        {"field": "Categorie jeu", "headerName": "Categorie jeu", "width": 110},
-        {"field": "Couverture Jeu", "cellRenderer": image_renderer,"headerName": "Couverture Jeu", "width": 110},
-        {"field": "Jeu", "headerName": "Jeu", "width": 110},
-        {"field": "Plusieurs exmplaires souhaitées", "headerName": "Plusieurs exmplaires souhaitées", "width": 110},
-        {"field": "Total coché par joueur", "headerName": "Total coché par joueur", "width": 110},
-        {"field": "Total coché validé par admi", "headerName": "Total coché validé par admi", "width": 110},
+  ###  # Colonnes fixes de gauche
+  ###  column_defs = [
+  ###      {"field": "nouveaute", "headerName": "nouveaute", "width": 150},
+  ###      {"field": "Annee", "headerName": "Annee", "width": 80},
+  ###      {"field": "Categorie jeu", "headerName": "Categorie jeu", "width": 110},
+  ###      {"field": "Couverture Jeu", "cellRenderer": image_renderer,"headerName": "Couverture Jeu", "width": 110},
+  ###      {"field": "Jeu", "headerName": "Jeu", "width": 110},
+  ###      {"field": "Plusieurs exmplaires souhaitées", "headerName": "Plusieurs exmplaires souhaitées", "width": 110},
+  ###      {"field": "Total coché par joueur", "headerName": "Total coché par joueur", "width": 110},
+  ###      {"field": "Total coché validé par admi", "headerName": "Total coché validé par admi", "width": 110},
         
-    ]
+  ###  ]
 
 
-    for idx, j in enumerate(pseudo_list):
-        player_key = f"j{idx+1}"
-        group_col = {
-            "headerName": j,  # Première ligne d'en-tête (Nom du Joueur)
-            "children": [
-                {
-                    "field": f"{player_key}_prete",
-                    "headerName": "Je prête",  # Seconde ligne d'en-tête
-                    "editable": True,
-                    "cellRenderer": "agCheckboxCellRenderer",  # Case à cocher native
-                    "width": 110,
-                },
-                {
-                    "field": f"{player_key}_admin",
-                    "headerName": "Validé",
-                    "editable": (user["role"] == "admin"),
-                    "cellRenderer": "agCheckboxCellRenderer",
-                    "width": 140,
-                    # Style conditionnel : Vert si la case est cochée
-                    "cellStyle": {
-                        "styleConditions": [
-                            {
-                                "condition": "x === true",
-                                "style": {
-                                    "backgroundColor": "#d4edda",
-                                    "color": "#155724",
-                                },
-                            }
-                        ]
-                    },
-                },
-            ],
-        }
-        column_defs.append(group_col)
+  ### for idx, j in enumerate(pseudo_list):
+  ###      player_key = f"j{idx+1}"
+  ###      group_col = {
+  ###          "headerName": j,  # Première ligne d'en-tête (Nom du Joueur)
+  ###          "children": [
+  ###              {
+  ###                  "field": f"{player_key}_prete",
+  ###                  "headerName": "Je prête",  # Seconde ligne d'en-tête
+  ###                  "editable": True,
+  ###                  "cellRenderer": "agCheckboxCellRenderer",  # Case à cocher native
+  ###                  "width": 110,
+  ###              },
+  ###              {
+  ###                  "field": f"{player_key}_admin",
+  ###                  "headerName": "Validé",
+  ###                  "editable": (user["role"] == "admin"),
+  ###                  "cellRenderer": "agCheckboxCellRenderer",
+  ###                 "width": 140,
+  ###                 # Style conditionnel : Vert si la case est cochée
+  ###                 "cellStyle": {
+  ###                     "styleConditions": [
+  ###                         {
+  ###                             "condition": "x === true",
+  ###                             "style": {
+  ###                                 "backgroundColor": "#d4edda",
+  ###                                 "color": "#155724",
+  ###                             },
+  ###                         }
+  ###                     ]
+  ###                 },
+  ###              },
+  ###          ],
+  ###      }
+  ###      column_defs.append(group_col)
     
 
-    # Configuration du tableau avec AgGrid
-    gb = GridOptionsBuilder.from_dataframe(df_jeux)
+  ###  # Configuration du tableau avec AgGrid
+  ###  gb = GridOptionsBuilder.from_dataframe(df_jeux)
     
-    gb.configure_default_column(
-         resizable=True,
-         filterable=True,
-         editable=False,
-     )
-    gb.configure_grid_options(
-        wrapHeaderText=True,
-        autoHeaderHeight=True,
-        rowHeight=60,  # Augmente la hauteur des lignes pour bien voir les images
-    )
+  ###  gb.configure_default_column(
+  ###       resizable=True,
+  ###       filterable=True,
+  ###       editable=False,
+  ###   )
+  ###  gb.configure_grid_options(
+  ###      wrapHeaderText=True,
+  ###      autoHeaderHeight=True,
+  ###      rowHeight=60,  # Augmente la hauteur des lignes pour bien voir les images
+  ###  )
     
 
 
-    # Applique un thème complet avec bordures
-    grid_options = gb.build()
+  ###  # Applique un thème complet avec bordures
+  ##   grid_options = gb.build()
 
-    grid_options["columnDefs"] = column_defs
+  ###   grid_options["columnDefs"] = column_defs
+ 
+  ### custom_css = {
+  ###      ".ag-header-group-cell": {
+  ###         "border-right": "none !important",
+  ###         "border-left": "none !important",
+  ##     },
+  ###     ".ag-cell": {
+  ###         "border-right": "1px solid #c6c6c6 !important",
+  ###     },
+  ###     ".ag-header-cell, .ag-header-group-cell": {
+  ###         "border-right": "1px solid #c6c6c6 !important",
+  ###     },
+  ### }
 
-    custom_css = {
-        ".ag-header-group-cell": {
-            "border-right": "none !important",
-            "border-left": "none !important",
-        },
-        ".ag-cell": {
-            "border-right": "1px solid #c6c6c6 !important",
-        },
-        ".ag-header-cell, .ag-header-group-cell": {
-            "border-right": "1px solid #c6c6c6 !important",
-        },
-    }
+  ###  grid_response = AgGrid(
+  ###     df_jeux,
+  ###     gridOptions=grid_options,
+  ###     custom_css=custom_css, 
+  ###     theme="balham",  # Thème avec bordures et grille bien visibles
+  ###     allow_unsafe_jscode=True, ## pour gerer l'affichage des images grace aux url
+  ###     update_mode=GridUpdateMode.VALUE_CHANGED,  # Déclenche une mise à jour à chaque clic
+  ###     # data_return_mode=DataReturnMode.AS_INPUT,
+  ###     fit_columns_on_grid_load=True,
+  ###  )
 
-    grid_response = AgGrid(
-       df_jeux,
-       gridOptions=grid_options,
-       custom_css=custom_css, 
-       theme="balham",  # Thème avec bordures et grille bien visibles
-       allow_unsafe_jscode=True, ## pour gerer l'affichage des images grace aux url
-       update_mode=GridUpdateMode.VALUE_CHANGED,  # Déclenche une mise à jour à chaque clic
-       # data_return_mode=DataReturnMode.AS_INPUT,
-       fit_columns_on_grid_load=True,
-    )
+  ###  # Récupération du tableau mis à jour
+  ###  updated_df = grid_response["data"]
 
-    # Récupération du tableau mis à jour
-    updated_df = grid_response["data"]
-
-    # Comparaison avec l'état précédent pour identifier la modification
-    if "previous_df" in st.session_state:
-        prev_df = st.session_state["previous_df"]
+  ###  # Comparaison avec l'état précédent pour identifier la modification
+  ###  if "previous_df" in st.session_state:
+  ###      prev_df = st.session_state["previous_df"]
     
-        # Détection des changements cellule par cellule
-        diff = (updated_df != prev_df) & ~(updated_df.isna() & prev_df.isna())
+  ###      # Détection des changements cellule par cellule
+  ###      diff = (updated_df != prev_df) & ~(updated_df.isna() & prev_df.isna())
     
-        for col in diff.columns:
-            if diff[col].any():
-                # Une valeur a changé dans la colonne `col`
-                ligne_modifiee = diff[diff[col]].index[0]
-                nouvelle_valeur = updated_df.loc[ligne_modifiee, col]
+  ###      for col in diff.columns:
+  ###          if diff[col].any():
+  ###              # Une valeur a changé dans la colonne `col`
+  ###              ligne_modifiee = diff[diff[col]].index[0]
+  ###              nouvelle_valeur = updated_df.loc[ligne_modifiee, col]
             
-                # --- Action A : Coche "Je prête" ---
-                if col.endswith("_prete"):
-                    st.toast(f"Action Prêt ({col}) : nouvelle valeur = {nouvelle_valeur}")
-                    # Insérez ici votre fonction spécifique (ex: mise à jour BDD prêt)
+  ###              # --- Action A : Coche "Je prête" ---
+  ###              if col.endswith("_prete"):
+  ###                  st.toast(f"Action Prêt ({col}) : nouvelle valeur = {nouvelle_valeur}")
+  ###                  # Insérez ici votre fonction spécifique (ex: mise à jour BDD prêt)
                 
-                # --- Action B : Coche "Validé" (Admin) ---
-                elif col.endswith("_admin"):
-                    st.toast(f"Action Validation Admin ({col}) : nouvelle valeur = {nouvelle_valeur}")
-                    # Insérez ici votre fonction spécifique (ex: envoi mail/validation)
+  ###              # --- Action B : Coche "Validé" (Admin) ---
+  ###              elif col.endswith("_admin"):
+  ###                  st.toast(f"Action Validation Admin ({col}) : nouvelle valeur = {nouvelle_valeur}")
+  ###                  # Insérez ici votre fonction spécifique (ex: envoi mail/validation)
 
-    # Sauvegarde de l'état actuel pour le prochain tour
-    st.session_state["previous_df"] = updated_df
+  ###  # Sauvegarde de l'état actuel pour le prochain tour
+  ###  st.session_state["previous_df"] = updated_df
 
 
      
