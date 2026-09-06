@@ -66,9 +66,7 @@ def get_info_games(id_game):
 
 # ---- Sélection admin / suggestions / demandes / prêts (partagés) ----
 
-def set_selection_game():
-    #selection_jeux_festival
-    return {}    
+
     
 def get_admin_selected():
     con_mongo = cs.mongo_enabled()
@@ -102,19 +100,19 @@ def toggle_admin_selected(ckey, value):
                
                 new_selection= {         
                              "annee" : cs._secret("ANNEE_FESTIVAL"), 
-                             "id_jeux": str(ObjectId(ckey))
+                             "id_jeux": str(ObjectId(ckey)),
+                             "plusieurs_exemplaires_souhaites": "False" 
                    }   
             
                 resultat = game_selec_tb.insert_one(new_selection)
         elif value =="delete" :
             # deselectionne le jeu 
-            
-    
+                
             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)) }
             resultat = game_selec_tb.delete_many(filtre_tb)
         else :
             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)) }
-            resultat = game_selec_tb.updateMany(filtre_tb, {"$set": { "statut": value } })
+            resultat = game_selec_tb.updateMany(filtre_tb, {"$set": {  "plusieurs_exemplaires_souhaites": value } })
             resultat = {}
         
     
