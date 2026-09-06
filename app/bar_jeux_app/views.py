@@ -182,6 +182,11 @@ def _final_page(user):
     
     # creation des lignes du futur tableau croisé         
     row_jeux = []
+
+    def on_change_plusieurs_exemplaires(game_id, currently_selected):
+          toggle_admin_selected(game_id, currently_selected)
+
+ 
     for game in finals:
         
         g = storage_jeux.get_info_games( game.get('id_jeux'))
