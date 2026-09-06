@@ -405,24 +405,23 @@ def _final_page(user):
              cellRenderer="agCheckboxCellRenderer",
          )
 
-     grid_options = gb.build()
+    grid_options = gb.build()
 
-     grid_response = AgGrid(
+    grid_response = AgGrid(
          df,
          gridOptions=grid_options,
          update_mode=GridUpdateMode.VALUE_CHANGED,   # renvoie dès qu'une cellule change
          data_return_mode=DataReturnMode.AS_INPUT,
          allow_unsafe_jscode=True,
          fit_columns_on_grid_load=True,
-     )
+    )
 
-     new_df = pd.DataFrame(grid_response["data"])
-
-
+    new_df = pd.DataFrame(grid_response["data"])
 
 
 
-     image_renderer = JsCode(
+
+    image_renderer = JsCode(
         """
         class ImageRenderer {
                 init(params) {
@@ -437,7 +436,7 @@ def _final_page(user):
         """
      )
     
-     ###  # Colonnes fixes de gauche
+  ###  # Colonnes fixes de gauche
   ###  column_defs = [
   ###      {"field": "nouveaute", "headerName": "nouveaute", "width": 150},
   ###      {"field": "Annee", "headerName": "Annee", "width": 80},
