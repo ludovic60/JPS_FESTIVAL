@@ -200,7 +200,7 @@ def _final_page(user):
                    New = "inconnu"                    
                
                
-        row = {"nouveaute" : New, "Annee": g[0].get("annee_parution"), "Categorie jeu": mise_forme_categorie(g[0].get("classement_jps_final")), "Couverture Jeu": g[0].get("couverture"), "Jeu": g[0].get("nom_jeu_complet"), "Total coché par joueur": "" , "Total coché validé par admin": "" }
+        row = {"nouveaute" : New, "Annee": g[0].get("annee_parution"), "Categorie jeu": mise_forme_categorie(g[0].get("classement_jps_final")), "Couverture Jeu": g[0].get("couverture"), "Jeu": g[0].get("nom_jeu_complet"),"Plusieurs exmplaires souhaitées":"" , "Total coché par joueur": "" , "Total coché validé par admin": "" }
         row_jeux.append(row)
                
     #if "df_jeux" not in st.is_distinct:   
@@ -328,6 +328,7 @@ def _final_page(user):
         {"field": "Categorie jeu", "headerName": "Categorie jeu", "width": 110},
         {"field": "Couverture Jeu", "cellRenderer": image_renderer,"headerName": "Couverture Jeu", "width": 110},
         {"field": "Jeu", "headerName": "Jeu", "width": 110},
+        {"field": "Plusieurs exmplaires souhaitées", "headerName": "Plusieurs exmplaires souhaitées", "width": 110},
         {"field": "Total coché par joueur", "headerName": "Total coché par joueur", "width": 110},
         {"field": "Total coché validé par admi", "headerName": "Total coché validé par admi", "width": 110},
         
