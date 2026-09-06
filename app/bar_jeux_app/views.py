@@ -180,57 +180,6 @@ def _final_page(user):
         st.info("Aucun jeu retenu par l'admin pour l'instant.")
         return           
     
-    # creation des lignes du futur tableau croisé         
-    row_jeux = []
-
-    def on_change_plusieurs_exemplaires(game_id, currently_selected):
-          toggle_admin_selected(game_id, currently_selected)
-
- 
-    for game in finals:
-        
-        g = storage_jeux.get_info_games( game.get('id_jeux'))
-      
-        if ( g[0].get("mois_sortie")  and  g[0].get("annee_parution") ) :      
-       
-                   periode_parution = int(str(g[0].get("annee_parution"))) *100 +  int(str(g[0].get("mois_sortie")) )
-                   periode_dernier_festival = (int( cs._secret("ANNEE_FESTIVAL"))-1) *100 + int(cs._secret("MOIS_FESTIVAL") )
-           
-                      
-                   if periode_parution  >  periode_dernier_festival :
-                               New = "NOUVEAUTE"
-                   else :   
-                               New = "Ancien"
-        else :
-                   New = "inconnu"                    
-               
-               
-        row = {"nouveaute" : New, "Annee": g[0].get("annee_parution"),
-               "Categorie jeu": mise_forme_categorie(g[0].get("classement_jps_final")),
-               "Couverture Jeu": g[0].get("couverture"),
-               "Jeu": g[0].get("nom_jeu_complet"),
-               "Plusieurs exmplaires souhaitées":st.checkbox(
-                        "",
-                        value=has_selected_this_game,
-                        key=f"s_admin_{str(g[0].get("_id"))}",
-                        on_change=on_change_plusieurs_exemplaires,
-                        args=(str(g[0].get("_id")), has_selected_this_game),
-                    ), 
-               "Total coché par joueur": "" ,
-               "Total coché validé par admin": "" }
-        row_jeux.append(row)
-               
-    #if "df_jeux" not in st.is_distinct:   
-    df_jeux = st.session_state.df_jeux = pd.DataFrame(row_jeux)   
-               
-    # creation des colonnes du futur tableau croisé   avec preparation des checkbox
-      
-    if "grid_state" not in st.session_state:
-         st.session_state.grid_state = {
-         (select_joueur, valid_admin): [False, False]
-         for select_joueur in st.session_state.df_jeux["Jeu"]
-         for valid_admin in pseudo_list
-     }
            
    # st.session_state.grid_state={}
    #           for ul in loans:   
@@ -239,25 +188,7 @@ def _final_page(user):
    # st.session_state.grid_state[(game, pseudo)] = (True, True)
 
 
-   # --- CALCUL DES DONNÉES COMPLÉMENTAIRES ---
-   # Traitement des compteurs
-
-    for j in pseudo_list:
-         st.session_state.df_jeux[f"{j}_user"] = df_jeux["Jeu"].apply(
-            lambda pid: st.session_state.grid_state[(pid, j)][0]
-         )
-         st.session_state.df_jeux[f"{j}_admin"] = df_jeux["Jeu"].apply(
-            lambda pid: st.session_state.grid_state[(pid, j)][1]
-        )
-
-    # Compteurs par jeux
-    st.session_state.df_jeux["Total coché par joueur"] = st.session_state.df_jeux[[f"{j}_user" for j in pseudo_list]].sum(axis=1)
-    st.session_state.df_jeux["Total coché validé par admin"] = st.session_state.df_jeux[[f"{j}_admin" for j in pseudo_list]].sum(axis=1) 
-
-    # Compteurs par joueur
-    user_by_player = {j: st.session_state.df_jeux[f"{j}_user"].sum() for j in pseudo_list}
-    admin_by_player = {j: st.session_state.df_jeux[f"{j}_admin"].sum() for j in pseudo_list}
-
+   
     # --- PARTIE SUPERIEURE : GRAPHIQUES ---
 
     col_graph1, col_graph2, col_graph3 = st.columns(3)
@@ -323,7 +254,163 @@ def _final_page(user):
     ###################################################################################################
     ###########  gestion du tableau des prêts   
     ###################################################################################################
-    image_renderer = JsCode(
+    # creation des lignes du futur tableau croisé         
+    row_jeux = []
+
+    def on_change_plusieurs_exemplaires(game_id, currently_selected):
+          toggle_admin_selected(game_id, currently_selected)
+
+ 
+    for game in finals:
+        
+        g = storage_jeux.get_info_games( game.get('id_jeux'))
+
+        ######   gestion du staut de nouveauté
+      
+        if ( g[0].get("mois_sortie")  and  g[0].get("annee_parution") ) :      
+       
+                   periode_parution = int(str(g[0].get("annee_parution"))) *100 +  int(str(g[0].get("mois_sortie")) )
+                   periode_dernier_festival = (int( cs._secret("ANNEE_FESTIVAL"))-1) *100 + int(cs._secret("MOIS_FESTIVAL") )
+           
+                      
+                   if periode_parution  >  periode_dernier_festival :
+                               New = "NOUVEAUTE"
+                   else :   
+                               New = "Ancien"
+        else :
+                   New = "inconnu"                    
+        #####################       
+
+       
+        row = {"nouveaute" : New, "Annee": g[0].get("annee_parution"),
+               "Categorie jeu": mise_forme_categorie(g[0].get("classement_jps_final")),
+               "Couverture Jeu": g[0].get("couverture"),
+               "Jeu": g[0].get("nom_jeu_complet"),
+               "Plusieurs exmplaires souhaitées":st.checkbox(
+                        "",
+                        value=has_selected_this_game,
+                        key=f"s_admin_{str(g[0].get("_id"))}",
+                        on_change=on_change_plusieurs_exemplaires,
+                        args=(str(g[0].get("_id")), has_selected_this_game),
+                    ), 
+               "Total coché par joueur": "" ,
+               "Total coché validé par admin": "" }
+        #####################  
+        ### gestion des cases à coché 
+        for idx, j in enumerate(pseudo_list):
+               player_key = f"j{idx+1}"
+               row[f"{player_key}_prete"] = get_prete_value(game_id, player_key)
+               row[f"{player_key}_admin"] = get_admin_value(game_id, player_key)
+
+        row_jeux.append(row)
+               
+        df = pd.DataFrame(rows)
+        
+        # --- Colonnes ---
+        gb = GridOptionsBuilder.from_dataframe(df)
+        gb.configure_column("multi_exemplaires", editable=True, cellRenderer="agCheckboxCellRenderer")
+        
+        for idx, j in enumerate(pseudo_list):
+            player_key = f"j{idx+1}"
+            gb.configure_column(
+                f"{player_key}_prete",
+                headerName=j,
+                editable=True,
+                cellRenderer="agCheckboxCellRenderer",
+            )
+            gb.configure_column(
+                f"{player_key}_admin",
+                headerName="Validé",
+                editable=(user["role"] == "admin"),
+                cellRenderer="agCheckboxCellRenderer",
+            )
+        
+        grid_options = gb.build()
+        
+        grid_response = AgGrid(
+            df,
+            gridOptions=grid_options,
+            update_mode=GridUpdateMode.VALUE_CHANGED,   # renvoie dès qu'une cellule change
+            data_return_mode=DataReturnMode.AS_INPUT,
+            allow_unsafe_jscode=True,
+            fit_columns_on_grid_load=True,
+        )
+        
+        new_df = pd.DataFrame(grid_response["data"])
+      
+    if "grid_state" not in st.session_state:
+         st.session_state.grid_state = {
+         (select_joueur, valid_admin): [False, False]
+         for select_joueur in st.session_state.df_jeux["Jeu"]
+         for valid_admin in pseudo_list
+     }
+      
+ 
+
+     # --- CALCUL DES DONNÉES COMPLÉMENTAIRES ---
+     # Traitement des compteurs
+
+     for j in pseudo_list:
+         st.session_state.df_jeux[f"{j}_user"] = df_jeux["Jeu"].apply(
+            lambda pid: st.session_state.grid_state[(pid, j)][0]
+         )
+         st.session_state.df_jeux[f"{j}_admin"] = df_jeux["Jeu"].apply(
+            lambda pid: st.session_state.grid_state[(pid, j)][1]
+        )
+
+     # Compteurs par jeux
+     st.session_state.df_jeux["Total coché par joueur"] = st.session_state.df_jeux[[f"{j}_user" for j in pseudo_list]].sum(axis=1)
+     st.session_state.df_jeux["Total coché validé par admin"] = st.session_state.df_jeux[[f"{j}_admin" for j in pseudo_list]].sum(axis=1) 
+
+     # Compteurs par joueur
+     user_by_player = {j: st.session_state.df_jeux[f"{j}_user"].sum() for j in pseudo_list}
+     admin_by_player = {j: st.session_state.df_jeux[f"{j}_admin"].sum() for j in pseudo_list}
+
+
+
+
+
+
+
+
+
+# --- Colonnes ---
+gb = GridOptionsBuilder.from_dataframe(df)
+gb.configure_column("multi_exemplaires", editable=True, cellRenderer="agCheckboxCellRenderer")
+
+for idx, j in enumerate(pseudo_list):
+    player_key = f"j{idx+1}"
+    gb.configure_column(
+        f"{player_key}_prete",
+        headerName=j,
+        editable=True,
+        cellRenderer="agCheckboxCellRenderer",
+    )
+    gb.configure_column(
+        f"{player_key}_admin",
+        headerName="Validé",
+        editable=(user["role"] == "admin"),
+        cellRenderer="agCheckboxCellRenderer",
+    )
+
+grid_options = gb.build()
+
+grid_response = AgGrid(
+    df,
+    gridOptions=grid_options,
+    update_mode=GridUpdateMode.VALUE_CHANGED,   # renvoie dès qu'une cellule change
+    data_return_mode=DataReturnMode.AS_INPUT,
+    allow_unsafe_jscode=True,
+    fit_columns_on_grid_load=True,
+)
+
+new_df = pd.DataFrame(grid_response["data"])
+
+
+
+
+
+image_renderer = JsCode(
         """
         class ImageRenderer {
                 init(params) {
