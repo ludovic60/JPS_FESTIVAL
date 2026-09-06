@@ -200,7 +200,19 @@ def _final_page(user):
                    New = "inconnu"                    
                
                
-        row = {"nouveaute" : New, "Annee": g[0].get("annee_parution"), "Categorie jeu": mise_forme_categorie(g[0].get("classement_jps_final")), "Couverture Jeu": g[0].get("couverture"), "Jeu": g[0].get("nom_jeu_complet"),"Plusieurs exmplaires souhaitées":"" , "Total coché par joueur": "" , "Total coché validé par admin": "" }
+        row = {"nouveaute" : New, "Annee": g[0].get("annee_parution"),
+               "Categorie jeu": mise_forme_categorie(g[0].get("classement_jps_final")),
+               "Couverture Jeu": g[0].get("couverture"),
+               "Jeu": g[0].get("nom_jeu_complet"),
+               "Plusieurs exmplaires souhaitées":st.checkbox(
+                        "",
+                        value=has_selected_this_game,
+                        key=f"s_admin_{str(g[0].get("_id"))}",
+                        on_change=on_change_plusieurs_exemplaires,
+                        args=(str(g[0].get("_id")), has_selected_this_game),
+                    ), 
+               "Total coché par joueur": "" ,
+               "Total coché validé par admin": "" }
         row_jeux.append(row)
                
     #if "df_jeux" not in st.is_distinct:   
