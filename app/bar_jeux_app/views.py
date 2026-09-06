@@ -260,9 +260,9 @@ def _final_page(user):
     def on_change_plusieurs_exemplaires(game_id, player_key, new_val):
           toggle_admin_selected(game_id, new_val)
     def on_change_prete(game_id, player_key, new_val):
-                   
+           return 1        
     def on_change_admin(game_id, player_key, new_val):
-                   
+           return 2         
  
     for game in finals:
         
