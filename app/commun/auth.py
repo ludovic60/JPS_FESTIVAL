@@ -36,7 +36,7 @@ def login(pseudo, email, password):
         if not user:
             return "Email ou mot de passe incorrect"
     elif not pseudo == " ":
-        user = check_credentials("pseudo", pseudo.strip(), password)
+        user = check_credentials("pseudo", pseudo.strip().lower(), password)
         if not user:
             return "pseudo ou mot de passe incorrect"
     else:
