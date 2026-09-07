@@ -217,7 +217,7 @@ def _final_page(user):
               width=1000,
               height=400 
           )
-          st.plotly_chart(fig_hist, use_container_width=True)
+          st.plotly_chart(fig_hist, width=True)
 
     ###########----2. Camembert Nouveautés (jeux cochés au moins une fois par un utilisateur)
     with col_graph2:
