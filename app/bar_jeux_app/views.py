@@ -217,7 +217,7 @@ def _final_page(user):
               width=1000,
               height=400 
           )
-          st.plotly_chart(fig_hist, width=True)
+          st.plotly_chart(fig_hist, use_container_width=True)
 
     ###########----2. Camembert Nouveautés (jeux cochés au moins une fois par un utilisateur)
     with col_graph2:
@@ -426,7 +426,7 @@ def _final_page(user):
     
     # Optionnel : appliquer des limites min/max pour éviter les extrêmes
     dynamic_height = min(max(dynamic_height, 200), 800)  # Entre 200px et 800px max
-
+    print("dnamic")
     print("dynamic_height {dynamic_height}")
     grid_response = AgGrid(
         df_jeux,
