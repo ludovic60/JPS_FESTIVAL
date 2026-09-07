@@ -302,7 +302,7 @@ def _final_page(user):
         row_jeux.append(row)
 
 
-    if "df" not in st.session_state:
+    if "df_jeux" not in st.session_state:
           df_jeux = pd.DataFrame(row_jeux)
           st.session_state["df_jeux"] = df_jeux 
  
