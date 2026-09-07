@@ -419,7 +419,7 @@ def _final_page(user):
     grid_options["headerHeight"] = 20
 
    # --- Calcul de la hauteur dynamique ---
-    header_height = 80      # Hauteur totale de l'en-tête (40px groupHeader + 40px header)
+    header_height = 580      # Hauteur totale de l'en-tête (40px groupHeader + 40px header)
     row_height = 35         # Hauteur estimée d'une ligne
     padding = 20            # Marge de sécurité
     
