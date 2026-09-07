@@ -415,6 +415,17 @@ def _final_page(user):
     # Hauteur d'en-tête un peu plus grande pour laisser la place aux 2 lignes
     grid_options["groupHeaderHeight"] = 20
     grid_options["headerHeight"] = 20
+
+   # --- Calcul de la hauteur dynamique ---
+    header_height = 80      # Hauteur totale de l'en-tête (40px groupHeader + 40px header)
+    row_height = 35         # Hauteur estimée d'une ligne
+    padding = 20            # Marge de sécurité
+    
+    # Calcul basé sur le nombre de lignes dans df_jeux
+    dynamic_height = header_height + (len(df_jeux) * row_height) + padding
+    
+    # Optionnel : appliquer des limites min/max pour éviter les extrêmes
+    dynamic_height = min(max(dynamic_height, 200), 800)  # Entre 200px et 800px max
     
     grid_response = AgGrid(
         df_jeux,
@@ -423,7 +434,7 @@ def _final_page(user):
         data_return_mode=DataReturnMode.AS_INPUT,
         allow_unsafe_jscode=True,
         fit_columns_on_grid_load=False,
-        height=50000,
+        height=dynamic_height,
     )
     
     new_df = pd.DataFrame(grid_response["data"])   # 
