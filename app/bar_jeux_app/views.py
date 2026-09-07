@@ -1,7 +1,7 @@
 """Vues Streamlit pour Bar à jeux."""
  
 
-from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode, JsCode , DataReturnMode       
+from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode, JsCode , DataReturnMode , AgGridTheme       
 import logging
 import plotly.express as px
 import pandas as pd
@@ -367,7 +367,12 @@ def _final_page(user):
             ],
         }
         grid_options["columnDefs"].append(group_col)
-    
+
+
+
+    ###### mise en forme du tableau 
+
+
     # Hauteur d'en-tête un peu plus grande pour laisser la place aux 2 lignes
     grid_options["groupHeaderHeight"] = 40
     grid_options["headerHeight"] = 40
@@ -378,7 +383,8 @@ def _final_page(user):
         update_mode=GridUpdateMode.VALUE_CHANGED,
         data_return_mode=DataReturnMode.AS_INPUT,
         allow_unsafe_jscode=True,
-        fit_columns_on_grid_load=False,   # 
+        fit_columns_on_grid_load=False,   
+        theme=AgGridTheme.BALANCED
     )
     
     new_df = pd.DataFrame(grid_response["data"])   # 
