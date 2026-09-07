@@ -296,8 +296,8 @@ def _final_page(user):
         ### gestion des cases à coché 
         for idx, j in enumerate(pseudo_list):
                player_key = f"j{idx+1}"
-               row[f"{player_key}_prete"] = get_prete_value(game_id, player_key)
-               row[f"{player_key}_admin"] = get_admin_value(game_id, player_key)
+               row[f"{player_key}_prete"] = 1 ## get_prete_value(game_id, player_key)
+               row[f"{player_key}_admin"] = 1 ## get_admin_value(game_id, player_key)
 
         row_jeux.append(row)
                
