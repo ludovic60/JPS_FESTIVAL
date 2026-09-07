@@ -335,14 +335,6 @@ def _final_page(user):
     gb.configure_column("_id", hide=True)
 #    gb.configure_default_column(  width=140)
     gb.configure_column(
-        "Plusieurs exemplaires souhaités",
-        editable=True,
-        cellRenderer="agCheckboxCellRenderer",
-        width=140,
-        wrapHeaderText=True, 
-        autoHeaderHeight=True,
-    )
-    gb.configure_column(
         "nouveaute",
         editable=False,
         width=80,
@@ -393,6 +385,15 @@ def _final_page(user):
         suppressSizeToFit=True,
         wrapHeaderText=True, 
         autoHeaderHeight=True, 
+    )
+
+    gb.configure_column(
+        "Plusieurs exemplaires souhaités",
+        editable=True,
+        #cellRenderer="agCheckboxCellRenderer",
+        width=140,
+        wrapHeaderText=True, 
+        autoHeaderHeight=True,
     )
 
     gb.configure_column(
