@@ -331,36 +331,57 @@ def _final_page(user):
         "Annee",
         editable=False,
         width=80,
+        minWidth=80,
+        maxWidth=80,
+        suppressSizeToFit=True,
     )
     gb.configure_column(
         "Categorie jeu",
         editable=False,
         width=180,
+        minWidth=180,
+        maxWidth=180,
+        suppressSizeToFit=True,
     )
     gb.configure_column(
         "Couverture Jeu",
         editable=False,
         width=100,
+        minWidth=100,
+        maxWidth=100,
+        suppressSizeToFit=True,
     )
     gb.configure_column(
         "Jeu",
         editable=False,
         width=100,
+        minWidth=100,
+        maxWidth=100,
+        suppressSizeToFit=True,
     )
     gb.configure_column(
         "Plusieurs exmplaires souhaitées",
         editable=False,
         width=80,
+        minWidth=80,
+        maxWidth=80,
+        suppressSizeToFit=True,
     )
     gb.configure_column(
         "Total coché par joueur",
         editable=False,
         width=80,
+        minWidth=80,
+        maxWidth=80,
+        suppressSizeToFit=True,
     )
     gb.configure_column(
         "Total coché validé par admin",
         editable=False,
-        width=80,
+        width=90,
+        minWidth=90,
+        maxWidth=90,
+        suppressSizeToFit=True,
     )
 
    
