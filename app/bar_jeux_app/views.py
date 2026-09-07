@@ -419,12 +419,12 @@ def _final_page(user):
     grid_options["headerHeight"] = 20
 
    # --- Calcul de la hauteur dynamique ---
-    header_height = 580      # Hauteur totale de l'en-tête (40px groupHeader + 40px header)
+    header_height = 58      # Hauteur totale de l'en-tête (40px groupHeader + 40px header)
     row_height = 35         # Hauteur estimée d'une ligne
     padding = 20            # Marge de sécurité
     
     # Calcul basé sur le nombre de lignes dans df_jeux
-    dynamic_height = header_height + (len(df_jeux) * row_height) + padding
+    dynamic_height = header_height + (len(df_jeux.index) * row_height) + padding
     
     # Optionnel : appliquer des limites min/max pour éviter les extrêmes
     dynamic_height = min(max(dynamic_height, 200), 800)  # Entre 200px et 800px max
