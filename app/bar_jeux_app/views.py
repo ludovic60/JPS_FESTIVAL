@@ -324,7 +324,7 @@ def _final_page(user):
         cellRenderer="agCheckboxCellRenderer",
         width=140,
     )
-    gb.configure_default_column(wrapHeaderText=True, autoHeaderHeight=True)
+    gb.configure_default_column(wrapHeaderText=True, autoHeaderHeight=True,  width=140)
     gb.configure_grid_options(singleClickEdit=True)
     
     grid_options = gb.build()
