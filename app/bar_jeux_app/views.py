@@ -369,9 +369,7 @@ def _final_page(user):
     grid_options = gb.build()
 
 
-    # La colonne _id doit rester dans column_defs même si cachée (pour retrouver la ligne)
-    id_col_def = {"field": "_id", "hide": True}
-    grid_options["columnDefs"].insert(0, id_col_def)
+
     
     # --- Colonnes groupées par joueur (double en-tête) ---
     for idx, j in enumerate(pseudo_list):
