@@ -204,7 +204,7 @@ def _final_page(user):
                    nb_jeux_histogramme.append(
                        {"Utilisateur": u, "Nb jeux": "pret par user", "Valeur":1}
                    )
-                   nb_jeux_histogramme.append({"Utilisateur": u, "Nb jeux": "pret validé (Admin)", "Valeur": admin_by_player[j]})
+                   nb_jeux_histogramme.append({"Utilisateur": u, "Nb jeux": "pret validé (Admin)", "Valeur":1})
           df_jeux_histogramme  = pd.DataFrame(nb_jeux_histogramme)
                
           fig_hist = px.bar(
