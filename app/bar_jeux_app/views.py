@@ -417,7 +417,7 @@ def _final_page(user):
     # Hauteur d'en-tête un peu plus grande pour laisser la place aux 2 lignes
     grid_options["groupHeaderHeight"] = 20
     grid_options["headerHeight"] = 20
-
+    grid_options["domLayout"] = "autoHeight"
    # --- Calcul de la hauteur dynamique ---
     header_height = 58      # Hauteur totale de l'en-tête (40px groupHeader + 40px header)
     row_height = 35         # Hauteur estimée d'une ligne
@@ -438,8 +438,7 @@ def _final_page(user):
         update_mode=GridUpdateMode.VALUE_CHANGED,
         data_return_mode=DataReturnMode.AS_INPUT,
         allow_unsafe_jscode=True,
-        fit_columns_on_grid_load=False,
-        height=dynamic_height,
+        fit_columns_on_grid_load=False
     )
     
     new_df = pd.DataFrame(grid_response["data"])   # 
