@@ -167,16 +167,15 @@ def _game_card(g, list_key, user):
                                 if texte.strip():
                                     # --- Traitement / Sauvegarde ---
                                     # Ex: storage_jeux.save_comment(game_id, texte)
-                                    st.session_state[f"comment_{ckey_this_game}"] = texte
-                                    
+                                     
                                     st.success("Commentaire enregistré !")
-                                    st.rerun()  # Ferme la fenêtre et rafraîchit la page
+                                    pass                  # Ferme la fenêtre  
                                 else:
                                     st.warning("Veuillez saisir du texte.")
                                     
                 with col2:
                             if st.button("Annuler"):
-                                st.rerun()  # Ferme la fenêtre sans enregistrer
+                                pass     # Ferme la fenêtre sans enregistrer
           
          
 
