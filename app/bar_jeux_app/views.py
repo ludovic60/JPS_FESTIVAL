@@ -302,10 +302,10 @@ def _final_page(user):
         row_jeux.append(row)
      
  
-    df = pd.DataFrame(row_jeux)
+    df_jeux = pd.DataFrame(row_jeux)
         
     # --- Colonnes ---
-    gb = GridOptionsBuilder.from_dataframe(df)
+    gb = GridOptionsBuilder.from_dataframe(df_jeux)
     gb.configure_column("Plusieurs exmplaires souhaitées", editable=True, cellRenderer="agCheckboxCellRenderer")
         
     for idx, j in enumerate(pseudo_list):
@@ -326,7 +326,7 @@ def _final_page(user):
     grid_options = gb.build()
         
     grid_response = AgGrid(
-            df,
+            df_jeux,
             gridOptions=grid_options,
             update_mode=GridUpdateMode.VALUE_CHANGED,   # renvoie dès qu'une cellule change
             data_return_mode=DataReturnMode.AS_INPUT,
