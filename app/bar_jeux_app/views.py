@@ -433,6 +433,30 @@ def _final_page(user):
     logging.error(f"Échec de la mise à jour du prêt pour {len(df_jeux)}")
     logging.info(f"Échec de la mise à jour du prêt pour {len(df_jeux)}")
 
+    st.markdown("""
+        <style>
+        /* Bordures verticales (colonnes) */
+        .ag-theme-streamlit .ag-cell, 
+        .ag-theme-streamlit .ag-header-cell,
+        .ag-theme-alpine .ag-cell, 
+        .ag-theme-alpine .ag-header-cell {
+            border-right: 1px solid #d0d0d0 !important;
+        }
+
+        /* Bordures horizontales (lignes) */
+        .ag-theme-streamlit .ag-row,
+        .ag-theme-alpine .ag-row {
+            border-bottom: 1px solid #d0d0d0 !important;
+        }
+
+        /* Bordure inférieure pour les en-têtes */
+        .ag-theme-streamlit .ag-header,
+        .ag-theme-alpine .ag-header {
+            border-bottom: 2px solid #b0b0b0 !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
     grid_response = AgGrid(
         df_jeux,
         gridOptions=grid_options,
@@ -440,7 +464,6 @@ def _final_page(user):
         data_return_mode=DataReturnMode.AS_INPUT,
         allow_unsafe_jscode=True,
         fit_columns_on_grid_load=False,
-        theme="balham",
         height=dynamic_height
     )
     
