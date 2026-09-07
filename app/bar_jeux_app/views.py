@@ -333,14 +333,25 @@ def _final_page(user):
                  "Total coché par joueur", "Total coché validé par admin"]]
     )
     gb.configure_column("_id", hide=True)
-#    gb.configure_default_column(wrapHeaderText=True, autoHeaderHeight=True,  width=140)
+#    gb.configure_default_column(  width=140)
     gb.configure_column(
         "Plusieurs exmplaires souhaitées",
         editable=True,
         cellRenderer="agCheckboxCellRenderer",
         width=140,
+        wrapHeaderText=True, 
+        autoHeaderHeight=True,
     )
-
+    gb.configure_column(
+        "nouveaute",
+        editable=False,
+        width=80,
+        minWidth=80,
+        maxWidth=80,
+        suppressSizeToFit=True,
+        wrapHeaderText=True, 
+        autoHeaderHeight=True,
+    )
 
     gb.configure_column(
         "Annee",
@@ -349,6 +360,8 @@ def _final_page(user):
         minWidth=80,
         maxWidth=80,
         suppressSizeToFit=True,
+        wrapHeaderText=True, 
+        autoHeaderHeight=True,
     )
     gb.configure_column(
         "Categorie jeu",
@@ -357,6 +370,8 @@ def _final_page(user):
         minWidth=180,
         maxWidth=180,
         suppressSizeToFit=True,
+        wrapHeaderText=True, 
+        autoHeaderHeight=True,
     )
     gb.configure_column(
         "Couverture Jeu",
@@ -366,6 +381,8 @@ def _final_page(user):
         minWidth=100,
         maxWidth=100,
         suppressSizeToFit=True,
+        wrapHeaderText=True, 
+        autoHeaderHeight=True,
     )
     gb.configure_column(
         "Jeu",
@@ -374,6 +391,8 @@ def _final_page(user):
         minWidth=100,
         maxWidth=100,
         suppressSizeToFit=True,
+        wrapHeaderText=True, 
+        autoHeaderHeight=True, 
     )
     gb.configure_column(
         "Plusieurs exmplaires souhaitées",
@@ -382,6 +401,8 @@ def _final_page(user):
         minWidth=80,
         maxWidth=80,
         suppressSizeToFit=True,
+        wrapHeaderText=True, 
+        autoHeaderHeight=True,
     )
     gb.configure_column(
         "Total coché par joueur",
@@ -390,6 +411,8 @@ def _final_page(user):
         minWidth=80,
         maxWidth=80,
         suppressSizeToFit=True,
+        wrapHeaderText=True, 
+        autoHeaderHeight=True,
     )
     gb.configure_column(
         "Total coché validé par admin",
@@ -398,10 +421,12 @@ def _final_page(user):
         minWidth=90,
         maxWidth=90,
         suppressSizeToFit=True,
+        wrapHeaderText=True, 
+        autoHeaderHeight=True,
     )
 
    
-    gb.configure_grid_options(singleClickEdit=True , rowHeight=80)
+    gb.configure_grid_options(singleClickEdit=True , rowHeight=60)
     
     grid_options = gb.build()
 
@@ -451,8 +476,8 @@ def _final_page(user):
     grid_options["groupHeaderHeight"] = 20
     grid_options["headerHeight"] = 20
    # --- Calcul de la hauteur dynamique ---
-    header_height = 58      # Hauteur totale de l'en-tête (40px groupHeader + 40px header)
-    row_height = 35         # Hauteur estimée d'une ligne
+    header_height = 40     # Hauteur totale de l'en-tête (40px groupHeader + 40px header)
+    row_height = 60         # Hauteur estimée d'une ligne
     padding = 20            # Marge de sécurité
     
     # Calcul basé sur le nombre de lignes dans df_jeux
