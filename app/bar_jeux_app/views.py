@@ -379,13 +379,7 @@ def _final_page(user):
         )
 
       
-    if "grid_state" not in st.session_state:
-         st.session_state.grid_state = {
-         (select_joueur, valid_admin): [False, False]
-         for select_joueur in st.session_state.df_jeux["Jeu"]
-         for valid_admin in pseudo_list
-     }
-      
+
 
 
 
