@@ -202,7 +202,7 @@ def _final_page(user):
           nb_jeux_histogramme = []
           for u in pseudo_list:
                    nb_jeux_histogramme.append(
-                       {"Utilisateur": u, "Nb jeux": "pret par user", "Valeur": user_by_player[j]}
+                       {"Utilisateur": u, "Nb jeux": "pret par user", "Valeur":1}
                    )
                    nb_jeux_histogramme.append({"Utilisateur": u, "Nb jeux": "pret validé (Admin)", "Valeur": admin_by_player[j]})
           df_jeux_histogramme  = pd.DataFrame(nb_jeux_histogramme)
