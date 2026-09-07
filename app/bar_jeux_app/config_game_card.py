@@ -155,12 +155,12 @@ def _game_card(g, list_key, user):
             ################################################################################################################
             ################## generation d'une pop up pour saisir un commentaire
             ################################################################################################################
-            with st.button("💬 Ajouter un commentaire", key=f"btn_comment_{jeu_id}"):
+            with st.button("💬 Ajouter un commentaire", key=f"btn_comment_{ckey_this_game}"):
                 def popup_commentaire(game_id, game_title):
                         st.write(f"Ajouter une note pour : **{game_title}**")
                         
                         # Champ de saisie
-                        texte = st.text_area("Votre commentaire :", key=f"txt_{game_id}")
+                        texte = st.text_area("Votre commentaire :", key=f"txt_{ckey_this_game}")
                         
                         col1, col2 = st.columns(2)
                         with col1:
@@ -168,7 +168,7 @@ def _game_card(g, list_key, user):
                                 if texte.strip():
                                     # --- Traitement / Sauvegarde ---
                                     # Ex: storage_jeux.save_comment(game_id, texte)
-                                    st.session_state[f"comment_{game_id}"] = texte
+                                    st.session_state[f"comment_{ckey_this_game}"] = texte
                                     
                                     st.success("Commentaire enregistré !")
                                     st.rerun()  # Ferme la fenêtre et rafraîchit la page
@@ -179,7 +179,7 @@ def _game_card(g, list_key, user):
                             if st.button("Annuler"):
                                 st.rerun()  # Ferme la fenêtre sans enregistrer
           
-                popup_commentaire(jeu_id, nom_jeu)
+                popup_commentaire(ckey_this_game, g.get("nom_jeu_complet"))
                 
             
             with st.expander("Détails du jeu"):
