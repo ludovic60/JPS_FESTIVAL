@@ -240,7 +240,7 @@ def _final_page(user):
     with col_graph3:
           st.subheader("Jeux cochés par Catégorie")
           if not df_cochis.empty:
-              df_cat = df_cochis["categorie"].value_counts().reset_index()
+              df_cat = df_cochis["Nb jeux"].value_counts().reset_index()
               df_cat.columns = ["Catégorie", "Nombre"]
               fig_pie_cat = px.pie(df_cat, names="Catégorie", values="Nombre", hole=0.3, width=1000, height=800 )
               st.plotly_chart(fig_pie_cat, width=True)
