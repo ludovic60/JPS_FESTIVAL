@@ -413,8 +413,8 @@ def _final_page(user):
 
 
     # Hauteur d'en-tête un peu plus grande pour laisser la place aux 2 lignes
-    grid_options["groupHeaderHeight"] = 40
-    grid_options["headerHeight"] = 40
+    grid_options["groupHeaderHeight"] = 20
+    grid_options["headerHeight"] = 20
     
     grid_response = AgGrid(
         df_jeux,
@@ -422,7 +422,8 @@ def _final_page(user):
         update_mode=GridUpdateMode.VALUE_CHANGED,
         data_return_mode=DataReturnMode.AS_INPUT,
         allow_unsafe_jscode=True,
-        fit_columns_on_grid_load=False
+        fit_columns_on_grid_load=False,
+        height=50000,
     )
     
     new_df = pd.DataFrame(grid_response["data"])   # 
