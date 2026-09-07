@@ -155,15 +155,14 @@ def _game_card(g, list_key, user):
             ################################################################################################################
             ################## generation d'une pop up pour saisir un commentaire
             ################################################################################################################
-            with st.button("💬 Ajouter un commentaire", key=f"btn_comment_{ckey_this_game}"):
-                def popup_commentaire(game_id, game_title):
-                        st.write(f"Ajouter une note pour : **{game_title}**")
+            def popup_commentaire(game_id, game_title):
+                st.write(f"Ajouter une note pour : **{game_title}**")
                         
-                        # Champ de saisie
-                        texte = st.text_area("Votre commentaire :", key=f"txt_{ckey_this_game}")
+                # Champ de saisie
+                texte = st.text_area("Votre commentaire :", key=f"txt_{ckey_this_game}")
                         
-                        col1, col2 = st.columns(2)
-                        with col1:
+                col1, col2 = st.columns(2)
+                with col1:
                             if st.button("Enregistrer", type="primary"):
                                 if texte.strip():
                                     # --- Traitement / Sauvegarde ---
@@ -175,12 +174,14 @@ def _game_card(g, list_key, user):
                                 else:
                                     st.warning("Veuillez saisir du texte.")
                                     
-                        with col2:
+                with col2:
                             if st.button("Annuler"):
                                 st.rerun()  # Ferme la fenêtre sans enregistrer
           
+         
+
+            if st.button("💬 Ajouter un commentaire", key=f"btn_comment_{ckey_this_game}"):
                 popup_commentaire(ckey_this_game, g.get("nom_jeu_complet"))
-                
             
             with st.expander("Détails du jeu"):
                 for fk, fl in config_bar_jeux.GAME_FIELDS:
