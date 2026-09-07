@@ -426,7 +426,8 @@ def _final_page(user):
     
     # Optionnel : appliquer des limites min/max pour éviter les extrêmes
     dynamic_height = min(max(dynamic_height, 200), 800)  # Entre 200px et 800px max
-    
+
+    print("dynamic_height {dynamic_height}")
     grid_response = AgGrid(
         df_jeux,
         gridOptions=grid_options,
