@@ -301,7 +301,7 @@ def _final_page(user):
 
         row_jeux.append(row)
                
-        df = pd.DataFrame(rows)
+        df = pd.DataFrame(row_jeux)
         
         # --- Colonnes ---
         gb = GridOptionsBuilder.from_dataframe(df)
