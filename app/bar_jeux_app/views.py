@@ -309,6 +309,8 @@ def _final_page(user):
         row_jeux.append(row)
     
     df_jeux = pd.DataFrame(row_jeux)
+
+    print((len(df_jeux)))
     
     # --- Colonnes ---
     # --- Colonnes simples (non groupées) ---
@@ -428,6 +430,8 @@ def _final_page(user):
     dynamic_height = min(max(dynamic_height, 200), 800)  # Entre 200px et 800px max
     print("dnamic")
     print("dynamic_height {dynamic_height}")
+
+    print((len(df_jeux))
     grid_response = AgGrid(
         df_jeux,
         gridOptions=grid_options,
