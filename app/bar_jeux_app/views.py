@@ -440,6 +440,7 @@ def _final_page(user):
         data_return_mode=DataReturnMode.AS_INPUT,
         allow_unsafe_jscode=True,
         fit_columns_on_grid_load=False,
+        theme="balham",
         height=dynamic_height
     )
     
