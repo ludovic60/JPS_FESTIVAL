@@ -300,9 +300,13 @@ def _final_page(user):
                row[f"{player_key}_admin"] = 1 ## get_admin_value(game_id, player_key)
 
         row_jeux.append(row)
-     
+
+
+    if "df" not in st.session_state:
+          df_jeux = pd.DataFrame(row_jeux)
+          st.session_state["df_jeux"] = df_jeux 
  
-    df_jeux = pd.DataFrame(row_jeux)
+    
         
     # --- Colonnes ---
     gb = GridOptionsBuilder.from_dataframe(df_jeux)
