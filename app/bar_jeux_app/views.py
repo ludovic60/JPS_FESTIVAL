@@ -401,7 +401,7 @@ def _final_page(user):
     )
 
    
-    gb.configure_grid_options(singleClickEdit=True)
+    gb.configure_grid_options(singleClickEdit=True , rowHeight=80)
     
     grid_options = gb.build()
 
