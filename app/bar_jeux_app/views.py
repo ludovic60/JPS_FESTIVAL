@@ -312,6 +312,21 @@ def _final_page(user):
 
     # --- Colonnes ---
     # --- Colonnes simples (non groupées) ---
+    image_renderer = JsCode(
+        """
+        class ImageRenderer {
+                init(params) {
+                    this.eGui = document.createElement('img');
+                    this.eGui.setAttribute('src', params.value);
+                    this.eGui.setAttribute('style', 'height: 45px; width: auto; border-radius: 4px; vertical-align: middle;');
+                }
+                getGui() {
+                    return this.eGui;
+                }
+        }
+        """
+     )
+
     gb = GridOptionsBuilder.from_dataframe(
         df_jeux[["nouveaute", "Annee", "Categorie jeu", "Couverture Jeu", "Jeu",
                  "Plusieurs exmplaires souhaitées",
@@ -346,6 +361,7 @@ def _final_page(user):
     gb.configure_column(
         "Couverture Jeu",
         editable=False,
+        cellRenderer=image_renderer,
         width=100,
         minWidth=100,
         maxWidth=100,
