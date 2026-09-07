@@ -310,8 +310,8 @@ def _final_page(user):
     
     df_jeux = pd.DataFrame(row_jeux)
 
-    print((len(df_jeux)))
-    
+    print((len(df_jeux.index)))
+    print(df_jeux.shape[0])
     # --- Colonnes ---
     # --- Colonnes simples (non groupées) ---
     gb = GridOptionsBuilder.from_dataframe(
