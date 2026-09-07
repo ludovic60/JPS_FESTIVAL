@@ -310,8 +310,6 @@ def _final_page(user):
     
     df_jeux = pd.DataFrame(row_jeux)
 
-    print((len(df_jeux.index)))
-    print(df_jeux.shape[0])
     # --- Colonnes ---
     # --- Colonnes simples (non groupées) ---
     gb = GridOptionsBuilder.from_dataframe(
@@ -320,7 +318,7 @@ def _final_page(user):
                  "Total coché par joueur", "Total coché validé par admin"]]
     )
     gb.configure_column("_id", hide=True)
-    gb.configure_default_column(wrapHeaderText=True, autoHeaderHeight=True,  width=140)
+#    gb.configure_default_column(wrapHeaderText=True, autoHeaderHeight=True,  width=140)
     gb.configure_column(
         "Plusieurs exmplaires souhaitées",
         editable=True,
@@ -417,7 +415,6 @@ def _final_page(user):
     # Hauteur d'en-tête un peu plus grande pour laisser la place aux 2 lignes
     grid_options["groupHeaderHeight"] = 20
     grid_options["headerHeight"] = 20
-    grid_options["domLayout"] = "autoHeight"
    # --- Calcul de la hauteur dynamique ---
     header_height = 58      # Hauteur totale de l'en-tête (40px groupHeader + 40px header)
     row_height = 35         # Hauteur estimée d'une ligne
@@ -428,10 +425,7 @@ def _final_page(user):
     
     # Optionnel : appliquer des limites min/max pour éviter les extrêmes
     dynamic_height = min(max(dynamic_height, 200), 800)  # Entre 200px et 800px max
-    print("dnamic")
-    print("dynamic_height {dynamic_height}")
-    logging.error(f"Échec de la mise à jour du prêt pour {len(df_jeux)}")
-    logging.info(f"Échec de la mise à jour du prêt pour {len(df_jeux)}")
+
 
     st.markdown("""
         <style>
