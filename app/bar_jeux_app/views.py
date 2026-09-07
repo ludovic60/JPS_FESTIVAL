@@ -430,7 +430,7 @@ def _final_page(user):
     dynamic_height = min(max(dynamic_height, 200), 800)  # Entre 200px et 800px max
     print("dnamic")
     print("dynamic_height {dynamic_height}")
-
+    logging.error(f"Échec de la mise à jour du prêt pour {len(df_jeux)}")
     print((len(df_jeux)))
     grid_response = AgGrid(
         df_jeux,
