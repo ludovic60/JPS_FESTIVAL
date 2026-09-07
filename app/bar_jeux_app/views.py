@@ -232,7 +232,7 @@ def _final_page(user):
               )
               df_nov.columns = ["Type", "Nombre"]
               fig_pie_nov = px.pie(df_nov, names="Type", values="Nombre", hole=0.3, width=1000, height=800 )
-              st.plotly_chart(fig_pie_nov, width=True)
+              st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
               st.info("Aucun jeu coché pour le moment.")
 
@@ -243,7 +243,8 @@ def _final_page(user):
               df_cat = df_cochis["Nb jeux"].value_counts().reset_index()
               df_cat.columns = ["Catégorie", "Nombre"]
               fig_pie_cat = px.pie(df_cat, names="Catégorie", values="Nombre", hole=0.3, width=1000, height=800 )
-              st.plotly_chart(fig_pie_cat, width=True)
+               
+              st.plotly_chart(fig_pie_cat, use_container_width=True)
           else:
               st.info("Aucun produit coché pour le moment.")
 
@@ -270,7 +271,22 @@ def _final_page(user):
         g = storage_jeux.get_info_games(game.get('id_jeux'))
         game_id = str(g[0].get("_id"))
     
-        # ... calcul de New (nouveauté) inchangé ...
+        # ... calcul de New (nouveauté) 
+
+        ######   gestion du staut de nouveauté
+      
+        if ( g[0].get("mois_sortie")  and  g[0].get("annee_parution") ) :      
+       
+                   periode_parution = int(str(g[0].get("annee_parution"))) *100 +  int(str(g[0].get("mois_sortie")) )
+                   periode_dernier_festival = (int( cs._secret("ANNEE_FESTIVAL"))-1) *100 + int(cs._secret("MOIS_FESTIVAL") )
+           
+                      
+                   if periode_parution  >  periode_dernier_festival :
+                               New = "NOUVEAUTE"
+                   else :   
+                               New = "Ancien"
+        else :
+                   New = "inconnu"  
     
         row = {
             "_id": game_id,                                  # <-- AJOUTÉ : identifiant stable
@@ -336,7 +352,7 @@ def _final_page(user):
         fit_columns_on_grid_load=False,   # <-- corrigé (scroll horizontal, pas de compression)
     )
     
-    new_df = pd.DataFrame(grid_response["data"])   # <-- AJOUTÉ, indispensable
+    new_df = pd.DataFrame(grid_response["data"])   # 
     
     # --- Détection des changements ---
     old_df = st.session_state.get("old_grid_df")
