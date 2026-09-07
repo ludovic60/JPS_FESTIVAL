@@ -296,7 +296,7 @@ def _final_page(user):
             "Categorie jeu": mise_forme_categorie(g[0].get("classement_jps_final")),
             "Couverture Jeu": g[0].get("couverture"),
             "Jeu": g[0].get("nom_jeu_complet"),
-            "Plusieurs exmplaires souhaitées": bool(get_game_several_selected(game_id)),  # <-- vrai bool
+            "Plusieurs exemplaires souhaités": bool(get_game_several_selected(game_id)),  # <-- vrai bool
             "Total coché par joueur": "",
             "Total coché validé par admin": "",
         }
@@ -329,13 +329,13 @@ def _final_page(user):
 
     gb = GridOptionsBuilder.from_dataframe(
         df_jeux[["nouveaute", "Annee", "Categorie jeu", "Couverture Jeu", "Jeu",
-                 "Plusieurs exmplaires souhaitées",
+                 "Plusieurs exemplaires souhaités",
                  "Total coché par joueur", "Total coché validé par admin"]]
     )
     gb.configure_column("_id", hide=True)
 #    gb.configure_default_column(  width=140)
     gb.configure_column(
-        "Plusieurs exmplaires souhaitées",
+        "Plusieurs exemplaires souhaités",
         editable=True,
         cellRenderer="agCheckboxCellRenderer",
         width=140,
@@ -394,16 +394,7 @@ def _final_page(user):
         wrapHeaderText=True, 
         autoHeaderHeight=True, 
     )
-    gb.configure_column(
-        "Plusieurs exmplaires souhaitées",
-        editable=False,
-        width=80,
-        minWidth=80,
-        maxWidth=80,
-        suppressSizeToFit=True,
-        wrapHeaderText=True, 
-        autoHeaderHeight=True,
-    )
+
     gb.configure_column(
         "Total coché par joueur",
         editable=False,
@@ -529,7 +520,7 @@ def _final_page(user):
     if old_df is not None and len(old_df) == len(new_df):
         checkbox_cols = [
             c for c in new_df.columns
-            if c.endswith(("_prete", "_admin")) or c == "Plusieurs exmplaires souhaitées"
+            if c.endswith(("_prete", "_admin")) or c == "Plusieurs exemplaires souhaités"
         ]
         for i in new_df.index:
             game_id = new_df.at[i, "_id"]
@@ -543,7 +534,7 @@ def _final_page(user):
                     elif col.endswith("_admin"):
                         player_key = col.replace("_admin", "")
                         on_change_admin(game_id, player_key, new_val)
-                    elif col == "Plusieurs exmplaires souhaitées":
+                    elif col == "Plusieurs exemplaires souhaités":
                         on_change_plusieurs_exemplaires(game_id, new_val)
     
     st.session_state["old_grid_df"] = new_df.copy()
