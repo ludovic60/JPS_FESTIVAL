@@ -351,7 +351,7 @@ def _final_page(user):
 
 
 
-     image_renderer = JsCode(
+    image_renderer = JsCode(
         """
         class ImageRenderer {
                 init(params) {
