@@ -155,7 +155,7 @@ def _game_card(g, list_key, user):
             ################################################################################################################
             ################## generation d'une pop up pour saisir un commentaire
             ################################################################################################################
-            with @st.dialog("Saisir un commentaire") :
+            with st.button("💬 Ajouter un commentaire", key=f"btn_comment_{jeu_id}"):
                 def popup_commentaire(game_id, game_title):
                         st.write(f"Ajouter une note pour : **{game_title}**")
                         
@@ -178,9 +178,8 @@ def _game_card(g, list_key, user):
                         with col2:
                             if st.button("Annuler"):
                                 st.rerun()  # Ferme la fenêtre sans enregistrer
-                    # 2. Bouton pour déclencher la pop-up
-                if st.button("💬 Ajouter un commentaire", key=f"btn_comment_{jeu_id}"):
-                        popup_commentaire(jeu_id, nom_jeu)
+          
+                popup_commentaire(jeu_id, nom_jeu)
                 
             
             with st.expander("Détails du jeu"):
