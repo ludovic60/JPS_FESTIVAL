@@ -152,7 +152,37 @@ def _game_card(g, list_key, user):
                     else :
                                 st.badge("suggestion à traiter")
                                
-
+            ################################################################################################################
+            ################## generation d'une pop up pour saisir un commentaire
+            ################################################################################################################
+            with @st.dialog("Saisir un commentaire") :
+                def popup_commentaire(game_id, game_title):
+                        st.write(f"Ajouter une note pour : **{game_title}**")
+                        
+                        # Champ de saisie
+                        texte = st.text_area("Votre commentaire :", key=f"txt_{game_id}")
+                        
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            if st.button("Enregistrer", type="primary"):
+                                if texte.strip():
+                                    # --- Traitement / Sauvegarde ---
+                                    # Ex: storage_jeux.save_comment(game_id, texte)
+                                    st.session_state[f"comment_{game_id}"] = texte
+                                    
+                                    st.success("Commentaire enregistré !")
+                                    st.rerun()  # Ferme la fenêtre et rafraîchit la page
+                                else:
+                                    st.warning("Veuillez saisir du texte.")
+                                    
+                        with col2:
+                            if st.button("Annuler"):
+                                st.rerun()  # Ferme la fenêtre sans enregistrer
+                    # 2. Bouton pour déclencher la pop-up
+                if st.button("💬 Ajouter un commentaire", key=f"btn_comment_{jeu_id}"):
+                        popup_commentaire(jeu_id, nom_jeu)
+                
+            
             with st.expander("Détails du jeu"):
                 for fk, fl in config_bar_jeux.GAME_FIELDS:
                     v = g.get(fk, "")
