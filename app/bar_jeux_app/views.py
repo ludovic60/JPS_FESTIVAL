@@ -290,7 +290,7 @@ def _final_page(user):
                    New = "inconnu"  
     
         row = {
-            "_id": game_id,                                  # <-- AJOUTÉ : identifiant stable
+            "_id": game_id,                                  
             "nouveaute": New,
             "Annee": g[0].get("annee_parution"),
             "Categorie jeu": mise_forme_categorie(g[0].get("classement_jps_final")),
@@ -311,38 +311,66 @@ def _final_page(user):
     df_jeux = pd.DataFrame(row_jeux)
     
     # --- Colonnes ---
-    gb = GridOptionsBuilder.from_dataframe(df_jeux)
-    gb.configure_column("_id", hide=True)   # <-- on garde l'id mais on le cache
-    
+    # --- Colonnes simples (non groupées) ---
+    gb = GridOptionsBuilder.from_dataframe(
+        df_jeux[["nouveaute", "Annee", "Categorie jeu", "Couverture Jeu", "Jeu",
+                 "Plusieurs exmplaires souhaitées",
+                 "Total coché par joueur", "Total coché validé par admin"]]
+    )
+    gb.configure_column("_id", hide=True)
     gb.configure_column(
         "Plusieurs exmplaires souhaitées",
         editable=True,
         cellRenderer="agCheckboxCellRenderer",
+        width=140,
     )
-    
-    for idx, j in enumerate(pseudo_list):
-        player_key = f"j{idx+1}"
-        gb.configure_column(
-            f"{player_key}_prete",
-            headerName=j,
-            editable=True,
-            cellRenderer="agCheckboxCellRenderer",
-            width=110,
-            suppressSizeToFit=True,
-        )
-        gb.configure_column(
-            f"{player_key}_admin",
-            headerName="Validé",
-            editable=(user["role"] == "admin"),
-            cellRenderer="agCheckboxCellRenderer",
-            width=110,
-            suppressSizeToFit=True,
-        )
-    
     gb.configure_default_column(wrapHeaderText=True, autoHeaderHeight=True)
-    gb.configure_grid_options(singleClickEdit=True)   # clic simple pour cocher
+    gb.configure_grid_options(singleClickEdit=True)
     
     grid_options = gb.build()
+
+
+    # La colonne _id doit rester dans column_defs même si cachée (pour retrouver la ligne)
+    id_col_def = {"field": "_id", "hide": True}
+    grid_options["columnDefs"].insert(0, id_col_def)
+    
+    # --- Colonnes groupées par joueur (double en-tête) ---
+    for idx, j in enumerate(pseudo_list):
+        player_key = f"j{idx+1}"
+        group_col = {
+            "headerName": j,                      # 1er niveau d'en-tête : le pseudo
+            "children": [
+                {
+                    "field": f"{player_key}_prete",
+                    "headerName": "Je prête",      # 2e niveau d'en-tête
+                    "editable": True,
+                    "cellRenderer": "agCheckboxCellRenderer",
+                    "width": 110,
+                    "suppressSizeToFit": True,
+                },
+                {
+                    "field": f"{player_key}_admin",
+                    "headerName": "Validé",
+                    "editable": (user["role"] == "admin"),
+                    "cellRenderer": "agCheckboxCellRenderer",
+                    "width": 110,
+                    "suppressSizeToFit": True,
+                    "cellStyle": JsCode("""
+                        function(params) {
+                            if (params.value === true) {
+                                return {backgroundColor: '#d4edda', color: '#155724'};
+                            }
+                            return null;
+                        }
+                    """),
+                },
+            ],
+        }
+        grid_options["columnDefs"].append(group_col)
+    
+    # Hauteur d'en-tête un peu plus grande pour laisser la place aux 2 lignes
+    grid_options["groupHeaderHeight"] = 40
+    grid_options["headerHeight"] = 40
     
     grid_response = AgGrid(
         df_jeux,
