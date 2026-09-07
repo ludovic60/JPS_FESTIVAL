@@ -215,7 +215,7 @@ def _final_page(user):
               barmode="group",
               color_discrete_map={"pret par user": "#636EFA", "pret validé (Admin)": "#2CA02C"},
               width=1000,
-              height=800 
+              height=400 
           )
           st.plotly_chart(fig_hist, use_container_width=True)
 
@@ -231,7 +231,7 @@ def _final_page(user):
                   .reset_index()
               )
               df_nov.columns = ["Type", "Nombre"]
-              fig_pie_nov = px.pie(df_nov, names="Type", values="Nombre", hole=0.3, width=1000, height=800 )
+              fig_pie_nov = px.pie(df_nov, names="Type", values="Nombre", hole=0.3, width=1000, height=400 )
               st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
               st.info("Aucun jeu coché pour le moment.")
@@ -242,7 +242,7 @@ def _final_page(user):
           if not df_cochis.empty:
               df_cat = df_cochis["Nb jeux"].value_counts().reset_index()
               df_cat.columns = ["Catégorie", "Nombre"]
-              fig_pie_cat = px.pie(df_cat, names="Catégorie", values="Nombre", hole=0.3, width=1000, height=800 )
+              fig_pie_cat = px.pie(df_cat, names="Catégorie", values="Nombre", hole=0.3, width=1000, height=400 )
                
               st.plotly_chart(fig_pie_cat, use_container_width=True)
           else:
@@ -318,13 +318,59 @@ def _final_page(user):
                  "Total coché par joueur", "Total coché validé par admin"]]
     )
     gb.configure_column("_id", hide=True)
+    gb.configure_default_column(wrapHeaderText=True, autoHeaderHeight=True,  width=140)
     gb.configure_column(
         "Plusieurs exmplaires souhaitées",
         editable=True,
         cellRenderer="agCheckboxCellRenderer",
         width=140,
     )
-    gb.configure_default_column(wrapHeaderText=True, autoHeaderHeight=True,  width=140)
+
+  "nouveaute": New,
+            "Annee": g[0].get("annee_parution"),
+            "Categorie jeu": mise_forme_categorie(g[0].get("classement_jps_final")),
+            "Couverture Jeu": g[0].get("couverture"),
+            "Jeu": g[0].get("nom_jeu_complet"),
+            "Plusieurs exmplaires souhaitées": bool(get_game_several_selected(game_id)),  # <-- vrai bool
+            "Total coché par joueur": "",
+            "Total coché validé par admin": "",
+    gb.configure_column(
+        "Annee",
+        editable=False,
+        width=80,
+    )
+    gb.configure_column(
+        "Categorie jeu",
+        editable=False,
+        width=180,
+    )
+    gb.configure_column(
+        "Couverture Jeu",
+        editable=False,
+        width=100,
+    )
+    gb.configure_column(
+        "Jeu",
+        editable=False,
+        width=100,
+    )
+    gb.configure_column(
+        "Plusieurs exmplaires souhaitées",
+        editable=False,
+        width=80,
+    )
+    gb.configure_column(
+        "Total coché par joueur",
+        editable=False,
+        width=80,
+    )
+    gb.configure_column(
+        "Total coché validé par admin",
+        editable=False,
+        width=80,
+    )
+
+   
     gb.configure_grid_options(singleClickEdit=True)
     
     grid_options = gb.build()
