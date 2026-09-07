@@ -424,7 +424,7 @@ def _final_page(user):
     padding = 20            # Marge de sécurité
     
     # Calcul basé sur le nombre de lignes dans df_jeux
-    dynamic_height = header_height + (1 * row_height) + padding
+    dynamic_height = header_height + (len(df_jeux) * row_height) + padding
     
     # Optionnel : appliquer des limites min/max pour éviter les extrêmes
     dynamic_height = min(max(dynamic_height, 200), 800)  # Entre 200px et 800px max
