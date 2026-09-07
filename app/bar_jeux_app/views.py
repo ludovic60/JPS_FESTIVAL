@@ -390,7 +390,7 @@ def _final_page(user):
     gb.configure_column(
         "Plusieurs exemplaires souhaités",
         editable=True,
-        #cellRenderer="agCheckboxCellRenderer",
+        cellRenderer="agCheckboxCellRenderer",
         width=140,
         minWidth=100,
         maxWidth=140,
