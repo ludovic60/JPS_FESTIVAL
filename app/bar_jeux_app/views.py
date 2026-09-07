@@ -392,6 +392,9 @@ def _final_page(user):
         editable=True,
         #cellRenderer="agCheckboxCellRenderer",
         width=140,
+        minWidth=100,
+        maxWidth=140,
+        suppressSizeToFit=True,
         wrapHeaderText=True, 
         autoHeaderHeight=True,
     )
