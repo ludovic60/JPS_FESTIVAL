@@ -326,48 +326,7 @@ def _final_page(user):
                 editable=(user["role"] == "admin"),
                 cellRenderer="agCheckboxCellRenderer",
             )
-        
-    grid_options = gb.build()
-        
-    grid_response = AgGrid(
-            df_jeux,
-            gridOptions=grid_options,
-            update_mode=GridUpdateMode.VALUE_CHANGED,   # renvoie dès qu'une cellule change
-            data_return_mode=DataReturnMode.AS_INPUT,
-            allow_unsafe_jscode=True,
-            fit_columns_on_grid_load=True,
-        )
-        
-    new_df = pd.DataFrame(grid_response["data"])
-      
-    if "grid_state" not in st.session_state:
-         st.session_state.grid_state = {
-         (select_joueur, valid_admin): [False, False]
-         for select_joueur in st.session_state.df_jeux["Jeu"]
-         for valid_admin in pseudo_list
-     }
-      
-     # --- Détection des changements ---
-    old_df = st.session_state.get("old_grid_df")
-     
-    if old_df is not None:
-         checkbox_cols = [c for c in new_df.columns if c.endswith(("_prete", "_admin")) or c == "multi_exemplaires"]
-         for i in new_df.index:
-             game_id = new_df.at[i, "_id"]
-             for col in checkbox_cols:
-                 old_val = old_df.at[i, col]
-                 new_val = new_df.at[i, col]
-                 if old_val != new_val:
-                     if col.endswith("_prete"):
-                         player_key = col.replace("_prete", "")
-                         on_change_prete(game_id, player_key, new_val)
-                     elif col.endswith("_admin"):
-                         player_key = col.replace("_admin", "")
-                         on_change_admin(game_id, player_key, new_val)
-                     elif col == "multi_exemplaires":
-                         on_change_plusieurs_exemplaires(game_id, new_val)
-     
-    st.session_state["old_grid_df"] = new_df.copy()
+
 
     # --- CALCUL DES DONNÉES COMPLÉMENTAIRES ---
     # Traitement des compteurs
@@ -389,44 +348,10 @@ def _final_page(user):
     admin_by_player = {j: st.session_state.df_jeux[f"{j}_admin"].sum() for j in pseudo_list}
 
 
-# --- Colonnes ---
-
-    gb = GridOptionsBuilder.from_dataframe(df)
-    gb.configure_column("multi_exemplaires", editable=True, cellRenderer="agCheckboxCellRenderer")
-
-
-    for idx, j in enumerate(pseudo_list):
-         player_key = f"j{idx+1}"
-         gb.configure_column(
-             f"{player_key}_prete",
-             headerName=j,
-             editable=True,
-             cellRenderer="agCheckboxCellRenderer",
-         )
-         gb.configure_column(
-             f"{player_key}_admin",
-             headerName="Validé",
-             editable=(user["role"] == "admin"),
-             cellRenderer="agCheckboxCellRenderer",
-         )
-
-    grid_options = gb.build()
-
-    grid_response = AgGrid(
-         df,
-         gridOptions=grid_options,
-         update_mode=GridUpdateMode.VALUE_CHANGED,   # renvoie dès qu'une cellule change
-         data_return_mode=DataReturnMode.AS_INPUT,
-         allow_unsafe_jscode=True,
-         fit_columns_on_grid_load=True,
-    )
-
-    new_df = pd.DataFrame(grid_response["data"])
 
 
 
-
-    image_renderer = JsCode(
+     image_renderer = JsCode(
         """
         class ImageRenderer {
                 init(params) {
@@ -440,7 +365,61 @@ def _final_page(user):
         }
         """
      )
-    
+
+
+    grid_options = gb.build()
+        
+    grid_response = AgGrid(
+            df_jeux,
+            gridOptions=grid_options,
+            update_mode=GridUpdateMode.VALUE_CHANGED,   # renvoie dès qu'une cellule change
+            data_return_mode=DataReturnMode.AS_INPUT,
+            allow_unsafe_jscode=True,
+            fit_columns_on_grid_load=True,
+        )
+
+      
+    if "grid_state" not in st.session_state:
+         st.session_state.grid_state = {
+         (select_joueur, valid_admin): [False, False]
+         for select_joueur in st.session_state.df_jeux["Jeu"]
+         for valid_admin in pseudo_list
+     }
+      
+
+
+
+
+
+
+
+
+     # --- Détection des changements ---
+    old_df = st.session_state.get("old_grid_df")
+     
+    if old_df is not None:
+         checkbox_cols = [c for c in new_df.columns if c.endswith(("_prete", "_admin")) or c == "multi_exemplaires"]
+         for i in df_jeux.index:
+             game_id = new_df.at[i, "_id"]
+             for col in checkbox_cols:
+                 old_val = old_df.at[i, col]
+                 new_val = new_df.at[i, col]
+                 if old_val != new_val:
+                     if col.endswith("_prete"):
+                         player_key = col.replace("_prete", "")
+                         on_change_prete(game_id, player_key, new_val)
+                     elif col.endswith("_admin"):
+                         player_key = col.replace("_admin", "")
+                         on_change_admin(game_id, player_key, new_val)
+                     elif col == "multi_exemplaires":
+                         on_change_plusieurs_exemplaires(game_id, new_val)
+     
+    st.session_state["old_grid_df"] = df_jeux.copy()
+
+
+
+
+
   ###  # Colonnes fixes de gauche
   ###  column_defs = [
   ###      {"field": "nouveaute", "headerName": "nouveaute", "width": 150},
