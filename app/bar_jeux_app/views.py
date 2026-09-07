@@ -383,8 +383,7 @@ def _final_page(user):
         update_mode=GridUpdateMode.VALUE_CHANGED,
         data_return_mode=DataReturnMode.AS_INPUT,
         allow_unsafe_jscode=True,
-        fit_columns_on_grid_load=False,   
-        theme="material"
+        fit_columns_on_grid_load=False
     )
     
     new_df = pd.DataFrame(grid_response["data"])   # 
