@@ -258,13 +258,14 @@ def _final_page(user):
     # creation des lignes du futur tableau croisé         
     row_jeux = []
 
-    def on_change_plusieurs_exemplaires(game_id, new_val):
-        toggle_admin_selected(game_id, new_val)
+    def get_game_several_selected(game_id):
+         return 0
+         #toggle_admin_selected(game_id, new_val)
     
-    def on_change_prete(game_id, player_key, new_val):
+    def get_prete_value(game_id, player_key):
         return 1
     
-    def on_change_admin(game_id, player_key, new_val):
+    def get_admin_valide_value(game_id, player_key):
         return 2
     
     for game in finals:
@@ -295,7 +296,7 @@ def _final_page(user):
             "Categorie jeu": mise_forme_categorie(g[0].get("classement_jps_final")),
             "Couverture Jeu": g[0].get("couverture"),
             "Jeu": g[0].get("nom_jeu_complet"),
-            "Plusieurs exmplaires souhaitées": bool(get_admin_selected(game_id)),  # <-- vrai bool
+            "Plusieurs exmplaires souhaitées": bool(get_game_several_selected(game_id)),  # <-- vrai bool
             "Total coché par joueur": "",
             "Total coché validé par admin": "",
         }
@@ -303,7 +304,7 @@ def _final_page(user):
         for idx, j in enumerate(pseudo_list):
             player_key = f"j{idx+1}"
             row[f"{player_key}_prete"] = bool(get_prete_value(game_id, player_key))  # <-- vrai bool
-            row[f"{player_key}_admin"] = bool(get_admin_value(game_id, player_key))  # <-- vrai bool
+            row[f"{player_key}_admin"] = bool(get_admin_valide_value(game_id, player_key))  # <-- vrai bool
     
         row_jeux.append(row)
     
@@ -349,7 +350,7 @@ def _final_page(user):
         update_mode=GridUpdateMode.VALUE_CHANGED,
         data_return_mode=DataReturnMode.AS_INPUT,
         allow_unsafe_jscode=True,
-        fit_columns_on_grid_load=False,   # <-- corrigé (scroll horizontal, pas de compression)
+        fit_columns_on_grid_load=False,   # 
     )
     
     new_df = pd.DataFrame(grid_response["data"])   # 
