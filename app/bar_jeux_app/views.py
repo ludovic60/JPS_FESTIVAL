@@ -331,21 +331,21 @@ def _final_page(user):
     # --- CALCUL DES DONNÉES COMPLÉMENTAIRES ---
     # Traitement des compteurs
 
-    for j in pseudo_list:
-         st.session_state.df_jeux[f"{j}_user"] = df_jeux["Jeu"].apply(
-            lambda pid: st.session_state.grid_state[(pid, j)][0]
-         )
-         st.session_state.df_jeux[f"{j}_admin"] = df_jeux["Jeu"].apply(
-            lambda pid: st.session_state.grid_state[(pid, j)][1]
-        )
+    #for j in pseudo_list:
+    #     st.session_state.df_jeux[f"{j}_user"] = df_jeux["Jeu"].apply(
+    #        lambda pid: st.session_state.grid_state[(pid, j)][0]
+    #     )
+    #     st.session_state.df_jeux[f"{j}_admin"] = df_jeux["Jeu"].apply(
+    #        lambda pid: st.session_state.grid_state[(pid, j)][1]
+    #    )
 
-    # Compteurs par jeux
-    st.session_state.df_jeux["Total coché par joueur"] = st.session_state.df_jeux[[f"{j}_user" for j in pseudo_list]].sum(axis=1)
-    st.session_state.df_jeux["Total coché validé par admin"] = st.session_state.df_jeux[[f"{j}_admin" for j in pseudo_list]].sum(axis=1) 
+    ## Compteurs par jeux
+    #st.session_state.df_jeux["Total coché par joueur"] = st.session_state.df_jeux[[f"{j}_user" for j in pseudo_list]].sum(axis=1)
+    #st.session_state.df_jeux["Total coché validé par admin"] = st.session_state.df_jeux[[f"{j}_admin" for j in pseudo_list]].sum(axis=1) 
 
-    # Compteurs par joueur
-    user_by_player = {j: st.session_state.df_jeux[f"{j}_user"].sum() for j in pseudo_list}
-    admin_by_player = {j: st.session_state.df_jeux[f"{j}_admin"].sum() for j in pseudo_list}
+    ## Compteurs par joueur
+    #user_by_player = {j: st.session_state.df_jeux[f"{j}_user"].sum() for j in pseudo_list}
+    #admin_by_player = {j: st.session_state.df_jeux[f"{j}_admin"].sum() for j in pseudo_list}
 
 
 
