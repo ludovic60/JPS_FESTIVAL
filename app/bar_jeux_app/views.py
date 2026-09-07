@@ -431,7 +431,7 @@ def _final_page(user):
     print("dnamic")
     print("dynamic_height {dynamic_height}")
 
-    print((len(df_jeux))
+    print((len(df_jeux)))
     grid_response = AgGrid(
         df_jeux,
         gridOptions=grid_options,
