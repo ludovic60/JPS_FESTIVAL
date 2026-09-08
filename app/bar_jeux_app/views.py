@@ -193,6 +193,16 @@ def _final_page(user):
 
     col_graph1, col_graph2, col_graph3 = st.columns(3)
 
+    ###########---- 0 dataframe pour alimenter les graph 
+
+    liste_pret_validé = get_validated_loans()
+    
+    for id_game , id_liste_pret_validé(
+          for info_game in  ([id_game])      
+        ["id_jeux","user_id"]
+             liste_info.append
+     
+     df_jeux_histogramme  = pd.DataFrame(nb_jeux_histogramme)
 
     ###########---- 1. Histogramme par joueur (Validés vs Cochés Utilisateur)
 
