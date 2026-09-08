@@ -159,7 +159,7 @@ def _game_card(g, list_key, user):
 
           
          
-            with st.expander(" Ajouter un commentaire"): 
+            with st.expander(" Ajouter un commentaire", expanded=st.session_state[f"expand_{ckey_this_game}"]): 
                     st.write(f"Ajouter une note pour : **{g.get("nom_jeu_complet")}**")
                             
                     # Champ de saisie
@@ -174,13 +174,13 @@ def _game_card(g, list_key, user):
                                          
                                         st.success("Commentaire enregistré !")
                                         time.sleep(1)
-                                        st.session_state.expander_open = False
+                                        st.session_state[f"expand_{ckey_this_game}"].expander_open = False
                                     else:
                                         st.warning("Veuillez saisir du texte.")
                                         
                     with col2:
                                 if st.button("Annuler", key=f"button_annul_{ckey_this_game}"):
-                                    st.session_state.expander_open = False
+                                    st.session_state[f"expand_{ckey_this_game}"].expander_open = False
           
      
             
