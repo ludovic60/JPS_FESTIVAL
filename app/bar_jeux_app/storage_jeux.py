@@ -286,7 +286,7 @@ def get_validated_loans():
     if   con_mongo : 
         db = cs.get_db()
         game_loan_tb = db.prets_jeux
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") }  
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") , "valide_par_admin" : true  }  
         resultats = list(game_loan_tb.find(filtre_tb))
     return resultats 
 
@@ -300,7 +300,8 @@ def toggle_loan(ckey, user_id, value):
             new_loan= {         
                          "annee" : cs._secret("ANNEE_FESTIVAL"), 
                          "id_jeux": str(ObjectId(ckey)),
-                         "user_id": str(ObjectId(user_id))
+                         "user_id": str(ObjectId(user_id)),
+                		 "valide_par_admin" : value
                }   
         
             resultat = game_loan_tb.insert_one(new_loan)
@@ -312,4 +313,18 @@ def toggle_loan(ckey, user_id, value):
 
 
 def set_loan(ckey, user_id, value):
+    con_mongo = cs.mongo_enabled()
+        if   con_mongo : 
+            db = cs.get_db()
+            game_loan_tb = db.prets_jeux
+    
+            if value :
+                new_loan= {         
+                             "annee" : cs._secret("ANNEE_FESTIVAL"), 
+                             "id_jeux": str(ObjectId(ckey)),
+                             "user_id": str(ObjectId(user_id)),
+                    		 "valide_par_admin" : value
+                   }   
+
+    
     return {}
