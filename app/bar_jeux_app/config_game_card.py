@@ -155,27 +155,7 @@ def _game_card(g, list_key, user):
             ################################################################################################################
             ################## generation d'une pop up pour saisir un commentaire
             ################################################################################################################
-            def popup_commentaire(game_id, game_title):
-                st.write(f"Ajouter une note pour : **{game_title}**")
-                        
-                # Champ de saisie
-                texte = st.text_area("Votre commentaire :", key=f"txt_{ckey_this_game}")
-                        
-                col1, col2 = st.columns(2)
-                with col1:
-                            if st.button("Enregistrer", type="primary"):
-                                if texte.strip():
-                                    # --- Traitement / Sauvegarde ---
-                                    # Ex: storage_jeux.save_comment(game_id, texte)
-                                     
-                                    st.success("Commentaire enregistré !")
-                                    pass                  # Ferme la fenêtre  
-                                else:
-                                    st.warning("Veuillez saisir du texte.")
-                                    
-                with col2:
-                            if st.button("Annuler"):
-                                pass     # Ferme la fenêtre sans enregistrer
+
           
          
             with st.expander(" Ajouter un commentaire"): 
@@ -189,10 +169,11 @@ def _game_card(g, list_key, user):
                                 if st.button("Enregistrer", type="primary", key=f"button_enreg_{ckey_this_game}" ):
                                     if texte.strip():
                                         # --- Traitement / Sauvegarde ---
-                                        # Ex: storage_jeux.save_comment(game_id, texte)
+                                        storage_jeux.add_request( "remarque fiche jeux", g.get("nom_jeu_complet"), "",  list_key, user["pseudo"])
                                          
                                         st.success("Commentaire enregistré !")
-                                        pass                  # Ferme la fenêtre  
+                                        sleep(1)
+                                        st.session_state.expander_open = False
                                     else:
                                         st.warning("Veuillez saisir du texte.")
                                         
@@ -200,9 +181,7 @@ def _game_card(g, list_key, user):
                                 if st.button("Annuler", key=f"button_annul_{ckey_this_game}"):
                                     pass     # Ferme la fenêtre sans enregistrer
           
-            
-            ##if st.button("💬 Ajouter un commentaire", key=f"btn_comment_{ckey_this_game}"):
-            ##    popup_commentaire(ckey_this_game, g.get("nom_jeu_complet"))
+     
             
             with st.expander("Détails du jeu"):
                 for fk, fl in config_bar_jeux.GAME_FIELDS:
