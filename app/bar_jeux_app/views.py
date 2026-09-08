@@ -202,31 +202,41 @@ def _final_page(user):
           for u in users 
              if u(_id] == game["user_id"]
                   pseudo = u["pseudo"]
-           New = nouveaute_def(game[id_game])   
-           liste_info.append (info_games["classement_jps_final"] , New, pseudo , info_games["nom_jeu_complet"])
+       
+         
+           liste_info_valide.append ("classement" :  info_games_pret["classement_jps_final"] ,  "Nouveauté":nouveaute_def(game[id_game]), "pseudo":pseudo , "nom": info_games["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide"=True)
      
-     df_jeux_histogramme  = pd.DataFrame(liste_info)
+     df_jeux_valide_graphique  = pd.DataFrame(liste_info_valide)
+
+     liste_pret_user = get_loans()
+     for game_pret in  liste_pret_user
+          info_games_pret = get_info_games(game_pret[id_game])
+          for u in users 
+             if u(_id] == game_pret["user_id"]
+                  pseudo = u["pseudo"]
+       
+         
+           liste_info.append ("classement" : info_games_pret["classement_jps_final"] , "Nouveauté":nouveaute_def(info_games_pret[id_game]), "pseudo":pseudo , "nom": info_games_pret["nom_jeu_complet"],"Nb_jeux_prete":1)
+     
+      df_jeux_pret_graphique  = pd.DataFrame(liste_info)
+
+ 
 
     ###########---- 1. Histogramme par joueur (Validés vs Cochés Utilisateur)
 
     with col_graph1:
-    
+            
           st.subheader("Validations par Joueur")
-          nb_jeux_histogramme = []
-          for u in pseudo_list:
-                   nb_jeux_histogramme.append(
-                       {"Utilisateur": u, "Nb jeux": "pret par user", "Valeur":1}
-                   )
-                   nb_jeux_histogramme.append({"Utilisateur": u, "Nb jeux": "pret validé (Admin)", "Valeur":1})
-          df_jeux_histogramme  = pd.DataFrame(nb_jeux_histogramme)
+          
+          df_jeux_histogramme  = pd.merge(df_jeux_pret_graphique, df_jeux_valide_graphique, on =['classement', 'Nouveauté', 'pseudo','nom' ]  , how='left')
                
           fig_hist = px.bar(
-              df_jeux_histogramme,
-              x="Utilisateur",
-              y="Valeur",
+               df_jeux_valide_graphique,
+              x="pseudo",
+              y="Nb_jeux",
               color="Nb jeux",
               barmode="group",
-              color_discrete_map={"pret par user": "#636EFA", "pret validé (Admin)": "#2CA02C"},
+              color_discrete_map={"Nb_jeux_prete": "#636EFA", "Nb_jeux_valide)": "#2CA02C"},
               width=1000,
               height=400 
           )
@@ -238,7 +248,7 @@ def _final_page(user):
           df_cochis = df_jeux_histogramme[df_jeux_histogramme["Valeur"] > 0]
           if not df_cochis.empty:
               df_nov = (
-                  df_cochis["Nb jeux"]
+                  df_jeux_valide_graphique[Nb_jeux"]
                   .map({True: "Nouveauté", False: "Ancien"})
                   .value_counts()
                   .reset_index()
@@ -276,7 +286,11 @@ def _final_page(user):
          #toggle_admin_selected(game_id, new_val)
     
     def get_prete_value(game_id, player_key):
-        return 1
+         if get_validated_loans(game_id, player_key):
+             value = true
+         else :
+             value = false 
+        return value
     
     def get_admin_valide_value(game_id, player_key):
         return 2
