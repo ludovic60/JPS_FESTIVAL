@@ -197,10 +197,13 @@ def _final_page(user):
 
     liste_pret_validé = get_validated_loans()
     
-    for id_game , id_liste_pret_validé(
-          for info_game in  ([id_game])      
-        ["id_jeux","user_id"]
-             liste_info.append
+    for game in  liste_pret_validé
+          info_games = get_info_games(game[id_game])
+          for u in users 
+             if u(_id] == game["user_id"]
+                  pseudo = u["pseudo"]
+          
+           liste_info.append
      
      df_jeux_histogramme  = pd.DataFrame(nb_jeux_histogramme)
 
