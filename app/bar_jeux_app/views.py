@@ -12,7 +12,7 @@ import storage_jeux
 import export
 import os
 import sys
-from config_game_card import _game_card , mise_forme_categorie
+from config_game_card import _game_card , mise_forme_categorie , nouveaute_def
 # Ajoute le dossier parent à sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -202,10 +202,10 @@ def _final_page(user):
           for u in users 
              if u(_id] == game["user_id"]
                   pseudo = u["pseudo"]
-          
-           liste_info.append
+           New = nouveaute_def(game[id_game])   
+           liste_info.append (info_games["classement_jps_final"] , New, pseudo , info_games["nom_jeu_complet"])
      
-     df_jeux_histogramme  = pd.DataFrame(nb_jeux_histogramme)
+     df_jeux_histogramme  = pd.DataFrame(liste_info)
 
     ###########---- 1. Histogramme par joueur (Validés vs Cochés Utilisateur)
 
@@ -288,7 +288,7 @@ def _final_page(user):
         # ... calcul de New (nouveauté) 
 
         ######   gestion du staut de nouveauté
-      
+        New = nouveaute_def(game_id)
   
     
         row = {
