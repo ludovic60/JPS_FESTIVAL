@@ -179,7 +179,7 @@ def _game_card(g, list_key, user):
           
          
             with st.expander(" Ajouter un commentaire"): 
-                    st.write(f"Ajouter une note pour : **{game_title}**")
+                    st.write(f"Ajouter une note pour : **{g.get("nom_jeu_complet")}**")
                             
                     # Champ de saisie
                     texte = st.text_area("Votre commentaire :", key=f"txt_{ckey_this_game}")
