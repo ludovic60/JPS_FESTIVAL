@@ -259,7 +259,29 @@ def final_games():
     return resultats 
 
 
-def get_loans():
+
+def final_games_statut_plusieurs_exemplaire():
+    con_mongo = cs.mongo_enabled()
+    if   con_mongo : 
+        db = cs.get_db()
+        game_selec_tb = db.selection_jeux_festival
+        selc_tb = {"id_jeux": 1}
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") }  
+        resultats = list(game_selec_tb.find( filtre_tb, selc_tb ))
+    return resultats 
+
+
+
+def get_all_loans():
+    con_mongo = cs.mongo_enabled()
+    if   con_mongo : 
+        db = cs.get_db()
+        game_loan_tb = db.prets_jeux
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") }  
+        resultats = list(game_loan_tb.find(filtre_tb))
+    return resultats 
+
+def get_validated_loans():
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
