@@ -28,8 +28,9 @@ _COVERS = [
 
 
 
-
-# ---- Jeux  ----
+##############################################################
+# ---- requetes  sur la base de données des jeux : JEUX  ----
+##############################################################
 def load_games(list_key):
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
@@ -64,7 +65,9 @@ def get_info_games(id_game):
     return resultats 
     
 
-# ---- Sélection admin / suggestions / demandes / prêts (partagés) ----
+##########################################################################
+# ---- requetes  sur les jeux selectionnés : selection_jeux_festival  ----
+##########################################################################
 
 
     
@@ -115,6 +118,10 @@ def toggle_admin_selected(ckey, value):
             resultat = game_selec_tb.updateMany(filtre_tb, {"$set": {  "plusieurs_exemplaires_souhaites": value } })
             resultat = {}
         
+
+##########################################################################
+# ---- requetes  sur les jeux suggérés : jeux_suggestions  ----
+##########################################################################
     
 def get_suggestions():
     con_mongo = cs.mongo_enabled()
