@@ -179,7 +179,7 @@ def _game_card(g, list_key, user):
                                         
                     with col2:
                                 if st.button("Annuler", key=f"button_annul_{ckey_this_game}"):
-                                     
+                                      st.success(" ")
           
      
             
