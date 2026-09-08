@@ -178,9 +178,31 @@ def _game_card(g, list_key, user):
                                 pass     # Ferme la fenêtre sans enregistrer
           
          
-
-            if st.button("💬 Ajouter un commentaire", key=f"btn_comment_{ckey_this_game}"):
-                popup_commentaire(ckey_this_game, g.get("nom_jeu_complet"))
+            with st.expander(" Ajouter un commentaire"): 
+                 st.write(f"Ajouter une note pour : **{game_title}**")
+                            
+                    # Champ de saisie
+                    texte = st.text_area("Votre commentaire :", key=f"txt_{ckey_this_game}")
+                            
+                    col1, col2 = st.columns(2)
+                    with col1:
+                                if st.button("Enregistrer", type="primary"):
+                                    if texte.strip():
+                                        # --- Traitement / Sauvegarde ---
+                                        # Ex: storage_jeux.save_comment(game_id, texte)
+                                         
+                                        st.success("Commentaire enregistré !")
+                                        pass                  # Ferme la fenêtre  
+                                    else:
+                                        st.warning("Veuillez saisir du texte.")
+                                        
+                    with col2:
+                                if st.button("Annuler"):
+                                    pass     # Ferme la fenêtre sans enregistrer
+          
+            
+            ##if st.button("💬 Ajouter un commentaire", key=f"btn_comment_{ckey_this_game}"):
+            ##    popup_commentaire(ckey_this_game, g.get("nom_jeu_complet"))
             
             with st.expander("Détails du jeu"):
                 for fk, fl in config_bar_jeux.GAME_FIELDS:
