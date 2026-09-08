@@ -289,18 +289,7 @@ def _final_page(user):
 
         ######   gestion du staut de nouveauté
       
-        if ( g[0].get("mois_sortie")  and  g[0].get("annee_parution") ) :      
-       
-                   periode_parution = int(str(g[0].get("annee_parution"))) *100 +  int(str(g[0].get("mois_sortie")) )
-                   periode_dernier_festival = (int( cs._secret("ANNEE_FESTIVAL"))-1) *100 + int(cs._secret("MOIS_FESTIVAL") )
-           
-                      
-                   if periode_parution  >  periode_dernier_festival :
-                               New = "NOUVEAUTE"
-                   else :   
-                               New = "Ancien"
-        else :
-                   New = "inconnu"  
+  
     
         row = {
             "_id": game_id,                                  
