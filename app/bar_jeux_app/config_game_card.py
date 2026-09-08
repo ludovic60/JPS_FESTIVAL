@@ -186,7 +186,7 @@ def _game_card(g, list_key, user):
                             
                     col1, col2 = st.columns(2)
                     with col1:
-                                if st.button("Enregistrer", type="primary"):
+                                if st.button("Enregistrer", type="primary", key=f"button_{ckey_this_game}" ):
                                     if texte.strip():
                                         # --- Traitement / Sauvegarde ---
                                         # Ex: storage_jeux.save_comment(game_id, texte)
