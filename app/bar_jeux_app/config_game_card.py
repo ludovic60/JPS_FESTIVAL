@@ -173,14 +173,13 @@ def _game_card(g, list_key, user):
                                         storage_jeux.add_request( "remarque fiche jeux", g.get("nom_jeu_complet"), "",  texte, user["pseudo"])
                                          
                                         st.success("Commentaire enregistré !")
-                                        time.sleep(1)
-                                        st.session_state[f"expand_{ckey_this_game}"].expander_open = False
+                          
                                     else:
                                         st.warning("Veuillez saisir du texte.")
                                         
                     with col2:
                                 if st.button("Annuler", key=f"button_annul_{ckey_this_game}"):
-                                    st.session_state[f"expand_{ckey_this_game}"].expander_open = False
+                                     
           
      
             
