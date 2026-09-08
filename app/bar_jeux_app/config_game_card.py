@@ -165,21 +165,17 @@ def _game_card(g, list_key, user):
                     # Champ de saisie
                     texte = st.text_area("Votre commentaire :", key=f"txt_{ckey_this_game}")
                             
-                    col1, col2 = st.columns(2)
-                    with col1:
-                                if st.button("Enregistrer", type="primary", key=f"button_enreg_{ckey_this_game}" ):
-                                    if texte.strip():
-                                        # --- Traitement / Sauvegarde ---
-                                        storage_jeux.add_request( "remarque fiche jeux", g.get("nom_jeu_complet"), "",  texte, user["pseudo"])
+                    if st.button("Enregistrer", type="primary", key=f"button_enreg_{ckey_this_game}" ):
+                           if texte.strip():
+                              # --- Traitement / Sauvegarde ---
+                              storage_jeux.add_request( "remarque fiche jeux", g.get("nom_jeu_complet"), "",  texte, user["pseudo"])
                                          
-                                        st.success("Commentaire enregistré !")
+                              st.success("Commentaire enregistré !")
                           
-                                    else:
-                                        st.warning("Veuillez saisir du texte.")
+                     else:
+                              st.warning("Veuillez saisir du texte.")
                                         
-                    with col2:
-                                if st.button("Annuler", key=f"button_annul_{ckey_this_game}"):
-                                     texte[value]=""
+
           
      
             
