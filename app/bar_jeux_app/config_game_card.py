@@ -172,7 +172,7 @@ def _game_card(g, list_key, user):
                                          
                               st.success("Commentaire enregistré !")
                           
-                     else:
+                    else:
                               st.warning("Veuillez saisir du texte.")
                                         
 
