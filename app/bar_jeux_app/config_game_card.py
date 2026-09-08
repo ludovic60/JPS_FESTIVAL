@@ -10,10 +10,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import commun.auth,  commun.config 
 import commun.common_store as cs
 
-
-
-            periode_parution = int(str(g[0].get("annee_parution"))) *100 +  int(str(g[0].get("mois_sortie")) )
-             periode_dernier_festival = (int( cs._secret("ANNEE_FESTIVAL"))-1) *100 + int(cs._secret("MOIS_FESTIVAL") )
+def nouveaute_def( id_game) 
+        info_jeu= get_info_games(id_game):
+        periode_parution = int(str(info_jeu[0].get("annee_parution"))) *100 +  int(str(info_jeu[0].get("mois_sortie")) )
+        periode_dernier_festival = (int( cs._secret("ANNEE_FESTIVAL"))-1) *100 + int(cs._secret("MOIS_FESTIVAL") )
            
                      
 
