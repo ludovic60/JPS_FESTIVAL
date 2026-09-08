@@ -173,7 +173,7 @@ def _game_card(g, list_key, user):
                                         storage_jeux.add_request( "remarque fiche jeux", g.get("nom_jeu_complet"), "",  texte, user["pseudo"])
                                          
                                         st.success("Commentaire enregistré !")
-                                        sleep(1)
+                                        time.sleep(1)
                                         st.session_state.expander_open = False
                                     else:
                                         st.warning("Veuillez saisir du texte.")
