@@ -169,7 +169,7 @@ def _game_card(g, list_key, user):
                                 if st.button("Enregistrer", type="primary", key=f"button_enreg_{ckey_this_game}" ):
                                     if texte.strip():
                                         # --- Traitement / Sauvegarde ---
-                                        storage_jeux.add_request( "remarque fiche jeux", g.get("nom_jeu_complet"), "",  list_key, user["pseudo"])
+                                        storage_jeux.add_request( "remarque fiche jeux", g.get("nom_jeu_complet"), "",  texte, user["pseudo"])
                                          
                                         st.success("Commentaire enregistré !")
                                         sleep(1)
