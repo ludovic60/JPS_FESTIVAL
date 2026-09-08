@@ -12,6 +12,11 @@ import commun.common_store as cs
 
 
 
+            periode_parution = int(str(g[0].get("annee_parution"))) *100 +  int(str(g[0].get("mois_sortie")) )
+             periode_dernier_festival = (int( cs._secret("ANNEE_FESTIVAL"))-1) *100 + int(cs._secret("MOIS_FESTIVAL") )
+           
+                     
+
 def mise_forme_categorie(categorie) :
     if categorie :
         if categorie == "FAMILLE":
