@@ -220,7 +220,7 @@ def _final_page(user):
      
     df_jeux_valide_graphique  = pd.DataFrame(liste_info_valide)
     liste_info=()
-    liste_pret_user = get_loans()
+    liste_pret_user = storage_jeux.get_all_loans()
     for game_pret in  liste_pret_user :
           info_games_pret = get_info_games(game_pret[id_game])
           for u in users :
