@@ -222,6 +222,7 @@ def _final_page(user):
     liste_info=() 
     liste_pret_user = storage_jeux.get_all_loans()
     for game_pret in  liste_pret_user :
+          print(game_pret)
           info_games_pret = storage_jeux.get_info_games(game_pret[id_game])
           for u in users :
              if u[_id] == game_pret["user_id"]:
