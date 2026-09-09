@@ -210,7 +210,7 @@ def _final_page(user):
     liste_pret_validé = storage_jeux.get_validated_loans()
     liste_info_valide=()
     for game in  liste_pret_validé :
-          info_games = get_info_games(game[id_game])
+          info_games = storage_jeux.get_info_games(game[id_game])
           for u in users :
              if u[_id] == game["user_id"]:
                   pseudo = u["pseudo"]
@@ -222,7 +222,7 @@ def _final_page(user):
     liste_info=() 
     liste_pret_user = storage_jeux.get_all_loans()
     for game_pret in  liste_pret_user :
-          info_games_pret = get_info_games(game_pret[id_game])
+          info_games_pret = storage_jeux.get_info_games(game_pret[id_game])
           for u in users :
              if u[_id] == game_pret["user_id"]:
                   pseudo = u["pseudo"]
