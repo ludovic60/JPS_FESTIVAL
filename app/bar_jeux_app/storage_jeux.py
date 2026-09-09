@@ -68,7 +68,27 @@ def get_info_games(id_game):
 ##########################################################################
 # ---- requetes  sur les jeux selectionnés : selection_jeux_festival  ----
 ##########################################################################
+def final_games():
+    con_mongo = cs.mongo_enabled()
+    if   con_mongo : 
+        db = cs.get_db()
+        game_selec_tb = db.selection_jeux_festival
+        selc_tb = {"id_jeux": 1}
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") }  
+        resultats = list(game_selec_tb.find( filtre_tb, selc_tb ))
+    return resultats 
 
+
+
+def final_games_statut_plusieurs_exemplaire():
+    con_mongo = cs.mongo_enabled()
+    if   con_mongo : 
+        db = cs.get_db()
+        game_selec_tb = db.selection_jeux_festival
+        selc_tb = {"id_jeux": 1}
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") }  
+        resultats = list(game_selec_tb.find( filtre_tb, selc_tb ))
+    return resultats 
 
     
 def get_admin_selected():
@@ -183,6 +203,9 @@ def toggle_suggestion(ckey, user_id, value):
         resultat = game_suggest_tb.delete_many(filtre_tb)
     
 
+##########################################################################
+# ---- requetes  sur les demandess : demande ajout et remarque    ----
+##########################################################################
 
 def get_requests(type_request):
     con_mongo = cs.mongo_enabled()
@@ -255,27 +278,10 @@ def all_list_keys():
     return [k for k, _ in config_bar_jeux.month_keys()] + [config_bar_jeux.VIEUX_KEY]
 
 
-def final_games():
-    con_mongo = cs.mongo_enabled()
-    if   con_mongo : 
-        db = cs.get_db()
-        game_selec_tb = db.selection_jeux_festival
-        selc_tb = {"id_jeux": 1}
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") }  
-        resultats = list(game_selec_tb.find( filtre_tb, selc_tb ))
-    return resultats 
 
-
-
-def final_games_statut_plusieurs_exemplaire():
-    con_mongo = cs.mongo_enabled()
-    if   con_mongo : 
-        db = cs.get_db()
-        game_selec_tb = db.selection_jeux_festival
-        selc_tb = {"id_jeux": 1}
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") }  
-        resultats = list(game_selec_tb.find( filtre_tb, selc_tb ))
-    return resultats 
+##########################################################################
+# ---- requetes  sur les prets :   prets_jeux   ----
+##########################################################################
 
 
 
