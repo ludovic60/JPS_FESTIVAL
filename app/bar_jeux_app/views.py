@@ -276,8 +276,8 @@ def _final_page(user):
           df_cochis = df_jeux_pret_graphique
           if not df_cochis.empty:
               df_nov = (
-                  df_jeux_valide_graphique["Nb_jeux_prete"]
-                  .map({True: "Nouveauté", False: "Ancien"})
+                  df_jeux_valide_graphique["Nouveauté"]
+                  #.map({True: "Nouveauté", False: "Ancien"})
                   .value_counts()
                   .reset_index()
               )
