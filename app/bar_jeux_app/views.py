@@ -240,8 +240,8 @@ def _final_page(user):
             
           st.subheader("Validations par Joueur")
           
-          df_jeux_histogramme  = pd.merge(df_jeux_pret_graphique, df_jeux_valide_graphique, on =["classement", "Nouveauté", "pseudo","nom" ]  , how="left")
-               
+         ### df_jeux_histogramme  = pd.merge(df_jeux_pret_graphique, df_jeux_valide_graphique, on =["classement", "Nouveauté", "pseudo","nom" ]  , how="left")
+          df_jeux_histogramme  = df_jeux_pret_graphique
           fig_hist = px.bar(
                df_jeux_valide_graphique,
               x="pseudo",
