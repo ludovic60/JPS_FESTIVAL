@@ -56,6 +56,11 @@ def main_app(user):
     else:
         _final_page(user)
 
+############################################################################################################
+###-------------- page pour generer les mots de passe des user
+############################################################################################################
+
+
 def _password_page(user):
      st.set_page_config(page_title="Générateur de Hash Bcrypt", page_icon="🔑")
     
@@ -84,6 +89,9 @@ def _password_page(user):
          st.warning("Veuillez saisir un mot de passe avant de cliquer.")
 
 
+############################################################################################################
+###-------------- page affichant les jeux 
+############################################################################################################
 
 
 def _list_page(title, list_key, user):
@@ -133,9 +141,16 @@ def _list_page(title, list_key, user):
     else:
         st.info("Aucun jeu ne correspond à votre recherche.")
   
+############################################################################################################
+###-------------- page des suggestion et remarque des joueur
+############################################################################################################
    
 def _requests_suggestion_page(user):
     st.title("liste des suggestions par les joueurs")
+
+############################################################################################################
+###-------------- page des demandes d'ajout 
+############################################################################################################
 
 
 def _requests_page(user):
@@ -155,6 +170,9 @@ def _requests_page(user):
                     storage_jeux.remove_request(r["id"])
                     st.rerun()
 
+############################################################################################################
+###-------------- page où est affiché les jeux selectionné
+############################################################################################################
 
 def _final_page(user):
     st.title("Liste finale — Prêts")
@@ -280,21 +298,56 @@ def _final_page(user):
     ###################################################################################################
     # creation des lignes du futur tableau croisé         
     row_jeux = []
-
+    ##-------------------------------------------------
+    #####--- fonction pour retrouver les infos en base
+    ##-------------------------------------------------
+    liste_jeu_plusieurs_exemplaire= final_games_statut_plusieurs_exemplaire()
     def get_game_several_selected(game_id):
-         return 0
-         #toggle_admin_selected(game_id, new_val)
-    
+        for id in liste_jeu_plusieurs_exemplaire
+          if gamme_id== id :
+            result = true
+          else 
+            result = false 
+        return result
+
+
+    list_jeu_prete = get_all_loans()
+    list_jeu_prete_valide =  get_validated_loans()
+
+
     def get_prete_value(game_id, player_key):
-         if get_validated_loans(game_id, player_key):
-             value = true
-         else :
-             value = false 
-        return value
+        for pret in list_jeu_prete
+          if gamme_id== pret["id_jeux"] and player_key== pret["user_id"]:
+            result = true
+          else 
+            result = false 
+        return result
     
     def get_admin_valide_value(game_id, player_key):
-        return 2
-    
+        for pret in list_jeu_prete_valide
+          if gamme_id== pret["id_jeux"] and player_key== pret["user_id"]:
+            result = true
+          else 
+            result = false 
+        return result
+
+    ##-------------------------------------------------
+    #####--- fonction pour mettre les infos en base 
+    ##-------------------------------------------------
+    def on_change_prete(game_id, player_key, new_val)
+       toggle_loan(game_id, player_key, new_val)
+     
+    def on_change_admin(game_id, player_key, new_val)
+       set_loan_valide_admin(game_id, player_key, new_val)           
+                        
+    def on_change_plusieurs_exemplaires(game_id, new_val)
+        toggle_admin_selected(game_id, new_val)
+                        
+
+
+    ##-------------------------------------------------
+    #####--- le tableau
+    ##-------------------------------------------------
     for game in finals:
         g = storage_jeux.get_info_games(game.get('id_jeux'))
         game_id = str(g[0].get("_id"))
