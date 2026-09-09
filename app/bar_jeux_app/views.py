@@ -222,7 +222,7 @@ def _final_page(user):
                   pseudo = u["pseudo"]
        
          
-           liste_info_valide.append ("classement" :  info_games_pret["classement_jps_final"] ,  "Nouveauté":nouveaute_def(game[id_game]), "pseudo":pseudo , "nom": info_games["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide"=True)
+          liste_info_valide.append ("classement" :  info_games_pret["classement_jps_final"] ,  "Nouveauté":nouveaute_def(game[id_game]), "pseudo":pseudo , "nom": info_games["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide"=True)
      
      df_jeux_valide_graphique  = pd.DataFrame(liste_info_valide)
 
