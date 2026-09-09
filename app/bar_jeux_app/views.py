@@ -272,27 +272,50 @@ def _final_page(user):
 
     ###########----2. Camembert Nouveautés (jeux cochés au moins une fois par un utilisateur)
     with col_graph2:
-          st.subheader("Produits cochés par Nouveauté")
-          df_cochis = df_jeux_pret_graphique
-          if not df_cochis.empty:
-              df_nov = df_cochis["Nouveauté"].value_counts().reset_index()
+          st.subheader("Jeux cochés par Nouveauté")
+         
+          if not df_jeux_pret_graphique.empty:
+              df_nov = df_jeux_pret_graphique["Nouveauté"].value_counts().reset_index()
               df_nov.columns = ["Nouveauté", "Nombre"]
               fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3, width=1000, height=400 )
               st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
               st.info("Aucun jeu coché pour le moment.")
 
+          st.subheader("Jeux validés par Nouveauté")
+          
+          if not df_jeux_valide_graphique.empty:
+              df_nov = df_jeux_valide_graphique["Nouveauté"].value_counts().reset_index()
+              df_nov.columns = ["Nouveauté", "Nombre"]
+              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3, width=1000, height=400 )
+              st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+              st.info("Aucun jeu validé pour le moment.")
+
+ 
+
       ###########----3. Camembert Catégories (Produits cochés au moins une fois par un utilisateur)
     with col_graph3:
-          st.subheader("Jeux cochés par Catégorie")
+          st.subheader("Jeux cochés par Classement")
           if not df_cochis.empty:
-              df_cat = df_cochis["Nb_jeux_prete"].value_counts().reset_index()
+              df_cat = df_jeux_pret_graphique["classement"].value_counts().reset_index()
               df_cat.columns = ["classement", "Nombre"]
               fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, width=1000, height=400 )
                
               st.plotly_chart(fig_pie_cat, use_container_width=True)
           else:
-              st.info("Aucun produit coché pour le moment.")
+              st.info("Aucun jeu coché pour le moment.")
+
+
+          st.subheader("Jeux validés par Classement")
+          if not df_jeux_valide_graphique.empty:
+              df_cat = df_jeux_valide_graphique["classement"].value_counts().reset_index()
+              df_cat.columns = ["classement", "Nombre"]
+              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, width=1000, height=400 )
+               
+              st.plotly_chart(fig_pie_cat, use_container_width=True)
+          else:
+              st.info("Aucun jeu validé pour le moment.")
 
     st.divider()
     st.caption("Tableau croisé : jeux retenus par l'admin × personnes. Cochez les jeux que vous pouvez prêter.")
@@ -309,7 +332,7 @@ def _final_page(user):
     liste_jeu_plusieurs_exemplaire= storage_jeux.final_games_statut_plusieurs_exemplaire()
     def get_game_several_selected(game_id):
         for id in liste_jeu_plusieurs_exemplaire :
-          if gamme_id== id :
+          if game_id== id :
             result = true
           else :
             result = false 
