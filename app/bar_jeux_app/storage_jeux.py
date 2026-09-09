@@ -86,7 +86,7 @@ def final_games_statut_plusieurs_exemplaire():
         db = cs.get_db()
         game_selec_tb = db.selection_jeux_festival
         selc_tb = {"id_jeux": 1}
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") }  
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") , "plusieurs_exemplaires_souhaites": "true" }  
         resultats = list(game_selec_tb.find( filtre_tb, selc_tb ))
     return resultats 
 
@@ -181,27 +181,28 @@ def toggle_suggestion(ckey, user_id, value):
         db = cs.get_db()
         game_suggest_tb = db.jeux_suggestions
 
-    if value == "insert":
-        new_selection= {         
-            "annee" : cs._secret("ANNEE_FESTIVAL"), 
-            "periode_jeu" : "",
-            "id_jeux": str(ObjectId(ckey)),
-            "user_id": str(ObjectId(user_id)),
-            "statut" : "a traiter"
+        if value == "insert":
+            new_selection= {         
+                "annee" : cs._secret("ANNEE_FESTIVAL"), 
+                "periode_jeu" : "",
+                "id_jeux": str(ObjectId(ckey)),
+                "user_id": str(ObjectId(user_id)),
+                "statut" : "a traiter"
+            
+            }
+             
+            resultat = game_suggest_tb.insert_one(new_selection)
+        elif value == "delete":  
+            # deselectionne le jeu 
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "periode_jeu" : "" , "id_jeux": str(ObjectId(ckey)),   "user_id": str(ObjectId(user_id)) }
+            resultat = game_suggest_tb.delete_many(filtre_tb)
         
-        }
-         
-        resultat = game_suggest_tb.insert_one(new_selection)
-    elif value == "delete":  
-        # deselectionne le jeu 
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "periode_jeu" : "" , "id_jeux": str(ObjectId(ckey)),   "user_id": str(ObjectId(user_id)) }
-        resultat = game_suggest_tb.delete_many(filtre_tb)
-    
-    elif value == "update":  
-        # deselectionne le jeu 
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)) }
-        resultat = game_suggest_tb.delete_many(filtre_tb)
-    
+        else :  
+            # change le statut de la request
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)),"user_id":str((ObjectId(user_id)))}
+            resultat = game_selec_tb.updateMany(filtre_tb, {"$set": { "statut" : value } })
+            
+        
 
 ##########################################################################
 # ---- requetes  sur les demandess : demande ajout et remarque    ----
@@ -314,7 +315,7 @@ def toggle_loan(ckey, user_id, value):
                          "annee" : cs._secret("ANNEE_FESTIVAL"), 
                          "id_jeux": str(ObjectId(ckey)),
                          "user_id": str(ObjectId(user_id)),
-                		 "valide_par_admin" : value
+                		 "valide_par_admin" : false
                }   
         
             resultat = game_loan_tb.insert_one(new_loan)
@@ -325,19 +326,14 @@ def toggle_loan(ckey, user_id, value):
             resultat = game_loan_tb.delete_many(filtre_tb)
 
 
-def set_loan(ckey, user_id, value):
+def set_loan_valide_admin(ckey, user_id, value):
     con_mongo = cs.mongo_enabled()
         if   con_mongo : 
             db = cs.get_db()
-            game_loan_tb = db.prets_jeux
-    
-            if value :
-                new_loan= {         
-                             "annee" : cs._secret("ANNEE_FESTIVAL"), 
-                             "id_jeux": str(ObjectId(ckey)),
-                             "user_id": str(ObjectId(user_id)),
-                    		 "valide_par_admin" : value
-                   }   
+            game_loan_tb = db.prets_jeux    
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)),"user_id":str((ObjectId(user_id)))}
+            resultat = game_selec_tb.updateMany(filtre_tb, {"$set": {  "valide_par_admin": value } })
+            
 
     
     return {}
