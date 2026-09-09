@@ -346,17 +346,17 @@ def _final_page(user):
     def get_prete_value(game_id, player_key):
         for pret in list_jeu_prete :
           if game_id== pret["id_jeux"] and player_key== pret["user_id"]:
-            result = true
+            result = True
           else :
-            result = false 
+            result = False 
         return result
     
     def get_admin_valide_value(game_id, player_key):
         for pret in list_jeu_prete_valide :
           if game_id== pret["id_jeux"] and player_key== pret["user_id"]:
-            result = true
+            result = True
           else :
-            result = false 
+            result = False 
         return result
 
     ##-------------------------------------------------
