@@ -11,7 +11,7 @@ import commun.auth,  commun.config
 import commun.common_store as cs
 
 def nouveaute_def( id_game) :
-        info_jeu= get_info_games(id_game)       
+        info_jeu= storage_jeux/get_info_games(id_game)       
         New = ""
         if ( info_jeu[0].get("mois_sortie")  and  info_jeu[0].get("annee_parution") ) :      
        
