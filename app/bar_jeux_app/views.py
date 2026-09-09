@@ -273,10 +273,10 @@ def _final_page(user):
     ###########----2. Camembert Nouveautés (jeux cochés au moins une fois par un utilisateur)
     with col_graph2:
           st.subheader("Produits cochés par Nouveauté")
-          df_cochis = df_jeux_histogramme[df_jeux_histogramme["Valeur"] > 0]
+          df_cochis = df_jeux_pret_graphique
           if not df_cochis.empty:
               df_nov = (
-                  df_jeux_valide_graphique["Nb_jeux"]
+                  df_jeux_valide_graphique["Nb_jeux_prete"]
                   .map({True: "Nouveauté", False: "Ancien"})
                   .value_counts()
                   .reset_index()
@@ -291,9 +291,9 @@ def _final_page(user):
     with col_graph3:
           st.subheader("Jeux cochés par Catégorie")
           if not df_cochis.empty:
-              df_cat = df_cochis["Nb jeux"].value_counts().reset_index()
-              df_cat.columns = ["Catégorie", "Nombre"]
-              fig_pie_cat = px.pie(df_cat, names="Catégorie", values="Nombre", hole=0.3, width=1000, height=400 )
+              df_cat = df_cochis["Nb_jeux_prete"].value_counts().reset_index()
+              df_cat.columns = ["classement", "Nombre"]
+              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, width=1000, height=400 )
                
               st.plotly_chart(fig_pie_cat, use_container_width=True)
           else:
