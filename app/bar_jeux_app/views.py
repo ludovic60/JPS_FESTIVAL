@@ -244,7 +244,7 @@ def _final_page(user):
             "nom": info_games_pret["nom_jeu_complet"],
             "Nb_jeux_prete": 1,
         })
-     df_jeux_pret_graphique  = pd.DataFrame(liste_info)
+    df_jeux_pret_graphique  = pd.DataFrame(liste_info)
 
  
 
