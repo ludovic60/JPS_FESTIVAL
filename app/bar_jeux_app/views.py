@@ -210,13 +210,14 @@ def _final_page(user):
     liste_pret_validé = storage_jeux.get_validated_loans()
     liste_info_valide = []
     for game in  liste_pret_validé :
-          info_games = storage_jeux.get_info_games(game["id_jeux"])
-          for u in users :
-             if u["_id"] == game["user_id"]:
-                  pseudo = u["pseudo"]
+        id_jeu = game["id_jeux"]
+        info_games = storage_jeux.get_info_games(id_jeu)
+        # Récupération sécurisée du pseudo (converti en str pour être sûr que les ID matchent)
+        user_id_str = str(game_pret["user_id"])
+        pseudo = users_dict.get(user_id_str, "Utilisateur inconnu")
        
           
-          liste_info_valide.append ({"classement":  info_games_pret["classement_jps_final"] ,  "Nouveauté":nouveaute_def(game["id_jeux"]), "pseudo":pseudo , "nom": info_games["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide":True})
+        liste_info_valide.append ({"classement":  info_games_pret["classement_jps_final"] ,  "Nouveauté":nouveaute_def(game["id_jeux"]), "pseudo":pseudo , "nom": info_games["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide":True})
      
     df_jeux_valide_graphique  = pd.DataFrame(liste_info_valide)
     liste_info = []
@@ -251,10 +252,9 @@ def _final_page(user):
     ###########---- 1. Histogramme par joueur (Validés vs Cochés Utilisateur)
 
     with col_graph1:
-            
+           
           st.subheader("Validations par Joueur")
-          
-         ### df_jeux_histogramme  = pd.merge(df_jeux_pret_graphique, df_jeux_valide_graphique, on =["classement", "Nouveauté", "pseudo","nom" ]  , how="left")
+          ###----- df_jeux_histogramme  = pd.merge(df_jeux_pret_graphique, df_jeux_valide_graphique, on =["classement", "Nouveauté", "pseudo","nom" ]  , how="left")
           df_jeux_histogramme  = df_jeux_pret_graphique
 
           print(df_jeux_histogramme)
