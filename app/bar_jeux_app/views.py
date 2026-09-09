@@ -266,7 +266,7 @@ def _final_page(user):
               barmode="group",
               color_discrete_map={"Nb_jeux_prete": "#636EFA"}, ###{"Nb_jeux_prete": "#636EFA", "Nb_jeux_valide": "#2CA02C"},
               width=1000,
-              height=400 
+              height=1000 
           )
           st.plotly_chart(fig_hist, use_container_width=True)
 
@@ -337,6 +337,8 @@ def _final_page(user):
             result = True
           else :
             result = False 
+
+        print("result plusieurs exemplaires {game_id}  et {result}")
         return result
 
 
@@ -351,6 +353,7 @@ def _final_page(user):
             result = True
           else :
             result = False 
+        print("result prete {game_id}  et {result}")   
         return result
     
     def get_admin_valide_value(game_id, player_key):
@@ -360,6 +363,7 @@ def _final_page(user):
             result = True
           else :
             result = False 
+         print("result valide {game_id}  et {result}")     
         return result
 
     ##-------------------------------------------------
@@ -367,13 +371,14 @@ def _final_page(user):
     ##-------------------------------------------------
     def on_change_prete(game_id, player_key, new_val) :
        storage_jeux.toggle_loan(game_id, player_key, new_val)
+       print("change prete done")  
      
     def on_change_admin(game_id, player_key, new_val) :
        storage_jeux.set_loan_valide_admin(game_id, player_key, new_val)           
                         
     def on_change_plusieurs_exemplaires(game_id, new_val) :
         storage_jeux.toggle_admin_selected(game_id, new_val)
-                        
+        print("changeplusieurs exempalire")                 
 
 
     ##-------------------------------------------------
