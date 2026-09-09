@@ -261,8 +261,8 @@ def _final_page(user):
           fig_hist = px.bar(
               df_jeux_histogramme,
               x="pseudo",
-              y="Nb_jeux",
-              color="Nb jeux",
+              y="Nb_jeux_prete" ###["Nb_jeux_prete","Nb_jeux_valide"]
+              color="Nb_jeux_prete", ###["Nb_jeux_prete","Nb_jeux_valide"]
               barmode="group",
               color_discrete_map={"Nb_jeux_prete": "#636EFA", "Nb_jeux_valide)": "#2CA02C"},
               width=1000,
