@@ -218,7 +218,7 @@ def _final_page(user):
     for game in  liste_pret_validé
           info_games = get_info_games(game[id_game])
           for u in users 
-             if u(_id] == game["user_id"]
+             if u[_id] == game["user_id"]
                   pseudo = u["pseudo"]
        
          
@@ -230,7 +230,7 @@ def _final_page(user):
      for game_pret in  liste_pret_user
           info_games_pret = get_info_games(game_pret[id_game])
           for u in users 
-             if u(_id] == game_pret["user_id"]
+             if u[_id] == game_pret["user_id"]
                   pseudo = u["pseudo"]
        
          
