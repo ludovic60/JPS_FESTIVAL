@@ -208,7 +208,7 @@ def _final_page(user):
     ###########---- 0 dataframe pour alimenter les graph 
 
     liste_pret_validé = storage_jeux.get_validated_loans()
-    
+    liste_info_valide=()
     for game in  liste_pret_validé :
           info_games = get_info_games(game[id_game])
           for u in users :
@@ -219,7 +219,7 @@ def _final_page(user):
           liste_info_valide.append ({"classement":  info_games_pret["classement_jps_final"] ,  "Nouveauté":nouveaute_def(game[id_game]), "pseudo":pseudo , "nom": info_games["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide":True})
      
     df_jeux_valide_graphique  = pd.DataFrame(liste_info_valide)
-
+    liste_info=()
     liste_pret_user = get_loans()
     for game_pret in  liste_pret_user :
           info_games_pret = get_info_games(game_pret[id_game])
