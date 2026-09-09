@@ -185,7 +185,7 @@ def _final_page(user):
    
    
     users = cs.get_users_loaner()
-    loans = storage_jeux.get_loans()
+
     current_user = user
     is_admin = current_user == "admin"
     
@@ -198,13 +198,7 @@ def _final_page(user):
         st.info("Aucun jeu retenu par l'admin pour l'instant.")
         return           
     
-           
-   # st.session_state.grid_state={}
-   #           for ul in loans:   
-   #                           if ul[0].get("_id") ==   u[0].get("_id") and    ul[0].get("_id")   == g[0].get("_id")  :  
-   #                          row[u[0].get("pseudo")] = 1  
-   # st.session_state.grid_state[(game, pseudo)] = (True, True)
-
+       
 
    
     # --- PARTIE SUPERIEURE : GRAPHIQUES ---
