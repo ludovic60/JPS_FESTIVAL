@@ -303,7 +303,7 @@ def _final_page(user):
     ##-------------------------------------------------
     liste_jeu_plusieurs_exemplaire= final_games_statut_plusieurs_exemplaire()
     def get_game_several_selected(game_id):
-        for id in liste_jeu_plusieurs_exemplaire
+        for id in liste_jeu_plusieurs_exemplaire :
           if gamme_id== id :
             result = true
           else 
@@ -316,7 +316,7 @@ def _final_page(user):
 
 
     def get_prete_value(game_id, player_key):
-        for pret in list_jeu_prete
+        for pret in list_jeu_prete :
           if gamme_id== pret["id_jeux"] and player_key== pret["user_id"]:
             result = true
           else 
@@ -324,7 +324,7 @@ def _final_page(user):
         return result
     
     def get_admin_valide_value(game_id, player_key):
-        for pret in list_jeu_prete_valide
+        for pret in list_jeu_prete_valide :
           if gamme_id== pret["id_jeux"] and player_key== pret["user_id"]:
             result = true
           else 
