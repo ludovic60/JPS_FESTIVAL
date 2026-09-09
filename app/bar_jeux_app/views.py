@@ -266,7 +266,7 @@ def _final_page(user):
           df_cochis = df_jeux_histogramme[df_jeux_histogramme["Valeur"] > 0]
           if not df_cochis.empty:
               df_nov = (
-                  df_jeux_valide_graphique[Nb_jeux"]
+                  df_jeux_valide_graphique["Nb_jeux"]
                   .map({True: "Nouveauté", False: "Ancien"})
                   .value_counts()
                   .reset_index()
