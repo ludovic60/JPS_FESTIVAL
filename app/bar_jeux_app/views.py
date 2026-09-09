@@ -275,14 +275,9 @@ def _final_page(user):
           st.subheader("Produits cochés par Nouveauté")
           df_cochis = df_jeux_pret_graphique
           if not df_cochis.empty:
-              df_nov = (
-                  df_jeux_valide_graphique["Nouveauté"]
-                  #.map({True: "Nouveauté", False: "Ancien"})
-                  .value_counts()
-                  .reset_index()
-              )
-              df_nov.columns = ["Type", "Nombre"]
-              fig_pie_nov = px.pie(df_nov, names="Type", values="Nombre", hole=0.3, width=1000, height=400 )
+              df_nov = df_jeux_valide_graphique["Nouveauté"].value_counts().reset_index()
+              df_nov.columns = ["Nouveauté", "Nombre"]
+              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3, width=1000, height=400 )
               st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
               st.info("Aucun jeu coché pour le moment.")
