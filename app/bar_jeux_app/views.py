@@ -345,7 +345,7 @@ def _final_page(user):
 
     def get_prete_value(game_id, player_key):
         for pret in list_jeu_prete :
-          if gamme_id== pret["id_jeux"] and player_key== pret["user_id"]:
+          if game_id== pret["id_jeux"] and player_key== pret["user_id"]:
             result = true
           else :
             result = false 
@@ -353,7 +353,7 @@ def _final_page(user):
     
     def get_admin_valide_value(game_id, player_key):
         for pret in list_jeu_prete_valide :
-          if gamme_id== pret["id_jeux"] and player_key== pret["user_id"]:
+          if game_id== pret["id_jeux"] and player_key== pret["user_id"]:
             result = true
           else :
             result = false 
