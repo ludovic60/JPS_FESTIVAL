@@ -266,7 +266,7 @@ def _final_page(user):
               barmode="group",
               color_discrete_map={"Nb_jeux_prete": "#636EFA"}, ###{"Nb_jeux_prete": "#636EFA", "Nb_jeux_valide": "#2CA02C"},
               width=1000,
-              height=1000 
+              height=500 
           )
           st.plotly_chart(fig_hist, use_container_width=True)
 
@@ -277,7 +277,7 @@ def _final_page(user):
           if not df_jeux_pret_graphique.empty:
               df_nov = df_jeux_pret_graphique["Nouveauté"].value_counts().reset_index()
               df_nov.columns = ["Nouveauté", "Nombre"]
-              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3, width=1000, height=400 )
+              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3, width=1000, height=200 )
               st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
               st.info("Aucun jeu coché pour le moment.")
@@ -287,7 +287,7 @@ def _final_page(user):
           if not df_jeux_valide_graphique.empty:
               df_nov = df_jeux_valide_graphique["Nouveauté"].value_counts().reset_index()
               df_nov.columns = ["Nouveauté", "Nombre"]
-              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3, width=1000, height=400 )
+              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3, width=1000, height=200 )
               st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
               st.info("Aucun jeu validé pour le moment.")
@@ -300,7 +300,7 @@ def _final_page(user):
           if not df_jeux_pret_graphique.empty:
               df_cat = df_jeux_pret_graphique["classement"].value_counts().reset_index()
               df_cat.columns = ["classement", "Nombre"]
-              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, width=1000, height=400 )
+              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, width=1000, height=200 )
                
               st.plotly_chart(fig_pie_cat, use_container_width=True)
           else:
@@ -311,7 +311,7 @@ def _final_page(user):
           if not df_jeux_valide_graphique.empty:
               df_cat = df_jeux_valide_graphique["classement"].value_counts().reset_index()
               df_cat.columns = ["classement", "Nombre"]
-              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, width=1000, height=400 )
+              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, width=1000, height=200 )
                
               st.plotly_chart(fig_pie_cat, use_container_width=True)
           else:
@@ -338,7 +338,7 @@ def _final_page(user):
           else :
             result = False 
 
-        print("result plusieurs exemplaires {game_id}  et {result}")
+        print(f"result plusieurs exemplaires {game_id}  et {result}")
         return result
 
 
@@ -353,7 +353,7 @@ def _final_page(user):
             result = True
           else :
             result = False 
-        print("result prete {game_id}  et {result}")   
+        print(f"result prete {game_id}  et {result}")   
         return result
     
     def get_admin_valide_value(game_id, player_key):
@@ -363,13 +363,14 @@ def _final_page(user):
             result = True
           else :
             result = False 
-          print("result valide {game_id}  et {result}")     
+          print(f"result valide {game_id}  et {result}")     
         return result
 
     ##-------------------------------------------------
     #####--- fonction pour mettre les infos en base 
     ##-------------------------------------------------
     def on_change_prete(game_id, player_key, new_val) :
+       print(f"change prete afaire {game_id}   {player_key}   {new_val}  ")  
        storage_jeux.toggle_loan(game_id, player_key, new_val)
        print("change prete done")  
      
@@ -377,6 +378,7 @@ def _final_page(user):
        storage_jeux.set_loan_valide_admin(game_id, player_key, new_val)           
                         
     def on_change_plusieurs_exemplaires(game_id, new_val) :
+        print(f"change plusieur exempl afaire {game_id}   {new_val}  ")  
         storage_jeux.toggle_admin_selected(game_id, new_val)
         print("changeplusieurs exempalire")                 
 
