@@ -333,9 +333,9 @@ def _final_page(user):
     def get_game_several_selected(game_id):
         for id in liste_jeu_plusieurs_exemplaire :
           if game_id== id :
-            result = true
+            result = True
           else :
-            result = false 
+            result = False 
         return result
 
 
