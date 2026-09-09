@@ -363,7 +363,7 @@ def _final_page(user):
             result = True
           else :
             result = False 
-         print("result valide {game_id}  et {result}")     
+          print("result valide {game_id}  et {result}")     
         return result
 
     ##-------------------------------------------------
