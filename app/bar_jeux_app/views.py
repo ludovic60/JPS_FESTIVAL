@@ -217,7 +217,7 @@ def _final_page(user):
         pseudo = users_dict.get(user_id_str, "Utilisateur inconnu")
        
           
-        liste_info_valide.append ({"classement":  info_games_pret["classement_jps_final"] ,  "Nouveauté":nouveaute_def(game["id_jeux"]), "pseudo":pseudo , "nom": info_games["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide":True})
+        liste_info_valide.append ({"classement":  info_games_pret[0]["classement_jps_final"] ,  "Nouveauté":nouveaute_def(game["id_jeux"]), "pseudo":pseudo , "nom": info_games[0]["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide":True})
      
     df_jeux_valide_graphique  = pd.DataFrame(liste_info_valide)
     liste_info = []
@@ -239,10 +239,10 @@ def _final_page(user):
     
         # Ajout à la liste
         liste_info.append({
-            "classement": info_games_pret["classement_jps_final"],
+            "classement": info_games_pret[0]["classement_jps_final"],
             "Nouveauté": nouveaute_def(id_jeu),
             "pseudo": pseudo,
-            "nom": info_games_pret["nom_jeu_complet"],
+            "nom": info_games_pret[0]["nom_jeu_complet"],
             "Nb_jeux_prete": 1,
         })
     df_jeux_pret_graphique  = pd.DataFrame(liste_info)
