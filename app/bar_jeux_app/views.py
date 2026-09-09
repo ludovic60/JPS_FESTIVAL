@@ -207,7 +207,7 @@ def _final_page(user):
 
     ###########---- 0 dataframe pour alimenter les graph 
 
-    liste_pret_validé = get_validated_loans()
+    liste_pret_validé = storage_jeux.get_validated_loans()
     
     for game in  liste_pret_validé :
           info_games = get_info_games(game[id_game])
@@ -295,7 +295,7 @@ def _final_page(user):
     ##-------------------------------------------------
     #####--- fonction pour retrouver les infos en base
     ##-------------------------------------------------
-    liste_jeu_plusieurs_exemplaire= final_games_statut_plusieurs_exemplaire()
+    liste_jeu_plusieurs_exemplaire= storage_jeux.final_games_statut_plusieurs_exemplaire()
     def get_game_several_selected(game_id):
         for id in liste_jeu_plusieurs_exemplaire :
           if gamme_id== id :
@@ -305,8 +305,8 @@ def _final_page(user):
         return result
 
 
-    list_jeu_prete = get_all_loans()
-    list_jeu_prete_valide =  get_validated_loans()
+    list_jeu_prete = storage_jeux.get_all_loans()
+    list_jeu_prete_valide =  storage_jeux.get_validated_loans()
 
 
     def get_prete_value(game_id, player_key):
@@ -329,13 +329,13 @@ def _final_page(user):
     #####--- fonction pour mettre les infos en base 
     ##-------------------------------------------------
     def on_change_prete(game_id, player_key, new_val) :
-       toggle_loan(game_id, player_key, new_val)
+       storage_jeux.toggle_loan(game_id, player_key, new_val)
      
     def on_change_admin(game_id, player_key, new_val) :
-       set_loan_valide_admin(game_id, player_key, new_val)           
+       storage_jeux.set_loan_valide_admin(game_id, player_key, new_val)           
                         
     def on_change_plusieurs_exemplaires(game_id, new_val) :
-        toggle_admin_selected(game_id, new_val)
+        storage_jeux.toggle_admin_selected(game_id, new_val)
                         
 
 
