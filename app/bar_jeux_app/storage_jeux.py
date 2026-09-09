@@ -328,7 +328,7 @@ def toggle_loan(ckey, user_id, value):
 
 def set_loan_valide_admin(ckey, user_id, value):
     con_mongo = cs.mongo_enabled()
-        if   con_mongo : 
+    if con_mongo : 
             db = cs.get_db()
             game_loan_tb = db.prets_jeux    
             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)),"user_id":str((ObjectId(user_id)))}
