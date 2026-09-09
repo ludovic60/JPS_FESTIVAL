@@ -210,26 +210,26 @@ def _final_page(user):
     liste_pret_validé = storage_jeux.get_validated_loans()
     liste_info_valide=()
     for game in  liste_pret_validé :
-          info_games = storage_jeux.get_info_games(game[id_game])
+          info_games = storage_jeux.get_info_games(game[id_jeux])
           for u in users :
              if u[_id] == game["user_id"]:
                   pseudo = u["pseudo"]
        
           
-          liste_info_valide.append ({"classement":  info_games_pret["classement_jps_final"] ,  "Nouveauté":nouveaute_def(game[id_game]), "pseudo":pseudo , "nom": info_games["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide":True})
+          liste_info_valide.append ({"classement":  info_games_pret["classement_jps_final"] ,  "Nouveauté":nouveaute_def(game[id_jeux]), "pseudo":pseudo , "nom": info_games["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide":True})
      
     df_jeux_valide_graphique  = pd.DataFrame(liste_info_valide)
     liste_info=() 
     liste_pret_user = storage_jeux.get_all_loans()
     for game_pret in  liste_pret_user :
           print(game_pret)
-          info_games_pret = storage_jeux.get_info_games(game_pret[id_game])
+          info_games_pret = storage_jeux.get_info_games(game_pret[id_jeux])
           for u in users :
              if u[_id] == game_pret["user_id"]:
                   pseudo = u["pseudo"]
        
          
-          liste_info.append ({"classement" : info_games_pret["classement_jps_final"] , "Nouveauté":nouveaute_def(info_games_pret[id_game]), "pseudo":pseudo , "nom": info_games_pret["nom_jeu_complet"],"Nb_jeux_prete":1})
+          liste_info.append ({"classement" : info_games_pret["classement_jps_final"] , "Nouveauté":nouveaute_def(info_games_pret[id_jeux]), "pseudo":pseudo , "nom": info_games_pret["nom_jeu_complet"],"Nb_jeux_prete":1})
      
     df_jeux_pret_graphique  = pd.DataFrame(liste_info)
 
