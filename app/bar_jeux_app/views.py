@@ -224,10 +224,10 @@ def _final_page(user):
           
           liste_info_valide.append ({"classement":  info_games_pret["classement_jps_final"] ,  "Nouveauté":nouveaute_def(game[id_game]), "pseudo":pseudo , "nom": info_games["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide":True})
      
-     df_jeux_valide_graphique  = pd.DataFrame(liste_info_valide)
+    df_jeux_valide_graphique  = pd.DataFrame(liste_info_valide)
 
-     liste_pret_user = get_loans()
-     for game_pret in  liste_pret_user :
+    liste_pret_user = get_loans()
+    for game_pret in  liste_pret_user :
           info_games_pret = get_info_games(game_pret[id_game])
           for u in users :
              if u[_id] == game_pret["user_id"]:
@@ -236,7 +236,7 @@ def _final_page(user):
          
            liste_info.append ({"classement" : info_games_pret["classement_jps_final"] , "Nouveauté":nouveaute_def(info_games_pret[id_game]), "pseudo":pseudo , "nom": info_games_pret["nom_jeu_complet"],"Nb_jeux_prete":1})
      
-      df_jeux_pret_graphique  = pd.DataFrame(liste_info)
+    df_jeux_pret_graphique  = pd.DataFrame(liste_info)
 
  
 
