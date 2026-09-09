@@ -212,7 +212,7 @@ def _final_page(user):
     for game in  liste_pret_validé :
           info_games = storage_jeux.get_info_games(game["id_jeux"])
           for u in users :
-             if u[_id] == game["user_id"]:
+             if u["_id"] == game["user_id"]:
                   pseudo = u["pseudo"]
        
           
@@ -225,7 +225,7 @@ def _final_page(user):
           print(game_pret)
           info_games_pret = storage_jeux.get_info_games(game_pret["id_jeux"])
           for u in users :
-             if u[_id] == game_pret["user_id"]:
+             if u["_id"] == game_pret["user_id"]:
                   pseudo = u["pseudo"]
        
          
