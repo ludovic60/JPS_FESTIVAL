@@ -297,7 +297,7 @@ def _final_page(user):
       ###########----3. Camembert Catégories (Produits cochés au moins une fois par un utilisateur)
     with col_graph3:
           st.subheader("Jeux cochés par Classement")
-          if not df_cochis.empty:
+          if not df_jeux_pret_graphique.empty:
               df_cat = df_jeux_pret_graphique["classement"].value_counts().reset_index()
               df_cat.columns = ["classement", "Nombre"]
               fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, width=1000, height=400 )
