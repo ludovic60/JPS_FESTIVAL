@@ -306,7 +306,7 @@ def _final_page(user):
         for id in liste_jeu_plusieurs_exemplaire :
           if gamme_id== id :
             result = true
-          else 
+          else :
             result = false 
         return result
 
@@ -319,7 +319,7 @@ def _final_page(user):
         for pret in list_jeu_prete :
           if gamme_id== pret["id_jeux"] and player_key== pret["user_id"]:
             result = true
-          else 
+          else :
             result = false 
         return result
     
@@ -327,7 +327,7 @@ def _final_page(user):
         for pret in list_jeu_prete_valide :
           if gamme_id== pret["id_jeux"] and player_key== pret["user_id"]:
             result = true
-          else 
+          else :
             result = false 
         return result
 
