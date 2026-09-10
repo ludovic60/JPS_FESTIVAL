@@ -171,7 +171,7 @@ def _requests_page(user):
                  if c2.button("Retirer", key=f"rmreq_{r['id']}"):
                      storage_jeux.remove_request(r["id"])
                      st.rerun()
-     st.title("liste des remarques par les joueurs")
+    st.subheader("liste des remarques par les joueurs")
     st.markdown("🚧  en cours de construction ")
 ############################################################################################################
 ###-------------- page où est affiché les jeux selectionné
