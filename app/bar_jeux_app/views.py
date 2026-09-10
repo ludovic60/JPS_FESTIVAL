@@ -12,7 +12,7 @@ import storage_jeux
 import export
 import os
 import sys
-from config_game_card import _game_card , mise_forme_categorie , nouveaute_def
+from config_game_card import _game_card , mise_forme_classement , nouveaute_def
 # Ajoute le dossier parent à sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -410,7 +410,7 @@ def _final_page(user):
             "_id": game_id,                                  
             "nouveaute": New,
             "Annee": g[0].get("annee_parution"),
-            "Categorie jeu": mise_forme_categorie(g[0].get("classement_jps_final")),
+            "Categorie jeu": mise_forme_classement(g[0].get("classement_jps_final")),
             "Couverture Jeu": g[0].get("couverture"),
             "Jeu": g[0].get("nom_jeu_complet"),
             "Plusieurs exemplaires souhaités": bool(get_game_several_selected(game_id)),  # <-- vrai bool
