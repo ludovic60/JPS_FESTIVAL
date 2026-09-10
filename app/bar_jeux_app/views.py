@@ -278,7 +278,7 @@ def _final_page(user):
               df_nov = df_jeux_pret_graphique["Nouveauté"].value_counts().reset_index()
               df_nov.columns = ["Nouveauté", "Nombre"]
               fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 )
-        
+              fig_pie_nov.update_layout(height=150 , width=1000)
               st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
               st.info("Aucun jeu coché pour le moment.")
@@ -286,10 +286,11 @@ def _final_page(user):
           st.subheader("Jeux validés par Nouveauté")
           
           if not df_jeux_valide_graphique.empty:
-              df_nov = df_jeux_valide_graphique["Nouveauté"].value_counts().reset_index()
-              df_nov.columns = ["Nouveauté", "Nombre"]
-              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 )
-              st.plotly_chart(fig_pie_nov, use_container_width=True)
+              df_nov2 = df_jeux_valide_graphique["Nouveauté"].value_counts().reset_index()
+              df_nov2.columns = ["Nouveauté", "Nombre"]
+              fig_pie_nov2 = px.pie(df_nov2, names="Nouveauté", values="Nombre", hole=0.3 )
+              fig_pie_nov2.update_layout(height=150 , width=1000)
+              st.plotly_chart(fig_pie_nov2, use_container_width=True)
           else:
               st.info("Aucun jeu validé pour le moment.")
 
@@ -302,7 +303,7 @@ def _final_page(user):
               df_cat = df_jeux_pret_graphique["classement"].value_counts().reset_index()
               df_cat.columns = ["classement", "Nombre"]
               fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3  )
-               
+              fig_pie_cat.update_layout(height=150 , width=1000) 
               st.plotly_chart(fig_pie_cat, use_container_width=True)
           else:
               st.info("Aucun jeu coché pour le moment.")
@@ -310,11 +311,11 @@ def _final_page(user):
 
           st.subheader("Jeux validés par Classement")
           if not df_jeux_valide_graphique.empty:
-              df_cat = df_jeux_valide_graphique["classement"].value_counts().reset_index()
-              df_cat.columns = ["classement", "Nombre"]
-              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3  )
-               
-              st.plotly_chart(fig_pie_cat, use_container_width=True)
+              df_cat2 = df_jeux_valide_graphique["classement"].value_counts().reset_index()
+              df_cat2.columns = ["classement", "Nombre"]
+              fig_pie_cat2 = px.pie(df_cat2, names="classement", values="Nombre", hole=0.3  )
+              fig_pie_cat2.update_layout(height=150 , width=1000) 
+              st.plotly_chart(fig_pie_cat2, use_container_width=True)
           else:
               st.info("Aucun jeu validé pour le moment.")
 
