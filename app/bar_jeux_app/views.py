@@ -264,7 +264,7 @@ def _final_page(user):
               y="Nb_jeux_prete", ###["Nb_jeux_prete","Nb_jeux_valide"]
             #  color="Nb_jeux_prete", ###["Nb_jeux_prete","Nb_jeux_valide"]
               barmode="group",
-              color_discrete_map={"Nb_jeux_prete": "#636EFA"}, ###{"Nb_jeux_prete": "#636EFA", "Nb_jeux_valide": "#2CA02C"},
+              #color_discrete_map={"Nb_jeux_prete": "#636EFA"}, ###{"Nb_jeux_prete": "#636EFA", "Nb_jeux_valide": "#2CA02C"},
               width=1000,
               height=350
           )
@@ -330,6 +330,8 @@ def _final_page(user):
     #####--- fonction pour retrouver les infos en base
     ##-------------------------------------------------
     liste_jeu_plusieurs_exemplaire= storage_jeux.final_games_statut_plusieurs_exemplaire()
+    users_dict = {str(g["id_jeux"]): g.get("id_jeux") for g in storage_jeux.final_games_statut_plusieurs_exemplaire()}
+ 
     def get_game_several_selected(game_id):
         result = False 
         for id in liste_jeu_plusieurs_exemplaire :
