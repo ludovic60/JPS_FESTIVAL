@@ -27,34 +27,34 @@ def nouveaute_def( id_game) :
            
         return New            
 
-def mise_forme_categorie(categorie) :
-    if categorie :
-        if categorie == "FAMILLE":
-                  categorie_formate = f"⚪⚪⚪ {categorie}"
-        elif categorie == "INITIE":
-                  categorie_formate = f"🟡⚪⚪ {categorie}"
-        elif categorie == "EXPERT":
-                  categorie_formate = f"🔴🔴⚪ {categorie}"
-        elif categorie == "EXPERT+":
-                  categorie_formate = f"🔴🔴🔴 {categorie}"
-        elif categorie == "ENFANT":
-                  categorie_formate = f"🧸 {categorie}"                                        
-        elif categorie == "JEU DUO":
-                   categorie_formate = f"👥 {categorie}"                                       
-        elif categorie == "COOP/SEMI COOP":
-                  categorie_formate = f"🤝 {categorie}"                             
-        elif categorie == "ENQUETE/ESCAPE/ENIGME/CASSETETE":
-                  categorie_formate = f"🕵️ {categorie}"                            
-        elif categorie == "AMBIANCE":
-                  categorie_formate = f"🎉 {categorie}"
-        elif categorie == "NON CLASSE":
-                  categorie_formate = f"🤔 {categorie}"
-        elif categorie == "PBM CLASSEMENT":
-                  categorie_formate = f"❓ {categorie}"
+def mise_forme_categorie(classement) :
+    if classement :
+        if classement == "FAMILLE":
+                  classement_formate = f"⚪⚪⚪ {categorie}"
+        elif classement == "INITIE":
+                  classement_formate = f"🟡⚪⚪ {categorie}"
+        elif classement == "EXPERT":
+                  classement_formate = f"🔴🔴⚪ {categorie}"
+        elif classement == "EXPERT+":
+                  classement_formate = f"🔴🔴🔴 {categorie}"
+        elif classement == "ENFANT":
+                  classement_formate = f"🧸 {categorie}"                                        
+        elif classement == "JEU DUO":
+                  classement_formate = f"👥 {categorie}"                                       
+        elif classement == "COOP/SEMI COOP":
+                  classement_formate = f"🤝 {categorie}"                             
+        elif classement == "ENQUETE/ESCAPE/ENIGME/CASSETETE":
+                  classement_formate = f"🕵️ {categorie}"                            
+        elif classement == "AMBIANCE":
+                  classement_formate = f"🎉 {categorie}"
+        elif classement == "NON CLASSE":
+                  classement_formate = f"🤔 {categorie}"
+        elif classement == "PBM CLASSEMENT":
+                  classement_formate = f"❓ {categorie}"
         else : 
-                  categorie_formate = f"❓❓❓ {categorie}"
+                  classement_formate = f"❓❓❓ {categorie}"
     else :
-                  categorie_formate = ""           
+                  classement_formate = ""           
 
     return categorie_formate    
 
@@ -105,8 +105,7 @@ def _game_card(g, list_key, user):
                         mode = "delete" if currently_selected else "insert"
                 
                         storage_jeux.toggle_admin_selected(game_id, mode)
-                        if mode == insert :
-                                   toggle_admin_selected(game_id, "update")
+
                                    
                     # Passe la fonction SANS les parenthèses () et utilise args=
                     st.checkbox(
