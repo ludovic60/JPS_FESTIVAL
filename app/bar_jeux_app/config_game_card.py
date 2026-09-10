@@ -27,7 +27,7 @@ def nouveaute_def( id_game) :
            
         return New            
 
-def mise_forme_categorie(classement) :
+def mise_forme_classement(classement) :
     if classement :
         if classement == "FAMILLE":
                   classement_formate = f"⚪⚪⚪ {categorie}"
@@ -80,10 +80,10 @@ def _game_card(g, list_key, user):
             st.markdown(f"#### {title}")
 
             ##### gestion du classement =      
-            classement = mise_forme_categorie(g.get("classement JPS final"))
-            
+            le_classement = mise_forme_classement(g.get("classement JPS final"))
+            pint(f" le classement : {le_classement}")
             meta = " · ".join([x for x in [
-               classement,
+                le_classement,
                 f"👥 {g.get('nombre_joueurs','')}" if g.get("nombre_joueurs") else "",
                 f"🎂 {g.get('age_boite','')}" if g.get("age_boite") else "",
                 f"⏱ {g.get('duree','')}" if g.get("duree") else "",
