@@ -278,7 +278,7 @@ def _final_page(user):
               df_nov = df_jeux_pret_graphique["Nouveauté"].value_counts().reset_index()
               df_nov.columns = ["Nouveauté", "Nombre"]
               fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 )
-              fig_pie_nov.update_layout(height=350 , width=1000)
+              fig_pie_nov.update_layout(height=250 , width=1000)
               st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
               st.info("Aucun jeu coché pour le moment.")
