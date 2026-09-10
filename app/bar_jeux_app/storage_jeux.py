@@ -209,7 +209,7 @@ def toggle_all_suggestion(ckey, value):
         db = cs.get_db()
         game_suggest_tb = db.jeux_suggestions
         filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"),  "id_jeux": str(ObjectId(ckey))}
-        resultat = game_selec_tb.updateMany(filtre_tb, {"$set": { "statut" : value } })   
+        resultat = game_suggest_tb.updateMany(filtre_tb, {"$set": { "statut" : value } })   
        
 
 ##########################################################################
