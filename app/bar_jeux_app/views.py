@@ -148,6 +148,9 @@ def _list_page(title, list_key, user):
 def _requests_suggestion_page(user):
     st.title("liste des suggestions par les joueurs")
 
+    st.markdown("🚧  en cours de construction ")
+    st.title("liste des remarques par les joueurs")
+    st.markdown("🚧  en cours de construction ")
 ############################################################################################################
 ###-------------- page des demandes d'ajout 
 ############################################################################################################
