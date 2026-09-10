@@ -30,29 +30,29 @@ def nouveaute_def( id_game) :
 def mise_forme_classement(classement) :
     if classement :
         if classement == "FAMILLE":
-                  classement_formate = f"⚪⚪⚪ {categorie}"
+                  classement_formate = f"⚪⚪⚪ {classement}"
         elif classement == "INITIE":
-                  classement_formate = f"🟡⚪⚪ {categorie}"
+                  classement_formate = f"🟡⚪⚪ {classement}"
         elif classement == "EXPERT":
-                  classement_formate = f"🔴🔴⚪ {categorie}"
+                  classement_formate = f"🔴🔴⚪ {classement}"
         elif classement == "EXPERT+":
-                  classement_formate = f"🔴🔴🔴 {categorie}"
+                  classement_formate = f"🔴🔴🔴 {classement}"
         elif classement == "ENFANT":
-                  classement_formate = f"🧸 {categorie}"                                        
+                  classement_formate = f"🧸 {classement}"                                        
         elif classement == "JEU DUO":
-                  classement_formate = f"👥 {categorie}"                                       
+                  classement_formate = f"👥 {classement}"                                       
         elif classement == "COOP/SEMI COOP":
-                  classement_formate = f"🤝 {categorie}"                             
+                  classement_formate = f"🤝 {classement}"                             
         elif classement == "ENQUETE/ESCAPE/ENIGME/CASSETETE":
-                  classement_formate = f"🕵️ {categorie}"                            
+                  classement_formate = f"🕵️ {classement}"                            
         elif classement == "AMBIANCE":
-                  classement_formate = f"🎉 {categorie}"
+                  classement_formate = f"🎉 {classement}"
         elif classement == "NON CLASSE":
-                  classement_formate = f"🤔 {categorie}"
+                  classement_formate = f"🤔 {classement}"
         elif classement == "PBM CLASSEMENT":
-                  classement_formate = f"❓ {categorie}"
+                  classement_formate = f"❓ {classement}"
         else : 
-                  classement_formate = f"❓❓❓ {categorie}"
+                  classement_formate = f"❓❓❓ {classement}"
     else :
                   classement_formate = ""           
 
