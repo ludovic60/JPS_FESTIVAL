@@ -175,7 +175,7 @@ def get_game_nb_suggestions(id_game):
     return resultats
 
 def toggle_suggestion(ckey, user_id, value):
-    #s = get_suggestions()
+
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
@@ -203,7 +203,7 @@ def toggle_suggestion(ckey, user_id, value):
             resultat = game_selec_tb.updateMany(filtre_tb, {"$set": { "statut" : value } })
             
 def toggle_all_suggestion(ckey, value):
-    #s = get_suggestions()
+
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
