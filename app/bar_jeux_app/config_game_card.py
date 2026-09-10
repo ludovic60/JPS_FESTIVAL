@@ -56,7 +56,7 @@ def mise_forme_classement(classement) :
     else :
                   classement_formate = ""           
 
-    return categorie_formate    
+    return classement_formate    
 
 def _game_card(g, list_key, user):
     #ckey = f"{list_key}::{str(g['_id'])}"
