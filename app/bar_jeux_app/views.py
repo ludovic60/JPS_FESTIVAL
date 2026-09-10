@@ -331,7 +331,7 @@ def _final_page(user):
     #####--- fonction pour retrouver les infos en base
     ##-------------------------------------------------
     liste_jeu_plusieurs_exemplaire= storage_jeux.final_games_statut_plusieurs_exemplaire()
-    
+    print(liste_jeu_plusieurs_exemplaire)
     def get_game_several_selected(game_id):
         result = False 
         
@@ -651,6 +651,7 @@ def _final_page(user):
                         player_key = col.replace("_admin", "")
                         on_change_admin(game_id, player_key, new_val)
                     elif col == "Plusieurs exemplaires souhaités":
+                        print("appel fonction changement exemplaire")
                         on_change_plusieurs_exemplaires(game_id, new_val)
     
     st.session_state["old_grid_df"] = new_df.copy()
