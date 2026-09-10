@@ -325,7 +325,7 @@ def _final_page(user):
     st.divider()
     st.caption("Tableau croisé : jeux retenus par l'admin × personnes. Cochez les jeux que vous pouvez prêter.")
 
-
+ 
     ###################################################################################################
     ###########  gestion du tableau des prêts   
     ###################################################################################################
@@ -649,8 +649,9 @@ def _final_page(user):
             for col in checkbox_cols:
                 old_val = old_df.at[i, col]
                 new_val = new_df.at[i, col]
+                print(f"col  {col}")
                 if bool(old_val) != bool(new_val):
-                    print(f"col  {col}")
+                  
                     if col.endswith("_prete"):
                         player_key = col.replace("_prete", "")
                         on_change_prete(game_id, player_key, new_val)
