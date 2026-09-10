@@ -86,7 +86,7 @@ def final_games_statut_plusieurs_exemplaire():
         db = cs.get_db()
         game_selec_tb = db.selection_jeux_festival
         selc_tb = {"id_jeux": 1}
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") , "plusieurs_exemplaires_souhaites": True }  
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") , "plusieurs_exemplaires_souhaites": "True" }  
         resultats = list(game_selec_tb.find( filtre_tb, selc_tb ))
     return resultats 
 
@@ -124,7 +124,7 @@ def toggle_admin_selected(ckey, value):
                 new_selection= {         
                              "annee" : cs._secret("ANNEE_FESTIVAL"), 
                              "id_jeux": str(ObjectId(ckey)),
-                             "plusieurs_exemplaires_souhaites": False 
+                             "plusieurs_exemplaires_souhaites": "False" 
                    }   
             
                 resultat = game_selec_tb.insert_one(new_selection)
@@ -300,7 +300,7 @@ def get_validated_loans():
     if   con_mongo : 
         db = cs.get_db()
         game_loan_tb = db.prets_jeux
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") , "valide_par_admin" : True  }  
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") , "valide_par_admin" : "True"  }  
         resultats = list(game_loan_tb.find(filtre_tb))
     return resultats 
 
@@ -315,7 +315,7 @@ def toggle_loan(ckey, user_id, value):
                          "annee" : cs._secret("ANNEE_FESTIVAL"), 
                          "id_jeux": str(ObjectId(ckey)),
                          "user_id": str(ObjectId(user_id)),
-                		 "valide_par_admin" : False
+                		 "valide_par_admin" : "False"
                }   
         
             resultat = game_loan_tb.insert_one(new_loan)
