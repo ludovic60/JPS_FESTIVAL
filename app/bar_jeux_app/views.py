@@ -266,7 +266,7 @@ def _final_page(user):
               barmode="group",
               #color_discrete_map={"Nb_jeux_prete": "#636EFA"}, ###{"Nb_jeux_prete": "#636EFA", "Nb_jeux_valide": "#2CA02C"},
               width=1000,
-              height=350
+              height=500
           )
           st.plotly_chart(fig_hist, use_container_width=True)
 
@@ -289,7 +289,7 @@ def _final_page(user):
               df_nov2 = df_jeux_valide_graphique["Nouveauté"].value_counts().reset_index()
               df_nov2.columns = ["Nouveauté", "Nombre"]
               fig_pie_nov2 = px.pie(df_nov2, names="Nouveauté", values="Nombre", hole=0.3 )
-              fig_pie_nov2.update_layout(height=150 , width=1000)
+              fig_pie_nov2.update_layout(height=250 , width=1000)
               st.plotly_chart(fig_pie_nov2, use_container_width=True)
           else:
               st.info("Aucun jeu validé pour le moment.")
@@ -303,7 +303,7 @@ def _final_page(user):
               df_cat = df_jeux_pret_graphique["classement"].value_counts().reset_index()
               df_cat.columns = ["classement", "Nombre"]
               fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3  )
-              fig_pie_cat.update_layout(height=150 , width=1000) 
+              fig_pie_cat.update_layout(height=250 , width=1000) 
               st.plotly_chart(fig_pie_cat, use_container_width=True)
           else:
               st.info("Aucun jeu coché pour le moment.")
@@ -314,7 +314,7 @@ def _final_page(user):
               df_cat2 = df_jeux_valide_graphique["classement"].value_counts().reset_index()
               df_cat2.columns = ["classement", "Nombre"]
               fig_pie_cat2 = px.pie(df_cat2, names="classement", values="Nombre", hole=0.3  )
-              fig_pie_cat2.update_layout(height=150 , width=1000) 
+              fig_pie_cat2.update_layout(height=250 , width=1000) 
               st.plotly_chart(fig_pie_cat2, use_container_width=True)
           else:
               st.info("Aucun jeu validé pour le moment.")
