@@ -80,7 +80,7 @@ def _game_card(g, list_key, user):
             st.markdown(f"#### {title}")
 
             ##### gestion du classement =      
-            le_classement = mise_forme_classement(g.get("classement JPS final"))
+            le_classement = mise_forme_classement(g.get("classement_jps_final"))
             print(f" le classement : {le_classement}")
             meta = " · ".join([x for x in [
                 le_classement,
