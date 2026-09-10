@@ -160,18 +160,18 @@ def _requests_page(user):
     reqs = storage_jeux.get_requests("ajout jeux")
     if not reqs:
         st.info("Aucune demande.")
-        return
-    for r in reqs:
-        with st.container(border=True):
-            c1, c2 = st.columns([4, 1])
-            c1.markdown(f"**{r['name']}** — demandé par {r['by']}")
-            if r.get("myludo_url"):
-                c1.markdown(f"[Lien myludo]({r['myludo_url']}) · liste : `{r['list_key']}`")
-            if user["role"] == "admin":
-                if c2.button("Retirer", key=f"rmreq_{r['id']}"):
-                    storage_jeux.remove_request(r["id"])
-                    st.rerun()
-    st.title("liste des remarques par les joueurs")
+    else :
+     for r in reqs:
+         with st.container(border=True):
+             c1, c2 = st.columns([4, 1])
+             c1.markdown(f"**{r['name']}** — demandé par {r['by']}")
+             if r.get("myludo_url"):
+                 c1.markdown(f"[Lien myludo]({r['myludo_url']}) · liste : `{r['list_key']}`")
+             if user["role"] == "admin":
+                 if c2.button("Retirer", key=f"rmreq_{r['id']}"):
+                     storage_jeux.remove_request(r["id"])
+                     st.rerun()
+     st.title("liste des remarques par les joueurs")
     st.markdown("🚧  en cours de construction ")
 ############################################################################################################
 ###-------------- page où est affiché les jeux selectionné
