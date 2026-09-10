@@ -227,12 +227,11 @@ def _final_page(user):
     users_dict = {str(u["_id"]): u.get("pseudo", "Inconnu") for u in users}
     
     for game_pret in liste_pret_user:
-        print(game_pret)
-    
+   
         # Récupération des infos du jeu
         id_jeu = game_pret["id_jeux"]
         info_games_pret = storage_jeux.get_info_games(id_jeu)
-        print(info_games_pret)
+  
         # Récupération sécurisée du pseudo (converti en str pour être sûr que les ID matchent)
         user_id_str = str(game_pret["user_id"])
         pseudo = users_dict.get(user_id_str, "Utilisateur inconnu")
@@ -332,14 +331,16 @@ def _final_page(user):
     #####--- fonction pour retrouver les infos en base
     ##-------------------------------------------------
     liste_jeu_plusieurs_exemplaire= storage_jeux.final_games_statut_plusieurs_exemplaire()
-    users_dict = {str(g["id_jeux"]): g.get("id_jeux") for g in storage_jeux.final_games_statut_plusieurs_exemplaire()}
- 
+    
     def get_game_several_selected(game_id):
         result = False 
+        
         for id in liste_jeu_plusieurs_exemplaire :
           if game_id== id :
+            print(f"passage boucle vrai {game_id}  et {result}") 
             result = True
           else :
+            print(f"result plusieurs exemplaires {game_id}  et {result}")
             result = False 
 
         print(f"result plusieurs exemplaires {game_id}  et {result}")
