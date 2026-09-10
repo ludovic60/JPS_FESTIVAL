@@ -340,7 +340,8 @@ def _final_page(user):
         result = False 
         
         for id in liste_jeu_plusieurs_exemplaire :
-          if game_id== id :
+           print(f" id jeux {id["id_jeux"]}")
+          if game_id== id["id_jeux"] :
             print(f"passage boucle vrai {game_id}  et {result}") 
             result = True
           else :
