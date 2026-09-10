@@ -639,14 +639,16 @@ def _final_page(user):
     if old_df is not None and len(old_df) == len(new_df):
         checkbox_cols = [
             c for c in new_df.columns
-            if c.endswith(("_prete", "_admin")) or c == "Plusieurs exemplaires souhaités"
+            if c.endswith(("prete", "_admin")) or c == "Plusieurs exemplaires souhaités"
         ]
         for i in new_df.index:
             game_id = new_df.at[i, "_id"]
+            print(f"game id  {game_id}")
             for col in checkbox_cols:
                 old_val = old_df.at[i, col]
                 new_val = new_df.at[i, col]
                 if bool(old_val) != bool(new_val):
+                    print(f"col  {col}")
                     if col.endswith("_prete"):
                         player_key = col.replace("_prete", "")
                         on_change_prete(game_id, player_key, new_val)
