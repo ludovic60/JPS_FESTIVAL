@@ -105,8 +105,17 @@ def _game_card(g, list_key, user):
                         mode = "delete" if currently_selected else "insert"
                 
                         storage_jeux.toggle_admin_selected(game_id, mode)
+                        sugg_this_game = [s for s in sugg if str(s.get("id_jeux")) == ckey_this_game]
 
-                                   
+                        if sugg_this_game : 
+                                if mode == "insert" :
+                                        # 1. On ne garde que les suggestions spécifiques à CE jeu
+                                 
+                                        storage_jeux.toggle_all_suggestion(ckey_this_game, "suggestion Retenue")        
+  
+                                elif mode == "delete" :
+                                        storage_jeux.toggle_all_suggestion(ckey_this_game, "suggestion refusée")        
+                                                                   
                     # Passe la fonction SANS les parenthèses () et utilise args=
                     st.checkbox(
                         "Retenir (admin)",
