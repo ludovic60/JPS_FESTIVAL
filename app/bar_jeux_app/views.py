@@ -366,26 +366,20 @@ def _final_page(user):
     print(f"liste jeu pete : {list_jeu_prete}")
     print(f"liste jeu valide : {list_jeu_prete_valide}")
     def get_prete_value(game_id, player_key):
-        result = False 
-        for pret in list_jeu_prete :
-          print(pret[0]["id_jeux"])
-          print(pret[0]["user_id"])
-          if game_id== pret[0]["id_jeux"] and player_key== pret[0]["user_id"]:
-            result = True
-          else :
-            result = False 
- 
-        return result
+       
+      result = any( item['user_id'] == player_key and item['id_jeux'] == game_id 
+                    for pret in list_jeu_prete
+                  )
+       
+      return result
     
     def get_admin_valide_value(game_id, player_key):
-        result = False 
-        for pret in list_jeu_prete_valide :
-          if game_id== pret[0]["id_jeux"] and player_key== pret[0]["user_id"]:
-            result = True
-          else :
-            result = False 
-  
-        return result
+
+      result = any( item['user_id'] == player_key and item['id_jeux'] == game_id 
+                    for pret in list_jeu_prete_valide
+                  )
+       
+      return result
 
     ##-------------------------------------------------
     #####--- fonction pour mettre les infos en base 
