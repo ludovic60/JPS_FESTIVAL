@@ -363,14 +363,10 @@ def _final_page(user):
 
     list_jeu_prete = storage_jeux.get_all_loans()
     list_jeu_prete_valide =  storage_jeux.get_validated_loans()
-    print(f"liste jeu pete : {list_jeu_prete}")
-    print(f"liste jeu valide : {list_jeu_prete_valide}")
     def get_prete_value(game_id, player_key):
        
       id_user = [u['_id'] for u in users if u['pseudo'] == player_key]
-      print(f"le pseudo")
-      print(player_key)
-      print(str(id_user[0]))
+
       result = any( str(id_user[0]) == pret["user_id"] and pret['id_jeux'] == game_id 
                     for pret in list_jeu_prete
                   )
@@ -379,9 +375,7 @@ def _final_page(user):
     
     def get_admin_valide_value(game_id, player_key):
       id_user = [u['_id'] for u in users if u['pseudo'] == player_key]
-      print(f"le pseudo")
-      print(player_key)
-      print(str(id_user[0]))
+
       result = any( str(id_user[0]) == pret["user_id"] and pret['id_jeux'] == game_id 
                     for pret in  list_jeu_prete_valide
                   )
@@ -435,9 +429,7 @@ def _final_page(user):
             player_key = f"j{idx+1}"
             row[f"{player_key}_prete"] = bool(get_prete_value(game_id, j))  # <-- vrai bool
             row[f"{player_key}_admin"] = bool(get_admin_valide_value(game_id, j))  # <-- vrai bool
-            print("test")
-            print(f" {j}  {game_id}  { bool(get_prete_value(game_id, j))}   { bool(get_admin_valide_value(game_id, j)) }")
-            print("test2")
+
         row_jeux.append(row)
     
     df_jeux = pd.DataFrame(row_jeux)
@@ -638,17 +630,23 @@ def _final_page(user):
         </style>
     """, unsafe_allow_html=True)
 
-    grid_response = AgGrid(
-        df_jeux,
-        gridOptions=grid_options,
-        update_mode=GridUpdateMode.VALUE_CHANGED,
-        data_return_mode=DataReturnMode.AS_INPUT,
-        allow_unsafe_jscode=True,
-        fit_columns_on_grid_load=False,
-        height=dynamic_height
-    )
-    
-    new_df = pd.DataFrame(grid_response["data"])   # 
+
+     
+
+   with st.spinner("Chargement et affichage des données en cours..."):
+        grid_response = AgGrid(
+                 df_jeux,
+                 gridOptions=grid_options,
+                 update_mode=GridUpdateMode.VALUE_CHANGED,
+                 data_return_mode=DataReturnMode.AS_INPUT,
+                 allow_unsafe_jscode=True,
+                 fit_columns_on_grid_load=False,
+                 height=dynamic_height
+       )
+         
+        grid_data = grid_response["data"]
+          if grid_data:
+              new_df = pd.DataFrame(grid_response["data"]) 
     
     # --- Détection des changements ---
     old_df = st.session_state.get("old_grid_df")
@@ -664,7 +662,8 @@ def _final_page(user):
             for col in checkbox_cols:
                 old_val = old_df.at[i, col]
                 new_val = new_df.at[i, col]
-                print(f"col  {col}")
+                print(f"col  {col}  {bool(old_val)}    {bool(new_val}) ")
+             
                 if bool(old_val) != bool(new_val):
                   
                     if col.endswith("_prete"):
