@@ -138,7 +138,7 @@ def _list_page(title, list_key, user):
         else : ### page des vieux jeux  et des jeux par mois 
            if not search_query or (search_query in title or search_query in url):
                filtered_games.append(g)
-
+    print(   filtered_games )
 
  
     # Affichage des cartes filtrées
