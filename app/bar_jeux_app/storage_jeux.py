@@ -38,6 +38,8 @@ def load_games(list_key):
         game_tb = db.jeux
         if list_key == "est_selectionnable":
             filtre_tb = {"est_selectionnable": list_key}
+        elif list_key == "all":
+            filtre_tb = {}    
         else :
             annee = list_key[:4]
             mois = list_key[5:]
