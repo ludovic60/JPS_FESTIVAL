@@ -132,7 +132,7 @@ def _list_page(title, list_key, user):
         url = (g.get("url_myludo") or "").lower()  # Sécurisé avec str vide si None
         
         # Validation si le terme recherché est présent
-        if list_key ="all"  ### page de  recherche global d'un jeu 
+        if list_key =="all"  ### page de  recherche global d'un jeu 
            if  search_query in title or search_query in url :
                filtered_games.append(g)
         else : ### page des vieux jeux  et des jeux par mois 
