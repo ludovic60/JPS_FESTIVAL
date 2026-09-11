@@ -424,10 +424,11 @@ def _final_page(user):
         }
     
         for idx, j in enumerate(pseudo_list):
+            
             player_key = f"j{idx+1}"
-            row[f"{player_key}_prete"] = bool(get_prete_value(game_id, player_key))  # <-- vrai bool
-            row[f"{player_key}_admin"] = bool(get_admin_valide_value(game_id, player_key))  # <-- vrai bool
-    
+            row[f"{player_key}_prete"] = bool(get_prete_value(game_id, j))  # <-- vrai bool
+            row[f"{player_key}_admin"] = bool(get_admin_valide_value(game_id, j))  # <-- vrai bool
+            
         row_jeux.append(row)
     
     df_jeux = pd.DataFrame(row_jeux)
