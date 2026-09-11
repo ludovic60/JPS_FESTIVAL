@@ -428,7 +428,9 @@ def _final_page(user):
             player_key = f"j{idx+1}"
             row[f"{player_key}_prete"] = bool(get_prete_value(game_id, j))  # <-- vrai bool
             row[f"{player_key}_admin"] = bool(get_admin_valide_value(game_id, j))  # <-- vrai bool
+            print("test")
             print(f" {j}  {game_id}  { bool(get_prete_value(game_id, j))}   { bool(get_admin_valide_value(game_id, j)) }")
+            print("test2")
         row_jeux.append(row)
     
     df_jeux = pd.DataFrame(row_jeux)
