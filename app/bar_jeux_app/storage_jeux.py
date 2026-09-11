@@ -197,10 +197,10 @@ def toggle_suggestion(ckey, user_id, value):
             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "periode_jeu" : "" , "id_jeux": str(ObjectId(ckey)),   "user_id": str(ObjectId(user_id)) }
             resultat = game_suggest_tb.delete_many(filtre_tb)
         
-        else :  
-            # change le statut de la request
-            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)),"user_id":str((ObjectId(user_id)))}
-            resultat = game_suggest_tb.update_many(filtre_tb, {"$set": { "statut" : value } })
+      #  else :  
+      #      # change le statut de la request
+      #      filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)),"user_id":str((ObjectId(user_id)))}
+      #      resultat = game_suggest_tb.update_many(filtre_tb, {"$set": { "statut" : value } })
 
 
 
