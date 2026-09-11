@@ -1,7 +1,7 @@
 """Vues Streamlit pour Bar à jeux."""
  
 
-from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode, JsCode , DataReturnMode , AgGridTheme       
+from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode, JsCode , DataReturnMode , AgGridTheme       p
 import logging
 import plotly.express as px
 import pandas as pd
@@ -365,8 +365,8 @@ def _final_page(user):
 
     list_jeu_prete = storage_jeux.get_all_loans()
     list_jeu_prete_valide =  storage_jeux.get_validated_loans()
-    print(f"liste jeu pete : {list_jeu_prete]")
-    print(f"liste jeu valide : {list_jeu_prete_valide]")
+    print(f"liste jeu pete : {list_jeu_prete}")
+    print(f"liste jeu valide : {list_jeu_prete_valide}")
     def get_prete_value(game_id, player_key):
         result = False 
         for pret in list_jeu_prete :
