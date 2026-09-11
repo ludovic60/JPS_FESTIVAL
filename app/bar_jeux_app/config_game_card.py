@@ -151,10 +151,11 @@ def _game_card(g, list_key, user):
                     
                     # 5. Détection du clic réel (changement d'état pour ce jeu précis)
                     if val_check_suggest != has_suggested:
-                        storage_jeux.toggle_suggestion(ckey_this_game, user["id"], val_check_suggest)
+                        storage_jeux.toggle_suggestion(ckey_this_game, user["id"],"insert")
                         st.rerun()
-                
-                   
+                    elif   val_check_suggest == has_suggested:                  
+                        storage_jeux.toggle_suggestion(ckey_this_game, user["id"],"delete")
+                        st.rerun()
                     
             with cc[1]:
 
