@@ -11,6 +11,10 @@ import commun.auth,  commun.config
 import commun.common_store as cs
 
 def nouveaute_def( id_game) :
+        
+        VERT = "\033[32m"
+        BLEU = "\033[34m"
+        RESET = "\033[0m"
         info_jeu= storage_jeux.get_info_games(id_game)       
         New = ""
         if ( info_jeu[0].get("mois_sortie")  and  info_jeu[0].get("annee_parution") ) :      
@@ -19,11 +23,11 @@ def nouveaute_def( id_game) :
                 periode_dernier_festival = (int( cs._secret("ANNEE_FESTIVAL"))-1) *100 + int(cs._secret("MOIS_FESTIVAL") )
                       
                 if periode_parution  >  periode_dernier_festival :
-                               New = "NOUVEAUTE"
+                               New = f"✨{VERT}NOUVEAUTE{RESET}"
                 else :   
-                               New = "Ancien"
+                               New = f"🏺{BLEU}ANCIEN{RESET}"
         else :
-                   New = "inconnu"
+                   New = f"🧐{BLEU}INCONNU{RESET}"
            
         return New            
 
@@ -77,7 +81,8 @@ def _game_card(g, list_key, user):
         with c2:
             title = g.get("nom_jeu_complet") or g.get("nom_jeu") or "Jeu"
 
-            st.markdown(f"#### {title}")
+            st.markdown(f" {title}")
+            st.markdown(f"nouveaute_def( str(g['_id']))")
 
             ##### gestion du classement =      
             le_classement = mise_forme_classement(g.get("classement_jps_final"))
