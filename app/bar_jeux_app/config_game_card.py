@@ -107,14 +107,14 @@ def _game_card(g, list_key, user):
                         storage_jeux.toggle_admin_selected(game_id, mode)
                         sugg_this_game = [s for s in sugg if str(s.get("id_jeux")) == ckey_this_game]
 
-                        if sugg_this_game : 
-                                if mode == "insert" :
-                                        # 1. On ne garde que les suggestions spécifiques à CE jeu
-                                 
-                                        storage_jeux.toggle_all_suggestion(ckey_this_game, "suggestion Retenue")        
-  
-                                elif mode == "delete" :
-                                        storage_jeux.toggle_all_suggestion(ckey_this_game, "suggestion refusée")        
+                        #if sugg_this_game : 
+                        #        if mode == "insert" :
+                        #                # 1. On ne garde que les suggestions spécifiques à CE jeu
+                        #         
+                        #                storage_jeux.toggle_all_suggestion(ckey_this_game, "suggestion Retenue")        
+                        #
+                        #       elif mode == "delete" :
+                        #               storage_jeux.toggle_all_suggestion(ckey_this_game, "suggestion refusée")        
                                                                    
                     # Passe la fonction SANS les parenthèses () et utilise args=
                     st.checkbox(
@@ -128,6 +128,13 @@ def _game_card(g, list_key, user):
 
                     
                 else:
+
+                    def on_admin_change(game_id, currently_selected):
+                        mode = "delete" if currently_selected else "insert"   
+                        storage_jeux.toggle_suggestion(ckey_this_game, user["id"],mode)
+                        st.rerun()
+
+                        
                      # 1. On ne garde que les suggestions spécifiques à CE jeu
                     select_this_game = [adsel for adsel in admin_sel if str(adsel.get("id_jeux")) == ckey_this_game]
                     
@@ -147,16 +154,13 @@ def _game_card(g, list_key, user):
                     has_suggested = user["id"] in uids_this_game
                     
                     # 4. Affichage de la checkbox avec la bonne valeur
-                    val_check_suggest = st.checkbox("Je suggère ce jeu", value=has_suggested, key=f"sug_{ckey_this_game}")
+                    val_check_suggest = st.checkbox("Je suggère ce jeu", 
+                                                    value=has_suggested, 
+                                                    key=f"sug_{ckey_this_game}",
+                                                     on_change=on_admin_change,
+                                                     args=(ckey_this_game, has_suggested),)
                     
-                    # 5. Détection du clic réel (changement d'état pour ce jeu précis)
-                    if val_check_suggest != has_suggested:
-                        storage_jeux.toggle_suggestion(ckey_this_game, user["id"],"insert")
-                        st.rerun()
-                    elif   val_check_suggest == has_suggested:                  
-                        storage_jeux.toggle_suggestion(ckey_this_game, user["id"],"delete")
-                        st.rerun()
-                    
+                  
             with cc[1]:
 
            
