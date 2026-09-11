@@ -138,7 +138,7 @@ def _list_page(title, list_key, user):
         else : ### page des vieux jeux  et des jeux par mois 
            if not search_query or (search_query in title or search_query in url):
                filtered_games.append(g)
-    print(   filtered_games )
+    print(  filtered_games )
 
  
     # Affichage des cartes filtrées
@@ -347,27 +347,26 @@ def _final_page(user):
     #####--- fonction pour retrouver les infos en base
     ##-------------------------------------------------
     liste_jeu_plusieurs_exemplaire= storage_jeux.final_games_statut_plusieurs_exemplaire()
-    print(liste_jeu_plusieurs_exemplaire)
+
     def get_game_several_selected(game_id):
         result = False 
         
         for id in liste_jeu_plusieurs_exemplaire :
-          print(f" id jeux {id["id_jeux"]}")
+
           if game_id== id["id_jeux"] :
-            print(f"passage boucle vrai {game_id}  et {result}") 
+
             result = True
           else :
-            print(f"result plusieurs exemplaires {game_id}  et {result}")
+
             result = False 
 
-        print(f"result plusieurs exemplaires {game_id}  et {result}")
         return result
 
 
     list_jeu_prete = storage_jeux.get_all_loans()
     list_jeu_prete_valide =  storage_jeux.get_validated_loans()
-
-
+    print(f"liste jeu pete : {list_jeu_prete]")
+    print(f"liste jeu valide : {list_jeu_prete_valide]")
     def get_prete_value(game_id, player_key):
         result = False 
         for pret in list_jeu_prete :
@@ -375,7 +374,7 @@ def _final_page(user):
             result = True
           else :
             result = False 
-        print(f"result prete {game_id}  et {result}")   
+ 
         return result
     
     def get_admin_valide_value(game_id, player_key):
@@ -385,7 +384,7 @@ def _final_page(user):
             result = True
           else :
             result = False 
-          print(f"result valide {game_id}  et {result}")     
+  
         return result
 
     ##-------------------------------------------------
