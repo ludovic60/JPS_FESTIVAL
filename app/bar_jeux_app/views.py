@@ -369,8 +369,8 @@ def _final_page(user):
       pseudo_pret = any  (u["pseudo"] for u in users)
 
       pseudos = [u['pseudo'] for u in users if u['id'] == pret['user_id']
-      print("le pseudo")
-      print( pseudos)
+      print(f"le pseudo")
+      print(pseudos)
       result = any( pseudos[0] == player_key and pret['id_jeux'] == game_id 
                     for pret in list_jeu_prete
                   )
