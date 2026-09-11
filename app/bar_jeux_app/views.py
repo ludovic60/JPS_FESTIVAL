@@ -126,13 +126,12 @@ def _list_page(title, list_key, user):
 
     # Filtrage de la liste de jeux
     filtered_games = []
-    if list_key =="all" and not search_query :
+    if list_key =="all" : #and not search_query :
          filtered_games = []
     else :
         for g in games:
             title = (g.get("nom_jeu_complet") or g.get("nom_jeu") or "").lower()
-            url = (g.get("url_myludo") or "").lower()  # Sécurisé avec str vide si None
-            
+            url = (g.get("url_myludo") or "").lower()  # Sécurisé avec str vide si None            
             # Validation si le terme recherché est présent
             if not search_query or (search_query in title or search_query in url):
                    filtered_games.append(g)
@@ -148,7 +147,7 @@ def _list_page(title, list_key, user):
             for j, g in enumerate(filtered_games[i:i + per_row]):
                 with cols[j]:
                     _game_card(g, list_key, user)
-    else:
+    elif list_key !="all"
         st.info("Aucun jeu ne correspond à votre recherche.")
   
 ############################################################################################################
