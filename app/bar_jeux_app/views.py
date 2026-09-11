@@ -370,7 +370,7 @@ def _final_page(user):
     def get_prete_value(game_id, player_key):
         result = False 
         for pret in list_jeu_prete :
-          if game_id== pret["id_jeux"] and player_key== pret["user_id"]:
+          if game_id== pret[0]["id_jeux"] and player_key== pret[0]["user_id"]:
             result = True
           else :
             result = False 
@@ -380,7 +380,7 @@ def _final_page(user):
     def get_admin_valide_value(game_id, player_key):
         result = False 
         for pret in list_jeu_prete_valide :
-          if game_id== pret["id_jeux"] and player_key== pret["user_id"]:
+          if game_id== pret[0]["id_jeux"] and player_key== pret[0]["user_id"]:
             result = True
           else :
             result = False 
@@ -461,7 +461,7 @@ def _final_page(user):
                  "Total coché par joueur", "Total coché validé par admin"]]
     )
     gb.configure_column("_id", hide=True)
-#    gb.configure_default_column(  width=140)
+
     gb.configure_column(
         "nouveaute",
         editable=False,
@@ -565,7 +565,7 @@ def _final_page(user):
                 {
                     "field": f"{player_key}_prete",
                     "headerName": "Je prête",      # 2e niveau d'en-tête
-                    "editable": True,
+                    "editable": (user["pseudo"] == j),
                     "cellRenderer": "agCheckboxCellRenderer",
                     "width": 110,
                     "suppressSizeToFit": True,
