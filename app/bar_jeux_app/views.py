@@ -147,7 +147,7 @@ def _list_page(title, list_key, user):
             for j, g in enumerate(filtered_games[i:i + per_row]):
                 with cols[j]:
                     _game_card(g, list_key, user)
-    elif list_key !="all"
+    elif list_key !="all" :
         st.info("Aucun jeu ne correspond à votre recherche.")
   
 ############################################################################################################
