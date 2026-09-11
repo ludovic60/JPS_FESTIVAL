@@ -423,12 +423,12 @@ def _final_page(user):
             "Total coché validé par admin": "",
         }
     
-        for idx, j in enumerate(pseudo_list):
+        for idx, j in  sorted(enumerate(pseudo_list), key=lambda item: item[1])
             
             player_key = f"j{idx+1}"
             row[f"{player_key}_prete"] = bool(get_prete_value(game_id, j))  # <-- vrai bool
             row[f"{player_key}_admin"] = bool(get_admin_valide_value(game_id, j))  # <-- vrai bool
-            
+            print(f" {j}  {game_id}  { bool(get_prete_value(game_id, j))}   { bool(get_admin_valide_value(game_id, j)) }")
         row_jeux.append(row)
     
     df_jeux = pd.DataFrame(row_jeux)
@@ -552,7 +552,7 @@ def _final_page(user):
 
     
     # --- Colonnes groupées par joueur (double en-tête) ---
-    for idx, j in enumerate(pseudo_list):
+    for idx, j in   sorted(enumerate(pseudo_list), key=lambda item: item[1]):
         player_key = f"j{idx+1}"
         group_col = {
             "headerName": j,                      # 1er niveau d'en-tête : le pseudo
