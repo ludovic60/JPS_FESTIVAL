@@ -22,7 +22,7 @@ def nouveaute_def( id_game) :
                 periode_parution = int(str(info_jeu[0].get("annee_parution"))) *100 +  int(str(info_jeu[0].get("mois_sortie")) )
                 periode_dernier_festival = (int( cs._secret("ANNEE_FESTIVAL"))-1) *100 + int(cs._secret("MOIS_FESTIVAL") )
                       
-                if periode_parution  >  periode_dernier_festival :
+                if periode_parution  >=  periode_dernier_festival :
                                New = f"✨NOUVEAUTE"
                 else :   
                                New = f"🏺ANCIEN"
