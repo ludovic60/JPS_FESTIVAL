@@ -23,11 +23,11 @@ def nouveaute_def( id_game) :
                 periode_dernier_festival = (int( cs._secret("ANNEE_FESTIVAL"))-1) *100 + int(cs._secret("MOIS_FESTIVAL") )
                       
                 if periode_parution  >  periode_dernier_festival :
-                               New = f"✨NOUVEAUTE"
+                               New = f"✨green[NOUVEAUTE]"
                 else :   
-                               New = f"🏺ANCIEN"
+                               New = f"🏺blue[ANCIEN]"
         else :
-                   New = f"🧐 INCONNU"
+                   New = f"🧐 blue[INCONNU]"
            
         return New            
 
@@ -82,7 +82,7 @@ def _game_card(g, list_key, user):
             title = g.get("nom_jeu_complet") or g.get("nom_jeu") or "Jeu"
 
             st.markdown(f"### {title}")
-            st.markdown(f"*{nouveaute_def( str(g['_id']))}*:green[en vert].")
+            st.markdown(f"*{nouveaute_def( str(g['_id']))}*")
 
             ##### gestion du classement =      
             le_classement = mise_forme_classement(g.get("classement_jps_final"))
