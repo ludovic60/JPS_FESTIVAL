@@ -370,6 +370,8 @@ def _final_page(user):
     def get_prete_value(game_id, player_key):
         result = False 
         for pret in list_jeu_prete :
+          print(pret[0]["id_jeux"])
+          print(pret[0]["user_id"])
           if game_id== pret[0]["id_jeux"] and player_key== pret[0]["user_id"]:
             result = True
           else :
