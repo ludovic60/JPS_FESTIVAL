@@ -126,19 +126,17 @@ def _list_page(title, list_key, user):
 
     # Filtrage de la liste de jeux
     filtered_games = []
+    if list_key =="all" and not search_query :
+         filtered_games = []
+    else :
+        for g in games:
+            title = (g.get("nom_jeu_complet") or g.get("nom_jeu") or "").lower()
+            url = (g.get("url_myludo") or "").lower()  # Sécurisé avec str vide si None
+            
+            # Validation si le terme recherché est présent
+            if not search_query or (search_query in title or search_query in url):
+                   filtered_games.append(g)
 
-    for g in games:
-        title = (g.get("nom_jeu_complet") or g.get("nom_jeu") or "").lower()
-        url = (g.get("url_myludo") or "").lower()  # Sécurisé avec str vide si None
-        
-        # Validation si le terme recherché est présent
-        if list_key =="all" :  ### page de  recherche global d'un jeu 
-           if  search_query and ( search_query in title or search_query in url ):
-               filtered_games.append(g)
-        else : ### page des vieux jeux  et des jeux par mois 
-           if not search_query or (search_query in title or search_query in url):
-               filtered_games.append(g)
-    print(  filtered_games )
 
  
     # Affichage des cartes filtrées 
