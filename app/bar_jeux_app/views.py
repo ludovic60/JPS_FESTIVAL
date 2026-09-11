@@ -31,9 +31,9 @@ def main_app(user):
         st.caption(user["email"])
         if user["role"] == "admin":
             st.markdown("<span class='ws-tag-admin'>Admin</span>", unsafe_allow_html=True)
-            pages = ["Jeux sortis depuis dernier festival", "Jeux sortis avant dernier festival", "Demandes d'ajout", "Liste suggestions", "Creation mot de passe", "Liste finale"]
+            pages = ["Liste finale","Recherche jeu", "Demandes d'ajout","Liste suggestions", "Jeux sortis depuis dernier festival", "Jeux sortis avant dernier festival"  "Creation mot de passe"]
         else : 
-            pages = ["Jeux sortis depuis dernier festival", "Jeux sortis avant dernier festival", "Demandes d'ajout", "Liste finale"]
+            pages = ["Liste finale","Recherche jeu", "Demandes d'ajout"]
         page = st.radio("Navigation", pages, label_visibility="collapsed")
         st.divider()
         if st.button("Déconnexion"):
@@ -53,6 +53,8 @@ def main_app(user):
         _requests_suggestion_page(user)    
     elif page == "Creation mot de passe":
         _password_page(user)
+    elif page == "Recherche jeu":
+         _list_page(f"Recherche jeu", "all", user)
     else:
         _final_page(user)
 
@@ -87,6 +89,10 @@ def _password_page(user):
              st.info("💡 **Remarque :** En raison du salage aléatoire de Bcrypt, chaque clic générera une empreinte différente, même pour un mot de passe identique.")
      else:
          st.warning("Veuillez saisir un mot de passe avant de cliquer.")
+
+
+
+
 
 
 ############################################################################################################
@@ -126,9 +132,15 @@ def _list_page(title, list_key, user):
         url = (g.get("url_myludo") or "").lower()  # Sécurisé avec str vide si None
         
         # Validation si le terme recherché est présent
-        if not search_query or (search_query in title or search_query in url):
-            filtered_games.append(g)
+        if list_key ="all"  ### page de  recherche global d'un jeu 
+           if  search_query in title or search_query in url :
+               filtered_games.append(g)
+        else : ### page des vieux jeux  et des jeux par mois 
+           if not search_query or (search_query in title or search_query in url):
+               filtered_games.append(g)
 
+
+ 
     # Affichage des cartes filtrées
     if filtered_games:
         per_row = 3
