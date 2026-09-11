@@ -141,7 +141,7 @@ def _list_page(title, list_key, user):
     print(  filtered_games )
 
  
-    # Affichage des cartes filtrées
+    # Affichage des cartes filtrées 
     if filtered_games:
         per_row = 3
         # FIX : On utilise len(filtered_games) ici !
