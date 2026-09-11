@@ -367,7 +367,7 @@ def _final_page(user):
     print(f"liste jeu valide : {list_jeu_prete_valide}")
     def get_prete_value(game_id, player_key):
        
-      result = any( item['user_id'] == player_key and item['id_jeux'] == game_id 
+      result = any( pret['user_id'] == player_key and pret['id_jeux'] == game_id 
                     for pret in list_jeu_prete
                   )
        
@@ -375,7 +375,7 @@ def _final_page(user):
     
     def get_admin_valide_value(game_id, player_key):
 
-      result = any( item['user_id'] == player_key and item['id_jeux'] == game_id 
+      result = any( pret['user_id'] == player_key and pret['id_jeux'] == game_id 
                     for pret in list_jeu_prete_valide
                   )
        
