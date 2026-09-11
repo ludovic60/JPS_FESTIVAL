@@ -423,7 +423,7 @@ def _final_page(user):
             "Total coché validé par admin": "",
         }
     
-        for idx, j in  sorted(enumerate(pseudo_list), key=lambda item: item[1])
+        for idx, j in  sorted(enumerate(pseudo_list), key=lambda item: item[1]) :
             
             player_key = f"j{idx+1}"
             row[f"{player_key}_prete"] = bool(get_prete_value(game_id, j))  # <-- vrai bool
