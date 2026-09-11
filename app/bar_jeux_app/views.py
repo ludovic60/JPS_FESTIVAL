@@ -111,11 +111,7 @@ def _list_page(title, list_key, user):
                 storage_jeux.add_request("ajout jeux", n, u, list_key, user["pseudo"])
                 st.success("Demande envoyée à l'administrateur")
 
-    games = storage_jeux.load_games(list_key)
-    
-    if not games:
-        st.info("Aucun jeu dans cette liste.")
-        return
+
 
     # Champ de saisie utilisateur
     search_query = st.text_input(
@@ -129,6 +125,11 @@ def _list_page(title, list_key, user):
     if list_key =="all" and not search_query :
          filtered_games = []
     else :
+        games = storage_jeux.load_games(list_key)
+    
+        if not games:
+              st.info("Aucun jeu dans cette liste.")
+              return
         for g in games:
             title = (g.get("nom_jeu_complet") or g.get("nom_jeu") or "").lower()
             url = (g.get("url_myludo") or "").lower()  # Sécurisé avec str vide si None            
@@ -147,7 +148,7 @@ def _list_page(title, list_key, user):
             for j, g in enumerate(filtered_games[i:i + per_row]):
                 with cols[j]:
                     _game_card(g, list_key, user)
-    elif list_key !="all" :
+    elif list_key !="all"  or ( list_key =="all" and search_query) :
         st.info("Aucun jeu ne correspond à votre recherche.")
   
 ############################################################################################################
