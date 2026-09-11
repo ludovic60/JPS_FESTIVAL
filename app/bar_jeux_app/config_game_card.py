@@ -81,8 +81,8 @@ def _game_card(g, list_key, user):
         with c2:
             title = g.get("nom_jeu_complet") or g.get("nom_jeu") or "Jeu"
 
-            st.markdown(f" {title}")
-            st.markdown(f"nouveaute_def( str(g['_id']))")
+            st.markdown(f"### {title}")
+            st.markdown(f"*{nouveaute_def( str(g['_id']))}*")
 
             ##### gestion du classement =      
             le_classement = mise_forme_classement(g.get("classement_jps_final"))
