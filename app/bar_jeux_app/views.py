@@ -366,8 +366,10 @@ def _final_page(user):
     print(f"liste jeu pete : {list_jeu_prete}")
     print(f"liste jeu valide : {list_jeu_prete_valide}")
     def get_prete_value(game_id, player_key):
+       
       pseudos = [u['pseudo'] for u in users if u['_id'] == player_key]
       print(f"le pseudo")
+      print(player_key)
       print(pseudos)
       result = any( pseudos[0] == player_key and pret['id_jeux'] == game_id 
                     for pret in list_jeu_prete
@@ -377,7 +379,8 @@ def _final_page(user):
     
     def get_admin_valide_value(game_id, player_key):
       pseudos = [u['pseudo'] for u in users if u['_id'] == player_key]
-      print("le pseudo")           
+      print("le pseudo")  
+      print(player_key)
       print( pseudos)
       result = any( pseudos[0] == player_key and pret['id_jeux'] == game_id 
                     for pret in list_jeu_prete_valide
