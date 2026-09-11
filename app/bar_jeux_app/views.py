@@ -126,7 +126,7 @@ def _list_page(title, list_key, user):
 
     # Filtrage de la liste de jeux
     filtered_games = []
-    if list_key =="all" : #and not search_query :
+    if list_key =="all" and not search_query :
          filtered_games = []
     else :
         for g in games:
