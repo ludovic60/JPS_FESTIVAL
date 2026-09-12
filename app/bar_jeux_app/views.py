@@ -638,7 +638,7 @@ def _final_page(user):
 
      
 
-   with st.spinner("Chargement et affichage des données en cours..."):
+    with st.spinner("Chargement et affichage des données en cours..."):
         grid_response = AgGrid(
                  df_jeux,
                  gridOptions=grid_options,
