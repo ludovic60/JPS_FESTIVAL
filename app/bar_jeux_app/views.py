@@ -191,7 +191,7 @@ def _requests_page(user):
 def _final_page(user):
     st.title("Liste des jeux ")
     st.markdown(f"#####  Vous allez pouvoir remplir le tableau pour indiquer ce que vous pouvez emmener.")
-    st.markdown(f"#####  les administrateurs valideront les différents choix pour que vous puissiez avoir votre liste de jeu à emmenener .")
+    st.markdown(f"#####  les administrateurs valideront les différents choix pour que vous puissiez avoir votre liste de jeu à emmener .")
  
 
     # --- EXTRACTION DES DONNEES UTILES ---
