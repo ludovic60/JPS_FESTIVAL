@@ -658,27 +658,43 @@ def _final_page(user):
              print(grid_response["event_data"])
  
     # --- Détection des changements ---
-    if grid_response.get("event_data"):
-        event = grid_response["event_data"]
-
-        # On récupère directement le nom du champ, la nouvelle valeur et la ligne
-        col = event.get("colId")  # ou event.get("field")
-        new_val = event.get("newValue")
-        game_id = event.get("data", {}).get("_id")
-        print("event detecte")
+    new_df = pd.DataFrame(grid_response["data"])
     
-        if col and game_id is not None:
-            if col.endswith("_prete"):
-                player_key = col.replace("_prete", "")
-                print("execute prete")
-                on_change_prete(game_id, player_key, new_val)
+    # 2. Détection du changement
+    if "old_grid_df" in st.session_state:
+        old_df = st.session_state["old_grid_df"]
     
-            elif col.endswith("_admin"):
-                player_key = col.replace("_admin", "")
-                on_change_admin(game_id, player_key, new_val)
+        if len(old_df) == len(new_df):
+            checkbox_cols = [
+                c
+                for c in new_df.columns
+                if c.endswith(("_prete", "_admin"))
+                or c == "Plusieurs exemplaires souhaités"
+            ]
     
-            elif col == "Plusieurs exemplaires souhaités":
-                on_change_plusieurs_exemplaires(game_id, new_val)   
+            # Recherche de la cellule modifiée
+            for i in new_df.index:
+                game_id = new_df.at[i, "_id"]
+                for col in checkbox_cols:
+                    old_val = old_df.at[i, col]
+                    new_val = new_df.at[i, col]
+    
+                    if bool(old_val) != bool(new_val):
+                        st.write(
+                            f"Changement détecté sur {col} pour le jeu {game_id} : {old_val} -> {new_val}"
+                        )
+    
+                        if col.endswith("_prete"):
+                            player_key = col.replace("_prete", "")
+                            on_change_prete(game_id, player_key, new_val)
+                        elif col.endswith("_admin"):
+                            player_key = col.replace("_admin", "")
+                            on_change_admin(game_id, player_key, new_val)
+                        elif col == "Plusieurs exemplaires souhaités":
+                            on_change_plusieurs_exemplaires(game_id, new_val)
+    
+    # 3. Mettre à jour l'état précédent pour le prochain rerun
+    st.session_state["old_grid_df"] = new_df.copy()
  
 
 
