@@ -325,8 +325,8 @@ def toggle_loan(ckey, user_id, value):
         if value :
             new_loan= {         
                          "annee" : cs._secret("ANNEE_FESTIVAL"), 
-                         "id_jeux": str(ObjectId(ckey)),
-                         "user_id": str(ObjectId(user_id)),
+                         "id_jeux": ckey,
+                         "user_id": user_id,
                 		 "valide_par_admin" : "False"
                }   
         
@@ -334,7 +334,7 @@ def toggle_loan(ckey, user_id, value):
         else :  
             # deselectionne le jeu 
     
-            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)),"user_id":str((ObjectId(user_id)))}
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": ckey,"user_id":user_id}
             resultat = game_loan_tb.delete_many(filtre_tb)
 
 
@@ -343,7 +343,7 @@ def set_loan_valide_admin(ckey, user_id, value):
     if con_mongo : 
             db = cs.get_db()
             game_loan_tb = db.prets_jeux    
-            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)),"user_id":str((ObjectId(user_id)))}
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": ckey,"user_id":user_id}
             resultat = game_selec_tb.update_many(filtre_tb, {"$set": {  "valide_par_admin": value } })
             
 
