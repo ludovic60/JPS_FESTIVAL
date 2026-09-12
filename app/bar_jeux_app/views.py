@@ -227,13 +227,13 @@ def _final_page(user):
     liste_info_valide = []
     for game in  liste_pret_validé :
         id_jeu = game["id_jeux"]
-        info_games = storage_jeux.get_info_games(id_jeu)
+        info_games_valide = storage_jeux.get_info_games(id_jeu)
         # Récupération sécurisée du pseudo (converti en str pour être sûr que les ID matchent)
         user_id_str = str(game["user_id"])
         pseudo = users_dict.get(user_id_str, "Utilisateur inconnu")
        
           
-        liste_info_valide.append ({"classement":  info_games_pret[0]["classement_jps_final"] ,  "Nouveauté":nouveaute_def(game["id_jeux"]), "pseudo":pseudo , "nom": info_games[0]["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide":True})
+        liste_info_valide.append ({"classement":  game[0]["classement_jps_final"] ,  "Nouveauté":nouveaute_def(game["id_jeux"]), "pseudo":pseudo , "nom": game[0]["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide":"True"})
      
     df_jeux_valide_graphique  = pd.DataFrame(liste_info_valide)
     liste_info = []
