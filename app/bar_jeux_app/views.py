@@ -228,7 +228,7 @@ def _final_page(user):
         id_jeu = game["id_jeux"]
         info_games = storage_jeux.get_info_games(id_jeu)
         # Récupération sécurisée du pseudo (converti en str pour être sûr que les ID matchent)
-        user_id_str = str(game_pret["user_id"])
+        user_id_str = str(game["user_id"])
         pseudo = users_dict.get(user_id_str, "Utilisateur inconnu")
        
           
