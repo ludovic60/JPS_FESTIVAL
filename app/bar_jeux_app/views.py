@@ -520,6 +520,7 @@ def _final_page(user):
         "Plusieurs exemplaires souhaités",
         editable=True,
         cellRenderer="agCheckboxCellRenderer",
+        cellEditor = "agCheckboxCellEditor",
         width=90,
         minWidth=30,
         maxWidth=90,
@@ -568,6 +569,7 @@ def _final_page(user):
                     "headerName": "Je prête",      # 2e niveau d'en-tête
                     "editable": (user["pseudo"] == j),
                     "cellRenderer": "agCheckboxCellRenderer",
+                    "cellEditor": "agCheckboxCellEditor",
                     "width": 110,
                     "suppressSizeToFit": True,
                 },
@@ -576,6 +578,7 @@ def _final_page(user):
                     "headerName": "Validé",
                     "editable": (user["role"] == "admin"),
                     "cellRenderer": "agCheckboxCellRenderer",
+                    "cellEditor": "agCheckboxCellEditor",
                     "width": 110,
                     "suppressSizeToFit": True,
                     "cellStyle": JsCode("""
@@ -641,7 +644,7 @@ def _final_page(user):
     grid_response = AgGrid(
                  df_jeux,
                  gridOptions=grid_options,
-                 update_mode=GridUpdateMode.VALUE_CHANGED,
+                 update_mode=GridUpdateMode.VALUE_CHANGED | GridUpdateMode.MODEL_CHANGED,
                  data_return_mode=DataReturnMode.AS_INPUT,
                  allow_unsafe_jscode=True,
                  fit_columns_on_grid_load=False,
