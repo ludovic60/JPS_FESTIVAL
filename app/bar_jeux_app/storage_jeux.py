@@ -137,7 +137,7 @@ def toggle_admin_selected(ckey, value):
             resultat = game_selec_tb.delete_many(filtre_tb)
         else :
             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": ckey }
-            resultat = game_selec_tb.update_many(filtre_tb, {"$set": {  "plusieurs_exemplaires_souhaites": value } })
+            resultat = game_selec_tb.update_many(filtre_tb, {"$set": {"plusieurs_exemplaires_souhaites": value } })
             resultat = {}
         
 
@@ -212,7 +212,7 @@ def toggle_all_suggestion(ckey, value):
     if   con_mongo : 
         db = cs.get_db()
         game_suggest_tb = db.jeux_suggestions
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"),  "id_jeux": str(ObjectId(ckey))}
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"),  "id_jeux": ckey}
         resultat = game_suggest_tb.update_many(filtre_tb, {"$set": { "statut" : value } })   
        
 
