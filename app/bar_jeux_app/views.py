@@ -650,13 +650,14 @@ def _final_page(user):
          
     grid_data = grid_response["data"]
     new_df = pd.DataFrame(grid_response["data"]) 
-    print("OK")
+    if "event_data" in grid_response and grid_response["event_data"]:
+             print("--- ÉVÉNEMENT CAPTÉ ---")
+             print(grid_response["event_data"])
+ 
     # --- Détection des changements ---
     if grid_response.get("event_data"):
         event = grid_response["event_data"]
-        if "event_data" in grid_response and grid_response["event_data"]:
-             print("--- ÉVÉNEMENT CAPTÉ ---")
-             print(grid_response["event_data"])
+
         # On récupère directement le nom du champ, la nouvelle valeur et la ligne
         col = event.get("colId")  # ou event.get("field")
         new_val = event.get("newValue")
