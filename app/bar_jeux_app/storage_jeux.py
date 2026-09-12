@@ -344,7 +344,7 @@ def set_loan_valide_admin(ckey, user_id, value):
             db = cs.get_db()
             game_loan_tb = db.prets_jeux    
             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": ckey,"user_id":user_id}
-            resultat = game_selec_tb.update_many(filtre_tb, {"$set": {  "valide_par_admin": value } })
+            resultat = game_loan_tb.update_many(filtre_tb, {"$set": {  "valide_par_admin": value } })
             
 
     
