@@ -650,7 +650,7 @@ def _final_page(user):
          
     grid_data = grid_response["data"]
     new_df = pd.DataFrame(grid_response["data"]) 
-    
+    print("OK")
     # --- Détection des changements ---
     if grid_response.get("event_data"):
         event = grid_response["event_data"]
