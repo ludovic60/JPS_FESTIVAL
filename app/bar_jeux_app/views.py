@@ -667,7 +667,7 @@ def _final_page(user):
             for col in checkbox_cols:
                 old_val = old_df.at[i, col]
                 new_val = new_df.at[i, col]
-                print(f"col  {col}  {bool(old_val)}    {bool(new_val} ")
+                print(f"col  {col}  {bool(old_val)}    {bool(new_val)} ")
              
                 if bool(old_val) != bool(new_val):
                   
