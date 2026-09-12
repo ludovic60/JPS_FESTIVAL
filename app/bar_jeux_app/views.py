@@ -561,6 +561,7 @@ def _final_page(user):
     # --- Colonnes groupées par joueur (double en-tête) ---
     for idx, j in   sorted(enumerate(pseudo_list), key=lambda item: item[1]):
         player_key = f"j{idx+1}"
+        print(f"player key  = {player_key}")
         group_col = {
             "headerName": j,                      # 1er niveau d'en-tête : le pseudo
             "children": [
