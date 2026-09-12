@@ -638,8 +638,7 @@ def _final_page(user):
 
      
 
-    with st.spinner("Chargement et affichage des données en cours..."):
-        grid_response = AgGrid(
+    grid_response = AgGrid(
                  df_jeux,
                  gridOptions=grid_options,
                  update_mode=GridUpdateMode.VALUE_CHANGED,
@@ -649,9 +648,8 @@ def _final_page(user):
                  height=dynamic_height
        )
          
-        grid_data = grid_response["data"]
-        if grid_data:
-              new_df = pd.DataFrame(grid_response["data"]) 
+    grid_data = grid_response["data"]
+    new_df = pd.DataFrame(grid_response["data"]) 
     
     # --- Détection des changements ---
     old_df = st.session_state.get("old_grid_df")
