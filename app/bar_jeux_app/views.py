@@ -715,30 +715,3 @@ def _final_page(user):
 
 
 
-
-
-
-
- 
-    if grid_response.get("event_data"):
-       event = grid_response["event_data"]
-   
-       # On récupère directement le nom du champ, la nouvelle valeur et la ligne
-       col = event.get("colId")  # ou event.get("field")
-       new_val = event.get("newValue")
-       game_id = event.get("data", {}).get("_id")
-   
-       if col and game_id is not None:
-           if col.endswith("_prete"):
-               player_key = col.replace("_prete", "")
-               on_change_prete(game_id, player_key, new_val)
-   
-           elif col.endswith("_admin"):
-               player_key = col.replace("_admin", "")
-               on_change_admin(game_id, player_key, new_val)
-   
-           elif col == "Plusieurs exemplaires souhaités":
-               on_change_plusieurs_exemplaires(game_id, new_val)
-
-
-
