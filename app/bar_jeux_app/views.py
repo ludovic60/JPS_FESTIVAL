@@ -650,7 +650,7 @@ def _final_page(user):
        )
          
         grid_data = grid_response["data"]
-          if grid_data:
+    if grid_data:
               new_df = pd.DataFrame(grid_response["data"]) 
     
     # --- Détection des changements ---
