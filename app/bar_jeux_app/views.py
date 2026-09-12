@@ -388,13 +388,13 @@ def _final_page(user):
     def on_change_prete(game_id, player_key, new_val) :
        print(f"change prete afaire {game_id}   {player_key}   {new_val}  ")  
        id_user = [u['_id'] for u in users if u['pseudo'] == player_key]
-       storage_jeux.toggle_loan(game_id, id_user, new_val)
+       storage_jeux.toggle_loan(game_id, str(id_user), new_val)
        print("change prete done")  
      
     def on_change_admin(game_id, player_key, new_val) :
        print(f"change admin  afaire {game_id}   {player_key}   {new_val}  ") 
        id_user = [u['_id'] for u in users if u['pseudo'] == player_key]
-       storage_jeux.set_loan_valide_admin(game_id, player_key, new_val)           
+       storage_jeux.set_loan_valide_admin(game_id, str(id_user), new_val)           
        print("change prete done")  
                       
     def on_change_plusieurs_exemplaires(game_id, new_val) :
