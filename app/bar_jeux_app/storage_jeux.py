@@ -137,7 +137,7 @@ def toggle_admin_selected(ckey, value):
             resultat = game_selec_tb.delete_many(filtre_tb)
         else :
             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": ckey }
-            resultat = game_selec_tb.update_many(filtre_tb, {"$set": {"plusieurs_exemplaires_souhaites": bool(value) } })
+            resultat = game_selec_tb.update_many(filtre_tb, {"$set": {"plusieurs_exemplaires_souhaites": str(value) } })
             resultat = {}
         
 
@@ -202,7 +202,7 @@ def toggle_suggestion(ckey, user_id, value):
       #  else :  
       #      # change le statut de la request
       #      filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)),"user_id":str((ObjectId(user_id)))}
-      #      resultat = game_suggest_tb.update_many(filtre_tb, {"$set": { "statut" : bool(value) } })
+      #      resultat = game_suggest_tb.update_many(filtre_tb, {"$set": { "statut" : str(value) } })
 
 
 
@@ -344,7 +344,7 @@ def set_loan_valide_admin(ckey, user_id, value):
             db = cs.get_db()
             game_loan_tb = db.prets_jeux    
             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": ckey,"user_id":user_id}
-            resultat = game_loan_tb.update_many(filtre_tb, {"$set": {  "valide_par_admin": bool(value) } })
+            resultat = game_loan_tb.update_many(filtre_tb, {"$set": {  "valide_par_admin": str(value) } })
             
 
     
