@@ -189,7 +189,8 @@ def _requests_page(user):
 ############################################################################################################
 
 def _final_page(user):
-    st.title("Liste finale — Prêts")
+    st.title("Liste des jeux ")
+    st.title("Liste des jeux ")
 
 
 
