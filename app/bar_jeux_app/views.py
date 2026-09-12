@@ -659,10 +659,12 @@ def _final_page(user):
         col = event.get("colId")  # ou event.get("field")
         new_val = event.get("newValue")
         game_id = event.get("data", {}).get("_id")
+        print("event detecte")
     
         if col and game_id is not None:
             if col.endswith("_prete"):
                 player_key = col.replace("_prete", "")
+                print("execute prete")
                 on_change_prete(game_id, player_key, new_val)
     
             elif col.endswith("_admin"):
