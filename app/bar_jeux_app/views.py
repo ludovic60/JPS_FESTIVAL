@@ -431,7 +431,7 @@ def _final_page(user):
     
         for idx, j in  sorted(enumerate(pseudo_list), key=lambda item: item[1]) :
             
-            player_key = f"{j}[idx+1}"
+            player_key = j
             row[f"{player_key}_prete"] = bool(get_prete_value(game_id, j))  # <-- vrai bool
             row[f"{player_key}_admin"] = bool(get_admin_valide_value(game_id, j))  # <-- vrai bool
 
@@ -560,7 +560,7 @@ def _final_page(user):
     
     # --- Colonnes groupées par joueur (double en-tête) ---
     for idx, j in   sorted(enumerate(pseudo_list), key=lambda item: item[1]):
-        player_key = f"{j}{idx+1}"
+        player_key = j
         print(f"player key  = {player_key}")
         group_col = {
             "headerName": j,                      # 1er niveau d'en-tête : le pseudo
@@ -663,7 +663,25 @@ def _final_page(user):
     
     # 2. Détection du changement
 
- 
+   if grid_response.get("event_data"):
+      event = grid_response["event_data"]
+  
+      # On récupère directement le nom du champ, la nouvelle valeur et la ligne
+      col = event.get("colId")  # ou event.get("field")
+      new_val = event.get("newValue")
+      game_id = event.get("data", {}).get("_id")
+  
+      if col and game_id is not None:
+          if col.endswith("_prete"):
+              player_key = col.replace("_prete", "")
+              on_change_prete(game_id, player_key, new_val)
+  
+          elif col.endswith("_admin"):
+              player_key = col.replace("_admin", "")
+              on_change_admin(game_id, player_key, new_val)
+  
+          elif col == "Plusieurs exemplaires souhaités":
+              on_change_plusieurs_exemplaires(game_id, new_val)
 
 
 
