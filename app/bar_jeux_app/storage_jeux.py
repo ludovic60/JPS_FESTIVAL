@@ -136,7 +136,7 @@ def toggle_admin_selected(ckey, value):
             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)) }
             resultat = game_selec_tb.delete_many(filtre_tb)
         else :
-            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)) }
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": ckey }
             resultat = game_selec_tb.update_many(filtre_tb, {"$set": {  "plusieurs_exemplaires_souhaites": value } })
             resultat = {}
         
