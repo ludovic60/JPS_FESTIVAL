@@ -31,9 +31,9 @@ def main_app(user):
         st.caption(user["email"])
         if user["role"] == "admin":
             st.markdown("<span class='ws-tag-admin'>Admin</span>", unsafe_allow_html=True)
-            pages = ["Liste finale","Recherche jeu", "Demandes d'ajout","Liste suggestions", "Jeux sortis depuis dernier festival", "Jeux sortis avant dernier festival" , "Creation mot de passe"]
+            pages = ["Liste des jeux","Recherche jeu", "Demandes d'ajout","Liste suggestions", "Jeux sortis depuis dernier festival", "Jeux sortis avant dernier festival" , "Creation mot de passe"]
         else : 
-            pages = ["Liste finale","Recherche jeu", "Demandes d'ajout"]
+            pages = ["Liste des jeux","Recherche jeu", "Demandes d'ajout"]
         page = st.radio("Navigation", pages, label_visibility="collapsed")
         st.divider()
         if st.button("Déconnexion"):
@@ -190,9 +190,9 @@ def _requests_page(user):
 
 def _final_page(user):
     st.title("Liste des jeux ")
-    st.title("Liste des jeux ")
-
-
+    st.markdown(f"###  Vous allez pouvoir remplir le tableau pour indiquer ce que vous pouvez emmener.")
+    st.markdown(f"###  les administrateurs valideront les différents choix pour que vous puissiez avoir votre liste de jeu à emmenener .")
+ 
 
     # --- EXTRACTION DES DONNEES UTILES ---
         #--- liste des jeux
