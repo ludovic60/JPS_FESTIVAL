@@ -669,38 +669,46 @@ def _final_page(user):
     if "old_grid_df" in st.session_state:
         old_df = st.session_state["old_grid_df"]
     
-        if len(old_df) == len(new_df):
+        # Aligner les deux DataFrames sur l'identifiant unique `_id`
+        if "_id" in new_df.columns and "_id" in old_df.columns:
+            # On définit '_id' comme index pour une recherche directe et sécurisée
+            old_df_indexed = old_df.set_index("_id")
+            new_df_indexed = new_df.set_index("_id")
+    
             checkbox_cols = [
                 c
-                for c in new_df.columns
+                for c in new_df_indexed.columns
                 if c.endswith(("_prete", "_admin"))
                 or c == "Plusieurs exemplaires souhaités"
             ]
     
-            # Recherche de la cellule modifiée
-            for i in new_df.index:
-                game_id = new_df.at[i, "_id"]
-                for col in checkbox_cols:
-                    old_val = old_df.at[i, col]
-                    new_val = new_df.at[i, col]
+            # Parcours par game_id (qui est maintenant l'index)
+            for game_id in new_df_indexed.index:
+                # Vérifier que le jeu existait bien dans l'ancien dataframe
+                if game_id in old_df_indexed.index:
+                    for col in checkbox_cols:
+                        if col in old_df_indexed.columns:
+                            old_val = old_df_indexed.at[game_id, col]
+                            new_val = new_df_indexed.at[game_id, col]
     
-                    if bool(old_val) != bool(new_val):
-                        st.write(
-                            f"Changement détecté sur {col} pour le jeu {game_id} : {old_val} -> {new_val}"
-                        )
+                            if bool(old_val) != bool(new_val):
+                                st.write(
+                                    f"Changement détecté sur {col} pour le jeu {game_id} : {old_val} -> {new_val}"
+                                )
     
-                        if col.endswith("_prete"):
-                            player_key = col.replace("_prete", "")
-                            on_change_prete(game_id, player_key, new_val)
-                        elif col.endswith("_admin"):
-                            player_key = col.replace("_admin", "")
-                            on_change_admin(game_id, player_key, new_val)
-                        elif col == "Plusieurs exemplaires souhaités":
-                            on_change_plusieurs_exemplaires(game_id, new_val)
+                                if col.endswith("_prete"):
+                                    player_key = col.replace("_prete", "")
+                                    on_change_prete(game_id, player_key, new_val)
+                                elif col.endswith("_admin"):
+                                    player_key = col.replace("_admin", "")
+                                    on_change_admin(game_id, player_key, new_val)
+                                elif col == "Plusieurs exemplaires souhaités":
+                                    on_change_plusieurs_exemplaires(
+                                        game_id, new_val
+                                    )
     
     # 3. Mettre à jour l'état précédent pour le prochain rerun
     st.session_state["old_grid_df"] = new_df.copy()
-
 
 
 
