@@ -221,7 +221,8 @@ def _final_page(user):
     col_graph1, col_graph2, col_graph3 = st.columns(3)
 
     ###########---- 0 dataframe pour alimenter les graph 
-
+    # 1. Optimisation : création d'un dictionnaire d'utilisateurs {str(id): pseudo}
+    users_dict = {str(u["_id"]): u.get("pseudo", "Inconnu") for u in users}
     liste_pret_validé = storage_jeux.get_validated_loans()
     liste_info_valide = []
     for game in  liste_pret_validé :
@@ -238,8 +239,7 @@ def _final_page(user):
     liste_info = []
     liste_pret_user = storage_jeux.get_all_loans()
     
-    # 1. Optimisation : création d'un dictionnaire d'utilisateurs {str(id): pseudo}
-    users_dict = {str(u["_id"]): u.get("pseudo", "Inconnu") for u in users}
+  
     
     for game_pret in liste_pret_user:
    
