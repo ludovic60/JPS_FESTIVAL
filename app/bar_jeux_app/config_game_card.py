@@ -153,12 +153,16 @@ def _game_card(g, list_key, user):
                     
                     # 1. On ne garde que les suggestions spécifiques à CE jeu
                     sugg_this_game = [s for s in sugg if str(s.get("id_jeux")) == ckey_this_game]
+                    sugg_prete_this_game = [s for s in sugg_prete if str(s.get("id_jeux")) == ckey_this_game]    
                     
                     # 2. On extrait les IDs des utilisateurs ayant suggéré CE jeu
                     uids_this_game = [s["user_id"] for s in sugg_this_game]
-                    
+                    uids_this_game_pret = [s["user_id"] for s in sugg_prete_this_game]
+
                     # 3. L'utilisateur a-t-il suggéré CE jeu ?
                     has_suggested = user["id"] in uids_this_game
+                    has_suggested_prete = user["id"] in uids_this_game_pret
+                        
                     
                     # 4. Affichage de la checkbox avec la bonne valeur
                     val_check_suggest = st.checkbox("Je suggère ce jeu", 
@@ -171,7 +175,7 @@ def _game_card(g, list_key, user):
                                                     value=has_suggested_prete, 
                                                     key=f"sug_prete_{ckey_this_game}",
                                                      on_change=on_admin_change,
-                                                     args=(ckey_this_game, has_suggested,"prete"),)
+                                                     args=(ckey_this_game, has_suggested_prete,"prete"),)
             with cc[1]:
 
            
