@@ -68,7 +68,9 @@ def _game_card(g, list_key, user):
     is_admin = user["role"] == "admin"
     admin_sel = storage_jeux.get_admin_selected()
     
-    sugg = storage_jeux.get_suggestions()
+    sugg = storage_jeux.get_suggestions("sugg")
+    sugg_prete = storage_jeux.get_suggestions("prete")
+        
     has_selected_this_game=""  
     select_this_game=""
 
@@ -134,7 +136,7 @@ def _game_card(g, list_key, user):
                     
                 else:
 
-                    def on_admin_change(game_id, currently_selected):
+                    def on_admin_change(game_id, currently_selected,mode):
                         mode = "delete" if currently_selected else "insert"   
                         storage_jeux.toggle_suggestion(ckey_this_game, user["id"],mode)
                         st.rerun()
@@ -163,9 +165,13 @@ def _game_card(g, list_key, user):
                                                     value=has_suggested, 
                                                     key=f"sug_{ckey_this_game}",
                                                      on_change=on_admin_change,
-                                                     args=(ckey_this_game, has_suggested),)
+                                                     args=(ckey_this_game, has_suggested,"suggest"),)
                     
-                  
+                   val_check_suggest_prete = st.checkbox("Je suggère et prete ce jeu", 
+                                                    value=has_suggested_prete, 
+                                                    key=f"sug_prete_{ckey_this_game}",
+                                                     on_change=on_admin_change,
+                                                     args=(ckey_this_game, has_suggested,"prete"),)
             with cc[1]:
 
            
@@ -175,12 +181,14 @@ def _game_card(g, list_key, user):
                 st.caption(f"👍 {nb_sugg} suggestion(s)")
                 if nb_sugg > 0  :
  
-                    statut = storage_jeux.get_game_suggestions(ckey_this_game)[0].get("statut")
+                    statut = storage_jeux.get_game_suggestions(ckey_this_game , "sugg")[0].get("statut")
+                    statut_pret = storage_jeux.get_game_suggestions(ckey_this_game, "pret")[0].get("statut")
+                        
                    
  
-                    if statut == "suggestion Retenue":
+                    if statut == "suggestion Retenue" or statut_pret == "suggestion Retenue" :
                                st.badge("✅ suggestion Retenu")
-                    elif statut == "suggestion refusée":   
+                    elif statut == "suggestion refusée" or  statut_pret == "suggestion refusée":   
                        
                                 st.badge("❌ suggestion refusée")
                     else :
