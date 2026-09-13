@@ -180,10 +180,10 @@ def _game_card(g, list_key, user):
 
            
                 # 2. Compter combien il y en a
-                nb_sugg = storage_jeux.get_game_nb_suggestions(ckey_this_game)
-                    
+                nb_sugg = storage_jeux.get_game_nb_suggestions(ckey_this_game,"sugg")
+                nb_sugg_prete = storage_jeux.get_game_nb_suggestions(ckey_this_game,"pret")    
                 st.caption(f"👍 {nb_sugg} suggestion(s)")
-                if nb_sugg > 0  :
+                if nb_sugg + nb_sugg_prete> 0  :
  
                     statut = storage_jeux.get_game_suggestions(ckey_this_game , "sugg")[0].get("statut")
                     statut_pret = storage_jeux.get_game_suggestions(ckey_this_game, "pret")[0].get("statut")
