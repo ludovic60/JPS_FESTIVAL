@@ -185,8 +185,18 @@ def _game_card(g, list_key, user):
                 st.caption(f"👍 {nb_sugg} suggestion(s)")
                 if nb_sugg + nb_sugg_prete> 0  :
  
-                    statut = storage_jeux.get_game_suggestions(ckey_this_game , "sugg")[0].get("statut")
-                    statut_pret = storage_jeux.get_game_suggestions(ckey_this_game, "pret")[0].get("statut")
+                    
+                    if  storage_jeux.get_game_suggestions(ckey_this_game , "sugg"):
+                        statut = storage_jeux.get_game_suggestions(ckey_this_game , "sugg")[0].get("statut")
+                    else :
+                        statut = "suggestion à traiter"
+                                                
+                        
+                    if storage_jeux.get_game_suggestions(ckey_this_game, "pret"):
+                        statut_pret = storage_jeux.get_game_suggestions(ckey_this_game, "pret")[0].get("statut")
+                    else :
+                        statut_pret = "suggestion à traiter"
+                            
                         
                    
  
