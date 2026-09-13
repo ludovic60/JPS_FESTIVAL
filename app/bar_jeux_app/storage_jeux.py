@@ -150,10 +150,10 @@ def get_suggestions(mode):
     if   con_mongo : 
         db = cs.get_db()
         game_suggest_tb = db.jeux_suggestions
-            if mode == "pret" :
-                filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL" , "prete": "True" }
-            else :
-                filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL" , "prete": "False" }
+        if mode == "pret" :
+             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL" , "prete": "True" }
+        else :
+             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL" , "prete": "False" }
         
         resultats = list(game_suggest_tb.find(filtre_tb))
     else :
