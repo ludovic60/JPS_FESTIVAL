@@ -167,7 +167,7 @@ def _game_card(g, list_key, user):
                                                      on_change=on_admin_change,
                                                      args=(ckey_this_game, has_suggested,"suggest"),)
                     
-                   val_check_suggest_prete = st.checkbox("Je suggère et prete ce jeu", 
+                    val_check_suggest_prete = st.checkbox("Je suggère et prete ce jeu", 
                                                     value=has_suggested_prete, 
                                                     key=f"sug_prete_{ckey_this_game}",
                                                      on_change=on_admin_change,
