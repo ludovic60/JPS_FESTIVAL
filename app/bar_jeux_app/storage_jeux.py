@@ -145,58 +145,86 @@ def toggle_admin_selected(ckey, value):
 # ---- requetes  sur les jeux suggérés : jeux_suggestions  ----
 ##########################################################################
     
-def get_suggestions():
+def get_suggestions(mode):
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
         game_suggest_tb = db.jeux_suggestions
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL")  }
+            if mode == "pret" :
+                filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL" , "prete": "True" }
+            else :
+                filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL" , "prete": "False" }
         
         resultats = list(game_suggest_tb.find(filtre_tb))
     else :
         resultats ={}
     return resultats 
 
-def get_game_suggestions(id_game):
+def get_game_suggestions(id_game, mode):
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
         game_suggest_tb = db.jeux_suggestions
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") ,"id_jeux" :id_game  }
+        if mode == "pret" :
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") ,"id_jeux" :id_game ,"prete": "True" }
+        else :
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") ,"id_jeux" :id_game, "prete": "False"  }
         resultats = list(game_suggest_tb.find(filtre_tb))
     else :
         resultats ={}
     return resultats 
 
-def get_game_nb_suggestions(id_game):
+def get_game_nb_suggestions(id_game, mode):
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
         game_suggest_tb = db.jeux_suggestions
-        resultats = game_suggest_tb.count_documents({"annee": cs._secret("ANNEE_FESTIVAL") ,"id_jeux" :id_game  })
+        if mode =="prete" :
+            resultats = game_suggest_tb.count_documents({"annee": cs._secret("ANNEE_FESTIVAL") ,"id_jeux" :id_game, "prete": str("True")  })
+        else :
+            resultats = game_suggest_tb.count_documents({"annee": cs._secret("ANNEE_FESTIVAL") ,"id_jeux" :id_game, "prete": str("False")  })
     return resultats
 
-def toggle_suggestion(ckey, user_id, value):
+def toggle_suggestion(ckey, user_id, value, mode):
 
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
         game_suggest_tb = db.jeux_suggestions
 
-        if value == "insert":
+        if value == "insert" and mode=="prete" :
             new_selection= {         
                 "annee" : cs._secret("ANNEE_FESTIVAL"), 
                 "periode_jeu" : "",
                 "id_jeux": str(ObjectId(ckey)),
                 "user_id": str(ObjectId(user_id)),
-                "statut" : "a traiter"
-            
+                "statut" : "a traiter",
+                "prete": "True"   
             }
              
             resultat = game_suggest_tb.insert_one(new_selection)
-        elif value == "delete":  
+
+
+        elif value == "insert" and mode!="prete" :
+            new_selection= {         
+                "annee" : cs._secret("ANNEE_FESTIVAL"), 
+                "periode_jeu" : "",
+                "id_jeux": str(ObjectId(ckey)),
+                "user_id": str(ObjectId(user_id)),
+                "statut" : "a traiter",
+                "prete": "False"   
+            }
+             
+            resultat = game_suggest_tb.insert_one(new_selection)
+       
+        elif value == "delete" and mode=="prete" : 
             # deselectionne le jeu 
-            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "periode_jeu" : "" , "id_jeux": str(ObjectId(ckey)),   "user_id": str(ObjectId(user_id)) }
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "periode_jeu" : "" , "id_jeux": str(ObjectId(ckey)),   "user_id": str(ObjectId(user_id)) , "prete": str("True")  }
+            resultat = game_suggest_tb.delete_many(filtre_tb)
+
+        elif value == "delete" and mode!="prete" :
+            # deselectionne le jeu 
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "periode_jeu" : "" , "id_jeux": str(ObjectId(ckey)),   "user_id": str(ObjectId(user_id)) , "prete": str("False")  }
             resultat = game_suggest_tb.delete_many(filtre_tb)
         
       #  else :  
@@ -206,13 +234,16 @@ def toggle_suggestion(ckey, user_id, value):
 
 
 
-def toggle_all_suggestion(ckey, value):
+def toggle_all_suggestion(ckey, value, mode):
 
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
         game_suggest_tb = db.jeux_suggestions
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"),  "id_jeux": ckey}
+        if mode =="prete" :
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"),  "id_jeux": ckey , "prete": str("True") }
+        else :
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"),  "id_jeux": ckey , "prete": str("False") }  
         resultat = game_suggest_tb.update_many(filtre_tb, {"$set": { "statut" : value } })   
        
 
