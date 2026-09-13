@@ -234,16 +234,14 @@ def toggle_suggestion(ckey, user_id, value, mode):
 
 
 
-def toggle_all_suggestion(ckey, value, mode):
+def toggle_all_suggestion(ckey, value):
 
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
         game_suggest_tb = db.jeux_suggestions
-        if mode =="prete" :
-            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"),  "id_jeux": ckey , "prete": str("True") }
-        else :
-            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"),  "id_jeux": ckey , "prete": str("False") }  
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"),  "id_jeux": ckey  }
+  
         resultat = game_suggest_tb.update_many(filtre_tb, {"$set": { "statut" : value } })   
        
 
