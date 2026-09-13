@@ -179,7 +179,7 @@ def get_game_nb_suggestions(id_game, mode):
     if   con_mongo : 
         db = cs.get_db()
         game_suggest_tb = db.jeux_suggestions
-        if mode =="prete" :
+        if mode =="pret" :
             resultats = game_suggest_tb.count_documents({"annee": cs._secret("ANNEE_FESTIVAL") ,"id_jeux" :id_game, "prete": str("True")  })
         else :
             resultats = game_suggest_tb.count_documents({"annee": cs._secret("ANNEE_FESTIVAL") ,"id_jeux" :id_game, "prete": str("False")  })
@@ -192,7 +192,7 @@ def toggle_suggestion(ckey, user_id, value, mode):
         db = cs.get_db()
         game_suggest_tb = db.jeux_suggestions
 
-        if value == "insert" and mode=="prete" :
+        if value == "insert" and mode=="pret" :
             new_selection= {         
                 "annee" : cs._secret("ANNEE_FESTIVAL"), 
                 "periode_jeu" : "",
@@ -205,7 +205,7 @@ def toggle_suggestion(ckey, user_id, value, mode):
             resultat = game_suggest_tb.insert_one(new_selection)
 
 
-        elif value == "insert" and mode!="prete" :
+        elif value == "insert" and mode!="pret" :
             new_selection= {         
                 "annee" : cs._secret("ANNEE_FESTIVAL"), 
                 "periode_jeu" : "",
@@ -217,12 +217,12 @@ def toggle_suggestion(ckey, user_id, value, mode):
              
             resultat = game_suggest_tb.insert_one(new_selection)
        
-        elif value == "delete" and mode=="prete" : 
+        elif value == "delete" and mode=="pret" : 
             # deselectionne le jeu 
             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "periode_jeu" : "" , "id_jeux": str(ObjectId(ckey)),   "user_id": str(ObjectId(user_id)) , "prete": str("True")  }
             resultat = game_suggest_tb.delete_many(filtre_tb)
 
-        elif value == "delete" and mode!="prete" :
+        elif value == "delete" and mode!="pret" :
             # deselectionne le jeu 
             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "periode_jeu" : "" , "id_jeux": str(ObjectId(ckey)),   "user_id": str(ObjectId(user_id)) , "prete": str("False")  }
             resultat = game_suggest_tb.delete_many(filtre_tb)
