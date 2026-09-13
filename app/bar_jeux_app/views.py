@@ -157,8 +157,22 @@ def _list_page(title, list_key, user):
    
 def _requests_suggestion_page(user):
     st.title("liste des suggestions par les joueurs")
+##        for t in get_tasks("all"):
+##            c1, c2, c3 = st.columns([4, 1, 1])
+##            label = c1.text_input("t", value=t["tache"], key=f"edit_{t["_id"]}",
+##                                   label_visibility="collapsed")
+##            
+##            if c2.button("Modifier", key=f"modif_{t["_id"]}"):
+##                update_task(t["_id"], label, choice)
+##                print(t["_id"])
+##                st.rerun()
+##            # if c3.button("Supprimer"):
+##            if c3.button("Supprimer", key=f"supprim_{t["_id"]}"):
+##                delete_task(t["_id"])
+##                print(t["_id"])
+##                st.rerun()
 
-    st.markdown("🚧  en cours de construction ")
+##    st.markdown("🚧  en cours de construction ")
 
 ############################################################################################################
 ###-------------- page des demandes d'ajout 
@@ -519,7 +533,7 @@ def _final_page(user):
 
     gb.configure_column(
         "Plusieurs exemplaires souhaités",
-        editable=True,
+        editable=(user["role"] == "admin"),
         cellRenderer="agCheckboxCellRenderer",
         cellEditor = "agCheckboxCellEditor",
         width=90,
@@ -569,7 +583,7 @@ def _final_page(user):
                 {
                     "field": f"{player_key}_prete",
                     "headerName": "Je prête",      # 2e niveau d'en-tête
-                    "editable": (user["pseudo"] == j),
+                    "editable": (user["pseudo"] == j or user["role"] == "admin"),
                     "cellRenderer": "agCheckboxCellRenderer",
                     "cellEditor": "agCheckboxCellEditor",
                     "width": 110,
