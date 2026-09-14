@@ -675,14 +675,14 @@ def _final_page(user):
         pseudo = users_dict.get(user_id_str, "Utilisateur inconnu")
     
         # Ajout à la liste
-        liste_jeu_selec.append({
+        liste_jeu_selectionne.append({
             "classement": info_games_selec[0]["classement_jps_final"],
             "Nouveauté": nouveaute_def(id_jeu),
             "pseudo": pseudo,
             "nom": info_games_selec[0]["nom_jeu_complet"],
             "Nb_jeux_prete": 1,
         })
-    df_jeux_select_graphique  = pd.DataFrame(liste_jeu_selec)
+    df_jeux_select_graphique  = pd.DataFrame(liste_jeu_selectionne)
 
 
 
