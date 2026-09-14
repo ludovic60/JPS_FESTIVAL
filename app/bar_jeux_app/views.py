@@ -665,7 +665,7 @@ def _final_page(user):
     for game_selec in liste_jeu_selec:
    
         # Récupération des infos du jeu
-        id_jeu = game_selec["id_jeux"]
+        id_jeu = game_selec
         info_games_selec = storage_jeux.get_info_games(id_jeu)
   
         # Récupération sécurisée du pseudo (converti en str pour être sûr que les ID matchent)
