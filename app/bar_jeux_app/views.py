@@ -227,7 +227,7 @@ def _final_page(user):
         st.info("Aucun jeu retenu par l'admin pour l'instant.")
         return           
     
-     st.caption("Tableau croisé : jeux retenus par l'admin × personnes. Cochez les jeux que vous pouvez prêter.")
+    st.caption("Tableau croisé : jeux retenus par l'admin × personnes. Cochez les jeux que vous pouvez prêter.")
 
     
     ###################################################################################################
