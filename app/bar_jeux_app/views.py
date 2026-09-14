@@ -662,7 +662,7 @@ def _final_page(user):
 
 
 
-     for game_selec in liste_jeu_selec:
+    for game_selec in liste_jeu_selec:
    
         # Récupération des infos du jeu
         id_jeu = game_selec["id_jeux"]
