@@ -688,7 +688,7 @@ def _final_page(user):
 
 
 
-   couleurs_classement = {"AMBIANCE": "coral",
+    couleurs_classement = {"AMBIANCE": "coral",
                            "COOP/SEMI COOP" :"violet",
                            "JEU DUO" :"teal",                           
                            "ENQUETE/ESCAPE/ENIGME/CASSETETE" :"violet",
@@ -700,7 +700,7 @@ def _final_page(user):
                            "EXPERT+": "red",                           
                            "ENFANT": "skyblue"}
 
-   couleurs_nouveaute = {"✨NOUVEAUTE": "green", "🏺ANCIEN": "black", "🧐 INCONNU": "skyblue"}
+    couleurs_nouveaute = {"✨NOUVEAUTE": "green", "🏺ANCIEN": "black", "🧐 INCONNU": "skyblue"}
   
 
    ###########---- 1. Histogramme par joueur (Validés vs Cochés Utilisateur)
