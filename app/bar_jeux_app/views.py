@@ -610,7 +610,7 @@ def _final_page(user):
    
     # --- PARTIE inferieurs : GRAPHIQUES ---
 
-    col_graph1, col_graph2, col_graph3, col_graph4 = st.columns(4)
+    col_graph1, col_graph2, col_graph3 = st.columns(3)
 
     ###########---- 0 dataframe pour alimenter les graph 
     # 1. Optimisation : création d'un dictionnaire d'utilisateurs {str(id): pseudo}
@@ -713,23 +713,7 @@ def _final_page(user):
 
  
           
-          st.subheader("Validations par Joueur")
-          ###----- df_jeux_histogramme  = pd.merge(df_jeux_pret_graphique, df_jeux_valide_graphique, on =["classement", "Nouveauté", "pseudo","nom" ]  , how="left")
-          df_jeux_histogramme  = df_jeux_pret_graphique
-
-    
-          fig_hist = px.bar( 
-              df_jeux_histogramme,
-              x="pseudo",
-              y="Nb_jeux_prete", ###["Nb_jeux_prete","Nb_jeux_valide"]
-            #  color="Nb_jeux_prete", ###["Nb_jeux_prete","Nb_jeux_valide"]
-              barmode="group",
-              #color_discrete_map={"Nb_jeux_prete": "#636EFA"}, ###{"Nb_jeux_prete": "#636EFA", "Nb_jeux_valide": "#2CA02C"},
-              width=6000,
-              height=500
-          )
-          st.plotly_chart(fig_hist, use_container_width=True)
-
+        
     ###########----2. Camembert Nouveautés (jeux cochés au moins une fois par un utilisateur)
     with col_graph2:
           st.subheader("Jeux cochés par Nouveauté")
@@ -780,6 +764,24 @@ def _final_page(user):
               st.info("Aucun jeu validé pour le moment.")
 
  
+    st.subheader("listes des validations  par Joueur")
+    ###----- df_jeux_histogramme  = pd.merge(df_jeux_pret_graphique, df_jeux_valide_graphique, on =["classement", "Nouveauté", "pseudo","nom" ]  , how="left")
+    df_jeux_histogramme  = df_jeux_pret_graphique
+
+    
+
+    fig_hist = px.bar( 
+              df_jeux_histogramme,
+              x="pseudo",
+              y="Nb_jeux_prete", ###["Nb_jeux_prete","Nb_jeux_valide"]
+            #  color="Nb_jeux_prete", ###["Nb_jeux_prete","Nb_jeux_valide"]
+              barmode="group",
+              #color_discrete_map={"Nb_jeux_prete": "#636EFA"}, ###{"Nb_jeux_prete": "#636EFA", "Nb_jeux_valide": "#2CA02C"},
+              width=6000,
+              height=500
+    )
+
+    st.plotly_chart(fig_hist, use_container_width=True)
     
 
 
