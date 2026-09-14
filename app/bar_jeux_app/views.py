@@ -612,6 +612,8 @@ def _final_page(user):
 
     col_graph1, col_graph2, col_graph3 = st.columns(3)
 
+    
+
     ###########---- 0 dataframe pour alimenter les graph 
     # 1. Optimisation : création d'un dictionnaire d'utilisateurs {str(id): pseudo}
     users_dict = {str(u["_id"]): u.get("pseudo", "Inconnu") for u in users}
@@ -686,14 +688,30 @@ def _final_page(user):
 
 
 
-   ###########---- 1. Histogramme par joueur (Validés vs Cochés Utilisateur)
+   couleurs_classement = {"AMBIANCE": "coral",
+                           "COOP/SEMI COOP" :"violet",
+                           "JEU DUO" :"teal",                           
+                           "ENQUETE/ESCAPE/ENIGME/CASSETETE" :"violet",
+                           "NON CLASSE": "gray", 
+                           "PBM CLASSEMENT": "black",                            
+                           "FAMILLE": "forestgreen", 
+                           "INITIE": "yellow", 
+                           "EXPERT": "orange", 
+                           "EXPERT+": "red",                           
+                           "ENFANT": "skyblue"}
 
+   couleurs_nouveaute = {"✨NOUVEAUTE": "green", "🏺ANCIEN": "black", "🧐 INCONNU": "skyblue"}
+  
+
+   ###########---- 1. Histogramme par joueur (Validés vs Cochés Utilisateur)
+   
     with col_graph1:
           st.subheader("Jeux selectionné par Classement")
+          colors_classement1 = [couleurs_classement[cat] for cat in df_jeux_select_graphique["classement"]]
           if not df_jeux_select_graphique.empty:
               df_cat = df_jeux_select_graphique["classement"].value_counts().reset_index()
               df_cat.columns = ["classement", "Nombre"]
-              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3  )
+              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, color=colors_classement1  )
               fig_pie_cat.update_layout(height=250 , width=1000) 
               st.plotly_chart(fig_pie_cat, use_container_width=True)
           else:
@@ -701,10 +719,11 @@ def _final_page(user):
 
 
           st.subheader("Jeux selectionné  par nouveauté")
+          colors_nouveauté1 = [couleurs_nouveaute[cat] for cat in df_jeux_select_graphique["Nouveauté"]]
           if not df_jeux_select_graphique.empty:
               df_nov = df_jeux_select_graphique["Nouveauté"].value_counts().reset_index()
               df_nov.columns = ["Nouveauté", "Nombre"]
-              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 )
+              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 , color=colors_nouveauté1  )
               fig_pie_nov.update_layout(height=250 , width=1000)
               st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
@@ -715,24 +734,25 @@ def _final_page(user):
           
         
     ###########----2. Camembert Nouveautés (jeux cochés au moins une fois par un utilisateur)
+       
     with col_graph2:
-
+          colors_classement2 = [couleurs_classement[cat] for cat in df_jeux_pret_graphique["classement"]]
           st.subheader("Jeux cochés par Classement")
           if not df_jeux_pret_graphique.empty:
               df_cat = df_jeux_pret_graphique["classement"].value_counts().reset_index()
               df_cat.columns = ["classement", "Nombre"]
-              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3  )
+              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, color=colors_classement2  )
               fig_pie_cat.update_layout(height=250 , width=1000) 
               st.plotly_chart(fig_pie_cat, use_container_width=True)
           else:
               st.info("Aucun jeu coché pour le moment.")
 
           st.subheader("Jeux cochés par Nouveauté")
-         
+          colors_nouveauté2 = [couleurs_nouveaute[cat] for cat in df_jeux_pret_graphique["Nouveauté"]]
           if not df_jeux_pret_graphique.empty:
               df_nov = df_jeux_pret_graphique["Nouveauté"].value_counts().reset_index()
               df_nov.columns = ["Nouveauté", "Nombre"]
-              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 )
+              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 , color=colors_nouveauté2  )
               fig_pie_nov.update_layout(height=250 , width=1000)
               st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
@@ -746,12 +766,12 @@ def _final_page(user):
 
       ###########----3. Camembert Catégories (Produits cochés au moins une fois par un utilisateur)
     with col_graph3:
-
+          colors_classement3 = [couleurs_classement[cat] for cat in df_jeux_valide_graphique["classement"]]
           st.subheader("Jeux validés par Classement")
           if not df_jeux_valide_graphique.empty:
               df_cat2 = df_jeux_valide_graphique["classement"].value_counts().reset_index()
               df_cat2.columns = ["classement", "Nombre"]
-              fig_pie_cat2 = px.pie(df_cat2, names="classement", values="Nombre", hole=0.3  )
+              fig_pie_cat2 = px.pie(df_cat2, names="classement", values="Nombre", hole=0.3 , color=colors_classement3  )
               fig_pie_cat2.update_layout(height=250 , width=1000) 
               st.plotly_chart(fig_pie_cat2, use_container_width=True)
           else:
@@ -759,11 +779,11 @@ def _final_page(user):
 
 
           st.subheader("Jeux validés par Nouveauté")
-          
+          colors_nouveauté3 = [couleurs_nouveaute[cat] for cat in df_jeux_valide_graphique["Nouveauté"]]
           if not df_jeux_valide_graphique.empty:
               df_nov2 = df_jeux_valide_graphique["Nouveauté"].value_counts().reset_index()
               df_nov2.columns = ["Nouveauté", "Nombre"]
-              fig_pie_nov2 = px.pie(df_nov2, names="Nouveauté", values="Nombre", hole=0.3 )
+              fig_pie_nov2 = px.pie(df_nov2, names="Nouveauté", values="Nombre", hole=0.3 , color=colors_nouveauté3  )
               fig_pie_nov2.update_layout(height=250 , width=1000)
               st.plotly_chart(fig_pie_nov2, use_container_width=True)
           else:
