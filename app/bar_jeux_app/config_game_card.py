@@ -136,7 +136,7 @@ def _game_card(g, list_key, user):
                     
                 else:
 
-                    def on_admin_change(game_id, currently_selected,mode):
+                    def on_user_change(game_id, currently_selected,mode):
                         mode = "delete" if currently_selected else "insert"   
                         storage_jeux.toggle_suggestion(ckey_this_game, user["id"],mode)
                         st.rerun()
@@ -168,13 +168,13 @@ def _game_card(g, list_key, user):
                     val_check_suggest = st.checkbox("Je suggère ce jeu", 
                                                     value=has_suggested, 
                                                     key=f"sug_{ckey_this_game}",
-                                                     on_change=on_admin_change,
+                                                     on_change=on_user_change,
                                                      args=(ckey_this_game, has_suggested,"suggest"),)
                     
                     val_check_suggest_prete = st.checkbox("Je suggère et prete ce jeu", 
                                                     value=has_suggested_prete, 
                                                     key=f"sug_prete_{ckey_this_game}",
-                                                     on_change=on_admin_change,
+                                                     on_change=on_user_change,
                                                      args=(ckey_this_game, has_suggested_prete,"prete"),)
             with cc[1]:
 
