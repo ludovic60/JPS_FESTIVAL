@@ -138,7 +138,7 @@ def _game_card(g, list_key, user):
 
                     def on_user_change(game_id, currently_selected,mode):
                         mode = "delete" if currently_selected else "insert"   
-                        storage_jeux.toggle_suggestion(ckey_this_game, user["id"],mode)
+                        storage_jeux.toggle_suggestion(ckey_this_game, user["id"] , mode)
                         st.rerun()
 
                         
