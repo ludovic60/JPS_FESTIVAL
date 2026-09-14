@@ -716,6 +716,17 @@ def _final_page(user):
         
     ###########----2. Camembert Nouveautés (jeux cochés au moins une fois par un utilisateur)
     with col_graph2:
+
+          st.subheader("Jeux cochés par Classement")
+          if not df_jeux_pret_graphique.empty:
+              df_cat = df_jeux_pret_graphique["classement"].value_counts().reset_index()
+              df_cat.columns = ["classement", "Nombre"]
+              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3  )
+              fig_pie_cat.update_layout(height=250 , width=1000) 
+              st.plotly_chart(fig_pie_cat, use_container_width=True)
+          else:
+              st.info("Aucun jeu coché pour le moment.")
+
           st.subheader("Jeux cochés par Nouveauté")
          
           if not df_jeux_pret_graphique.empty:
@@ -727,31 +738,14 @@ def _final_page(user):
           else:
               st.info("Aucun jeu coché pour le moment.")
 
-          st.subheader("Jeux validés par Nouveauté")
-          
-          if not df_jeux_valide_graphique.empty:
-              df_nov2 = df_jeux_valide_graphique["Nouveauté"].value_counts().reset_index()
-              df_nov2.columns = ["Nouveauté", "Nombre"]
-              fig_pie_nov2 = px.pie(df_nov2, names="Nouveauté", values="Nombre", hole=0.3 )
-              fig_pie_nov2.update_layout(height=250 , width=1000)
-              st.plotly_chart(fig_pie_nov2, use_container_width=True)
-          else:
-              st.info("Aucun jeu validé pour le moment.")
+     
+
+
 
  
 
       ###########----3. Camembert Catégories (Produits cochés au moins une fois par un utilisateur)
     with col_graph3:
-          st.subheader("Jeux cochés par Classement")
-          if not df_jeux_pret_graphique.empty:
-              df_cat = df_jeux_pret_graphique["classement"].value_counts().reset_index()
-              df_cat.columns = ["classement", "Nombre"]
-              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3  )
-              fig_pie_cat.update_layout(height=250 , width=1000) 
-              st.plotly_chart(fig_pie_cat, use_container_width=True)
-          else:
-              st.info("Aucun jeu coché pour le moment.")
-
 
           st.subheader("Jeux validés par Classement")
           if not df_jeux_valide_graphique.empty:
@@ -762,6 +756,19 @@ def _final_page(user):
               st.plotly_chart(fig_pie_cat2, use_container_width=True)
           else:
               st.info("Aucun jeu validé pour le moment.")
+
+
+          st.subheader("Jeux validés par Nouveauté")
+          
+          if not df_jeux_valide_graphique.empty:
+              df_nov2 = df_jeux_valide_graphique["Nouveauté"].value_counts().reset_index()
+              df_nov2.columns = ["Nouveauté", "Nombre"]
+              fig_pie_nov2 = px.pie(df_nov2, names="Nouveauté", values="Nombre", hole=0.3 )
+              fig_pie_nov2.update_layout(height=250 , width=1000)
+              st.plotly_chart(fig_pie_nov2, use_container_width=True)
+          else:
+              st.info("Aucun jeu validé pour le moment.")     
+
 
  
     st.subheader("listes des validations  par Joueur")
