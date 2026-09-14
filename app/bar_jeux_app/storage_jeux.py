@@ -88,7 +88,7 @@ def final_games_statut_plusieurs_exemplaire():
         db = cs.get_db()
         game_selec_tb = db.selection_jeux_festival
         selc_tb = {"id_jeux": 1}
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") , "plusieurs_exemplaires_souhaites": "True" }  
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") , "plusieurs_exemplaires_souhaites": str("True") }  
         resultats = list(game_selec_tb.find( filtre_tb, selc_tb ))
     return resultats 
 
@@ -151,9 +151,9 @@ def get_suggestions(mode):
         db = cs.get_db()
         game_suggest_tb = db.jeux_suggestions
         if mode == "pret" :
-             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") , "prete": "True" }
+             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") , "prete": str("True") }
         else :
-             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") , "prete": "False" }
+             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") , "prete": str("False") }
         
         resultats = list(game_suggest_tb.find(filtre_tb))
     else :
@@ -166,9 +166,9 @@ def get_game_suggestions(id_game, mode):
         db = cs.get_db()
         game_suggest_tb = db.jeux_suggestions
         if mode == "pret" :
-            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") ,"id_jeux" :id_game ,"prete": "True" }
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") ,"id_jeux" :id_game ,"prete": str("True") }
         else :
-            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") ,"id_jeux" :id_game, "prete": "False"  }
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") ,"id_jeux" :id_game, "prete": str("False")  }
         resultats = list(game_suggest_tb.find(filtre_tb))
     else :
         resultats ={}
@@ -199,7 +199,7 @@ def toggle_suggestion(ckey, user_id, value, mode):
                 "id_jeux": str(ObjectId(ckey)),
                 "user_id": str(ObjectId(user_id)),
                 "statut" : "a traiter",
-                "prete": "True"   
+                "prete": str("True")  
             }
              
             resultat = game_suggest_tb.insert_one(new_selection)
@@ -212,7 +212,7 @@ def toggle_suggestion(ckey, user_id, value, mode):
                 "id_jeux": str(ObjectId(ckey)),
                 "user_id": str(ObjectId(user_id)),
                 "statut" : "a traiter",
-                "prete": "False"   
+                "prete": str("False")   
             }
              
             resultat = game_suggest_tb.insert_one(new_selection)
@@ -341,7 +341,7 @@ def get_validated_loans():
     if   con_mongo : 
         db = cs.get_db()
         game_loan_tb = db.prets_jeux
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") , "valide_par_admin" : "True"  }  
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") , "valide_par_admin" : str("True")  }  
         resultats = list(game_loan_tb.find(filtre_tb))
     return resultats 
 
@@ -356,7 +356,7 @@ def toggle_loan(ckey, user_id, value):
                          "annee" : cs._secret("ANNEE_FESTIVAL"), 
                          "id_jeux": ckey,
                          "user_id": user_id,
-                		 "valide_par_admin" : "False"
+                		 "valide_par_admin" : str("False")
                }   
         
             resultat = game_loan_tb.insert_one(new_loan)
