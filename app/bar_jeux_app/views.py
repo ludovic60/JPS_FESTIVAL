@@ -227,130 +227,9 @@ def _final_page(user):
         st.info("Aucun jeu retenu par l'admin pour l'instant.")
         return           
     
-       
-
-   
-    # --- PARTIE SUPERIEURE : GRAPHIQUES ---
-
-    col_graph1, col_graph2, col_graph3 = st.columns(3)
-
-    ###########---- 0 dataframe pour alimenter les graph 
-    # 1. Optimisation : création d'un dictionnaire d'utilisateurs {str(id): pseudo}
-    users_dict = {str(u["_id"]): u.get("pseudo", "Inconnu") for u in users}
-    liste_pret_validé = storage_jeux.get_validated_loans()
-    liste_info_valide = []
-    for game in  liste_pret_validé :
-        id_jeu = game["id_jeux"]
-        info_games_valide = storage_jeux.get_info_games(id_jeu)
-        # Récupération sécurisée du pseudo (converti en str pour être sûr que les ID matchent)
-        user_id_str = str(game["user_id"])
-        pseudo = users_dict.get(user_id_str, "Utilisateur inconnu")
-       
-          
-        liste_info_valide.append ({"classement":  info_games_valide[0]["classement_jps_final"] ,  "Nouveauté": nouveaute_def(id_jeu), "pseudo":pseudo , "nom": info_games_valide[0]["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide":True})
-     
-    df_jeux_valide_graphique  = pd.DataFrame(liste_info_valide)
-    liste_info = []
-    liste_pret_user = storage_jeux.get_all_loans()
-    
-  
-    
-    for game_pret in liste_pret_user:
-   
-        # Récupération des infos du jeu
-        id_jeu = game_pret["id_jeux"]
-        info_games_pret = storage_jeux.get_info_games(id_jeu)
-  
-        # Récupération sécurisée du pseudo (converti en str pour être sûr que les ID matchent)
-        user_id_str = str(game_pret["user_id"])
-        pseudo = users_dict.get(user_id_str, "Utilisateur inconnu")
-    
-        # Ajout à la liste
-        liste_info.append({
-            "classement": info_games_pret[0]["classement_jps_final"],
-            "Nouveauté": nouveaute_def(id_jeu),
-            "pseudo": pseudo,
-            "nom": info_games_pret[0]["nom_jeu_complet"],
-            "Nb_jeux_prete": 1,
-        })
-    df_jeux_pret_graphique  = pd.DataFrame(liste_info)
-
- 
-
-    ###########---- 1. Histogramme par joueur (Validés vs Cochés Utilisateur)
-
-    with col_graph1:
-           
-          st.subheader("Validations par Joueur")
-          ###----- df_jeux_histogramme  = pd.merge(df_jeux_pret_graphique, df_jeux_valide_graphique, on =["classement", "Nouveauté", "pseudo","nom" ]  , how="left")
-          df_jeux_histogramme  = df_jeux_pret_graphique
+     st.caption("Tableau croisé : jeux retenus par l'admin × personnes. Cochez les jeux que vous pouvez prêter.")
 
     
-          fig_hist = px.bar(
-              df_jeux_histogramme,
-              x="pseudo",
-              y="Nb_jeux_prete", ###["Nb_jeux_prete","Nb_jeux_valide"]
-            #  color="Nb_jeux_prete", ###["Nb_jeux_prete","Nb_jeux_valide"]
-              barmode="group",
-              #color_discrete_map={"Nb_jeux_prete": "#636EFA"}, ###{"Nb_jeux_prete": "#636EFA", "Nb_jeux_valide": "#2CA02C"},
-              width=1000,
-              height=500
-          )
-          st.plotly_chart(fig_hist, use_container_width=True)
-
-    ###########----2. Camembert Nouveautés (jeux cochés au moins une fois par un utilisateur)
-    with col_graph2:
-          st.subheader("Jeux cochés par Nouveauté")
-         
-          if not df_jeux_pret_graphique.empty:
-              df_nov = df_jeux_pret_graphique["Nouveauté"].value_counts().reset_index()
-              df_nov.columns = ["Nouveauté", "Nombre"]
-              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 )
-              fig_pie_nov.update_layout(height=250 , width=1000)
-              st.plotly_chart(fig_pie_nov, use_container_width=True)
-          else:
-              st.info("Aucun jeu coché pour le moment.")
-
-          st.subheader("Jeux validés par Nouveauté")
-          
-          if not df_jeux_valide_graphique.empty:
-              df_nov2 = df_jeux_valide_graphique["Nouveauté"].value_counts().reset_index()
-              df_nov2.columns = ["Nouveauté", "Nombre"]
-              fig_pie_nov2 = px.pie(df_nov2, names="Nouveauté", values="Nombre", hole=0.3 )
-              fig_pie_nov2.update_layout(height=250 , width=1000)
-              st.plotly_chart(fig_pie_nov2, use_container_width=True)
-          else:
-              st.info("Aucun jeu validé pour le moment.")
-
- 
-
-      ###########----3. Camembert Catégories (Produits cochés au moins une fois par un utilisateur)
-    with col_graph3:
-          st.subheader("Jeux cochés par Classement")
-          if not df_jeux_pret_graphique.empty:
-              df_cat = df_jeux_pret_graphique["classement"].value_counts().reset_index()
-              df_cat.columns = ["classement", "Nombre"]
-              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3  )
-              fig_pie_cat.update_layout(height=250 , width=1000) 
-              st.plotly_chart(fig_pie_cat, use_container_width=True)
-          else:
-              st.info("Aucun jeu coché pour le moment.")
-
-
-          st.subheader("Jeux validés par Classement")
-          if not df_jeux_valide_graphique.empty:
-              df_cat2 = df_jeux_valide_graphique["classement"].value_counts().reset_index()
-              df_cat2.columns = ["classement", "Nombre"]
-              fig_pie_cat2 = px.pie(df_cat2, names="classement", values="Nombre", hole=0.3  )
-              fig_pie_cat2.update_layout(height=250 , width=1000) 
-              st.plotly_chart(fig_pie_cat2, use_container_width=True)
-          else:
-              st.info("Aucun jeu validé pour le moment.")
-
-    st.divider()
-    st.caption("Tableau croisé : jeux retenus par l'admin × personnes. Cochez les jeux que vous pouvez prêter.")
-
- 
     ###################################################################################################
     ###########  gestion du tableau des prêts   
     ###################################################################################################
@@ -725,6 +604,188 @@ def _final_page(user):
     # 3. Mettre à jour l'état précédent pour le prochain rerun
     st.session_state["old_grid_df"] = new_df.copy()
 
+
+    st.divider()
+   
+    # --- PARTIE inferieurs : GRAPHIQUES ---
+
+    col_graph1, col_graph2, col_graph3, col_graph4 = st.columns(4)
+
+    ###########---- 0 dataframe pour alimenter les graph 
+    # 1. Optimisation : création d'un dictionnaire d'utilisateurs {str(id): pseudo}
+    users_dict = {str(u["_id"]): u.get("pseudo", "Inconnu") for u in users}
+    liste_pret_validé = storage_jeux.get_validated_loans()
+    liste_info_valide = []
+    for game in  liste_pret_validé :
+        id_jeu = game["id_jeux"]
+        info_games_valide = storage_jeux.get_info_games(id_jeu)
+        # Récupération sécurisée du pseudo (converti en str pour être sûr que les ID matchent)
+        user_id_str = str(game["user_id"])
+        pseudo = users_dict.get(user_id_str, "Utilisateur inconnu")
+       
+          
+        liste_info_valide.append ({"classement":  info_games_valide[0]["classement_jps_final"] ,  "Nouveauté": nouveaute_def(id_jeu), "pseudo":pseudo , "nom": info_games_valide[0]["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide":True})
+     
+    df_jeux_valide_graphique  = pd.DataFrame(liste_info_valide)
+
+
+
+    ###---------------------------------------------------- 
+    liste_info = []
+    liste_pret_user = storage_jeux.get_all_loans()
+    
+  
+    
+    for game_pret in liste_pret_user:
+   
+        # Récupération des infos du jeu
+        id_jeu = game_pret["id_jeux"]
+        info_games_pret = storage_jeux.get_info_games(id_jeu)
+  
+        # Récupération sécurisée du pseudo (converti en str pour être sûr que les ID matchent)
+        user_id_str = str(game_pret["user_id"])
+        pseudo = users_dict.get(user_id_str, "Utilisateur inconnu")
+    
+        # Ajout à la liste
+        liste_info.append({
+            "classement": info_games_pret[0]["classement_jps_final"],
+            "Nouveauté": nouveaute_def(id_jeu),
+            "pseudo": pseudo,
+            "nom": info_games_pret[0]["nom_jeu_complet"],
+            "Nb_jeux_prete": 1,
+        })
+    df_jeux_pret_graphique  = pd.DataFrame(liste_info)
+
+    ###---------------------------------------------------- 
+    liste_jeu_selectionne = []
+    liste_jeu_selec = storage_jeux.final_games()
+
+
+
+     for game_selec in liste_jeu_selec:
+   
+        # Récupération des infos du jeu
+        id_jeu = game_selec["id_jeux"]
+        info_games_selec = storage_jeux.get_info_games(id_jeu)
+  
+        # Récupération sécurisée du pseudo (converti en str pour être sûr que les ID matchent)
+        user_id_str = str(game_pret["user_id"])
+        pseudo = users_dict.get(user_id_str, "Utilisateur inconnu")
+    
+        # Ajout à la liste
+        liste_jeu_selec.append({
+            "classement": info_games_selec[0]["classement_jps_final"],
+            "Nouveauté": nouveaute_def(id_jeu),
+            "pseudo": pseudo,
+            "nom": info_games_selec[0]["nom_jeu_complet"],
+            "Nb_jeux_prete": 1,
+        })
+    df_jeux_select_graphique  = pd.DataFrame(liste_jeu_selec)
+
+
+
+   ###########---- 1. Histogramme par joueur (Validés vs Cochés Utilisateur)
+
+    with col_graph1:
+          st.subheader("Jeux selectionné par Classement")
+          if not df_jeux_select_graphique.empty:
+              df_cat = df_jeux_select_graphique["classement"].value_counts().reset_index()
+              df_cat.columns = ["classement", "Nombre"]
+              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3  )
+              fig_pie_cat.update_layout(height=250 , width=1000) 
+              st.plotly_chart(fig_pie_cat, use_container_width=True)
+          else:
+              st.info("Aucun jeu coché pour le moment.")
+
+
+          st.subheader("Jeux selectionné  par nouveauté")
+          if not df_jeux_select_graphique.empty:
+              df_nov = df_jeux_select_graphique["Nouveauté"].value_counts().reset_index()
+              df_nov.columns = ["Nouveauté", "Nombre"]
+              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 )
+              fig_pie_nov.update_layout(height=250 , width=1000)
+              st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+              st.info("Aucun jeu coché pour le moment.")
+
+
+ 
+
+    ###########---- 1. Histogramme par joueur (Validés vs Cochés Utilisateur)
+
+
+ 
+
+    with col_graph2:
+           
+          st.subheader("Validations par Joueur")
+          ###----- df_jeux_histogramme  = pd.merge(df_jeux_pret_graphique, df_jeux_valide_graphique, on =["classement", "Nouveauté", "pseudo","nom" ]  , how="left")
+          df_jeux_histogramme  = df_jeux_pret_graphique
+
+    
+          fig_hist = px.bar(
+              df_jeux_histogramme,
+              x="pseudo",
+              y="Nb_jeux_prete", ###["Nb_jeux_prete","Nb_jeux_valide"]
+            #  color="Nb_jeux_prete", ###["Nb_jeux_prete","Nb_jeux_valide"]
+              barmode="group",
+              #color_discrete_map={"Nb_jeux_prete": "#636EFA"}, ###{"Nb_jeux_prete": "#636EFA", "Nb_jeux_valide": "#2CA02C"},
+              width=1000,
+              height=500
+          )
+          st.plotly_chart(fig_hist, use_container_width=True)
+
+    ###########----2. Camembert Nouveautés (jeux cochés au moins une fois par un utilisateur)
+    with col_graph3:
+          st.subheader("Jeux cochés par Nouveauté")
+         
+          if not df_jeux_pret_graphique.empty:
+              df_nov = df_jeux_pret_graphique["Nouveauté"].value_counts().reset_index()
+              df_nov.columns = ["Nouveauté", "Nombre"]
+              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 )
+              fig_pie_nov.update_layout(height=250 , width=1000)
+              st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+              st.info("Aucun jeu coché pour le moment.")
+
+          st.subheader("Jeux validés par Nouveauté")
+          
+          if not df_jeux_valide_graphique.empty:
+              df_nov2 = df_jeux_valide_graphique["Nouveauté"].value_counts().reset_index()
+              df_nov2.columns = ["Nouveauté", "Nombre"]
+              fig_pie_nov2 = px.pie(df_nov2, names="Nouveauté", values="Nombre", hole=0.3 )
+              fig_pie_nov2.update_layout(height=250 , width=1000)
+              st.plotly_chart(fig_pie_nov2, use_container_width=True)
+          else:
+              st.info("Aucun jeu validé pour le moment.")
+
+ 
+
+      ###########----3. Camembert Catégories (Produits cochés au moins une fois par un utilisateur)
+    with col_graph4:
+          st.subheader("Jeux cochés par Classement")
+          if not df_jeux_pret_graphique.empty:
+              df_cat = df_jeux_pret_graphique["classement"].value_counts().reset_index()
+              df_cat.columns = ["classement", "Nombre"]
+              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3  )
+              fig_pie_cat.update_layout(height=250 , width=1000) 
+              st.plotly_chart(fig_pie_cat, use_container_width=True)
+          else:
+              st.info("Aucun jeu coché pour le moment.")
+
+
+          st.subheader("Jeux validés par Classement")
+          if not df_jeux_valide_graphique.empty:
+              df_cat2 = df_jeux_valide_graphique["classement"].value_counts().reset_index()
+              df_cat2.columns = ["classement", "Nombre"]
+              fig_pie_cat2 = px.pie(df_cat2, names="classement", values="Nombre", hole=0.3  )
+              fig_pie_cat2.update_layout(height=250 , width=1000) 
+              st.plotly_chart(fig_pie_cat2, use_container_width=True)
+          else:
+              st.info("Aucun jeu validé pour le moment.")
+
+ 
+    
 
 
 
