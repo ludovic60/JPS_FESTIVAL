@@ -141,6 +141,10 @@ def _game_card(g, list_key, user):
                         storage_jeux.toggle_suggestion(ckey_this_game, user["id"] , mode ,source)
                         st.rerun()
 
+                    def on_user_change_pret(game_id, currently_selected, source):
+                        mode = "delete" if currently_selected else "insert"   
+                        storage_jeux.toggle_suggestion(ckey_this_game, user["id"] , mode ,source)
+                        st.rerun() 
                         
                      # 1. On ne garde que les suggestions spécifiques à CE jeu
                     select_this_game = [adsel for adsel in admin_sel if str(adsel.get("id_jeux")) == ckey_this_game]
@@ -174,7 +178,7 @@ def _game_card(g, list_key, user):
                     val_check_suggest_prete = st.checkbox("Je suggère et prete ce jeu", 
                                                     value=has_suggested_prete, 
                                                     key=f"sug_prete_{ckey_this_game}",
-                                                     on_change=on_user_change,
+                                                     on_change=on_user_change_pret,
                                                      args=(ckey_this_game, has_suggested_prete, "prete"))
             with cc[1]:
 
