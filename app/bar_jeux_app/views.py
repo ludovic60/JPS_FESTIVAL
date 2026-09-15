@@ -708,7 +708,7 @@ def _final_page(user):
    
     with col_graph1:
           st.subheader("Jeux selectionné par Classement")
-          colors_classement1 = [couleurs_classement[cat] for cat in df_jeux_select_graphique["classement"]]
+       
           if not df_jeux_select_graphique.empty:
               df_cat = df_jeux_select_graphique["classement"].value_counts().reset_index()
               df_cat.columns = ["classement", "Nombre"]
@@ -720,7 +720,6 @@ def _final_page(user):
 
 
           st.subheader("Jeux selectionné  par nouveauté")
-          colors_nouveauté1 = [couleurs_nouveaute[cat] for cat in df_jeux_select_graphique["Nouveauté"]]
           if not df_jeux_select_graphique.empty:
               df_nov = df_jeux_select_graphique["Nouveauté"].value_counts().reset_index()
               df_nov.columns = ["Nouveauté", "Nombre"]
@@ -737,7 +736,6 @@ def _final_page(user):
     ###########----2. Camembert Nouveautés (jeux cochés au moins une fois par un utilisateur)
        
     with col_graph2:
-          colors_classement2 = [couleurs_classement[cat] for cat in df_jeux_pret_graphique["classement"]]
           st.subheader("Jeux cochés par Classement")
           if not df_jeux_pret_graphique.empty:
               df_cat = df_jeux_pret_graphique["classement"].value_counts().reset_index()
@@ -749,7 +747,6 @@ def _final_page(user):
               st.info("Aucun jeu coché pour le moment.")
 
           st.subheader("Jeux cochés par Nouveauté")
-          colors_nouveauté2 = [couleurs_nouveaute[cat] for cat in df_jeux_pret_graphique["Nouveauté"]]
           if not df_jeux_pret_graphique.empty:
               df_nov = df_jeux_pret_graphique["Nouveauté"].value_counts().reset_index()
               df_nov.columns = ["Nouveauté", "Nombre"]
@@ -767,7 +764,6 @@ def _final_page(user):
 
       ###########----3. Camembert Catégories (Produits cochés au moins une fois par un utilisateur)
     with col_graph3:
-          colors_classement3 = [couleurs_classement[cat] for cat in df_jeux_valide_graphique["classement"]]
           st.subheader("Jeux validés par Classement")
           if not df_jeux_valide_graphique.empty:
               df_cat2 = df_jeux_valide_graphique["classement"].value_counts().reset_index()
@@ -780,7 +776,6 @@ def _final_page(user):
 
 
           st.subheader("Jeux validés par Nouveauté")
-          colors_nouveauté3 = [couleurs_nouveaute[cat] for cat in df_jeux_valide_graphique["Nouveauté"]]
           if not df_jeux_valide_graphique.empty:
               df_nov2 = df_jeux_valide_graphique["Nouveauté"].value_counts().reset_index()
               df_nov2.columns = ["Nouveauté", "Nombre"]
