@@ -62,7 +62,7 @@ def mise_forme_classement(classement) :
 
     return classement_formate    
 
-def _game_card(g, list_key, user):
+def _game_card(g, list_key, user , mode ):
     #ckey = f"{list_key}::{str(g['_id'])}"
     ckey_this_game = f"{str(g['_id'])}"
     is_admin = user["role"] == "admin"
@@ -101,7 +101,7 @@ def _game_card(g, list_key, user):
             cc = st.columns(2)
             with cc[0]:
                      
-                if is_admin:
+                if is_admin and mode != "suggestion":
                     # 1
                     select_this_game = [adsel for adsel in admin_sel if str(adsel.get("id_jeux")) == ckey_this_game]
                     # 2.admin a deja retenu auparavant 
@@ -132,7 +132,46 @@ def _game_card(g, list_key, user):
                         args=(ckey_this_game, has_selected_this_game),
                     )                                
                        
+                elif is_admin and mode != "suggestion":
+                    # 1
+                    select_this_game = [adsel for adsel in admin_sel if str(adsel.get("id_jeux")) == ckey_this_game]
+                    # 2.admin a deja retenu auparavant 
+                    has_selected_this_game = [admin_sel[0]["id_jeux"] for sadmin in select_this_game]  
 
+                    # Callback exécuté uniquement lors d'un VRAI clic utilisateur
+                    def on_admin_change(game_id, currently_selected):
+                        mode = "delete" if currently_selected else "insert"
+                
+                        storage_jeux.toggle_admin_selected(game_id, mode)
+                        sugg_this_game = [s for s in sugg if str(s.get("id_jeux")) == ckey_this_game]
+
+                        if sugg_this_game : 
+                                if mode == "insert" :
+                                        # 1. On ne garde que les suggestions spécifiques à CE jeu
+                         
+                                        storage_jeux.toggle_all_suggestion(ckey_this_game, "suggestion Retenue")        
+                        
+                                elif mode == "delete" :
+                                       storage_jeux.toggle_all_suggestion(ckey_this_game, "suggestion refusée")        
+                                                                   
+                    # Passe la fonction SANS les parenthèses () et utilise args=
+                    st.checkbox(
+                        "Retenir (admin)",
+                        value=has_selected_this_game,
+                        key=f"s_admin_{ckey_this_game}",
+                        on_change=on_admin_change,
+                        args=(ckey_this_game, has_selected_this_game),
+                    )          
+
+                    col1 ,col2 =st.columns([1, 2])
+                    with  col1  :
+                          if st.button("✅ valider la suggestion"):
+                                result_valid = toggle_suggestion(ckey_this_game, user["id"], "suggestion Retenue", "all")                    
+                    with  col2  :
+                          if st.button("❌ refuser la suggestion"):
+                                result_valid = toggle_suggestion(ckey_this_game, user["id"], "suggestion refusée", "all")
+                    
+                        
                     
                 else:
 
