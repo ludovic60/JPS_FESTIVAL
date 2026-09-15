@@ -147,7 +147,7 @@ def _list_page(title, list_key, user):
             cols = st.columns(per_row)
             for j, g in enumerate(filtered_games[i:i + per_row]):
                 with cols[j]:
-                    _game_card(g, list_key, user)
+                    _game_card(g, list_key, user,"normal")
     elif list_key !="all"  or ( list_key =="all" and search_query) :
         st.info("Aucun jeu ne correspond à votre recherche.")
   
@@ -157,6 +157,21 @@ def _list_page(title, list_key, user):
    
 def _requests_suggestion_page(user):
     st.title("liste des suggestions par les joueurs")
+    list_suggest = get_game_suggestions_a_traiter()
+    list_games =()
+    for sugg in list_suggest :
+        list_games.append(sugg.get("id_jeux")
+     
+    if list_games:
+        per_row = 3
+        # FIX : On utilise len(list_games) ici !
+        for i in range(0, len(list_games), per_row):
+            cols = st.columns(per_row)
+            for j, g in enumerate(list_games[i:i + per_row]):
+                with cols[j]:
+                    _game_card(g, list_key, user,"suggestion")
+
+
 ##        for t in get_tasks("all"):
 ##            c1, c2, c3 = st.columns([4, 1, 1])
 ##            label = c1.text_input("t", value=t["tache"], key=f"edit_{t["_id"]}",
