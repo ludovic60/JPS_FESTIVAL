@@ -184,9 +184,12 @@ def _game_card(g, list_key, user):
 
            
                 # 2. Compter combien il y en a
+                nb_sugg=0
+                nb_sugg_prete=0    
                 nb_sugg = storage_jeux.get_game_nb_suggestions(ckey_this_game,"sugg")
                 nb_sugg_prete = storage_jeux.get_game_nb_suggestions(ckey_this_game,"pret")    
-                st.caption(f"👍 {nb_sugg} suggestion(s)")
+                st.caption(f"👍 {nb_sugg + nb_sugg_prete} suggestion(s)")
+                    
                 if nb_sugg + nb_sugg_prete> 0  :
  
                     
