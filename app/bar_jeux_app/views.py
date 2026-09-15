@@ -698,7 +698,8 @@ def _final_page(user):
                            "INITIE": "#F5E20C", ## jaune 
                            "EXPERT": "#E67A70", ### rouge  
                            "EXPERT+": "#8C0E07",   ### rouge   foncé                     
-                           "ENFANT": "#1128D6" ### bleu foncé}
+                           "ENFANT": "#1128D6" ### bleu foncé
+                          }
 
     couleurs_nouveaute = {"✨NOUVEAUTE": "#57B02C", "🏺ANCIEN": "#080808", "🧐 INCONNU": "#1128D6"}
   
