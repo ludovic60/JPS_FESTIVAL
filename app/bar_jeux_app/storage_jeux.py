@@ -1,4 +1,4 @@
-"""Stockage App2 (Bar à jeux) — utilisateurs & données mutables partagés via common_store.
+ """Stockage App2 (Bar à jeux) — utilisateurs & données mutables partagés via common_store.
 Les listes de jeux restent des fichiers plats JSON nommés par mois (exigence)."""
 import logging
 import json
@@ -174,6 +174,20 @@ def get_game_suggestions(id_game, mode):
         resultats ={}
     return resultats 
 
+
+def get_game_suggestions_a_traiter ():
+    con_mongo = cs.mongo_enabled()
+    if   con_mongo : 
+        db = cs.get_db()
+        game_suggest_tb = db.jeux_suggestions
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") ,"statut":"a traiter" }
+
+        resultats = list(game_suggest_tb.find(filtre_tb))
+    else :
+        resultats ={}
+    return resultats 
+
+
 def get_game_nb_suggestions(id_game, mode):
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
@@ -227,10 +241,10 @@ def toggle_suggestion(ckey, user_id, value, mode):
             filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "periode_jeu" : "" , "id_jeux": str(ObjectId(ckey)),   "user_id": str(ObjectId(user_id)) , "prete": str("False")  }
             resultat = game_suggest_tb.delete_many(filtre_tb)
         
-      #  else :  
-      #      # change le statut de la request
-      #      filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)),"user_id":str((ObjectId(user_id)))}
-      #      resultat = game_suggest_tb.update_many(filtre_tb, {"$set": { "statut" : str(value) } })
+        else :  
+            # change le statut de la request
+            filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "id_jeux": str(ObjectId(ckey)),"user_id":str((ObjectId(user_id)))}
+            resultat = game_suggest_tb.update_many(filtre_tb, {"$set": { "statut" : str(value) } })
 
 
 
