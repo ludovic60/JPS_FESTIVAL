@@ -169,7 +169,7 @@ def _requests_suggestion_page(user):
             cols = st.columns(per_row)
             for j, g in enumerate(list_games[i:i + per_row]):
                 with cols[j]:
-                    _game_card(g, list_key, user,"suggestion")
+                    _game_card(g, "all", user,"suggestion")
 
 
 ##        for t in get_tasks("all"):
