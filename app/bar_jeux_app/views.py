@@ -163,6 +163,7 @@ def _requests_suggestion_page(user):
     for sugg in list_suggest : 
         list_games_tmp.append(storage_jeux.get_info_games(sugg.get("id_jeux")))
     list_games = list(list_games_tmp)
+    print(list_games)
     if list_games:
         per_row = 3
         # FIX : On utilise len(list_games) ici !
