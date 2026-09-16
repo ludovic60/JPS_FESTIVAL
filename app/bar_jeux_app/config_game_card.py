@@ -166,7 +166,7 @@ def _game_card(g, list_key, user , mode ):
                     col1 ,col2 =st.columns([1, 2])
                     st.markdown("""
                                 <style>
-                                div.stButton > button {
+                                div.stButton > button[key=f"valid_sug_{ckey_this_game}"] {
                                     width: 200px;           /* Définit la largeur fixe du bouton */
                                     white-space: normal;    /* Autorise le retour à la ligne */
                                     word-wrap: break-word;  /* Coupe les mots longs si nécessaire */
