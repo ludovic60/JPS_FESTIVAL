@@ -207,7 +207,7 @@ def _requests_page(user):
                   label = c1.text_input("t", value=r["game_name"], key=f"edit_game_{str(r["_id"])}",
                                          label_visibility="collapsed")
          
-                  label = c2.text_input("t", value=r["myludo_url"], key=f"edit_by_{str(r["_id"])}",
+                  label = c2.text_input("t", value=r["myludo_url"], key=f"edit_myludo_{str(r["_id"])}",
                                          label_visibility="collapsed")      
          
                   label = c3.text_input("t", value=r["created_by"], key=f"edit_by_{str(r["_id"])}",
@@ -232,7 +232,7 @@ def _requests_page(user):
                   c1, c2, c3, c4 , c5 ,c6, cè  = st.columns([4, 6, 1 , 1, 1, 1, 1])
                   label = c1.text_input("t", value=t["game_name"], key=f"edit_game_{str(t["_id"])}",
                                          label_visibility="collapsed")
-                  label = c2.text_input("t", value=t["comments"], key=f"edit_by_{str(t["_id"])}",
+                  label = c2.text_input("t", value=t["comments"], key=f"edit_comment_{str(t["_id"])}",
                                          label_visibility="collapsed")      
          
                   label = c3.text_input("t", value=t["created_by"], key=f"edit_by_{str(t["_id"])}",
