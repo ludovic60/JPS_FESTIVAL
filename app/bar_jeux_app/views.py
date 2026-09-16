@@ -222,9 +222,9 @@ def _requests_page(user):
                                          label_visibility="collapsed") 
                   label = c5.text_input("t", value=r["statut"], key=f"edit_statut_{str(r["_id"])}",
                                          label_visibility="collapsed")
-                  if c6.button("traiter", key=f"modif_{r["_id"]}"):
+                  if c6.button("traiter", key=f"modif_traiter_{r["_id"]}"):
                       st.rerun()
-                  if c7.button("supprimer", key=f"modif_{r["_id"]}"):
+                  if c7.button("supprimer", key=f"modif_supp_{r["_id"]}"):
                       st.rerun()
 
 
@@ -253,9 +253,9 @@ def _requests_page(user):
                                          label_visibility="collapsed") 
                   label = c5.text_input("t", value=t["statut"], key=f"edit_statut_{str(t["_id"])}",
                                          label_visibility="collapsed")
-                  if c6.button("traiter", key=f"modif_{t["_id"]}"):
+                  if c6.button("traiter", key=f"modif_traiter_{t["_id"]}"):
                       st.rerun()
-                  if c7.button("supprimer", key=f"modif_{t["_id"]}"):
+                  if c7.button("supprimer", key=f"modif_suppr_{t["_id"]}"):
                       st.rerun()
 ############################################################################################################
 ###-------------- page où est affiché les jeux selectionné
