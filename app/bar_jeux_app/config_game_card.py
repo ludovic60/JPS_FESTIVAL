@@ -232,16 +232,21 @@ def _game_card(g, list_key, user , mode ):
                     if  storage_jeux.get_game_suggestions(ckey_this_game , "sugg"):
                         statut = storage_jeux.get_game_suggestions(ckey_this_game , "sugg")[0].get("statut")
                     else :
-                        statut = "suggestion à traiter"
-                                                
-                        
-                    if storage_jeux.get_game_suggestions(ckey_this_game, "pret"):
-                        statut_pret = storage_jeux.get_game_suggestions(ckey_this_game, "pret")[0].get("statut")
-                    else :
-                        statut_pret = "suggestion à traiter"
+          
+                            if storage_jeux.get_game_suggestions(ckey_this_game, "pret"):
+                                statut_pret = storage_jeux.get_game_suggestions(ckey_this_game, "pret")[0].get("statut")
+                            else :
+                                statut_pret = "suggestion à traiter"
                             
                         
+                if is_admin and mode == "suggestion":
+                        liste_preteur = storage_jeux.get_game_suggestions(ckey_this_game, "pret")[0].get("statut")
+                        st.write(f"liste des personnes souhaitant préter le jeu")
+                        for id_user in liste_preteur
+                                pseudo  =  u["pseudo"]  for u in user if  u["id"]=liste_preteur.get("user_id")
+                                st.write(f"- {pseudo}")
                    
+                else :                        
  
                     if statut == "suggestion Retenue" or statut_pret == "suggestion Retenue" :
                                st.badge("✅ suggestion Retenu")
@@ -251,7 +256,7 @@ def _game_card(g, list_key, user , mode ):
                     else :
                                 st.badge("suggestion à traiter")
                                
-            ################################################################################################################
+            ##############################################el##################################################################
             ################## generation d'une pop up pour saisir un commentaire
             ################################################################################################################
 
