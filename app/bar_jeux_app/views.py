@@ -234,28 +234,28 @@ def _requests_page(user):
     if not reqs:
         st.info("Aucune remarque.")
     else :
-        c1, c2, c3, c4 , c5 ,c6,c7  = st.columns([4, 6, 1, 1 , 1, 1, 1])
-        label = c1.text_input("t", value="NOM DU JEU", key=f"edit_game2", label_visibility="collapsed")
-        label = c2.text_input("t", value="COMMENTAIRE", key=f"edit_myludo2",label_visibility="collapsed") 
-        label = c3.text_input("t", value="FAIT PAR", key=f"edit_by2", label_visibility="collapsed")      
-        label = c4.text_input("t", value="DEMANDE LE", key=f"edit_date2", label_visibility="collapsed") 
-        label = c5.text_input("t", value="STATUT", key=f"edit_statut2", label_visibility="collapsed")
+        c12, c22, c32, c42 , c52 ,c62, c72  = st.columns([4, 6, 1, 1 , 1, 1, 1])
+        label = c12.text_input("t", value="NOM DU JEU", key=f"edit_game2", label_visibility="collapsed")
+        label = c22.text_input("t", value="COMMENTAIRE", key=f"edit_myludo2",label_visibility="collapsed") 
+        label = c32.text_input("t", value="FAIT PAR", key=f"edit_by2", label_visibility="collapsed")      
+        label = c42.text_input("t", value="DEMANDE LE", key=f"edit_date2", label_visibility="collapsed") 
+        label = c52.text_input("t", value="STATUT", key=f"edit_statut2", label_visibility="collapsed")
         for t in remarks:
               
-                  label = c1.text_input("t", value=t["game_name"], key=f"edit_game_{str(t["_id"])}",
+                  label = c12.text_input("t", value=t["game_name"], key=f"edit_game_{str(t["_id"])}",
                                          label_visibility="collapsed")
-                  label = c2.text_input("t", value=t["comments"], key=f"edit_comment_{str(t["_id"])}",
+                  label = c22.text_input("t", value=t["comments"], key=f"edit_comment_{str(t["_id"])}",
                                          label_visibility="collapsed")      
          
-                  label = c3.text_input("t", value=t["created_by"], key=f"edit_by_{str(t["_id"])}",
+                  label = c32.text_input("t", value=t["created_by"], key=f"edit_by_{str(t["_id"])}",
                                          label_visibility="collapsed")      
-                  label = c4.text_input("t", value=t["created_at"], key=f"edit_date_{str(t["_id"])}",
+                  label = c42.text_input("t", value=t["created_at"], key=f"edit_date_{str(t["_id"])}",
                                          label_visibility="collapsed") 
-                  label = c5.text_input("t", value=t["statut"], key=f"edit_statut_{str(t["_id"])}",
+                  label = c52.text_input("t", value=t["statut"], key=f"edit_statut_{str(t["_id"])}",
                                          label_visibility="collapsed")
-                  if c6.button("traiter", key=f"modif_traiter_{t["_id"]}"):
+                  if c62.button("traiter", key=f"modif_traiter_{t["_id"]}"):
                       st.rerun()
-                  if c7.button("supprimer", key=f"modif_suppr_{t["_id"]}"):
+                  if c72.button("supprimer", key=f"modif_suppr_{t["_id"]}"):
                       st.rerun()
 ############################################################################################################
 ###-------------- page où est affiché les jeux selectionné
