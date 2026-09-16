@@ -160,7 +160,7 @@ def _requests_suggestion_page(user):
     list_suggest = storage_jeux.get_game_suggestions_a_traiter()
     list_games =[]
     for sugg in list_suggest :
-        list_games.append(storage_jeu.get_info_games(sugg.get("id_jeux")))
+        list_games.append(storage_jeux.get_info_games(sugg.get("id_jeux")))
      
     if list_games:
         per_row = 3
