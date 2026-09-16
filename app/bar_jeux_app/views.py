@@ -208,6 +208,8 @@ def _requests_page(user):
         label = c3.text_input("t", value="FAIT PAR", key=f"edit_by", label_visibility="collapsed")      
         label = c4.text_input("t", value="DEMANDE LE", key=f"edit_date", label_visibility="collapsed") 
         label = c5.text_input("t", value="STATUT", key=f"edit_statut", label_visibility="collapsed")
+        label = c6.text_input("t", value="", key=f"edit_statut32", label_visibility="collapsed")
+        label = c7.text_input("t", value="", key=f"edit_statut42", label_visibility="collapsed")
         for r in reqs:
               
                   label = c1.text_input("t", value=r["game_name"], key=f"edit_game_{str(r["_id"])}",
