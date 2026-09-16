@@ -243,7 +243,7 @@ def _game_card(g, list_key, user , mode ):
                         liste_preteur = storage_jeux.get_game_suggestions(ckey_this_game, "pret")[0].get("statut")
                         st.write(f"liste des personnes souhaitant préter le jeu")
                         for id_user in liste_preteur :
-                                pseudo  =  u["pseudo"]  for u in user if  u["id"]=liste_preteur.get("user_id")
+                                pseudo  =  (u["pseudo"]  for u in user if  u["id"]==liste_preteur.get("user_id") )
                                 st.write(f"- {pseudo}")
                    
                 else :                        
