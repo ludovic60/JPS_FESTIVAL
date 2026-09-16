@@ -164,23 +164,13 @@ def _game_card(g, list_key, user , mode ):
                     )          
 
                     col1 ,col2 =st.columns([1, 2])
-                    st.markdown("""
-                                <style>
-                                div.stButton > button[key=f"valid_sug_{ckey_this_game}"] {
-                                    width: 200px;           /* Définit la largeur fixe du bouton */
-                                    white-space: normal;    /* Autorise le retour à la ligne */
-                                    word-wrap: break-word;  /* Coupe les mots longs si nécessaire */
-                                    height: auto;           /* Ajuste la hauteur selon le texte */
-                                    padding: 10px;          /* Espace interne pour l'aération */
-                                }
-                                </style>
-                                """, unsafe_allow_html=True)    
+
                     with  col1  :
-                          if st.button(   "✅ valider la suggestion", key=f"valid_sug_{ckey_this_game}" ):
+                          if st.button(   "✅ valider la suggestion", key=f"valid_sug_{ckey_this_game}", width="content",  wrap=True) ):
                                 result_valid = storage_jeux.toggle_suggestion(ckey_this_game, user["id"], "suggestion Retenue", "all") 
                                 on_admin_change(ckey_this_game, has_selected_this_game)
                     with  col2  :
-                          if st.button(  "❌ refuser la suggestion" ,  key=f"refuse_sug_{ckey_this_game}" ):
+                          if st.button(  "❌ refuser la suggestion" ,  key=f"refuse_sug_{ckey_this_game}",width="content",  wrap=True) ):
                                 result_valid = storage_jeux.toggle_suggestion(ckey_this_game, user["id"], "suggestion refusée", "all")
                     
                         
