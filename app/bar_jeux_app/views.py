@@ -240,8 +240,8 @@ def _requests_page(user):
         label = c32.text_input("t", value="FAIT PAR", key=f"edit_by2", label_visibility="collapsed")      
         label = c42.text_input("t", value="DEMANDE LE", key=f"edit_date2", label_visibility="collapsed") 
         label = c52.text_input("t", value="STATUT", key=f"edit_statut2", label_visibility="collapsed")
-        label = c62.text_input("t", value="")
-        label = c72.text_input("t", value="")
+        label = c62.text_input("t", value="", key=f"edit_statut32")
+        label = c72.text_input("t", value="", key=f"edit_statut42")
      
         for t in remarks:
               
