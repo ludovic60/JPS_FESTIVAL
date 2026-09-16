@@ -165,10 +165,10 @@ def _game_card(g, list_key, user , mode ):
 
                     col1 ,col2 =st.columns([1, 2])
                     with  col1  :
-                          if st.button(  key=f"valid_sug_{ckey_this_game}" , "✅ valider la suggestion"):
+                          if st.button(   "✅ valider la suggestion", key=f"valid_sug_{ckey_this_game}" ):
                                 result_valid = toggle_suggestion(ckey_this_game, user["id"], "suggestion Retenue", "all")                    
                     with  col2  :
-                          if st.button(  key=f"refuse_sug_{ckey_this_game}" , "❌ refuser la suggestion"):
+                          if st.button(  "❌ refuser la suggestion" ,  key=f"refuse_sug_{ckey_this_game}" ):
                                 result_valid = toggle_suggestion(ckey_this_game, user["id"], "suggestion refusée", "all")
                     
                         
