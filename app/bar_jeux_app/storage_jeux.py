@@ -269,14 +269,14 @@ def get_requests(type_request):
         if   con_mongo : 
             db = cs.get_db()
             resquest_tb = db.demandes
-            filtre_tb = {"type" : "ajout jeux"  }
+            filtre_tb = {"type_request" : "ajout jeux"  }
             
             resultats = list(resquest_tb.find(filtre_tb))
     elif type_request == "remarque fiche jeux" :
         if   con_mongo : 
             db = cs.get_db()
             resquest_tb = db.demandes
-            filtre_tb = {"type" : "remarque fiche jeux"  }
+            filtre_tb = {"type_request" : "remarque fiche jeux"  }
             
             resultats = list(resquest_tb.find(filtre_tb))
     else :
