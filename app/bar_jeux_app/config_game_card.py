@@ -245,7 +245,8 @@ def _game_card(g, list_key, user , mode ):
                                 print(liste_preteur)
                                 st.write(f"liste des personnes souhaitant préter le jeu")
                                 for id_user in liste_preteur :
-                                        pseudo  =  (u["pseudo"]  for u in user if  u["id"]==liste_preteur.get("user_id") )
+                                        pseudo  =  (u["pseudo"]  for u in user if  u["id"]==id_user.get("user_id") )
+                                        s.write(id_user.get("user_id"))
                                         st.write(f"- {pseudo}")
                    
                 else :                        
