@@ -203,7 +203,7 @@ def _requests_page(user):
         st.info("Aucune demande.")
     else :
         for r in reqs:
-                  c1, c2, c3, c4 , c5 ,c6  = st.columns([4, 6, 1, 1 , 1, 1, 1])
+                  c1, c2, c3, c4 , c5 ,c6,c7  = st.columns([4, 6, 1, 1 , 1, 1, 1])
                   label = c1.text_input("t", value=r["game_name"], key=f"edit_game_{str(r["_id"])}",
                                          label_visibility="collapsed")
          
@@ -229,7 +229,7 @@ def _requests_page(user):
         st.info("Aucune remarque.")
     else :
         for t in remarks:
-                  c1, c2, c3, c4 , c5 ,c6  = st.columns([4, 6, 1 , 1, 1, 1, 1])
+                  c1, c2, c3, c4 , c5 ,c6, cè  = st.columns([4, 6, 1 , 1, 1, 1, 1])
                   label = c1.text_input("t", value=t["game_name"], key=f"edit_game_{str(t["_id"])}",
                                          label_visibility="collapsed")
                   label = c2.text_input("t", value=t["comments"], key=f"edit_by_{str(t["_id"])}",
