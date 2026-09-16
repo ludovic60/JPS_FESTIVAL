@@ -202,6 +202,12 @@ def _requests_page(user):
     if not reqs: 
         st.info("Aucune demande.")
     else :
+        c1, c2, c3, c4 , c5 ,c6,c7  = st.columns([4, 6, 1, 1 , 1, 1, 1])
+        label = c1.text_input("t", value="NOM DU JEU", key=f"edit_game", label_visibility="collapsed")
+        label = c2.text_input("t", value="MYLUDO URL", key=f"edit_myludo",label_visibility="collapsed") 
+        label = c3.text_input("t", value="FAIT PAR", key=f"edit_by", label_visibility="collapsed")      
+        label = c4.text_input("t", value="DEMANDE LE", key=f"edit_date", label_visibility="collapsed") 
+        label = c5.text_input("t", value="STATUT", key=f"edit_statut", label_visibility="collapsed")
         for r in reqs:
                   c1, c2, c3, c4 , c5 ,c6,c7  = st.columns([4, 6, 1, 1 , 1, 1, 1])
                   label = c1.text_input("t", value=r["game_name"], key=f"edit_game_{str(r["_id"])}",
@@ -228,8 +234,14 @@ def _requests_page(user):
     if not reqs:
         st.info("Aucune remarque.")
     else :
+        c1, c2, c3, c4 , c5 ,c6,c7  = st.columns([4, 6, 1, 1 , 1, 1, 1])
+        label = c1.text_input("t", value="NOM DU JEU", key=f"edit_game2", label_visibility="collapsed")
+        label = c2.text_input("t", value="COMMENTAIRE", key=f"edit_myludo2",label_visibility="collapsed") 
+        label = c3.text_input("t", value="FAIT PAR", key=f"edit_by2", label_visibility="collapsed")      
+        label = c4.text_input("t", value="DEMANDE LE", key=f"edit_date2", label_visibility="collapsed") 
+        label = c5.text_input("t", value="STATUT", key=f"edit_statut2", label_visibility="collapsed")
         for t in remarks:
-                  c1, c2, c3, c4 , c5 ,c6, cè  = st.columns([4, 6, 1 , 1, 1, 1, 1])
+              
                   label = c1.text_input("t", value=t["game_name"], key=f"edit_game_{str(t["_id"])}",
                                          label_visibility="collapsed")
                   label = c2.text_input("t", value=t["comments"], key=f"edit_comment_{str(t["_id"])}",
