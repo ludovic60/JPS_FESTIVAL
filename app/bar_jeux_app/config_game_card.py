@@ -162,15 +162,10 @@ def _game_card(g, list_key, user , mode ):
                         on_change=on_admin_change,
                         args=(ckey_this_game, has_selected_this_game),
                     )          
-
-                    col1 ,col2 =st.columns([1, 2])
-
-                    with  col1  :
-                          if st.button(   "✅ valider la suggestion", key=f"valid_sug_{ckey_this_game}",  width=250,  wrap=True) :
+                    if st.button(   "✅ valider la suggestion", key=f"valid_sug_{ckey_this_game}",  width=250,  wrap=True) :
                                 result_valid = storage_jeux.toggle_suggestion(ckey_this_game, user["id"], "suggestion Retenue", "all") 
                                 on_admin_change(ckey_this_game, has_selected_this_game)
-                    with  col2  :
-                          if st.button(  "❌ refuser la suggestion" ,  key=f"refuse_sug_{ckey_this_game}",  width=50,  wrap=True) :
+                    if st.button(  "❌ refuser la suggestion" ,  key=f"refuse_sug_{ckey_this_game}",  width=250,  wrap=True) :
                                 result_valid = storage_jeux.toggle_suggestion(ckey_this_game, user["id"], "suggestion refusée", "all")
                     
                         
