@@ -147,7 +147,6 @@ def _list_page(title, list_key, user):
             cols = st.columns(per_row)
             for j, g in enumerate(filtered_games[i:i + per_row]):
                 with cols[j]:
-                    print(g)
                     _game_card(g, list_key, user,"normal")
     elif list_key !="all"  or ( list_key =="all" and search_query) :
         st.info("Aucun jeu ne correspond à votre recherche.")
@@ -163,7 +162,7 @@ def _requests_suggestion_page(user):
     for sugg in list_suggest : 
         list_games.append(storage_jeux.get_info_games(sugg.get("id_jeux"))[0])
 
-    print(list_games)
+
     if list_games:
         per_row = 3
         # FIX : On utilise len(list_games) ici !
@@ -171,7 +170,6 @@ def _requests_suggestion_page(user):
             cols = st.columns(per_row)
             for j, g in enumerate(list_games[i:i + per_row]):
                 with cols[j]:
-                    print(g)
                     _game_card(g, "all", user,"suggestion")
 
 
