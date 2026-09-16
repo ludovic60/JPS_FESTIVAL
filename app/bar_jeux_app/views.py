@@ -209,7 +209,7 @@ def _requests_page(user):
         label = c4.text_input("t", value="DEMANDE LE", key=f"edit_date", label_visibility="collapsed") 
         label = c5.text_input("t", value="STATUT", key=f"edit_statut", label_visibility="collapsed")
         for r in reqs:
-                  c1, c2, c3, c4 , c5 ,c6,c7  = st.columns([4, 6, 1, 1 , 1, 1, 1])
+              
                   label = c1.text_input("t", value=r["game_name"], key=f"edit_game_{str(r["_id"])}",
                                          label_visibility="collapsed")
          
