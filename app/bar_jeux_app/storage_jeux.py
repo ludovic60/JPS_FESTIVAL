@@ -300,7 +300,8 @@ def add_request(type_request, game_name, myludo_url, comments, by_name):
                     "myludo_url": myludo_url.strip(),
                     "comments" : "",
                     "created_by": by_name,
-                    "created_at": datetime.now(timezone.utc).isoformat()
+                    "created_at": datetime.now(timezone.utc).isoformat(),
+                    "statut" : "a traiter"
             }   
             resultat = resquest_tb.insert_one(new_request)
     elif type_request == "remarque fiche jeux" :
@@ -315,7 +316,8 @@ def add_request(type_request, game_name, myludo_url, comments, by_name):
                     "myludo_url": "",
                     "comments" :comments,
                     "created_by": by_name,
-                    "created_at": datetime.now(timezone.utc).isoformat()
+                    "created_at": datetime.now(timezone.utc).isoformat(),
+                    "statut" : "a traiter"
             }   
             resultat = resquest_tb.insert_one(new_request)
 
@@ -327,7 +329,17 @@ def remove_request(type_request, req_id):
     resquest_tb = db.demandes                                              
     filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "id_request": str(ObjectId(req_id)) }
     resultat = resquest_tb.delete_many(filtre_tb)
-        
+
+def update_statut_request(type_request, req_id,statut):
+ con_mongo = cs.mongo_enabled()
+ if   con_mongo : 
+    db = cs.get_db()
+    resquest_tb = db.demandes                                              
+    filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "id_request": str(ObjectId(req_id)) }
+    resultat = resquest_tb.update_many(filtre_tb, {"$set": {"statut" : statut} })
+
+
+
 
 
 def all_list_keys():
