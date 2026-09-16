@@ -251,8 +251,8 @@ def _game_card(g, list_key, user , mode ):
                                                  pseudo  =  u["pseudo"]
                                                  print(pseudo)
                                         
-                                        st.write(id_user.get("user_id"))
-                                        st.write(pseudo)
+                                       st.write(id_user.get("user_id"))
+                                       st.write(pseudo)
                    
                 else :                        
  
