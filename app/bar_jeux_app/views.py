@@ -202,18 +202,49 @@ def _requests_page(user):
     if not reqs:
         st.info("Aucune demande.")
     else :
-     for r in reqs:
-         with st.container(border=True):
-             c1, c2 = st.columns([4, 1])
-             c1.markdown(f"**{r['name']}** — demandé par {r['by']}")
-             if r.get("myludo_url"):
-                 c1.markdown(f"[Lien myludo]({r['myludo_url']}) · liste : `{r['list_key']}`")
-             if user["role"] == "admin":
-                 if c2.button("Retirer", key=f"rmreq_{r['id']}"):
-                     storage_jeux.remove_request(r["id"])
-                     st.rerun()
+        for r in reqs:
+                  c1, c2, c3, c4 , c5 ,c6  = st.columns([4, 6, 1, 1 , 1, 1, 1])
+                  label = c1.text_input("t", value=r["game_name"], key=f"edit_game_{str(r["_id"])}",
+                                         label_visibility="collapsed")
+         
+                  label = c2.text_input("t", value=r["myludo_url"], key=f"edit_by_{str(r["_id"])}",
+                                         label_visibility="collapsed")      
+         
+                  label = c3.text_input("t", value=r["created_by"], key=f"edit_by_{str(r["_id"])}",
+                                         label_visibility="collapsed")      
+                  label = c4.text_input("t", value=r["created_at"], key=f"edit_date_{str(r["_id"])}",
+                                         label_visibility="collapsed") 
+                  label = c5.text_input("t", value=r["statut"], key=f"edit_statut_{str(r["_id"])}",
+                                         label_visibility="collapsed")
+                  if c6.button("traiter", key=f"modif_{r["_id"]}"):
+                      st.rerun()
+                  if c7.button("supprimer", key=f"modif_{r["_id"]}"):
+                      st.rerun()
+
+
     st.subheader("liste des remarques par les joueurs")
-    st.markdown("🚧  en cours de construction ")
+
+    remarks = storage_jeux.get_requests("remarque fiche jeux")
+    if not reqs:
+        st.info("Aucune remarque.")
+    else :
+        for t in remarks:
+                  c1, c2, c3, c4 , c5 ,c6  = st.columns([4, 6, 1 , 1, 1, 1, 1])
+                  label = c1.text_input("t", value=t["game_name"], key=f"edit_game_{str(t["_id"])}",
+                                         label_visibility="collapsed")
+                  label = c2.text_input("t", value=t["comments"], key=f"edit_by_{str(t["_id"])}",
+                                         label_visibility="collapsed")      
+         
+                  label = c3.text_input("t", value=t["created_by"], key=f"edit_by_{str(t["_id"])}",
+                                         label_visibility="collapsed")      
+                  label = c4.text_input("t", value=t["created_at"], key=f"edit_date_{str(t["_id"])}",
+                                         label_visibility="collapsed") 
+                  label = c5.text_input("t", value=t["statut"], key=f"edit_statut_{str(t["_id"])}",
+                                         label_visibility="collapsed")
+                  if c6.button("traiter", key=f"modif_{t["_id"]}"):
+                      st.rerun()
+                  if c7.button("supprimer", key=f"modif_{t["_id"]}"):
+                      st.rerun()
 ############################################################################################################
 ###-------------- page où est affiché les jeux selectionné
 ############################################################################################################
