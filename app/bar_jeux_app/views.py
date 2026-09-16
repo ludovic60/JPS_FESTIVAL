@@ -159,10 +159,10 @@ def _list_page(title, list_key, user):
 def _requests_suggestion_page(user):
     st.title("liste des suggestions par les joueurs")
     list_suggest = storage_jeux.get_game_suggestions_a_traiter()
-    list_games =[]
-    for sugg in list_suggest :
-        list_games.append(storage_jeux.load_games(sugg.get("id_jeux")))
-    print( list_games)
+    list_games_tmp =[]
+    for sugg in list_suggest : 
+        list_games_tmp.append(storage_jeux.get_info_game(sugg.get("id_jeux")))
+    list_games = list(list_games_tmp)
     if list_games:
         per_row = 3
         # FIX : On utilise len(list_games) ici !
