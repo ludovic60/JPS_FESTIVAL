@@ -132,7 +132,7 @@ def _game_card(g, list_key, user , mode ):
                         args=(ckey_this_game, has_selected_this_game),
                     )                                
                        
-                elif is_admin and mode != "suggestion":
+                elif is_admin and mode == "suggestion":
                     # 1
                     select_this_game = [adsel for adsel in admin_sel if str(adsel.get("id_jeux")) == ckey_this_game]
                     # 2.admin a deja retenu auparavant 
