@@ -427,7 +427,7 @@ def _final_page(user):
           allow_unsafe_jscode=True,
           fit_columns_on_grid_load=False,
           height=dynamic_height
-      )
+      ) 
    
  
       # Bouton de soumission unique en bas du tableau
