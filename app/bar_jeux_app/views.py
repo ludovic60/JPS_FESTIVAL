@@ -114,28 +114,27 @@ def _list_page(title, list_key, user):
 
 
     # Champ de saisie utilisateur
-    search_query = st.text_input(
-        "🔎 Rechercher un jeu (nom ou URL)",
-        placeholder="Ex: Catan, https://...",
-        key=f"game_search_input_{list_key}"  # Clé rendue unique par list_key
-    ).strip().lower()
+   raw_search = st.text_input(
+       "🔎 Rechercher un jeu (nom ou URL)",
+       placeholder="Ex: Catan, https://...",
+       key=f"game_search_input_{list_key}"
+   )
+   search_query = (raw_search or "").strip().lower()
 
     # Filtrage de la liste de jeux
     filtered_games = []
-    if list_key =="all" and not search_query :
-         filtered_games = []
-    else :
-        games = storage_jeux.load_games(list_key)
+    
+    if list_key == "all" and not search_query:
+        filtered_games = []
+    else:
+        # Passer le terme de recherche directement à MongoDB
+        games = storage_jeux.load_games(list_key, search_query=search_query)
     
         if not games:
-              st.info("Aucun jeu dans cette liste.")
-              return
-        for g in games:
-            title = (g.get("nom_jeu_complet") or g.get("nom_jeu") or "").lower()
-            url = (g.get("url_myludo") or "").lower()  # Sécurisé avec str vide si None            
-            # Validation si le terme recherché est présent
-            if not search_query or (search_query in title or search_query in url):
-                   filtered_games.append(g)
+            st.info("Aucun jeu dans cette liste.")
+            return
+        
+        filtered_games = games
 
 
  
