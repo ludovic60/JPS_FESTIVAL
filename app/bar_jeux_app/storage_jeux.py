@@ -42,7 +42,7 @@ def load_games(list_key, search_query=None):
                 filtre_tb ={"$or": [  {"nom_jeu_complet": regex_pattern},
                                      {"nom_jeu": regex_pattern},
                                      {"url_myludo": regex_pattern}]}
-        else 
+        else :
         
             if list_key == "est_selectionnable":
                 filtre_tb = {"est_selectionnable": list_key}
