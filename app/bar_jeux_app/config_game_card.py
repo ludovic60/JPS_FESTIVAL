@@ -233,17 +233,12 @@ def _game_card(g, list_key, user , mode ):
                         if is_admin and mode == "suggestion":
                                 liste_preteur = storage_jeux.get_game_suggestions(ckey_this_game, "pret")
                                 if liste_preteur : 
-                                        print(liste_preteur)
                                         st.write(f"liste des personnes souhaitant préter le jeu")
                                         for id_user in liste_preteur :
                                                for u in List_users :
-                                                  print(    str(u["_id"]))  
-                                                  if  str(u["_id"])==id_user.get("user_id") :
+                                                   if  str(u["_id"])==id_user.get("user_id") :
                                                          pseudo  =  u["pseudo"]
-                                                         print(pseudo)
-                                                
-                                               st.write(id_user.get("user_id"))
-                                               st.write(pseudo)
+                                                   st.write(pseudo)
                            
                         else : 
         
