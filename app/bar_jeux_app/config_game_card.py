@@ -227,43 +227,45 @@ def _game_card(g, list_key, user , mode ):
                 st.caption(f"👍 {nb_sugg + nb_sugg_prete} suggestion(s)")
                     
                 if nb_sugg + nb_sugg_prete> 0  :
- 
-                    
-                    if  storage_jeux.get_game_suggestions(ckey_this_game , "sugg"):
-                        statut = storage_jeux.get_game_suggestions(ckey_this_game , "sugg")[0].get("statut")
-                    else :
-          
-                            if storage_jeux.get_game_suggestions(ckey_this_game, "pret"):
-                                statut_pret = storage_jeux.get_game_suggestions(ckey_this_game, "pret")[0].get("statut")
-                            else :
-                                statut_pret = "suggestion à traiter"
                             
                         
-                if is_admin and mode == "suggestion":
-                        liste_preteur = storage_jeux.get_game_suggestions(ckey_this_game, "pret")
-                        if liste_preteur : 
-                                print(liste_preteur)
-                                st.write(f"liste des personnes souhaitant préter le jeu")
-                                for id_user in liste_preteur :
-                                       for u in user :
-                                          print(    str(u["_id"]))  
-                                          if  str(u["_id"])==id_user.get("user_id") :
-                                                 pseudo  =  u["pseudo"]
-                                                 print(pseudo)
-                                        
-                                       st.write(id_user.get("user_id"))
-                                       st.write(pseudo)
-                   
-                else :                        
- 
-                    if statut == "suggestion Retenue" or statut_pret == "suggestion Retenue" :
-                               st.badge("✅ suggestion Retenu")
-                    elif statut == "suggestion refusée" or  statut_pret == "suggestion refusée":   
-                       
-                                st.badge("❌ suggestion refusée")
-                    else :
-                                st.badge("suggestion à traiter")
+                        if is_admin and mode == "suggestion":
+                                liste_preteur = storage_jeux.get_game_suggestions(ckey_this_game, "pret")
+                                if liste_preteur : 
+                                        print(liste_preteur)
+                                        st.write(f"liste des personnes souhaitant préter le jeu")
+                                        for id_user in liste_preteur :
+                                               for u in user :
+                                                  print(    str(u["_id"]))  
+                                                  if  str(u["_id"])==id_user.get("user_id") :
+                                                         pseudo  =  u["pseudo"]
+                                                         print(pseudo)
+                                                
+                                               st.write(id_user.get("user_id"))
+                                               st.write(pseudo)
+                           
+                        else : 
+        
+                                
+                            if  storage_jeux.get_game_suggestions(ckey_this_game , "sugg"):
+                                statut = storage_jeux.get_game_suggestions(ckey_this_game , "sugg")[0].get("statut")
+                            else :
+                                statut = "suggestion à traiter"
+                            
+                            if storage_jeux.get_game_suggestions(ckey_this_game, "pret"):
+                                 statut_pret = storage_jeux.get_game_suggestions(ckey_this_game, "pret")[0].get("statut")
+                            else :
+                                 statut_pret = "suggestion à traiter"
+                            
+         
+                            if statut == "suggestion Retenue" or statut_pret == "suggestion Retenue" :
+                                       st.badge("✅ suggestion Retenu")
+                            elif statut == "suggestion refusée" or  statut_pret == "suggestion refusée":   
                                
+                                        st.badge("❌ suggestion refusée")
+                            else :
+                                        st.badge("suggestion à traiter")
+                                       
             ##############################################el##################################################################
             ################## generation d'une pop up pour saisir un commentaire
             ################################################################################################################
