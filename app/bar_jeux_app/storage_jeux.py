@@ -194,7 +194,8 @@ def get_game_suggestions_a_traiter ():
             } 
         
         # distinct(field, filter) renvoie une liste de valeurs uniques
-        resultats = game_suggest_tb.distinct("id_jeux", filtre_tb)
+        resultats = list(game_suggest_tb.distinct("id_jeux", filtre_tb))
+        print(resultats)
     else :
         resultats =[]
     return resultats 
