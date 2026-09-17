@@ -278,11 +278,7 @@ def _final_page(user):
  
     games_info_map = {str(g["_id"]): g for g in games_info_list}
 
-    print("game_ids")
-    print(game_ids)
-    print("game info list")
-    print(games_info_list)
-    print(liste_object_id) 
+
     
     # Conversion des prêts sous forme de SETs pour recherche instantanée O(1)
     # Structure des tuples stockés dans le set : (game_id, user_id)
@@ -433,78 +429,56 @@ def _final_page(user):
     )
  
          
-    grid_data = grid_response["data"]
-    new_df = pd.DataFrame(grid_response["data"]) 
+
 
  
     # --- Détection des changements ---
-    new_df = pd.DataFrame(grid_response["data"])
+
     
     ##-------------------------------------------------
     #####--- fonction pour mettre les infos en base 
     ##-------------------------------------------------
-    def on_change_prete(game_id, player_key, new_val) :
-       id_user = [u['_id'] for u in users if u['pseudo'] == player_key]
-       storage_jeux.toggle_loan(game_id, str(id_user[0]), new_val)
-     
-    def on_change_admin(game_id, player_key, new_val) :
-       id_user = [u['_id'] for u in users if u['pseudo'] == player_key]
-       storage_jeux.set_loan_valide_admin(game_id, str(id_user[0]), new_val)           
-                      
-    def on_change_plusieurs_exemplaires(game_id, new_val) :
-       
-        storage_jeux.toggle_admin_selected(game_id, new_val)
 
 
-    
-    # 2. Détection du changement
-    if "old_grid_df" in st.session_state:
-        old_df = st.session_state["old_grid_df"]
-    
-        # Aligner les deux DataFrames sur l'identifiant unique `_id`
-        if "_id" in new_df.columns and "_id" in old_df.columns:
-            # On définit '_id' comme index pour une recherche directe et sécurisée
-            old_df_indexed = old_df.set_index("_id")
-            new_df_indexed = new_df.set_index("_id")
-    
-            checkbox_cols = [
-                c
-                for c in new_df_indexed.columns
-                if c.endswith(("_prete", "_admin"))
-                or c == "Plusieurs exemplaires souhaités"
-            ]
-    
-            # Parcours par game_id (qui est maintenant l'index)
-            for game_id in new_df_indexed.index:
-                # Vérifier que le jeu existait bien dans l'ancien dataframe
-                if game_id in old_df_indexed.index:
-                    for col in checkbox_cols:
-                        if col in old_df_indexed.columns:
-                            old_val = old_df_indexed.at[game_id, col]
-                            new_val = new_df_indexed.at[game_id, col]
-    
-                            if bool(old_val) != bool(new_val):
-                                st.write(
-                                    f"Changement détecté sur {col} pour le jeu {game_id} : {old_val} -> {new_val}"
-                                )
-    
-                                if col.endswith("_prete"):
-                                    player_key = col.replace("_prete", "")
-                                    print("change")
-                                    print(game_id)
-                                    print(player_key)
-                                    print(new_val)
-                                    on_change_prete(game_id, player_key, new_val)
-                                elif col.endswith("_admin"):
-                                    player_key = col.replace("_admin", "")
-                                    on_change_admin(game_id, player_key, new_val)
-                                elif col == "Plusieurs exemplaires souhaités":
-                                    on_change_plusieurs_exemplaires(
-                                        game_id, new_val
-                                    )
-    
-    # 3. Mettre à jour l'état précédent pour le prochain rerun
-    st.session_state["old_grid_df"] = new_df.copy()
+    # Bouton de soumission unique en bas du tableau
+    submit_button = st.form_submit_button(
+          label="Enregistrer toutes les modifications"
+      )
+
+    # --- 4. TRAITEMENT LORS DU CLIC SUR LE BOUTON ---
+    if submit_button:
+      updated_data = grid_response["data"]
+      new_df = pd.DataFrame(updated_data)
+
+      # Exemple de traitement pour parcourir le DataFrame soumis et mettre à jour la BDD
+      # (À adapter selon tes fonctions storage_jeux existantes)
+      for _, row_data in new_df.iterrows():
+        game_id = row_data["_id"]
+
+        # Sauvegarde "Plusieurs exemplaires" (si admin)
+        if user["role"] == "admin":
+          is_several_checked = row_data["Plusieurs exemplaires souhaités"]
+          # storage_jeux.update_several_status(game_id, is_several_checked)
+          storage_jeux.toggle_admin_selected(game_id, new_val)
+         
+        # Sauvegarde des choix de prêts / validations par utilisateur
+        for pseudo in pseudo_list:
+          u_id = user_map[pseudo]
+          is_prete = row_data.get(f"{pseudo}_prete", False)
+          storage_jeux.toggle_loan(game_id, str(id_user[0]), new_val) 
+          is_admin_valide = row_data.get(f"{pseudo}_admin", False)
+          storage_jeux.set_loan_valide_admin(game_id, str(id_user[0]), new_val)  
+      
+        
+
+
+      st.success("Modifications enregistrées avec succès !")
+      st.rerun()
+
+
+
+
+ 
 
 
     st.divider()
