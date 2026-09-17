@@ -443,7 +443,7 @@ def _final_page(user):
     # Bouton de soumission unique en bas du tableau
     submit_button = st.form_submit_button(
           label="Enregistrer toutes les modifications"
-      )
+    )
 
     # --- 4. TRAITEMENT LORS DU CLIC SUR LE BOUTON ---
     if submit_button:
@@ -468,17 +468,11 @@ def _final_page(user):
           storage_jeux.toggle_loan(game_id, str(id_user[0]), new_val) 
           is_admin_valide = row_data.get(f"{pseudo}_admin", False)
           storage_jeux.set_loan_valide_admin(game_id, str(id_user[0]), new_val)  
-      
-        
-
 
       st.success("Modifications enregistrées avec succès !")
       st.rerun()
 
 
-
-
- 
 
 
     st.divider()
