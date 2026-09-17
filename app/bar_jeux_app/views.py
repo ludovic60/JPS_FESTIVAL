@@ -114,12 +114,12 @@ def _list_page(title, list_key, user):
 
 
     # Champ de saisie utilisateur
-   raw_search = st.text_input(
+    raw_search = st.text_input(
        "🔎 Rechercher un jeu (nom ou URL)",
        placeholder="Ex: Catan, https://...",
        key=f"game_search_input_{list_key}"
-   )
-   search_query = (raw_search or "").strip().lower()
+    )
+    search_query = (raw_search or "").strip().lower()
 
     # Filtrage de la liste de jeux
     filtered_games = []
