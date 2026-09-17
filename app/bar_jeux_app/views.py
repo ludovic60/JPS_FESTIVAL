@@ -333,119 +333,110 @@ def _final_page(user):
     
     df_jeux = pd.DataFrame(row_jeux)
 
-    print(df_jeux)
-    # --- 3. CONFIGURATION AGGRID ---
-    image_renderer = JsCode("""
-    class ImageRenderer {
-        init(params) {
-            this.eGui = document.createElement('img');
-            this.eGui.setAttribute('src', params.value);
-            this.eGui.setAttribute('style', 'height: 45px; width: auto; border-radius: 4px; vertical-align: middle;');
-        }
-        getGui() { return this.eGui; }
-    }
-    """)
-    
-    #  On liste explicitement les noms des colonnes souhaitées
-    columns_to_show = [
-        "nouveaute",
-        "Annee",
-        "Categorie jeu",
-        "Couverture Jeu",
-        "Jeu",
-        "Plusieurs exemplaires souhaités",
-        "Total coché par joueur",
-        "Total coché validé par admin"
-    ]
-    
-    # On passe la liste directement à partir du DataFrame
-    gb = GridOptionsBuilder.from_dataframe(df_jeux[columns_to_show])
-    gb.configure_column("_id", hide=True)
-    gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-    gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-    gb.configure_column("Categorie jeu", editable=False, width=180, suppressSizeToFit=True, pinned=True)
-    gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
-    gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True, pinned=True)
-    
-    gb.configure_column(
-        "Plusieurs exemplaires souhaités",
-        editable=(user["role"] == "admin"),
-        cellRenderer="agCheckboxCellRenderer",
-        cellEditor="agCheckboxCellEditor",
-        width=90,
-        suppressSizeToFit=True,
-        pinned=True 
-    )
-    
-    gb.configure_column("Total coché par joueur", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-    gb.configure_column("Total coché validé par admin", editable=False, width=90, suppressSizeToFit=True, pinned=True)
-    
-    gb.configure_grid_options(singleClickEdit=True, rowHeight=60)
-    grid_options = gb.build()
-    
-    # En-têtes groupés par joueur
-    for pseudo in pseudo_list:
-        group_col = {
-            "headerName": pseudo,
-            "children": [
-                {
-                    "field": f"{pseudo}_prete",
-                    "headerName": "Je prête",
-                    "editable": (user["pseudo"] == pseudo or user["role"] == "admin"),
-                    "cellRenderer": "agCheckboxCellRenderer",
-                    "cellEditor": "agCheckboxCellEditor",
-                    "width": 100,
-                    "suppressSizeToFit": True,
-                },
-                {
-                    "field": f"{pseudo}_admin",
-                    "headerName": "Validé",
-                    "editable": (user["role"] == "admin"),
-                    "cellRenderer": "agCheckboxCellRenderer",
-                    "cellEditor": "agCheckboxCellEditor",
-                    "width": 100,
-                    "suppressSizeToFit": True,
-                    "cellStyle": JsCode("""
-                        function(params) {
-                            return params.value === true ? {backgroundColor: '#d4edda', color: '#155724'} : null;
-                        }
-                    """),
-                },
-            ],
-        }
-        grid_options["columnDefs"].append(group_col)
-    
-    # Hauteur dynamique
-    dynamic_height = min(max(40 + (len(df_jeux) * 70) + 20, 200), 800)
-    
-    grid_response = AgGrid(
-        df_jeux,
-        gridOptions=grid_options,
-        update_mode=GridUpdateMode.VALUE_CHANGED,
-        data_return_mode=DataReturnMode.AS_INPUT,
-        allow_unsafe_jscode=True,
-        fit_columns_on_grid_load=False,
-        height=dynamic_height
-    )
+    # --- 3. FORMULAIRE STREAMLIT AVEC AGGRID ---
+    # Utilisation d'un st.form pour regrouper le tableau et le bouton de validation en bas
+    with st.form(key="loans_form"):
+      image_renderer = JsCode("""
+      class ImageRenderer {
+          init(params) {
+              this.eGui = document.createElement('img');
+              this.eGui.setAttribute('src', params.value);
+              this.eGui.setAttribute('style', 'height: 45px; width: auto; border-radius: 4px; vertical-align: middle;');
+          }
+          getGui() { return this.eGui; }
+      }
+      """)
+      
+      #  On liste explicitement les noms des colonnes souhaitées
+      columns_to_show = [
+          "nouveaute",
+          "Annee",
+          "Categorie jeu",
+          "Couverture Jeu",
+          "Jeu",
+          "Plusieurs exemplaires souhaités",
+          "Total coché par joueur",
+          "Total coché validé par admin"
+      ]
+      
+      # On passe la liste directement à partir du DataFrame
+      gb = GridOptionsBuilder.from_dataframe(df_jeux[columns_to_show])
+      gb.configure_column("_id", hide=True)
+      gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Categorie jeu", editable=False, width=180, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True, pinned=True)
+      
+      gb.configure_column(
+          "Plusieurs exemplaires souhaités",
+          editable=(user["role"] == "admin"),
+          cellRenderer="agCheckboxCellRenderer",
+          cellEditor="agCheckboxCellEditor",
+          width=90,
+          suppressSizeToFit=True,
+          pinned=True 
+      )
+      
+      gb.configure_column("Total coché par joueur", editable=False, width=80, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Total coché validé par admin", editable=False, width=90, suppressSizeToFit=True, pinned=True)
+      
+      gb.configure_grid_options(singleClickEdit=True, rowHeight=60)
+      grid_options = gb.build()
+      
+      # En-têtes groupés par joueur
+      for pseudo in pseudo_list:
+          group_col = {
+              "headerName": pseudo,
+              "children": [
+                  {
+                      "field": f"{pseudo}_prete",
+                      "headerName": "Je prête",
+                      "editable": (user["pseudo"] == pseudo or user["role"] == "admin"),
+                      "cellRenderer": "agCheckboxCellRenderer",
+                      "cellEditor": "agCheckboxCellEditor",
+                      "width": 100,
+                      "suppressSizeToFit": True,
+                  },
+                  {
+                      "field": f"{pseudo}_admin",
+                      "headerName": "Validé",
+                      "editable": (user["role"] == "admin"),
+                      "cellRenderer": "agCheckboxCellRenderer",
+                      "cellEditor": "agCheckboxCellEditor",
+                      "width": 100,
+                      "suppressSizeToFit": True,
+                      "cellStyle": JsCode("""
+                          function(params) {
+                              return params.value === true ? {backgroundColor: '#d4edda', color: '#155724'} : null;
+                          }
+                      """),
+                  },
+              ],
+          }
+          grid_options["columnDefs"].append(group_col)
+      
+      # Hauteur dynamique
+      dynamic_height = min(max(40 + (len(df_jeux) * 70) + 20, 200), 800)
+      
+      grid_response = AgGrid(
+          df_jeux,
+          gridOptions=grid_options,
+          update_mode=GridUpdateMode.VALUE_CHANGED,
+          data_return_mode=DataReturnMode.AS_INPUT,
+          allow_unsafe_jscode=True,
+          fit_columns_on_grid_load=False,
+          height=dynamic_height
+      )
+   
  
-         
+      # Bouton de soumission unique en bas du tableau
+      submit_button = st.form_submit_button(
+            label="Enregistrer toutes les modifications"
+      )
 
-
- 
-    # --- Détection des changements ---
-
-    
-    ##-------------------------------------------------
-    #####--- fonction pour mettre les infos en base 
-    ##-------------------------------------------------
-
-
-    # Bouton de soumission unique en bas du tableau
-    submit_button = st.form_submit_button(
-          label="Enregistrer toutes les modifications"
-    )
-
-    # --- 4. TRAITEMENT LORS DU CLIC SUR LE BOUTON ---
+     # --- Détection des changements ---
+  
     if submit_button:
       updated_data = grid_response["data"]
       new_df = pd.DataFrame(updated_data)
