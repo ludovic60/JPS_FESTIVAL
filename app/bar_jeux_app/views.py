@@ -273,6 +273,11 @@ def _final_page(user):
     game_ids = [g.get('id_jeux') for g in finals]
     games_info_list = storage_jeux.load_games(game_ids, None) 
     games_info_map = {str(g["_id"]): g for g in games_info_list}
+
+    print("game_ids")
+    print(game_ids)
+    print("game info list")
+    print(games_info_list)
     
     # Conversion des prêts sous forme de SETs pour recherche instantanée O(1)
     # Structure des tuples stockés dans le set : (game_id, user_id)
