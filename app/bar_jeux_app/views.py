@@ -475,6 +475,7 @@ def _final_page(user):
             for pseudo in pseudo_list:
               u_id = user_map[pseudo]
               is_prete = row_data.get(f"{pseudo}_prete", False)
+              st.write(f" enreg pret game : {game_id} pour  {str(u_id)}  avec valeur  {is_prete} ")
               storage_jeux.toggle_loan(game_id, str(u_id), is_prete) 
              
               is_admin_valide = row_data.get(f"{pseudo}_admin", False)
