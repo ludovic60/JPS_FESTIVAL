@@ -73,7 +73,7 @@ def _game_card(g, list_key, user , mode ):
         
     has_selected_this_game=""  
     select_this_game=""
-    List_users = common_store.def get_users()
+    List_users = common_store.get_users()
            
     with st.container(border=True):
         c1, c2 = st.columns([1, 3])
