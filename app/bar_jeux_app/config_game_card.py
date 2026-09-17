@@ -216,7 +216,7 @@ def _game_card(g, list_key, user , mode ):
                                                     value=has_suggested_prete, 
                                                     key=f"sug_prete_{ckey_this_game}",
                                                      on_change=on_user_change_pret,
-                                                     args=(ckey_this_game, has_suggested_prete, "prete"))
+                                                     args=(ckey_this_game, has_suggested_prete, "pret"))
             with cc[1]:
 
            
