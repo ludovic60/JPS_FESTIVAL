@@ -191,7 +191,7 @@ def get_game_suggestions_a_traiter ():
         selc_tb = {"id_jeux": 1}
         filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") ,"statut":"a traiter" }
 
-        resultats = list(game_suggest_tb.distinct(selc_tb, filtre_tb))
+        resultats = (game_suggest_tb.distinct(selc_tb, filtre_tb))
     else :
         resultats ={}
     return resultats 
