@@ -238,7 +238,7 @@ def _game_card(g, list_key, user , mode ):
                                                for u in List_users :
                                                    if  str(u["_id"])==id_user.get("user_id") :
                                                          pseudo  =  u["pseudo"]
-                                                   st.write(pseudo)
+                                                         st.write(pseudo)
                            
                         else : 
         
