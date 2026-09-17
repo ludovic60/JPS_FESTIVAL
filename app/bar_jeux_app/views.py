@@ -326,7 +326,8 @@ def _final_page(user):
         row_jeux.append(row)
     
     df_jeux = pd.DataFrame(row_jeux)
-    
+
+    print(df_jeux)
     # --- 3. CONFIGURATION AGGRID ---
     image_renderer = JsCode("""
     class ImageRenderer {
