@@ -281,6 +281,7 @@ def _final_page(user):
     print(game_ids)
     print("game info list")
     print(games_info_list)
+    print(liste_object_id) 
     
     # Conversion des prêts sous forme de SETs pour recherche instantanée O(1)
     # Structure des tuples stockés dans le set : (game_id, user_id)
