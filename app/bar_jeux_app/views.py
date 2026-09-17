@@ -254,343 +254,164 @@ def _requests_page(user):
 ############################################################################################################
 
 def _final_page(user):
-    st.title("Liste des jeux ")
-    st.markdown(f"#####  Vous allez pouvoir remplir le tableau pour indiquer ce que vous pouvez emmener.")
-    st.markdown(f"#####  les administrateurs valideront les différents choix pour que vous puissiez avoir votre liste de jeu à emmener .")
- 
 
-    # --- EXTRACTION DES DONNEES UTILES ---
-        #--- liste des jeux
-    finals = storage_jeux.final_games()
-   
-   
-    users = cs.get_users_loaner()
-
-    current_user = user
-    is_admin = current_user == "admin"
+    st.title("Liste des jeux")
+    st.markdown("##### Vous allez pouvoir remplir le tableau pour indiquer ce que vous pouvez emmener.")
+    st.markdown("##### Les administrateurs valideront les différents choix.")
     
-
-    pseudo_list = list(u["pseudo"] for u in users)
-
-           
-    # emplacement reservé pour le bouton de validation du pret par les utilisateurs
+    # --- 1. CHARGEMENT GLOBAL DES DONNÉES EN AMONT (O(1) requêtes) ---
+    finals = storage_jeux.final_games()
     if not finals:
         st.info("Aucun jeu retenu par l'admin pour l'instant.")
-        return           
+        return
     
-    st.caption("Tableau croisé : jeux retenus par l'admin × personnes. Cochez les jeux que vous pouvez prêter.")
-
+    users = cs.get_users_loaner()
+    user_map = {u['pseudo']: str(u['_id']) for u in users}  # Dict pseudo -> id_str
+    pseudo_list = sorted(list(user_map.keys()))
     
-    ###################################################################################################
-    ###########  gestion du tableau des prêts   
-    ###################################################################################################
-    # creation des lignes du futur tableau croisé         
-    row_jeux = []
-    ##-------------------------------------------------
-    #####--- fonction pour retrouver les infos en base
-    ##-------------------------------------------------
-    liste_jeu_plusieurs_exemplaire= storage_jeux.final_games_statut_plusieurs_exemplaire()
-
-    def get_game_several_selected(game_id):
-        result = False 
-        
-        for id in liste_jeu_plusieurs_exemplaire :
-
-          if game_id== id["id_jeux"] :
-
-            result = True
-          else :
-
-            result = False 
-
-        return result
-
-
+    # Récupération en BATCH des infos de tous les jeux d'un coup
+    game_ids = [g.get('id_jeux') for g in finals]
+    games_info_list = storage_jeux.get_info_games_batch(game_ids) # À implémenter : find({"_id": {"$in": game_ids}})
+    games_info_map = {str(g["_id"]): g for g in games_info_list}
+    
+    # Conversion des prêts sous forme de SETs pour recherche instantanée O(1)
+    # Structure des tuples stockés dans le set : (game_id, user_id)
     list_jeu_prete = storage_jeux.get_all_loans()
-    list_jeu_prete_valide =  storage_jeux.get_validated_loans()
-    def get_prete_value(game_id, player_key):
-       
-      id_user = [u['_id'] for u in users if u['pseudo'] == player_key]
-
-      result = any( str(id_user[0]) == pret["user_id"] and pret['id_jeux'] == game_id 
-                    for pret in list_jeu_prete
-                  )
-       
-      return result
+    loans_set = {(p['id_jeux'], p['user_id']) for p in list_jeu_prete}
     
-    def get_admin_valide_value(game_id, player_key):
-      id_user = [u['_id'] for u in users if u['pseudo'] == player_key]
-
-      result = any( str(id_user[0]) == pret["user_id"] and pret['id_jeux'] == game_id 
-                    for pret in  list_jeu_prete_valide
-                  )
-       
-      return result
-
-    ##-------------------------------------------------
-    #####--- fonction pour mettre les infos en base 
-    ##-------------------------------------------------
-    def on_change_prete(game_id, player_key, new_val) :
-       id_user = [u['_id'] for u in users if u['pseudo'] == player_key]
-       storage_jeux.toggle_loan(game_id, str(id_user[0]), new_val)
-     
-    def on_change_admin(game_id, player_key, new_val) :
-       id_user = [u['_id'] for u in users if u['pseudo'] == player_key]
-       storage_jeux.set_loan_valide_admin(game_id, str(id_user[0]), new_val)           
-                      
-    def on_change_plusieurs_exemplaires(game_id, new_val) :
-       
-        storage_jeux.toggle_admin_selected(game_id, new_val)
-
-
-    ##-------------------------------------------------
-    #####--- le tableau
-    ##-------------------------------------------------
+    list_jeu_prete_valide = storage_jeux.get_validated_loans()
+    validated_loans_set = {(p['id_jeux'], p['user_id']) for p in list_jeu_prete_valide}
+    
+    liste_jeu_plusieurs = storage_jeux.final_games_statut_plusieurs_exemplaire()
+    plusieurs_set = {x["id_jeux"] for x in liste_jeu_plusieurs}
+    
+    st.caption("Tableau croisé : jeux retenus par l'admin × personnes.")
+    
+    # --- 2. CONSTRUCTION ULTRA-RAPIDE DU DATAFRAME ---
+    row_jeux = []
+    
     for game in finals:
-        g = storage_jeux.get_info_games(game.get('id_jeux'))
-        game_id = str(g[0].get("_id"))
+        game_id = str(game.get('id_jeux'))
+        g = games_info_map.get(game_id, {})
+        
+        if not g:
+            continue
     
-        # ... calcul de New (nouveauté) 
-
-        ######   gestion du staut de nouveauté
-        New = nouveaute_def(game_id)
-  
+        # Calculs directes en mémoire
+        new_statut = nouveaute_def(game_id)
+        is_several = game_id in plusieurs_set
+    
+        # Comptages rapides
+        total_joueurs = sum(1 for p_id in user_map.values() if (game_id, p_id) in loans_set)
+        total_valide = sum(1 for p_id in user_map.values() if (game_id, p_id) in validated_loans_set)
     
         row = {
-            "_id": game_id,                                  
-            "nouveaute": New,
-            "Annee": g[0].get("annee_parution"),
-            "Categorie jeu": mise_forme_classement(g[0].get("classement_jps_final")),
-            "Couverture Jeu": g[0].get("couverture"),
-            "Jeu": g[0].get("nom_jeu_complet"),
-            "Plusieurs exemplaires souhaités": bool(get_game_several_selected(game_id)),  # <-- vrai bool
-            "Total coché par joueur": "",
-            "Total coché validé par admin": "",
+            "_id": game_id,                           
+            "nouveaute": new_statut,
+            "Annee": g.get("annee_parution", ""),
+            "Categorie jeu": mise_forme_classement(g.get("classement_jps_final")),
+            "Couverture Jeu": g.get("couverture", ""),
+            "Jeu": g.get("nom_jeu_complet", ""),
+            "Plusieurs exemplaires souhaités": is_several,
+            "Total coché par joueur": total_joueurs,
+            "Total coché validé par admin": total_valide,
         }
     
-        for idx, j in  sorted(enumerate(pseudo_list), key=lambda item: item[1]) :
-            
-            player_key = j
-            row[f"{player_key}_prete"] = bool(get_prete_value(game_id, j))  # <-- vrai bool
-            row[f"{player_key}_admin"] = bool(get_admin_valide_value(game_id, j))  # <-- vrai bool
-
+        # Remplissage des colonnes dynamiques par joueur (Recherche instantanée dans un Set)
+        for pseudo in pseudo_list:
+            u_id = user_map[pseudo]
+            row[f"{pseudo}_prete"] = (game_id, u_id) in loans_set
+            row[f"{pseudo}_admin"] = (game_id, u_id) in validated_loans_set
+    
         row_jeux.append(row)
     
     df_jeux = pd.DataFrame(row_jeux)
-
-    # --- Colonnes ---
-    # --- Colonnes simples (non groupées) ---
-    image_renderer = JsCode(
-        """
-        class ImageRenderer {
-                init(params) {
-                    this.eGui = document.createElement('img');
-                    this.eGui.setAttribute('src', params.value);
-                    this.eGui.setAttribute('style', 'height: 45px; width: auto; border-radius: 4px; vertical-align: middle;');
-                }
-                getGui() {
-                    return this.eGui;
-                }
+    
+    # --- 3. CONFIGURATION AGGRID ---
+    image_renderer = JsCode("""
+    class ImageRenderer {
+        init(params) {
+            this.eGui = document.createElement('img');
+            this.eGui.setAttribute('src', params.value);
+            this.eGui.setAttribute('style', 'height: 45px; width: auto; border-radius: 4px; vertical-align: middle;');
         }
-        """
-     )
-
+        getGui() { return this.eGui; }
+    }
+    """)
+    
     gb = GridOptionsBuilder.from_dataframe(
         df_jeux[["nouveaute", "Annee", "Categorie jeu", "Couverture Jeu", "Jeu",
                  "Plusieurs exemplaires souhaités",
                  "Total coché par joueur", "Total coché validé par admin"]]
     )
+    
     gb.configure_column("_id", hide=True)
-
-    gb.configure_column(
-        "nouveaute",
-        editable=False,
-        width=80,
-        minWidth=80,
-        maxWidth=80,
-        suppressSizeToFit=True,
-        wrapHeaderText=True, 
-        autoHeaderHeight=True,
-    )
-
-    gb.configure_column(
-        "Annee",
-        editable=False,
-        width=80,
-        minWidth=80,
-        maxWidth=80,
-        suppressSizeToFit=True,
-        wrapHeaderText=True, 
-        autoHeaderHeight=True,
-    )
-    gb.configure_column(
-        "Categorie jeu",
-        editable=False,
-        width=180,
-        minWidth=180,
-        maxWidth=180,
-        suppressSizeToFit=True,
-        wrapHeaderText=True, 
-        autoHeaderHeight=True,
-    )
-    gb.configure_column(
-        "Couverture Jeu",
-        editable=False,
-        cellRenderer=image_renderer,
-        width=100,
-        minWidth=100,
-        maxWidth=100,
-        suppressSizeToFit=True,
-        wrapHeaderText=True, 
-        autoHeaderHeight=True,
-    )
-    gb.configure_column(
-        "Jeu",
-        editable=False,
-        width=150,
-        minWidth=100,
-        maxWidth=150,
-        suppressSizeToFit=True,
-        wrapHeaderText=True, 
-        autoHeaderHeight=True, 
-    )
-
+    gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True)
+    gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True)
+    gb.configure_column("Categorie jeu", editable=False, width=180, suppressSizeToFit=True)
+    gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True)
+    gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True)
+    
     gb.configure_column(
         "Plusieurs exemplaires souhaités",
         editable=(user["role"] == "admin"),
         cellRenderer="agCheckboxCellRenderer",
-        cellEditor = "agCheckboxCellEditor",
+        cellEditor="agCheckboxCellEditor",
         width=90,
-        minWidth=30,
-        maxWidth=90,
-        suppressSizeToFit=True,
-        wrapHeaderText=True, 
-        autoHeaderHeight=True,
+        suppressSizeToFit=True
     )
-
-    gb.configure_column(
-        "Total coché par joueur",
-        editable=False,
-        width=80,
-        minWidth=80,
-        maxWidth=80,
-        suppressSizeToFit=True,
-        wrapHeaderText=True, 
-        autoHeaderHeight=True,
-    )
-    gb.configure_column(
-        "Total coché validé par admin",
-        editable=False,
-        width=90,
-        minWidth=90,
-        maxWidth=90,
-        suppressSizeToFit=True,
-        wrapHeaderText=True, 
-        autoHeaderHeight=True,
-    )
-
-   
-    gb.configure_grid_options(singleClickEdit=True , rowHeight=60)
     
+    gb.configure_column("Total coché par joueur", editable=False, width=80, suppressSizeToFit=True)
+    gb.configure_column("Total coché validé par admin", editable=False, width=90, suppressSizeToFit=True)
+    
+    gb.configure_grid_options(singleClickEdit=True, rowHeight=60)
     grid_options = gb.build()
-
-
-
     
-    # --- Colonnes groupées par joueur (double en-tête) ---
-    for idx, j in   sorted(enumerate(pseudo_list), key=lambda item: item[1]):
-        player_key = j
-
+    # En-têtes groupés par joueur
+    for pseudo in pseudo_list:
         group_col = {
-            "headerName": j,                      # 1er niveau d'en-tête : le pseudo
+            "headerName": pseudo,
             "children": [
                 {
-                    "field": f"{player_key}_prete",
-                    "headerName": "Je prête",      # 2e niveau d'en-tête
-                    "editable": (user["pseudo"] == j or user["role"] == "admin"),
+                    "field": f"{pseudo}_prete",
+                    "headerName": "Je prête",
+                    "editable": (user["pseudo"] == pseudo or user["role"] == "admin"),
                     "cellRenderer": "agCheckboxCellRenderer",
                     "cellEditor": "agCheckboxCellEditor",
-                    "width": 110,
+                    "width": 100,
                     "suppressSizeToFit": True,
                 },
                 {
-                    "field": f"{player_key}_admin",
+                    "field": f"{pseudo}_admin",
                     "headerName": "Validé",
                     "editable": (user["role"] == "admin"),
                     "cellRenderer": "agCheckboxCellRenderer",
                     "cellEditor": "agCheckboxCellEditor",
-                    "width": 110,
+                    "width": 100,
                     "suppressSizeToFit": True,
                     "cellStyle": JsCode("""
                         function(params) {
-                            if (params.value === true) {
-                                return {backgroundColor: '#d4edda', color: '#155724'};
-                            }
-                            return null;
+                            return params.value === true ? {backgroundColor: '#d4edda', color: '#155724'} : null;
                         }
                     """),
                 },
             ],
         }
         grid_options["columnDefs"].append(group_col)
-
-
-
-    ###### mise en forme du tableau 
-
-
-    # Hauteur d'en-tête un peu plus grande pour laisser la place aux 2 lignes
-    grid_options["groupHeaderHeight"] = 20
-    grid_options["headerHeight"] = 20
-   # --- Calcul de la hauteur dynamique ---
-    header_height = 40     # Hauteur totale de l'en-tête (40px groupHeader + 40px header)
-    row_height =70         # Hauteur estimée d'une ligne
-    padding = 20            # Marge de sécurité
     
-    # Calcul basé sur le nombre de lignes dans df_jeux
-    #dynamic_height = header_height + (len(df_jeux) * row_height) + padding
-    dynamic_height = header_height + (10 * row_height) + padding
+    # Hauteur dynamique
+    dynamic_height = min(max(40 + (len(df_jeux) * 70) + 20, 200), 800)
     
-    # Optionnel : appliquer des limites min/max pour éviter les extrêmes
-    dynamic_height = min(max(dynamic_height, 200), 800)  # Entre 200px et 800px max
-
-
-    st.markdown("""
-        <style>
-        /* Bordures verticales (colonnes) */
-        .ag-theme-streamlit .ag-cell, 
-        .ag-theme-streamlit .ag-header-cell,
-        .ag-theme-alpine .ag-cell, 
-        .ag-theme-alpine .ag-header-cell {
-            border-right: 1px solid #d0d0d0 !important;
-        }
-
-        /* Bordures horizontales (lignes) */
-        .ag-theme-streamlit .ag-row,
-        .ag-theme-alpine .ag-row {
-            border-bottom: 1px solid #d0d0d0 !important;
-        }
-
-        /* Bordure inférieure pour les en-têtes */
-        .ag-theme-streamlit .ag-header,
-        .ag-theme-alpine .ag-header {
-            border-bottom: 2px solid #b0b0b0 !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
-
-
-     
-
     grid_response = AgGrid(
-                 df_jeux,
-                 gridOptions=grid_options,
-                 update_mode=GridUpdateMode.VALUE_CHANGED | GridUpdateMode.MODEL_CHANGED,
-                 data_return_mode=DataReturnMode.AS_INPUT,
-                 allow_unsafe_jscode=True,
-                 fit_columns_on_grid_load=False,
-                 height=dynamic_height
-       )
+        df_jeux,
+        gridOptions=grid_options,
+        update_mode=GridUpdateMode.VALUE_CHANGED,
+        data_return_mode=DataReturnMode.AS_INPUT,
+        allow_unsafe_jscode=True,
+        fit_columns_on_grid_load=False,
+        height=dynamic_height
+    )
+ 
          
     grid_data = grid_response["data"]
     new_df = pd.DataFrame(grid_response["data"]) 
