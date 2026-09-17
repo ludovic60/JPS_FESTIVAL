@@ -438,9 +438,9 @@ def _final_page(user):
      # --- Détection des changements ---
   
     if submit_button:
-      updated_data = grid_response["data"]
-      new_df = pd.DataFrame(updated_data)
-      cols_to_check = [col for col in new_df.columns if "_prete" in col or "_admin" in col or col == "Plusieurs exemplaires souhaités"]
+        updated_data = grid_response["data"]
+        new_df = pd.DataFrame(updated_data)
+        cols_to_check = [col for col in new_df.columns if "_prete" in col or "_admin" in col or col == "Plusieurs exemplaires souhaités"]
         
         # On fusionne pour comparer ligne par ligne
         merged = df_jeux.merge(new_df, on="_id", suffixes=("_old", "_new"))
