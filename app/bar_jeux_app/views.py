@@ -339,12 +339,20 @@ def _final_page(user):
     }
     """)
     
-    gb = GridOptionsBuilder.from_dataframe(
-        df_jeux[["nouveaute", "Annee", "Categorie jeu", "Couverture Jeu", "Jeu",
-                 "Plusieurs exemplaires souhaités",
-                 "Total coché par joueur", "Total coché validé par admin"]]
-    )
+    #  On liste explicitement les noms des colonnes souhaitées
+    columns_to_show = [
+        "nouveaute",
+        "Annee",
+        "Categorie jeu",
+        "Couverture Jeu",
+        "Jeu",
+        "Plusieurs exemplaires souhaités",
+        "Total coché par joueur",
+        "Total coché validé par admin"
+    ]
     
+    # On passe la liste directement à partir du DataFrame
+    gb = GridOptionsBuilder.from_dataframe(df_jeux[columns_to_show])
     gb.configure_column("_id", hide=True)
     gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True)
     gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True)
