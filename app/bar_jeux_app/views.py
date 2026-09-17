@@ -157,11 +157,11 @@ def _list_page(title, list_key, user):
 def _requests_suggestion_page(user):
     st.title("liste des suggestions par les joueurs")
     list_suggest = storage_jeux.get_game_suggestions_a_traiter()
-    list_games =[]
+    list_games_tmp =[]
     for sugg in list_suggest : 
         print(sugg)
-        list_games.append(storage_jeux.get_info_games(sugg))
-
+        list_games_tmp.append(storage_jeux.get_info_games(sugg))
+    list_games = [elem for sous_liste in list_games_tmp for elem in sous_liste]
     print(list_games)
     if list_games:
         per_row = 3
