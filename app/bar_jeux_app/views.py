@@ -440,7 +440,20 @@ def _final_page(user):
     # --- Détection des changements ---
     new_df = pd.DataFrame(grid_response["data"])
     
-    # 2. Détection du changement
+    ##-------------------------------------------------
+    #####--- fonction pour mettre les infos en base 
+    ##-------------------------------------------------
+    def on_change_prete(game_id, player_key, new_val) :
+       id_user = [u['_id'] for u in users if u['pseudo'] == player_key]
+       storage_jeux.toggle_loan(game_id, str(id_user[0]), new_val)
+     
+    def on_change_admin(game_id, player_key, new_val) :
+       id_user = [u['_id'] for u in users if u['pseudo'] == player_key]
+       storage_jeux.set_loan_valide_admin(game_id, str(id_user[0]), new_val)           
+                      
+    def on_change_plusieurs_exemplaires(game_id, new_val) :
+       
+        storage_jeux.toggle_admin_selected(game_id, new_val)
 
 
     
