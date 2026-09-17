@@ -476,8 +476,8 @@ def _final_page(user):
               is_admin_valide = row_data.get(f"{pseudo}_admin", False)
               storage_jeux.set_loan_valide_admin(game_id, str(u_id), is_admin_valide)  
 
-      st.success("Modifications enregistrées avec succès !")
-      st.rerun()
+        st.success("Modifications enregistrées avec succès !")
+        st.rerun()
 
 
 
