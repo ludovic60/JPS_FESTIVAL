@@ -477,6 +477,10 @@ def _final_page(user):
     
                                 if col.endswith("_prete"):
                                     player_key = col.replace("_prete", "")
+                                    print("change")
+                                    print(game_id)
+                                    print(player_key)
+                                    print(new_val)
                                     on_change_prete(game_id, player_key, new_val)
                                 elif col.endswith("_admin"):
                                     player_key = col.replace("_admin", "")
