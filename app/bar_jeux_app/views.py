@@ -382,7 +382,7 @@ def _final_page(user):
     )
     
     gb.configure_column("Total coché par joueur", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-    gb.configure_column("Total coché validé par admin", editable=False, width=90, suppressSizeToFit=True), pinned=True
+    gb.configure_column("Total coché validé par admin", editable=False, width=90, suppressSizeToFit=True, pinned=True)
     
     gb.configure_grid_options(singleClickEdit=True, rowHeight=60)
     grid_options = gb.build()
