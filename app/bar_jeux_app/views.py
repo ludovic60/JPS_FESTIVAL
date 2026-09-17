@@ -422,7 +422,7 @@ def _final_page(user):
       grid_response = AgGrid(
           df_jeux,
           gridOptions=grid_options,
-          update_mode=GridUpdateMode.NO_UPDATES,
+          update_mode=GridUpdateMode.NO_UPDATE,
           data_return_mode=DataReturnMode.AS_INPUT,
           allow_unsafe_jscode=True,
           fit_columns_on_grid_load=False,
