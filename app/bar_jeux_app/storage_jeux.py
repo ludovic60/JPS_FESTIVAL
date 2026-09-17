@@ -48,7 +48,7 @@ def load_games(list_key, search_query=None):
                 filtre_tb = {"est_selectionnable": list_key}
             elif list_key == "all":
                 filtre_tb = {}    
-            else :
+            elif len(listkey) <=6 :
                 annee = list_key[:4]
                 mois = list_key[5:]
                 #gestion des numeros de mois avant octobre pour n'avoir qu'un chiffre
@@ -56,6 +56,8 @@ def load_games(list_key, search_query=None):
                     mois = mois[1]
     
                 filtre_tb = {"annee_parution" : annee , "mois_sortie" : mois }
+            else :
+                filtre_tb= {"_id": {"$in": list_key}}
         
         resultats = list(game_tb.find(filtre_tb).sort({"nom_jeu_fichier":1}))
     else :
