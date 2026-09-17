@@ -440,25 +440,41 @@ def _final_page(user):
     if submit_button:
       updated_data = grid_response["data"]
       new_df = pd.DataFrame(updated_data)
+      cols_to_check = [col for col in new_df.columns if "_prete" in col or "_admin" in col or col == "Plusieurs exemplaires souhaités"]
+        
+        # On fusionne pour comparer ligne par ligne
+        merged = df_jeux.merge(new_df, on="_id", suffixes=("_old", "_new"))
+      
+        # Filtrer uniquement les lignes modifiées
+        changed_rows = []
+        for _, row in merged.iterrows():
+            has_changed = False
+            for col in cols_to_check:
+                if row[f"{col}_old"] != row[f"{col}_new"]:
+                    has_changed = True
+                    break
+            if has_changed:
+                changed_rows.append(row)
+      
+        # Résultat : `changed_rows` contient uniquement les lignes qui ont subi une modification !
+        st.write(f"Nombre de lignes modifiées à sauvegarder : {len(changed_rows)}")
+        
+        for row_data in changed_rows:
+            game_id = row_data["_id"]
 
-      # Exemple de traitement pour parcourir le DataFrame soumis et mettre à jour la BDD
-      # (À adapter selon tes fonctions storage_jeux existantes)
-      for _, row_data in new_df.iterrows():
-        game_id = row_data["_id"]
-
-        # Sauvegarde "Plusieurs exemplaires" (si admin)
-        if user["role"] == "admin":
-          is_several_checked = row_data["Plusieurs exemplaires souhaités"]
-          storage_jeux.toggle_admin_selected(game_id, is_several_checked)
-         
-        # Sauvegarde des choix de prêts / validations par utilisateur
-        for pseudo in pseudo_list:
-          u_id = user_map[pseudo]
-          is_prete = row_data.get(f"{pseudo}_prete", False)
-          storage_jeux.toggle_loan(game_id, str(u_id), is_prete) 
-         
-          is_admin_valide = row_data.get(f"{pseudo}_admin", False)
-          storage_jeux.set_loan_valide_admin(game_id, str(u_id), is_admin_valide)  
+            # Sauvegarde "Plusieurs exemplaires" (si admin)
+            if user["role"] == "admin":
+              is_several_checked = row_data["Plusieurs exemplaires souhaités"]
+              storage_jeux.toggle_admin_selected(game_id, is_several_checked)
+             
+            # Sauvegarde des choix de prêts / validations par utilisateur
+            for pseudo in pseudo_list:
+              u_id = user_map[pseudo]
+              is_prete = row_data.get(f"{pseudo}_prete", False)
+              storage_jeux.toggle_loan(game_id, str(u_id), is_prete) 
+             
+              is_admin_valide = row_data.get(f"{pseudo}_admin", False)
+              storage_jeux.set_loan_valide_admin(game_id, str(u_id), is_admin_valide)  
 
       st.success("Modifications enregistrées avec succès !")
       st.rerun()
