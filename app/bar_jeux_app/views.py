@@ -12,6 +12,7 @@ import storage_jeux
 import export
 import os
 import sys
+import time
 from bson import ObjectId
 from config_game_card import _game_card , mise_forme_classement , nouveaute_def
 # Ajoute le dossier parent à sys.path
@@ -477,6 +478,7 @@ def _final_page(user):
               storage_jeux.set_loan_valide_admin(game_id, str(u_id), is_admin_valide)  
 
         st.success("Modifications enregistrées avec succès !")
+        time.sleep(1)
         st.rerun()
 
 
