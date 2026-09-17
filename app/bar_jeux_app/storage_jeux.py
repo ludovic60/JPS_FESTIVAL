@@ -31,23 +31,31 @@ _COVERS = [
 ##############################################################
 # ---- requetes  sur la base de données des jeux : JEUX  ----
 ##############################################################
-def load_games(list_key):
+def load_games(list_key, search_query=None):
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
         game_tb = db.jeux
-        if list_key == "est_selectionnable":
-            filtre_tb = {"est_selectionnable": list_key}
-        elif list_key == "all":
-            filtre_tb = {}    
-        else :
-            annee = list_key[:4]
-            mois = list_key[5:]
-            #gestion des numeros de mois avant octobre pour n'avoir qu'un chiffre
-            if mois[0]=="0":
-                mois = mois[1]
-
-            filtre_tb = {"annee_parution" : annee , "mois_sortie" : mois }
+        
+        if search_query:
+                regex_pattern = {"$regex": search_query, "$options": "i"}
+                filtre_tb ="$or": [  {"nom_jeu_complet": regex_pattern},
+                                     {"nom_jeu": regex_pattern},
+                                     {"url_myludo": regex_pattern}]
+        else 
+        
+            if list_key == "est_selectionnable":
+                filtre_tb = {"est_selectionnable": list_key}
+            elif list_key == "all":
+                filtre_tb = {}    
+            else :
+                annee = list_key[:4]
+                mois = list_key[5:]
+                #gestion des numeros de mois avant octobre pour n'avoir qu'un chiffre
+                if mois[0]=="0":
+                    mois = mois[1]
+    
+                filtre_tb = {"annee_parution" : annee , "mois_sortie" : mois }
         
         resultats = list(game_tb.find(filtre_tb).sort({"nom_jeu_fichier":1}))
     else :
