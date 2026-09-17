@@ -422,7 +422,7 @@ def _final_page(user):
       grid_response = AgGrid(
           df_jeux,
           gridOptions=grid_options,
-          update_mode=GridUpdateMode.VALUE_CHANGED,
+          update_mode=GridUpdateMode.NO_UPDATES,
           data_return_mode=DataReturnMode.AS_INPUT,
           allow_unsafe_jscode=True,
           fit_columns_on_grid_load=False,
@@ -456,9 +456,9 @@ def _final_page(user):
         for pseudo in pseudo_list:
           u_id = user_map[pseudo]
           is_prete = row_data.get(f"{pseudo}_prete", False)
-          storage_jeux.toggle_loan(game_id, str(id_user[0]), new_val) 
+          storage_jeux.toggle_loan(game_id, str(u_id), new_val) 
           is_admin_valide = row_data.get(f"{pseudo}_admin", False)
-          storage_jeux.set_loan_valide_admin(game_id, str(id_user[0]), new_val)  
+          storage_jeux.set_loan_valide_admin(game_id, str(u_id), new_val)  
 
       st.success("Modifications enregistrées avec succès !")
       st.rerun()
