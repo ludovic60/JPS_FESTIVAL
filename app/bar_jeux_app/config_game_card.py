@@ -73,7 +73,7 @@ def _game_card(g, list_key, user , mode ):
         
     has_selected_this_game=""  
     select_this_game=""
-
+    List_users = common_store.def get_users()
            
     with st.container(border=True):
         c1, c2 = st.columns([1, 3])
@@ -235,7 +235,7 @@ def _game_card(g, list_key, user , mode ):
                                         print(liste_preteur)
                                         st.write(f"liste des personnes souhaitant préter le jeu")
                                         for id_user in liste_preteur :
-                                               for u in user :
+                                               for u in List_users :
                                                   print(    str(u["_id"]))  
                                                   if  str(u["_id"])==id_user.get("user_id") :
                                                          pseudo  =  u["pseudo"]
