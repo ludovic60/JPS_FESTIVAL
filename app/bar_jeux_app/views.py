@@ -31,9 +31,9 @@ def main_app(user):
         st.caption(user["email"])
         if user["role"] == "admin":
             st.markdown("<span class='ws-tag-admin'>Admin</span>", unsafe_allow_html=True)
-            pages = ["Liste des jeux","Recherche jeu", "Demandes d'ajout","Liste suggestions", "Jeux sortis depuis dernier festival", "Jeux sortis avant dernier festival" , "Creation mot de passe"]
+            pages = ["Liste des jeux","Recherche jeu", "Demandes d'ajout / remarques","Liste suggestions", "Jeux sortis depuis dernier festival", "Jeux sortis avant dernier festival" , "Creation mot de passe"]
         else : 
-            pages = ["Liste des jeux","Recherche jeu", "Demandes d'ajout"]
+            pages = ["Liste des jeux","Recherche jeu", "Demandes d'ajout / remarques"]
         page = st.radio("Navigation", pages, label_visibility="collapsed")
         st.divider()
         if st.button("Déconnexion"):
@@ -47,7 +47,7 @@ def main_app(user):
         _list_page(f"Jeux — {label}", key, user)
     elif page == "Jeux sortis avant dernier festival":
         _list_page("Vieux jeux", config_bar_jeux.VIEUX_KEY, user)
-    elif page == "Demandes d'ajout":
+    elif page == "Demandes d'ajout / remarques":
         _requests_page(user)
     elif page == "Liste suggestions":
         _requests_suggestion_page(user)    
