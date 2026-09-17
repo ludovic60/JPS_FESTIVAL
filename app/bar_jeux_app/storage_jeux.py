@@ -188,15 +188,16 @@ def get_game_suggestions_a_traiter ():
     if   con_mongo : 
         db = cs.get_db()
         game_suggest_tb = db.jeux_suggestions
-        selc_tb = {"id_jeux": 1}
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") ,"statut":"a traiter" }
-
+        filtre_tb = {
+                "annee": cs._secret("ANNEE_FESTIVAL"),
+                "statut": "a traiter"
+            } 
+        
+        # distinct(field, filter) renvoie une liste de valeurs uniques
         resultats = game_suggest_tb.distinct("id_jeux", filtre_tb)
-        print(resultats)
     else :
-        resultats ={}
+        resultats =[]
     return resultats 
-
 
 def get_game_nb_suggestions(id_game, mode):
     con_mongo = cs.mongo_enabled()
