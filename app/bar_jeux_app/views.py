@@ -162,7 +162,7 @@ def _requests_suggestion_page(user):
         print(sugg)
         list_games.append(storage_jeux.get_info_games(sugg))
 
-
+    print(list_games)
     if list_games:
         per_row = 3
         # FIX : On utilise len(list_games) ici !
