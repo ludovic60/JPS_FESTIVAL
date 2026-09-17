@@ -172,23 +172,6 @@ def _requests_suggestion_page(user):
                     _game_card(g, "all", user,"suggestion")
 
 
-##        for t in get_tasks("all"):
-##            c1, c2, c3 = st.columns([4, 1, 1])
-##            label = c1.text_input("t", value=t["tache"], key=f"edit_{t["_id"]}",
-##                                   label_visibility="collapsed")
-##            
-##            if c2.button("Modifier", key=f"modif_{t["_id"]}"):
-##                update_task(t["_id"], label, choice)
-##                print(t["_id"])
-##                st.rerun()
-##            # if c3.button("Supprimer"):
-##            if c3.button("Supprimer", key=f"supprim_{t["_id"]}"):
-##                delete_task(t["_id"])
-##                print(t["_id"])
-##                st.rerun()
-
-##    st.markdown("🚧  en cours de construction ")
-
 ############################################################################################################
 ###-------------- page des demandes d'ajout 
 ############################################################################################################
