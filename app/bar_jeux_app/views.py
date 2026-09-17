@@ -449,16 +449,16 @@ def _final_page(user):
         # Sauvegarde "Plusieurs exemplaires" (si admin)
         if user["role"] == "admin":
           is_several_checked = row_data["Plusieurs exemplaires souhaités"]
-          # storage_jeux.update_several_status(game_id, is_several_checked)
-          storage_jeux.toggle_admin_selected(game_id, new_val)
+          storage_jeux.toggle_admin_selected(game_id, is_several_checked)
          
         # Sauvegarde des choix de prêts / validations par utilisateur
         for pseudo in pseudo_list:
           u_id = user_map[pseudo]
           is_prete = row_data.get(f"{pseudo}_prete", False)
-          storage_jeux.toggle_loan(game_id, str(u_id), new_val) 
+          storage_jeux.toggle_loan(game_id, str(u_id), is_prete) 
+         
           is_admin_valide = row_data.get(f"{pseudo}_admin", False)
-          storage_jeux.set_loan_valide_admin(game_id, str(u_id), new_val)  
+          storage_jeux.set_loan_valide_admin(game_id, str(u_id), is_admin_valide)  
 
       st.success("Modifications enregistrées avec succès !")
       st.rerun()
