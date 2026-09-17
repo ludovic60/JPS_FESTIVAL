@@ -271,7 +271,7 @@ def _final_page(user):
     
     # Récupération en BATCH des infos de tous les jeux d'un coup
     game_ids = [g.get('id_jeux') for g in finals]
-    games_info_list = storage_jeux.get_info_games_batch(game_ids) # À implémenter : find({"_id": {"$in": game_ids}})
+    games_info_list = storage_jeux.load_games(game_ids, None) 
     games_info_map = {str(g["_id"]): g for g in games_info_list}
     
     # Conversion des prêts sous forme de SETs pour recherche instantanée O(1)
