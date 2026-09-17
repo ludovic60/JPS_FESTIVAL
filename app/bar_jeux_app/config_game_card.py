@@ -4,6 +4,7 @@ import streamlit as st
 import os
 import sys
 import time
+
 # Ajoute le dossier parent à sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -73,7 +74,7 @@ def _game_card(g, list_key, user , mode ):
         
     has_selected_this_game=""  
     select_this_game=""
-    List_users = common_store.get_users()
+    List_users = cs.get_users()
            
     with st.container(border=True):
         c1, c2 = st.columns([1, 3])
