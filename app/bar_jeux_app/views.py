@@ -419,7 +419,9 @@ def _final_page(user):
       
       # Hauteur dynamique
       dynamic_height = min(max(40 + (len(df_jeux) * 70) + 20, 200), 800)
-      
+      if "grid_version" not in st.session_state:
+         st.session_state.grid_version = 0
+     
       grid_response = AgGrid(
           df_jeux,
           gridOptions=grid_options,
@@ -427,7 +429,8 @@ def _final_page(user):
           data_return_mode=DataReturnMode.AS_INPUT,
           allow_unsafe_jscode=True,
           fit_columns_on_grid_load=False,
-          height=dynamic_height
+          height=dynamic_height,
+          key=f"aggrid_table_{st.session_state.grid_version}",
       ) 
    
  
@@ -478,6 +481,7 @@ def _final_page(user):
               storage_jeux.set_loan_valide_admin(game_id, str(u_id), is_admin_valide)  
 
         st.success("Modifications enregistrées avec succès !")
+        st.session_state.grid_version += 1
         time.sleep(1)
         st.rerun()
 
