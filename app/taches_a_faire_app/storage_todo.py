@@ -44,7 +44,7 @@ def get_todo():
     return resultats
 
 
-def add_todo_tb(label):
+def add_todo(label):
 
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
