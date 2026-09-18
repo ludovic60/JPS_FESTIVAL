@@ -481,7 +481,6 @@ def _final_page(user):
                    # On extrait le pseudo du nom de la colonne (ex: "Alice_prete" -> "Alice")
                    pseudo = col.replace("_prete", "")
                    u_id = user_map[pseudo]
-                   st.write(f" enreg pret game : {game_id} pour  {str(u_id)}  avec valeur  {val_new} ")
                    storage_jeux.toggle_loan(game_id, str(u_id), val_new)
      
                  # --- CAS 3 : Colonne de validation admin d'un utilisateur (ex: "pseudo_admin") ---
@@ -494,7 +493,6 @@ def _final_page(user):
                f"Enregistrement réussi : {modifications_count} cellule(s) modifiée(s)"
                " mise(s) à jour !"
            )
-           st.success("Modifications enregistrées avec succès !")
            st.session_state.grid_version += 1
            time.sleep(1)
            st.rerun()
