@@ -474,7 +474,7 @@ def _final_page(user):
                  # --- CAS 1 : "Plusieurs exemplaires" ---
                  if col == "Plusieurs exemplaires souhaités":
                    if user["role"] == "admin":
-                     storage_jeux.toggle_admin_selected(game_id, is_several_checked)
+                     storage_jeux.toggle_admin_selected(game_id, val_new)
      
                  # --- CAS 2 : Colonne de prêt d'un utilisateur (ex: "pseudo_prete") ---
                  elif "_prete" in col:
