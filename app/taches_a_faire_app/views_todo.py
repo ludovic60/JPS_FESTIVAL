@@ -54,15 +54,15 @@ def todo_page(user):
                         if c2.form_submit_button("Ajouter", type="primary") and new_label.strip():
                             add_todo(new_label)
                             st.rerun()
-                            
+       c1, c2, c3,c4 ,c5, c6= st.columns([4, 4, 1, 1, 1,1])
+       c1.write("nom de la tache")
+       c2.write("affecte a ")
+       c3.write("statut")
+       c4.write("modifier")
+       c5.write("terminer ")
+       c6.write("supprimer ")                     
        for t in get_todo():
-            c1, c2, c3,c4 ,c5, c6= st.columns([4, 4, 1, 1, 1,1])
-            c1.write("nom de la tache")
-            c2.write("affecte a ")
-            c3.write("statut")
-            c4.write("modifier")
-            c5.write("terminer ")
-            c6.write("supprimer ")
+
            
             label_todo = c1.text_input("t", value=t["todo"], key=f"edit_{t["_id"]}",
                                    label_visibility="collapsed")
