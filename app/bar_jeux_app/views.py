@@ -707,8 +707,18 @@ def _final_page(user):
 
  
     st.subheader("listes des prets  par Joueur")
-    df_jeux_histogramme  = pd.merge(df_jeux_pret_graphique, df_jeux_valide_graphique, on =["classement", "Nouveauté", "pseudo","nom" ]  , how="left")
-    #df_jeux_histogramme  = df_jeux_pret_graphique
+
+    df_jeux_histogramme = pd.merge(
+        df_jeux_pret_graphique,
+        df_jeux_valide_graphique,
+        on=["pseudo", "nom", "classement", "Nouveauté"],
+        how="outer",  # 'outer' garde tout, même si un jeu n'est que dans l'un des deux tableaux
+    )
+    
+    # Remplacer les valeurs manquantes (NaN) par 0 ou False selon les colonnes
+    df_jeux_histogramme["Nb_jeux_prete"] = df_croise["Nb_jeux_prete"].fillna(0)
+    df_jeux_histogramme["Nb_jeux_valide"] = df_croise["Nb_jeux_valide"].fillna(0)
+    df_jeux_histogramme["statut_valide"] = df_croise["statut_valide"].fillna(False)
 
     if not df_jeux_histogramme.empty:
    
