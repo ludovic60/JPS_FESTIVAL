@@ -60,9 +60,9 @@ def todo_page(user):
             c1.write("nom de la tache")
             c2.write("affecte a ")
             c3.write("statut")
-            c4.write(" ")
-            c5.write(" ")
-            c6.write(" ")
+            c4.write("modifier")
+            c5.write("terminer ")
+            c6.write("supprimer ")
            
             label_todo = c1.text_input("t", value=t["todo"], key=f"edit_{t["_id"]}",
                                    label_visibility="collapsed")
