@@ -60,7 +60,7 @@ def todo_page():
                                    label_visibility="collapsed")
             
             if c3.button("terminer", key=f"modif_{t["_id"]}"):
-                update_todo(t["_id"] ,"terminer)
+                update_todo(t["_id"] ,"terminer")
      
                 st.rerun()
             # if c3.button("Supprimer"):
