@@ -670,7 +670,7 @@ def _final_page(user):
                   ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
               )
               st.plotly_chart(fig_pie_cat, use_container_width=True)
-              st.plotly_chart(fig_pie_cat, use_container_width=True)
+
           else:
               st.info("Aucun jeu coché pour le moment.")
 
@@ -716,7 +716,7 @@ def _final_page(user):
                       t=30, b=100, l=20, r=20
                   ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
               )
-              st.plotly_chart(fig_pie_cat, use_container_width=True) 
+
               st.plotly_chart(fig_pie_cat2, use_container_width=True)
           else:
               st.info("Aucun jeu validé pour le moment.")
