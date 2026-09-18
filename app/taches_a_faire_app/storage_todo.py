@@ -6,7 +6,7 @@ import uuid
 from datetime import datetime, timezone, timedelta
 from threading import Lock
 from bson import ObjectId
-import config_presence as cfg_pres
+
 
 
 import sys
