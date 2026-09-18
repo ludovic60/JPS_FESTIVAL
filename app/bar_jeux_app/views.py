@@ -455,7 +455,7 @@ def _final_page(user):
            ]
      
            # On fusionne pour comparer cellule par cellule via les suffixes _old et _new
-           merged = df_jeux.merge(on="_id", suffixes=("_old", "_new"))
+           merged = df_jeux.merge(new_df, on="_id", suffixes=("_old", "_new"))
      
            modifications_count = 0
      
