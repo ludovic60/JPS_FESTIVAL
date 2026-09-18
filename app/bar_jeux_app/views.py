@@ -706,25 +706,29 @@ def _final_page(user):
 
 
  
-    st.subheader("listes des validations  par Joueur")
-    ###----- df_jeux_histogramme  = pd.merge(df_jeux_pret_graphique, df_jeux_valide_graphique, on =["classement", "Nouveauté", "pseudo","nom" ]  , how="left")
-    df_jeux_histogramme  = df_jeux_pret_graphique
+    st.subheader("listes des prets  par Joueur")
+    df_jeux_histogramme  = pd.merge(df_jeux_pret_graphique, df_jeux_valide_graphique, on =["classement", "Nouveauté", "pseudo","nom" ]  , how="left")
+    #df_jeux_histogramme  = df_jeux_pret_graphique
 
-    
+    if not df_jeux_histogramme.empty:
+   
+       fig_hist = px.bar( 
+                 df_jeux_histogramme,
+                 x="pseudo",
+                 # y="Nb_jeux_prete", 
+                 y=["Nb_jeux_prete","Nb_jeux_valide"],
+                 #color="Nb_jeux_prete", 
+                 ###color=["Nb_jeux_prete","Nb_jeux_valide"],
+                 barmode="group",
+                 #color_discrete_map={"Nb_jeux_prete": "#636EFA"}, ###{"Nb_jeux_prete": "#636EFA", "Nb_jeux_valide": "#2CA02C"},
+                 width=6000,
+                 height=500
+       )
+   
+       st.plotly_chart(fig_hist, use_container_width=True)
+    else:
+        st.info("Aucun jeu prété / validé pour le moment.")
 
-    fig_hist = px.bar( 
-              df_jeux_histogramme,
-              x="pseudo",
-              y="Nb_jeux_prete", ###["Nb_jeux_prete","Nb_jeux_valide"]
-            #  color="Nb_jeux_prete", ###["Nb_jeux_prete","Nb_jeux_valide"]
-              barmode="group",
-              #color_discrete_map={"Nb_jeux_prete": "#636EFA"}, ###{"Nb_jeux_prete": "#636EFA", "Nb_jeux_valide": "#2CA02C"},
-              width=6000,
-              height=500
-    )
-
-    st.plotly_chart(fig_hist, use_container_width=True)
-    
 
 
 
