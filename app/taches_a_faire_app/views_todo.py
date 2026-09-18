@@ -63,7 +63,7 @@ def todo_page(user):
             label_statut = c3.text_input("t", value=t["statut"], key=f"edit_statut_{t["_id"]}",
                                    label_visibility="collapsed")
             
-            if c3.button("terminer", key=f"modif_{t["_id"]}"):
+            if c3.button("terminer", key=f"termin_{t["_id"]}"):
                 update_todo(t["_id"] ,label_affecte , label_statut)
      
                 st.rerun()
