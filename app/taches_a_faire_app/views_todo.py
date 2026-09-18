@@ -54,8 +54,16 @@ def todo_page(user):
                         if c2.form_submit_button("Ajouter", type="primary") and new_label.strip():
                             add_todo_tb(label)
                             st.rerun()
+                            
        for t in get_todo():
             c1, c2, c3,c4 ,c5, c6= st.columns([4, 4, 1, 1, 1,1])
+            c1.write("nom de la tache")
+            c2.write("affecte a ")
+            c3.write("statut")
+            c4.write(" ")
+            c5.write(" ")
+            c6.write(" ")
+           
             label_todo = c1.text_input("t", value=t["todo"], key=f"edit_{t["_id"]}",
                                    label_visibility="collapsed")
             label_affecte = c2.text_input("t", value=t["affecte"], key=f"edit_qui_{t["_id"]}",
@@ -64,17 +72,14 @@ def todo_page(user):
                                    label_visibility="collapsed")
             
             if c4.button("modifier", key=f"termin_{t["_id"]}"):
-                update_todo(t["_id"] ,label_affecte , label_statut)
-     
+                update_todo(t["_id"] ,label_affecte , label_statut)     
                 st.rerun()
            
             if c5.button("terminer", key=f"modif_{t["_id"]}"):
-                update_todo(t["_id"] ,label_affecte, "terminer")
-     
+                update_todo(t["_id"] ,label_affecte, "terminer")     
                 st.rerun()
-            # if c3.button("Supprimer"):
+        
             if c6.button("Supprimer", key=f"supprim_{t["_id"]}"):
-                delete_todo(t["_id"])
-              
+                delete_todo(t["_id"])              
                 st.rerun()
 
