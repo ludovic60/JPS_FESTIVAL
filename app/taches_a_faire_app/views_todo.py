@@ -58,7 +58,7 @@ def todo_page(user):
             c1, c2, c3,c4 = st.columns([4, 1, 4, 1])
             label_todo = c1.text_input("t", value=t["todo"], key=f"edit_{t["_id"]}",
                                    label_visibility="collapsed")
-            label_affecte = c2.text_input("t", value=t["affecté"], key=f"edit_qui_{t["_id"]}",
+            label_affecte = c2.text_input("t", value=t["affecte"], key=f"edit_qui_{t["_id"]}",
                                    label_visibility="collapsed")
             label_statut = c3.text_input("t", value=t["statut"], key=f"edit_statut_{t["_id"]}",
                                    label_visibility="collapsed")
