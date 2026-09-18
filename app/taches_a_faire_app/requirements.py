@@ -1,0 +1,11 @@
+streamlit>=1.40.0
+bcrypt>=4.1.3
+email-validator>=2.2.0
+pymongo>=4.6.3
+streamlit>=1.40.0
+bcrypt>=4.1.3
+email-validator>=2.2.0
+pymongo>=4.6.3
+pandas>=2.2.0
+reportlab>=4.1.0
+streamlit-cookies-controller==0.0.4
