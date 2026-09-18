@@ -769,9 +769,9 @@ def _final_page(user):
        )
        
        # Remplacer les valeurs manquantes (NaN) par 0 ou False selon les colonnes
-       df_jeux_histogramme["Nb_jeux_prete"] = df_croise["Nb_jeux_prete"].fillna(0)
-       df_jeux_histogramme["Nb_jeux_valide"] = df_croise["Nb_jeux_valide"].fillna(0)
-       df_jeux_histogramme["statut_valide"] = df_croise["statut_valide"].fillna(False)
+       df_jeux_histogramme["Nb_jeux_prete"] = df_jeux_histogramme["Nb_jeux_prete"].fillna(0)
+       df_jeux_histogramme["Nb_jeux_valide"] = df_jeux_histogramme["Nb_jeux_valide"].fillna(0)
+       df_jeux_histogramme["statut_valide"] = df_jeux_histogramme["statut_valide"].fillna(False)
    
     if not df_jeux_histogramme.empty:
    
