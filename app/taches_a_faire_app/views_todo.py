@@ -52,7 +52,7 @@ def todo_page(user):
                         new_label = c1.text_input("Nouveau todo", label_visibility="collapsed",
                                                   placeholder="Nom de la nouvelle tâche")
                         if c2.form_submit_button("Ajouter", type="primary") and new_label.strip():
-                            add_todo(label)
+                            add_todo(new_label)
                             st.rerun()
                             
        for t in get_todo():
