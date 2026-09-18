@@ -442,49 +442,64 @@ def _final_page(user):
      # --- Détection des changements ---
   
     if submit_button:
-        updated_data = grid_response["data"]
-        new_df = pd.DataFrame(updated_data)
-        cols_to_check = [col for col in new_df.columns if "_prete" in col or "_admin" in col or col == "Plusieurs exemplaires souhaités"]
-        
-        # On fusionne pour comparer ligne par ligne
-        merged = df_jeux.merge(new_df, on="_id", suffixes=("_old", "_new"))
-      
-        # Filtrer uniquement les lignes modifiées
-        changed_rows = []
-        for _, row in merged.iterrows():
-            has_changed = False
-            for col in cols_to_check:
-                if row[f"{col}_old"] != row[f"{col}_new"]:
-                    has_changed = True
-                    break
-            if has_changed:
-                changed_rows.append(row)
-      
-        # Résultat : `changed_rows` contient uniquement les lignes qui ont subi une modification !
-        st.write(f"Nombre de lignes modifiées à sauvegarder : {len(changed_rows)}")
-        
-        for row_data in changed_rows:
-            game_id = row_data["_id"]
+           updated_data = grid_response["data"]
+           new_df = pd.DataFrame(updated_data)
+     
+           # Les colonnes à surveiller
+           cols_to_check = [
+               "Plusieurs exemplaires souhaités"
+           ] + [
+               col
+               for col in new_df.columns
+               if "_prete" in col or "_admin" in col
+           ]
+     
+           # On fusionne pour comparer cellule par cellule via les suffixes _old et _new
+           merged = df_jeux.merge(on="_id", suffixes=("_old", "_new"))
+     
+           modifications_count = 0
+     
+           for _, row in merged.iterrows():
+             game_id = row["_id"]
+     
+             # On parcourt chaque colonne pour voir EXACTEMENT laquelle a changé
+             for col in cols_to_check:
+               val_old = row[f"{col}_old"]
+               val_new = row[f"{col}_new"]
+     
+               # Si la valeur a changé pour cette cellule précise
+               if val_old != val_new:
+                 modifications_count += 1
+     
+                 # --- CAS 1 : "Plusieurs exemplaires" ---
+                 if col == "Plusieurs exemplaires souhaités":
+                   if user["role"] == "admin":
+                     storage_jeux.toggle_admin_selected(game_id, is_several_checked)
+     
+                 # --- CAS 2 : Colonne de prêt d'un utilisateur (ex: "pseudo_prete") ---
+                 elif "_prete" in col:
+                   # On extrait le pseudo du nom de la colonne (ex: "Alice_prete" -> "Alice")
+                   pseudo = col.replace("_prete", "")
+                   u_id = user_map[pseudo]
+                   st.write(f" enreg pret game : {game_id} pour  {str(u_id)}  avec valeur  {val_new} ")
+                   storage_jeux.toggle_loan(game_id, str(u_id), val_new)
+     
+                 # --- CAS 3 : Colonne de validation admin d'un utilisateur (ex: "pseudo_admin") ---
+                 elif "_admin" in col:
+                   pseudo = col.replace("_admin", "")
+                   u_id = user_map[pseudo]
+                   storage_jeux.set_loan_valide_admin(game_id, str(u_id), val_new)
+     
+           st.success(
+               f"Enregistrement réussi : {modifications_count} cellule(s) modifiée(s)"
+               " mise(s) à jour !"
+           )
+           st.success("Modifications enregistrées avec succès !")
+           st.session_state.grid_version += 1
+           time.sleep(1)
+           st.rerun()
 
-            # Sauvegarde "Plusieurs exemplaires" (si admin)
-            if user["role"] == "admin":
-              is_several_checked = row_data["Plusieurs exemplaires souhaités"]
-              storage_jeux.toggle_admin_selected(game_id, is_several_checked)
-             
-            # Sauvegarde des choix de prêts / validations par utilisateur
-            for pseudo in pseudo_list:
-              u_id = user_map[pseudo]
-              is_prete = row_data.get(f"{pseudo}_prete", False)
-              st.write(f" enreg pret game : {game_id} pour  {str(u_id)}  avec valeur  {is_prete} ")
-              storage_jeux.toggle_loan(game_id, str(u_id), is_prete) 
-             
-              is_admin_valide = row_data.get(f"{pseudo}_admin", False)
-              storage_jeux.set_loan_valide_admin(game_id, str(u_id), is_admin_valide)  
 
-        st.success("Modifications enregistrées avec succès !")
-        st.session_state.grid_version += 1
-        time.sleep(1)
-        st.rerun()
 
 
 
