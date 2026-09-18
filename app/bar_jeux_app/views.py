@@ -708,18 +708,43 @@ def _final_page(user):
  
     st.subheader("listes des prets  par Joueur")
 
-    df_jeux_histogramme = pd.merge(
-        df_jeux_pret_graphique,
-        df_jeux_valide_graphique,
-        on=["pseudo", "nom", "classement", "Nouveauté"],
-        how="outer",  # 'outer' garde tout, même si un jeu n'est que dans l'un des deux tableaux
-    )
-    
-    # Remplacer les valeurs manquantes (NaN) par 0 ou False selon les colonnes
-    df_jeux_histogramme["Nb_jeux_prete"] = df_croise["Nb_jeux_prete"].fillna(0)
-    df_jeux_histogramme["Nb_jeux_valide"] = df_croise["Nb_jeux_valide"].fillna(0)
-    df_jeux_histogramme["statut_valide"] = df_croise["statut_valide"].fillna(False)
+    if df_jeux_pret_graphique.empty and df_jeux_valide_graphique.empty:
+       df_jeux_histogramme = pd.DataFrame(
+             columns=[
+                 "classement",
+                 "Nouveauté",
+                 "pseudo",
+                 "nom",
+                 "Nb_jeux_prete",
+                 "Nb_jeux_valide",
+                 "statut_valide",
+             ]
+         )
 
+    elif df_jeux_pret_graphique.empty:
+        
+       df_jeux_histogramme = df_jeux_valide_graphique.copy()     
+       df_jeux_histogramme["Nb_jeux_prete"] = 0
+
+    # 3. Cas où seules les validations sont vides
+    elif df_jeux_valide_graphique.empty:
+     
+       df_jeux_histogramme = df_jeux_pret_graphique.copy()
+       df_jeux_histogramme["Nb_jeux_valide"] = 0       
+       df_jeux_histogramme["statut_valide"] = False
+    else : 
+       df_jeux_histogramme = pd.merge(
+           df_jeux_pret_graphique,
+           df_jeux_valide_graphique,
+           on=["pseudo", "nom", "classement", "Nouveauté"],
+           how="outer",  # 'outer' garde tout, même si un jeu n'est que dans l'un des deux tableaux
+       )
+       
+       # Remplacer les valeurs manquantes (NaN) par 0 ou False selon les colonnes
+       df_jeux_histogramme["Nb_jeux_prete"] = df_croise["Nb_jeux_prete"].fillna(0)
+       df_jeux_histogramme["Nb_jeux_valide"] = df_croise["Nb_jeux_valide"].fillna(0)
+       df_jeux_histogramme["statut_valide"] = df_croise["statut_valide"].fillna(False)
+   
     if not df_jeux_histogramme.empty:
    
        fig_hist = px.bar( 
