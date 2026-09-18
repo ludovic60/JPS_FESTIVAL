@@ -602,7 +602,11 @@ def _final_page(user):
    ###########---- 1. Histogramme par joueur (Validés vs Cochés Utilisateur)
    
     with col_graph1:
-          st.subheader("Jeux selectionné par Classement")
+          st.subheader("Nombre Jeux selectionnés")
+       
+          st.metric(    label="Nombre jeux sélectionnés", value=len(df_jeux_select_graphique))
+                    
+          st.subheader("Jeux selectionnés par Classement")
        
           if not df_jeux_select_graphique.empty:
               df_cat = df_jeux_select_graphique["classement"].value_counts().reset_index()
@@ -614,7 +618,7 @@ def _final_page(user):
               st.info("Aucun jeu coché pour le moment.")
 
 
-          st.subheader("Jeux selectionné  par nouveauté")
+          st.subheader("Jeux selectionnés  par nouveauté")
           if not df_jeux_select_graphique.empty:
               df_nov = df_jeux_select_graphique["Nouveauté"].value_counts().reset_index()
               df_nov.columns = ["Nouveauté", "Nombre"]
@@ -631,6 +635,11 @@ def _final_page(user):
     ###########----2. Camembert Nouveautés (jeux cochés au moins une fois par un utilisateur)
        
     with col_graph2:
+          st.subheader("Nombre Jeux cochés")
+       
+          st.metric(    label="Nombre jeux cochés", value=len(df_jeux_pret_graphique))
+         
+     
           st.subheader("Jeux cochés par Classement")
           if not df_jeux_pret_graphique.empty:
               df_cat = df_jeux_pret_graphique["classement"].value_counts().reset_index()
@@ -659,6 +668,11 @@ def _final_page(user):
 
       ###########----3. Camembert Catégories (Produits cochés au moins une fois par un utilisateur)
     with col_graph3:
+         st.subheader("Nombre Jeux validés")
+       
+          st.metric(    label="Nombre jeux validés", value=len(df_jeux_valide_graphique))
+         
+     
           st.subheader("Jeux validés par Classement")
           if not df_jeux_valide_graphique.empty:
               df_cat2 = df_jeux_valide_graphique["classement"].value_counts().reset_index()
