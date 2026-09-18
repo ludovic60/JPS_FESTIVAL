@@ -55,14 +55,21 @@ def todo_page(user):
                             add_todo_tb(label)
                             st.rerun()
        for t in get_todo():
-            c1, c2, c3 = st.columns([4, 1, 1])
-            label = c1.text_input("t", value=t["todo"], key=f"edit_{t["_id"]}",
+            c1, c2, c3,c4 = st.columns([4, 1, 4, 1])
+            label_todo = c1.text_input("t", value=t["todo"], key=f"edit_{t["_id"]}",
                                    label_visibility="collapsed")
-            label = c2.text_input("t", value=t["statut"], key=f"edit_{t["_id"]}",
+            label_affecte = c2.text_input("t", value=t["affecté"], key=f"edit_qui_{t["_id"]}",
+                                   label_visibility="collapsed")
+            label_statut = c3.text_input("t", value=t["statut"], key=f"edit_statut_{t["_id"]}",
                                    label_visibility="collapsed")
             
-            if c3.button("terminer", key=f"modif_{t["_id"]}"):
-                update_todo(t["_id"] ,"terminer")
+             if c3.button("terminer", key=f"modif_{t["_id"]}"):
+                update_todo(t["_id"] ,label_affecte , label_statut)
+     
+                st.rerun()
+           
+             if c3.button("terminer", key=f"modif_{t["_id"]}"):
+                update_todo(t["_id"] ,label_affecte, "terminer")
      
                 st.rerun()
             # if c3.button("Supprimer"):
