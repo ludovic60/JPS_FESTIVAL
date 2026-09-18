@@ -3,10 +3,9 @@
 import html
 import logging
 import streamlit as st
-from  storage_presence import get_presence, clear_user_presence, clear_all_presence, get_all_presence, get_tasks, add_task, update_task, delete_task, set_presence
+from  storage_todo import  get_todo, add_todo, update_todo, delete_todo
 import sys
 from pathlib import Path
-from config_presence import DAYS, PERIODS, PERIOD_LABELS, SLOT_KEYS, DAYS_INSTALL, PERIODS_INSTALL,TYPE_TASK_INSTALL , TYPE_TASK_ANIMATION ,DAYS_ANIMATION , PERIODS_ANIMATION ,PERIODS_ENTIERE, SLOT_KEYS_INSTALL ,SLOT_KEYS_ANIMATION, LIST_TYPE_TASK
 import time 
 
 # Ajoute le dossier parent (la racine du projet) à sys.path
@@ -46,7 +45,13 @@ def main_app(user: dict):
 
 def todo_page():
      # ---- Tâches ----
-
+        with st.form("add_todo_form", clear_on_submit=True):
+                    c1, c2 = st.columns([4, 1])
+                    new_label = c1.text_input("Nouveau todo", label_visibility="collapsed",
+                                              placeholder="Nom de la nouvelle tâche")
+                    if c2.form_submit_button("Ajouter", type="primary") and new_label.strip():
+                        add_todo_tb(label)
+                        st.rerun()
         for t in get_todo():
             c1, c2, c3 = st.columns([4, 1, 1])
             label = c1.text_input("t", value=t["todo"], key=f"edit_{t["_id"]}",
@@ -55,14 +60,12 @@ def todo_page():
                                    label_visibility="collapsed")
             
             if c3.button("terminer", key=f"modif_{t["_id"]}"):
-                update_todo(t["_id"] "terminer)
+                update_todo(t["_id"] ,"terminer)
      
                 st.rerun()
             # if c3.button("Supprimer"):
             if c4.button("Supprimer", key=f"supprim_{t["_id"]}"):
-                delete_todok(t["_id"])
+                delete_todo(t["_id"])
               
                 st.rerun()
 
-
-                st.rerun()
