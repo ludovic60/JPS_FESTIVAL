@@ -72,15 +72,20 @@ def todo_page(user):
                                    label_visibility="collapsed")
             
             if c4.button("modifier", key=f"termin_{t["_id"]}"):
-                update_todo(t["_id"] ,label_affecte , label_statut)     
+                update_todo(t["_id"] ,label_affecte , label_statut)
+                if key in st.session_state:
+                    del st.session_state[key]
                 st.rerun()
            
             if c5.button("terminer", key=f"modif_{t["_id"]}"):
                 update_todo(t["_id"] ,label_affecte, "terminer")
-                time.sleep(1)
+                if key in st.session_state:
+                    del st.session_state[key]
                 st.rerun()
         
             if c6.button("Supprimer", key=f"supprim_{t["_id"]}"):
                 delete_todo(t["_id"])              
+                if key in st.session_state:
+                    del st.session_state[key]
                 st.rerun()
 
