@@ -48,14 +48,18 @@ def load_games(list_key, search_query=None):
                 filtre_tb = {"est_selectionnable": list_key}
             elif list_key == "all":
                 filtre_tb = {}    
-            elif len(list_key) <=6 :
-                annee = list_key[:4]
-                mois = list_key[5:]
-                #gestion des numeros de mois avant octobre pour n'avoir qu'un chiffre
-                if mois[0]=="0":
-                    mois = mois[1]
-    
-                filtre_tb = {"annee_parution" : annee , "mois_sortie" : mois }
+            elif len(list_key) <=7 :
+
+                if datetime.strptime(list_key, "%Y_%m"): 
+                        annee = list_key[:4]
+                        mois = list_key[5:]
+                        #gestion des numeros de mois avant octobre pour n'avoir qu'un chiffre
+                        if mois[0]=="0":
+                            mois = mois[1]
+            
+                        filtre_tb = {"annee_parution" : annee , "mois_sortie" : mois }
+                else : 
+                        filtre_tb= {"_id": {"$in": list_key}}
             else :
                 filtre_tb= {"_id": {"$in": list_key}}
         
