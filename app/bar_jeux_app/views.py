@@ -604,7 +604,7 @@ def _final_page(user):
     with col_graph1:
           st.subheader("Nombre Jeux selectionnés")
        
-          st.metric(    label="Nombre jeux sélectionnés", value=len(df_jeux_select_graphique))
+          st.metric(    label="Nombre jeux sélectionnés", value=len(df_jeux_select_graphique),label_visibility="collapsed")
                     
           st.subheader("Jeux selectionnés par Classement")
        
@@ -637,7 +637,7 @@ def _final_page(user):
     with col_graph2:
           st.subheader("Nombre Jeux cochés")
        
-          st.metric(    label="Nombre jeux cochés", value=len(df_jeux_pret_graphique))
+          st.metric(    label="Nombre jeux cochés", value=len(df_jeux_pret_graphique),label_visibility="collapsed")
          
      
           st.subheader("Jeux cochés par Classement")
@@ -670,7 +670,7 @@ def _final_page(user):
     with col_graph3:
           st.subheader("Nombre Jeux validés")
        
-          st.metric(    label="Nombre jeux validés", value=len(df_jeux_valide_graphique))
+          st.metric(    label="Nombre jeux validés", value=len(df_jeux_valide_graphique),label_visibility="collapsed")
          
      
           st.subheader("Jeux validés par Classement")
