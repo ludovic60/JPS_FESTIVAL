@@ -129,7 +129,7 @@ def _list_page(title, list_key, user):
     if list_key == "all" and not search_query:
         filtered_games = []
     else:
-        st.print(list_key)
+        print(list_key)
         # Passer le terme de recherche directement à MongoDB
         games = storage_jeux.load_games(list_key, search_query=search_query)
     
