@@ -27,15 +27,14 @@ def main_app(user: dict):
         if user["role"] == "admin":
             st.markdown("<span class='ws-tag-admin'>Admin</span>", unsafe_allow_html=True)
 
-        pages = ["liste des taches"]
+     
 
         st.divider()
         if st.button("Déconnexion"):
             commun.auth.logout()
             st.rerun()
-
-    if page == "liste des taches":
-       todo_page(user)
+ 
+    todo_page(user)
 
 
 
@@ -45,13 +44,16 @@ def main_app(user: dict):
 
 def todo_page():
      # ---- Tâches ----
-        with st.form("add_todo_form", clear_on_submit=True):
-                    c1, c2 = st.columns([4, 1])
-                    new_label = c1.text_input("Nouveau todo", label_visibility="collapsed",
-                                              placeholder="Nom de la nouvelle tâche")
-                    if c2.form_submit_button("Ajouter", type="primary") and new_label.strip():
-                        add_todo_tb(label)
-                        st.rerun()
+       if user["role"] == "admin":
+            st.markdown("<span class='ws-tag-admin'>Admin</span>", unsafe_allow_html=True)
+
+            with st.form("add_todo_form", clear_on_submit=True):
+                        c1, c2 = st.columns([4, 1])
+                        new_label = c1.text_input("Nouveau todo", label_visibility="collapsed",
+                                                  placeholder="Nom de la nouvelle tâche")
+                        if c2.form_submit_button("Ajouter", type="primary") and new_label.strip():
+                            add_todo_tb(label)
+                            st.rerun()
         for t in get_todo():
             c1, c2, c3 = st.columns([4, 1, 1])
             label = c1.text_input("t", value=t["todo"], key=f"edit_{t["_id"]}",
