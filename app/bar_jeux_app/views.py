@@ -567,17 +567,14 @@ def _final_page(user):
         id_jeu = game_selec.get("id_jeux")
         info_games_selec = storage_jeux.get_info_games(id_jeu)
   
-        # Récupération sécurisée du pseudo (converti en str pour être sûr que les ID matchent)
-        user_id_str = str(game_selec["user_id"])
-        pseudo = users_dict.get(user_id_str, "Utilisateur inconnu")
+    
     
         # Ajout à la liste
         liste_jeu_selectionne.append({
             "classement": info_games_selec[0]["classement_jps_final"],
             "Nouveauté": nouveaute_def(id_jeu),
-            "pseudo": pseudo,
             "nom": info_games_selec[0]["nom_jeu_complet"],
-            "Nb_jeux_prete": 1,
+            "Nb_jeux_selec": 1,
         })
     df_jeux_select_graphique  = pd.DataFrame(liste_jeu_selectionne)
 
