@@ -668,7 +668,7 @@ def _final_page(user):
 
       ###########----3. Camembert Catégories (Produits cochés au moins une fois par un utilisateur)
     with col_graph3:
-         st.subheader("Nombre Jeux validés")
+          st.subheader("Nombre Jeux validés")
        
           st.metric(    label="Nombre jeux validés", value=len(df_jeux_valide_graphique))
          
