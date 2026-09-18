@@ -73,21 +73,21 @@ def todo_page(user):
             
             if c4.button("modifier", key=f"termin_{t["_id"]}"):
                 update_todo(t["_id"] ,label_affecte , label_statut)
-                for key in [f"edit_{t_id_str}", f"edit_qui_{t_id_str}", f"edit_statut_{t_id_str}"]:
+                for key in [f"edit_{t_id_str}", f"edit_qui_{t_id_str}", f"edit_statut_{t["_id"]}"]:
                             if key in st.session_state:
                                 del st.session_state[key]
                 st.rerun()
            
             if c5.button("terminer", key=f"modif_{t["_id"]}"):
                 update_todo(t["_id"] ,label_affecte, "terminer")
-                for key in [f"edit_{t_id_str}", f"edit_qui_{t_id_str}", f"edit_statut_{t_id_str}"]:
+                for key in [f"edit_{t_id_str}", f"edit_qui_{t_id_str}", f"edit_statut_{t["_id"]}"]:
                             if key in st.session_state:
                                 del st.session_state[key]
                 st.rerun()
         
             if c6.button("Supprimer", key=f"supprim_{t["_id"]}"):
                 delete_todo(t["_id"])              
-                for key in [f"edit_{t_id_str}", f"edit_qui_{t_id_str}", f"edit_statut_{t_id_str}"]:
+                for key in [f"edit_{t_id_str}", f"edit_qui_{t_id_str}", f"edit_statut_{t["_id"]}"]:
                             if key in st.session_state:
                                 del st.session_state[key]
                 st.rerun()
