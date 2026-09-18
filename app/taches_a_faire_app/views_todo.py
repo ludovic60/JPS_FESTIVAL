@@ -42,7 +42,7 @@ def main_app(user: dict):
 
 
 
-def todo_page():
+def todo_page(user):
      # ---- Tâches ----
        if user["role"] == "admin":
             st.markdown("<span class='ws-tag-admin'>Admin</span>", unsafe_allow_html=True)
