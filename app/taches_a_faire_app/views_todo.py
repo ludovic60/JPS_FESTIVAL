@@ -54,7 +54,7 @@ def todo_page():
                         if c2.form_submit_button("Ajouter", type="primary") and new_label.strip():
                             add_todo_tb(label)
                             st.rerun()
-        for t in get_todo():
+       for t in get_todo():
             c1, c2, c3 = st.columns([4, 1, 1])
             label = c1.text_input("t", value=t["todo"], key=f"edit_{t["_id"]}",
                                    label_visibility="collapsed")
