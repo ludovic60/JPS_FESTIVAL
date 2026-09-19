@@ -132,11 +132,13 @@ def login_view():
     st.caption("Connectez-vous pour accéder aux applications du festival.")
 
     with st.form("supabase_login_form"):
-        email = st.text_input("Email")
+        # email = st.text_input("Email")
+        pseudo = st.text_input("Pseudo")
         password = st.text_input("Mot de passe", type="password")
 
         if st.form_submit_button("Se connecter", type="primary"):
-            err = login(email, password)
+           # err = login(email, password)
+            err = login_with_pseudo(pseudo, password)
             if err:
                 st.error(err)
             else:
