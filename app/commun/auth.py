@@ -133,12 +133,15 @@ def login_view():
 
     with st.form("supabase_login_form"):
         # email = st.text_input("Email")
-        pseudo = st.text_input("Pseudo")
+        texte_saisi = st.text_input("Pseudo ou Email")
         password = st.text_input("Mot de passe", type="password")
 
         if st.form_submit_button("Se connecter", type="primary"):
            # err = login(email, password)
-            err = login_with_pseudo(pseudo, password)
+            if "@" in texte_saisi
+                err = login(texte_saisi, password)
+            else : 
+                err = login_with_pseudo(texte_saisi, password)
             if err:
                 st.error(err)
             else:
