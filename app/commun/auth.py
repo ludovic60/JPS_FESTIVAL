@@ -138,7 +138,7 @@ def login_view():
 
         if st.form_submit_button("Se connecter", type="primary"):
            # err = login(email, password)
-            if "@" in texte_saisi
+            if "@" in texte_saisi :
                 err = login(texte_saisi, password)
             else : 
                 err = login_with_pseudo(texte_saisi, password)
