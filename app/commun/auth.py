@@ -78,6 +78,33 @@ def login(email, password):
         # Retourne un message d'erreur générique pour la sécurité
         return "Email ou mot de passe incorrect."
 
+def login_with_pseudo(pseudo, password):
+    try:
+        # Nettoyage du pseudo et création du faux email associé
+        clean_pseudo = pseudo.strip().lower()
+        dummy_email = f"{clean_pseudo}@festivaljeuxcrepy.local"
+        
+        # Appel à Supabase avec l'email reconstitué
+        response = supabase.auth.sign_in_with_password({
+            "email": dummy_email,
+            "password": password
+        })
+        
+        # Stockage de la session
+        user_data = response.user
+        st.session_state["user"] = {
+            "id": user_data.id,
+            "email": user_data.email,
+            "role": user_data.user_metadata.get("role", "user"),
+            "pseudo": user_data.user_metadata.get("pseudo", pseudo.strip())
+        }
+        st.session_state["authenticated"] = True
+        return None
+        
+    except Exception as e:
+        return "Pseudo ou mot de passe incorrect."
+
+
 def logout():
     try:
         supabase.auth.signOut()
