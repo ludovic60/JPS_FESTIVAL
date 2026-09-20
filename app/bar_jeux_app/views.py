@@ -422,7 +422,7 @@ def _final_page(user):
       dynamic_height = min(max(40 + (len(df_jeux) * 70) + 20, 200), 800)
       if "grid_version" not in st.session_state:
          st.session_state.grid_version = 0
-     
+      gb.configure_grid_options(alwaysShowHorizontalScroll=True)
       grid_response = AgGrid(
           df_jeux,
           gridOptions=grid_options,
@@ -773,7 +773,9 @@ def _final_page(user):
        df_jeux_histogramme["Nb_jeux_prete"] = df_jeux_histogramme["Nb_jeux_prete"].fillna(0)
        df_jeux_histogramme["Nb_jeux_valide"] = df_jeux_histogramme["Nb_jeux_valide"].fillna(0)
        df_jeux_histogramme["statut_valide"] = df_jeux_histogramme["statut_valide"].fillna(False)
-   
+
+    #  Aggrégation des données pour obtenir la somme par pseudo
+    df_grouped = df_jeux_histogramme.groupby("pseudo")[["Nb_jeux_prete", "Nb_jeux_valide"]].sum().reset_index()
     if not df_jeux_histogramme.empty:
    
        fig_hist = px.bar( 
@@ -784,11 +786,15 @@ def _final_page(user):
                  #color="Nb_jeux_prete", 
                  ###color=["Nb_jeux_prete","Nb_jeux_valide"],
                  barmode="group",
+                 text_auto=True,
                  #color_discrete_map={"Nb_jeux_prete": "#636EFA"}, ###{"Nb_jeux_prete": "#636EFA", "Nb_jeux_valide": "#2CA02C"},
                  width=6000,
                  height=500
        )
-   
+       # Améliorer afficher les valeurs au survol dela souris
+       fig_hist.update_traces(
+           hovertemplate="<b>Pseudo :</b> %{x}<br><b>Type :</b> %{data.name}<br><b>Nombre :</b> %{y}<extra></extra>"
+       )
        st.plotly_chart(fig_hist, use_container_width=True)
     else:
         st.info("Aucun jeu prété / validé pour le moment.")
