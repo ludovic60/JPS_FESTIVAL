@@ -779,7 +779,7 @@ def _final_page(user):
     if not df_jeux_histogramme.empty:
    
        fig_hist = px.bar( 
-                 df_jeux_histogramme,
+                 df_grouped,
                  x="pseudo",
                  # y="Nb_jeux_prete", 
                  y=["Nb_jeux_prete","Nb_jeux_valide"],
