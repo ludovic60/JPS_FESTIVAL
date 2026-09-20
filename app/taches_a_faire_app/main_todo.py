@@ -52,7 +52,7 @@ require_auth()
 user = current_user()
 
 # --- VOTRE APPLICATION COMMENCE ICI ---
-st.sidebar.write(f"Connecté en tant que : **{user['pseudo'] or user['email']}**")
+st.sidebar.write(f"Connecté en tant que : **{user['pseudo'] }**")
 if st.sidebar.button("Se déconnecter"):
     logout()
 
