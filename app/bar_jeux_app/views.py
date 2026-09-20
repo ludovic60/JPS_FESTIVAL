@@ -284,11 +284,11 @@ def _final_page(user):
     
     # Conversion des prêts sous forme de SETs pour recherche instantanée O(1)
     # Structure des tuples stockés dans le set : (game_id, user_id)
-    list_jeu_prete = storage_jeux.get_all_loans()
-    loans_set = {(p['id_jeux'], p['user_id']) for p in list_jeu_prete}
+    list_jeu_propose = storage_jeux.get_all_loans()
+    loans_set = {(p['id_jeux'], p['user_id']) for p in list_jeu_propose}
     
-    list_jeu_prete_valide = storage_jeux.get_validated_loans()
-    validated_loans_set = {(p['id_jeux'], p['user_id']) for p in list_jeu_prete_valide}
+    list_jeu_propose_valide = storage_jeux.get_validated_loans()
+    validated_loans_set = {(p['id_jeux'], p['user_id']) for p in list_jeu_propose_valide}
     
     liste_jeu_plusieurs = storage_jeux.final_games_statut_plusieurs_exemplaire()
     plusieurs_set = {x["id_jeux"] for x in liste_jeu_plusieurs}
@@ -328,7 +328,7 @@ def _final_page(user):
         # Remplissage des colonnes dynamiques par joueur (Recherche instantanée dans un Set)
         for pseudo in pseudo_list:
             u_id = user_map[pseudo]
-            row[f"{pseudo}_prete"] = (game_id, u_id) in loans_set
+            row[f"{pseudo}_propose"] = (game_id, u_id) in loans_set
             row[f"{pseudo}_admin"] = (game_id, u_id) in validated_loans_set
     
         row_jeux.append(row)
@@ -392,7 +392,7 @@ def _final_page(user):
               "headerName": pseudo,
               "children": [
                   {
-                      "field": f"{pseudo}_prete",
+                      "field": f"{pseudo}_propose",
                       "headerName": "Je prête",
                       "editable": (user["pseudo"] == pseudo or user["role"] == "admin"),
                       "cellRenderer": "agCheckboxCellRenderer",
@@ -452,7 +452,7 @@ def _final_page(user):
            ] + [
                col
                for col in new_df.columns
-               if "_prete" in col or "_admin" in col
+               if "_propose" in col or "_admin" in col
            ]
      
            # On fusionne pour comparer cellule par cellule via les suffixes _old et _new
@@ -477,10 +477,10 @@ def _final_page(user):
                    if user["role"] == "admin":
                      storage_jeux.toggle_admin_selected(game_id, val_new)
      
-                 # --- CAS 2 : Colonne de prêt d'un utilisateur (ex: "pseudo_prete") ---
-                 elif "_prete" in col:
-                   # On extrait le pseudo du nom de la colonne (ex: "Alice_prete" -> "Alice")
-                   pseudo = col.replace("_prete", "")
+                 # --- CAS 2 : Colonne de prêt d'un utilisateur (ex: "pseudo_propose") ---
+                 elif "_propose" in col:
+                   # On extrait le pseudo du nom de la colonne (ex: "Alice_propose" -> "Alice")
+                   pseudo = col.replace("_propose", "")
                    u_id = user_map[pseudo]
                    storage_jeux.toggle_loan(game_id, str(u_id), val_new)
      
@@ -551,7 +551,7 @@ def _final_page(user):
             "Nouveauté": nouveaute_def(id_jeu),
             "pseudo": pseudo,
             "nom": info_games_pret[0]["nom_jeu_complet"],
-            "Nb_jeux_prete": 1,
+            "Nb_jeux_propose": 1,
         })
     df_jeux_pret_graphique  = pd.DataFrame(liste_info)
 
@@ -646,12 +646,12 @@ def _final_page(user):
     ###########----2. Camembert Nouveautés (jeux cochés au moins une fois par un utilisateur)
        
     with col_graph2:
-          st.subheader("Nombre Jeux cochés")
+          st.subheader("Nombre Jeux proposés ")
        
-          st.metric(    label="Nombre jeux cochés", value=len(df_jeux_pret_graphique),label_visibility="collapsed")
+          st.metric(    label="Nombre jeux proposés", value=len(df_jeux_pret_graphique),label_visibility="collapsed")
          
      
-          st.subheader("Jeux cochés par Classement")
+          st.subheader("Jeux proposés par Classement")
           if not df_jeux_pret_graphique.empty:
               df_cat = df_jeux_pret_graphique["classement"].value_counts().reset_index()
               df_cat.columns = ["classement", "Nombre"]
@@ -673,9 +673,9 @@ def _final_page(user):
               st.plotly_chart(fig_pie_cat, use_container_width=True)
 
           else:
-              st.info("Aucun jeu coché pour le moment.")
+              st.info("Aucun jeu proposé pour le moment.")
 
-          st.subheader("Jeux cochés par Nouveauté")
+          st.subheader("Jeux proposés par Nouveauté")
           if not df_jeux_pret_graphique.empty:
               df_nov = df_jeux_pret_graphique["Nouveauté"].value_counts().reset_index()
               df_nov.columns = ["Nouveauté", "Nombre"]
@@ -683,7 +683,7 @@ def _final_page(user):
               fig_pie_nov.update_layout(height=250 , width=1000)
               st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
-              st.info("Aucun jeu coché pour le moment.")
+              st.info("Aucun jeu proposé pour le moment.")
 
      
 
@@ -744,7 +744,7 @@ def _final_page(user):
                  "Nouveauté",
                  "pseudo",
                  "nom",
-                 "Nb_jeux_prete",
+                 "Nb_jeux_propose",
                  "Nb_jeux_valide",
                  "statut_valide",
              ]
@@ -753,7 +753,7 @@ def _final_page(user):
     elif df_jeux_pret_graphique.empty:
         
        df_jeux_histogramme = df_jeux_valide_graphique.copy()     
-       df_jeux_histogramme["Nb_jeux_prete"] = 0
+       df_jeux_histogramme["Nb_jeux_propose"] = 0
 
     # 3. Cas où seules les validations sont vides
     elif df_jeux_valide_graphique.empty:
@@ -770,26 +770,26 @@ def _final_page(user):
        )
        
        # Remplacer les valeurs manquantes (NaN) par 0 ou False selon les colonnes
-       df_jeux_histogramme["Nb_jeux_prete"] = df_jeux_histogramme["Nb_jeux_prete"].fillna(0)
+       df_jeux_histogramme["Nb_jeux_propose"] = df_jeux_histogramme["Nb_jeux_propose"].fillna(0)
        df_jeux_histogramme["Nb_jeux_valide"] = df_jeux_histogramme["Nb_jeux_valide"].fillna(0)
        df_jeux_histogramme["statut_valide"] = df_jeux_histogramme["statut_valide"].fillna(False)
 
     #  Aggrégation des données pour obtenir la somme par pseudo
-    df_jeux_histogramme["Nb_jeux_prete"] = pd.to_numeric(df_jeux_histogramme["Nb_jeux_prete"], errors="coerce").fillna(0).astype(int)   
+    df_jeux_histogramme["Nb_jeux_propose"] = pd.to_numeric(df_jeux_histogramme["Nb_jeux_propose"], errors="coerce").fillna(0).astype(int)   
     df_jeux_histogramme["Nb_jeux_valide"] = pd.to_numeric(df_jeux_histogramme["Nb_jeux_valide"], errors="coerce").fillna(0).astype(int)
-    df_grouped = df_jeux_histogramme.groupby("pseudo")[["Nb_jeux_prete", "Nb_jeux_valide"]].sum().reset_index()
+    df_grouped = df_jeux_histogramme.groupby("pseudo")[["Nb_jeux_propose", "Nb_jeux_valide"]].sum().reset_index()
     if not df_jeux_histogramme.empty:
    
        fig_hist = px.bar( 
                  df_grouped,
                  x="pseudo",
-                 # y="Nb_jeux_prete", 
-                 y=["Nb_jeux_prete","Nb_jeux_valide"],
-                 #color="Nb_jeux_prete", 
-                 ###color=["Nb_jeux_prete","Nb_jeux_valide"],
+                 # y="Nb_jeux_propose", 
+                 y=["Nb_jeux_propose","Nb_jeux_valide"],
+                 #color="Nb_jeux_propose", 
+                 ###color=["Nb_jeux_propose","Nb_jeux_valide"],
                  barmode="group",
                  text_auto=True,
-                 #color_discrete_map={"Nb_jeux_prete": "#636EFA"}, ###{"Nb_jeux_prete": "#636EFA", "Nb_jeux_valide": "#2CA02C"},
+                 #color_discrete_map={"Nb_jeux_propose": "#636EFA"}, ###{"Nb_jeux_propose": "#636EFA", "Nb_jeux_valide": "#2CA02C"},
                  width=6000,
                  height=500
        )
