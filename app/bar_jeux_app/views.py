@@ -775,6 +775,8 @@ def _final_page(user):
        df_jeux_histogramme["statut_valide"] = df_jeux_histogramme["statut_valide"].fillna(False)
 
     #  Aggrégation des données pour obtenir la somme par pseudo
+    df_jeux_histogramme["Nb_jeux_prete"] = pd.to_numeric(df_jeux_histogramme["Nb_jeux_prete"], errors="coerce").fillna(0).astype(int)   
+    df_jeux_histogramme["Nb_jeux_valide"] = pd.to_numeric(df_jeux_histogramme["Nb_jeux_valide"], errors="coerce").fillna(0).astype(int)
     df_grouped = df_jeux_histogramme.groupby("pseudo")[["Nb_jeux_prete", "Nb_jeux_valide"]].sum().reset_index()
     if not df_jeux_histogramme.empty:
    
