@@ -57,9 +57,6 @@ st.sidebar.write(f"Connecté en tant que : **{user['pseudo'] or user['email']}**
 if st.sidebar.button("Se déconnecter"):
     logout()
 
-st.title("Bienvenue sur l'application du Festival !")
-
-
 st.set_page_config(page_title="Bar à jeux", page_icon="🎲", layout="wide")
 inject()
 
