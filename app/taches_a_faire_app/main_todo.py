@@ -51,13 +51,6 @@ require_auth()
 # 2. Récupération des infos de l'utilisateur connecté
 user = current_user()
 
-# --- VOTRE APPLICATION COMMENCE ICI ---
-st.sidebar.write(f"Connecté en tant que : **{user['pseudo'] }**")
-if st.sidebar.button("Se déconnecter"):
-    logout()
-
-st.title("Bienvenue sur l'application du Festival !")
-
 
 st.set_page_config(page_title="todo", page_icon="📋", layout="wide")
 inject()
