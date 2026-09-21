@@ -422,6 +422,12 @@ def _final_page(user):
       if "grid_version" not in st.session_state:
          st.session_state.grid_version = 0
       gb.configure_grid_options(alwaysShowHorizontalScroll=True)
+
+      # Bouton de soumission unique en haut du tableau
+      submit_button = st.form_submit_button(
+            label="Enregistrer toutes les modifications"
+      )
+      # le tableau
       grid_response = AgGrid(
           df_jeux,
           gridOptions=grid_options,
@@ -434,10 +440,7 @@ def _final_page(user):
       ) 
    
  
-      # Bouton de soumission unique en bas du tableau
-      submit_button = st.form_submit_button(
-            label="Enregistrer toutes les modifications"
-      )
+
 
      # --- Détection des changements ---
   
