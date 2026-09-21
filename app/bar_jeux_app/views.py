@@ -33,7 +33,7 @@ def main_app(user):
         
         if user["role"] == "admin":
             st.markdown("<span class='ws-tag-admin'>Admin</span>", unsafe_allow_html=True)
-            pages = ["Liste des jeux","Recherche jeu", "Demandes d'ajout / remarques","Liste suggestions", "Jeux sortis depuis dernier festival", "Jeux sortis avant dernier festival" , "Creation mot de passe"]
+            pages = ["Liste des jeux","Recherche jeu", "Demandes d'ajout / remarques","Liste suggestions", "Jeux sortis depuis dernier festival", "Jeux sortis avant dernier festival" ]
         else : 
             pages = ["Liste des jeux","Recherche jeu"]
         page = st.radio("Navigation", pages, label_visibility="collapsed")
