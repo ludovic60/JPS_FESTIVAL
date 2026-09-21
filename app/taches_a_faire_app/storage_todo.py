@@ -36,7 +36,7 @@ def get_todo():
         db = cs.get_db()
         todo_tb = db.todo
         filtre_tb = {}
-        selc_tb = {"todo": 1, "_id": 1, "statut":1, "affecte":1, "pourcentage avancement":1}
+        selc_tb = {"todo": 1, "_id": 1, "statut":1, "affecte":1, "pourcentage avancement":1, "commentaire":1}
         resultats = list(todo_tb.find(filtre_tb, selc_tb))
        
     else :
@@ -58,7 +58,7 @@ def add_todo(label):
 
 
 
-def update_todo(todo_id, affectation, newstatut):
+def update_todo(todo_id, affectation, newstatut,newcomment):
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
@@ -66,7 +66,7 @@ def update_todo(todo_id, affectation, newstatut):
     
         upd_todo_id = ObjectId(todo_id)
     
-        resultats =  todo_tb.update_one({"_id": upd_todo_id}, {"$set": {"affecte": affectation, "statut": newstatut} })
+        resultats =  todo_tb.update_one({"_id": upd_todo_id}, {"$set": {"affecte": affectation, "statut": newstatut,"commentaire":newcomment} })
  
 
 
