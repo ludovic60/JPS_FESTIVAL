@@ -1,135 +1,148 @@
 """Logique d'authentification basée sur st.session_state."""
-import json
-import streamlit as st
-from email_validator import validate_email, EmailNotValidError
-from streamlit_cookies_controller import CookieController
 
+import streamlit as st
+from supabase import create_client, Client
 import os
 import sys
 # Ajoute le dossier parent à sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from commun.security import hash_password, verify_password
 import commun.config
 
 import commun.common_store as cs
 from commun.config import get_secret
-from commun.security import generate_token
 
 
-controller = CookieController()
 
+import tomllib
+#####------------------------------------------------------------------------------------------------------------
+####force le mode d'affichage definie dans tomlib  dans les differents navigateur (opera et chrome par exemple)
+# Charger le fichier de configuration Streamlit
+try:
+  with open(".streamlit/config.toml", "rb") as f:
+    config = tomllib.load(f)
+  bg_color = config.get("theme", {}).get("backgroundColor", "#FFFFFF")
+  text_color = config.get("theme", {}).get("textColor", "#262730")
+except Exception:
+  # Valeurs par défaut de secours en cas d'erreur
+  bg_color = "#FFFFFF"
+  text_color = "#262730"
+
+st.markdown(
+    f"""
+    <style>
+    .stApp {{
+        background-color: {bg_color};
+        color: {text_color};
+    }}
+    </style>
+""",
+    unsafe_allow_html=True,
+)
+
+
+#####------------------------------------------------------------------------------------------------------------
+
+
+# Initialisation du client Supabase (mis en cache pour optimiser les performances)
+@st.cache_resource
+def init_supabase() -> Client:
+    return create_client(st.secrets["SUPABASE_URL"], st.secrets["SUPABASE_KEY"])
+
+supabase = init_supabase()
 
 def current_user():
     return st.session_state.get("user")
 
+def login(email, password):
+    try:
+        # Appel officiel de Supabase Auth
+        response = supabase.auth.sign_in_with_password({
+            "email": email.strip(),
+            "password": password
+        })
+        
+        # Stockage des données publiques de l'utilisateur en session Streamlit
+        user_data = response.user
+        st.session_state["user"] = {
+            "id": user_data.id,
+            "email": user_data.email,
+            "role": user_data.user_metadata.get("role", "user"),
+            "pseudo": user_data.user_metadata.get("pseudo", "")
+        }
+        st.session_state["authenticated"] = True
+        st.session_state["access_token"] = response.session.access_token
+        return None
+        
+    except Exception as e:
+        # Retourne un message d'erreur générique pour la sécurité
+        return "Email ou mot de passe incorrect."
 
-def login(pseudo, email, password):
-    user = None  # évite le UnboundLocalError si aucun champ n'est rempli
-
-    if not email == " ":
-        try:
-            validate_email(email)
-        except EmailNotValidError:
-            return "Adresse email invalide"
-        user = check_credentials("email", email.strip(), password)
-        if not user:
-            return "Email ou mot de passe incorrect"
-    elif not pseudo == " ":
-        user = check_credentials("pseudo", pseudo.strip().lower(), password)
-        if not user:
-            return "pseudo ou mot de passe incorrect"
-    else:
-        return "💡 Merci de renseigner soit votre pseudo, soit votre email"
-
-    # Clés cohérentes avec require_auth() / logout()
-    st.session_state["user"] = _public(user)
-    st.session_state["authenticated"] = True
-    return None
+def login_with_pseudo(pseudo, password):
+    try:
+        # Nettoyage du pseudo et création du faux email associé
+        clean_pseudo = pseudo.strip().lower()
+        dummy_email = f"{clean_pseudo}@festivaljeuxcrepy.local"
+        
+        # Appel à Supabase avec l'email reconstitué
+        response = supabase.auth.sign_in_with_password({
+            "email": dummy_email,
+            "password": password
+        })
+        
+        # Stockage de la session
+        user_data = response.user
+        st.session_state["user"] = {
+            "id": user_data.id,
+            "email": user_data.email,
+            "role": user_data.user_metadata.get("role", "user"),
+            "pseudo": user_data.user_metadata.get("pseudo", pseudo.strip())
+        }
+        st.session_state["authenticated"] = True
+        return None
+        
+    except Exception as e:
+        return "Pseudo ou mot de passe incorrect."
 
 
 def logout():
+    try:
+        supabase.auth.signOut()
+    except Exception:
+        pass
+    
+    # Nettoyage de la session
     st.session_state.pop("user", None)
     st.session_state.pop("authenticated", None)
-    controller.remove("user_session")
+    st.session_state.pop("access_token", None)
     st.rerun()
 
-
-def _public(user: dict) -> dict:
-    return {
-        "id": str(user["_id"]),  # ObjectId n'est pas JSON-sérialisable -> on caste en str
-        "email": user["email"],
-        "pseudo": user["pseudo"],
-        "role": user["role"],
-    }
-
-
-def check_credentials(mode, login, password):
-    if mode == "email":
-        u = cs.get_user_by_email(login)
-    elif mode == "pseudo":
-        u = cs.get_user_by_pseudo(login)
-    else:
-        u = None
-    return u if u and verify_password(password, u["password_hash"]) else None
-
-
 def require_auth():
-    """
-    Gère l'authentification automatique par cookie.
-    Si non connecté, affiche le formulaire et stoppe l'exécution de l'application.
-    """
-    # 1. Vérification de la session en mémoire
+    """Bloque l'accès à l'application si l'utilisateur n'est pas connecté."""
     if st.session_state.get("authenticated", False):
         return True
 
-    # 2. Vérification de l'existence du cookie (peut renvoyer None au tout
-    #    premier chargement le temps que le composant JS se synchronise)
-    user_from_cookie = controller.get("user_session")
-    if user_from_cookie:
-        try:
-            user_dict = json.loads(user_from_cookie)
-        except (TypeError, json.JSONDecodeError):
-            user_dict = None
-        if user_dict:
-            st.session_state["authenticated"] = True
-            st.session_state["user"] = user_dict
-            return True
-
-    # 3. Pas authentifié -> afficher le formulaire et ARRÊTER proprement
-    #    (surtout pas de st.rerun() inconditionnel ici : ça boucle à l'infini
-    #    et empêche toute interaction avec le bouton "Se connecter")
+    # Affichage du formulaire de connexion si non authentifié
     st.subheader("Connexion requise")
     login_view()
     st.stop()
 
-
-# ==========================================================================
-# AUTHENTIFICATION
-# ==========================================================================
 def login_view():
     st.title("FESTIVAL JEUX DE CREPY")
-    st.caption("Connectez-vous pour acceder aux applications du festival de jeux.")
+    st.caption("Connectez-vous pour accéder aux applications du festival.")
 
-    with st.form("j_login"):
-        ps = st.text_input("pseudo")
-        if not ps:
-            ps = " "
-        e = st.text_input("Email")
-        if not e:
-            e = " "
-        p = st.text_input("Mot de passe", type="password")
+    with st.form("supabase_login_form"):
+        # email = st.text_input("Email")
+        texte_saisi = st.text_input("Pseudo ou Email")
+        password = st.text_input("Mot de passe", type="password")
 
         if st.form_submit_button("Se connecter", type="primary"):
-            err = login(ps, e, p)
+           # err = login(email, password)
+            if "@" in texte_saisi :
+                err = login(texte_saisi, password)
+            else : 
+                err = login_with_pseudo(texte_saisi, password)
             if err:
                 st.error(err)
             else:
-                # On stocke l'utilisateur complet (JSON) dans le cookie,
-                # pas juste le pseudo/email, pour restaurer une vraie session
-                controller.set(
-                    "user_session",
-                    json.dumps(st.session_state["user"]),
-                    max_age=86400 * 7,
-                )
                 st.rerun()
