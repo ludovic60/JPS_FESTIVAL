@@ -259,8 +259,8 @@ def _requests_page(user):
 def _final_page(user):
 
     st.title("Liste des jeux")
-    st.markdown("##### Vous allez pouvoir remplir le tableau pour indiquer ce que vous pouvez emmener.")
-    st.markdown("##### Les administrateurs valideront les différents choix.")
+    st.write("Vous allez pouvoir remplir le tableau pour indiquer vos propositions de pret.")
+    st.write("Les administrateurs valideront les différentes propositions pour définir votre liste de prêt définitive.")
     
     # --- 1. CHARGEMENT GLOBAL DES DONNÉES EN AMONT (O(1) requêtes) ---
     finals = storage_jeux.final_games()
@@ -293,7 +293,7 @@ def _final_page(user):
     liste_jeu_plusieurs = storage_jeux.final_games_statut_plusieurs_exemplaire()
     plusieurs_set = {x["id_jeux"] for x in liste_jeu_plusieurs}
     
-    st.caption("Tableau croisé : jeux retenus par l'admin × personnes.")
+
     
     # --- 2. CONSTRUCTION ULTRA-RAPIDE DU DATAFRAME ---
     row_jeux = []
