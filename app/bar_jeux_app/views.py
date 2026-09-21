@@ -257,10 +257,9 @@ def _requests_page(user):
 ############################################################################################################
 
 def _final_page(user):
-
     st.title("Liste des jeux")
-    st.write("Vous allez pouvoir remplir le tableau pour indiquer vos propositions de pret.")
-    st.write("Les administrateurs valideront les différentes propositions pour définir votre liste de prêt définitive.")
+    st.write("Vous allez pouvoir remplir le tableau pour indiquer vos propositions de pret.   Les administrateurs valideront les différentes propositions pour définir votre liste de prêt définitive. ")
+
     
     # --- 1. CHARGEMENT GLOBAL DES DONNÉES EN AMONT (O(1) requêtes) ---
     finals = storage_jeux.final_games()
