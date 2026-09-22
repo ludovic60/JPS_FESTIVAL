@@ -433,13 +433,13 @@ def _final_page(user):
            submit_button = st.form_submit_button(
                   label="Enregistrer toutes les modifications"
             )      
-       with col_btn2 : 
+      with col_btn2 : 
           export_list_perso_button = st.form_submit_button(
                 label="export de votre liste")
-       with col_btn3 :  
+      with col_btn3 :  
           export_list_valide_button = st.form_submit_button(
                 label="Export de la liste validée")
-       with col_btn4 :  
+      with col_btn4 :  
           export_list_initiale_button = st.form_submit_button(
                 label="export de la liste initial")
           
