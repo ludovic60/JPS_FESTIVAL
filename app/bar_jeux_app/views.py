@@ -422,7 +422,7 @@ def _final_page(user):
           grid_options["columnDefs"].append(group_col)
       
       # Hauteur dynamique
-      dynamic_height = min(max(40 + (9 * 70) + 20, 200), 800)
+      dynamic_height = 650 ##min(max(40 + (len(df_jeux) * 70) + 20, 200), 800)
       if "grid_version" not in st.session_state:
          st.session_state.grid_version = 0
       gb.configure_grid_options(alwaysShowHorizontalScroll=True)
