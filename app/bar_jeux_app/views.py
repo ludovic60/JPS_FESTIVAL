@@ -558,7 +558,7 @@ def _final_page(user):
     liste_jeu_selec = storage_jeux.final_games()
 
 
-    liste_game_select = [game["id_jeux""] for game in liste_jeu_selec ]
+    liste_game_select = [game["id_jeux"] for game in liste_jeu_selec ]
     liste__info_select = load_games(liste_game_select, None)
 
 
