@@ -36,7 +36,7 @@ def main_app(user: dict):
     with st.sidebar:
         st.markdown("### 📅 Week-end")
         st.write(f"**{user['pseudo']}**")
-        st.caption(user["email"])
+       
         if user["role"] == "admin":
             st.markdown("<span class='ws-tag-admin'>Admin</span>", unsafe_allow_html=True)
 
