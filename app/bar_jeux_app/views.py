@@ -523,22 +523,29 @@ def _final_page(user):
     ###---------------------------------------------------- 
     liste_info = []
     liste_pret_user = storage_jeux.get_all_loans()
-       
-    for game_pret in liste_pret_user:
+    liste_game = [game["id_jeux""] for game in liste_pret_user ]
+    liste__info_pret_user = load_games(liste_game, None)
+
+
+    liste_pret_user_detail = pd.merge(
+           liste__info_pret_user,
+           liste_pret_user,
+           on=["id_jeux"],
+           how="inter",  
+       )
+
+    
+    for game_pret in liste_pret_user_detail:
    
         # Récupération des infos du jeu
         id_jeu = game_pret["id_jeux"]
-        info_games_pret = storage_jeux.get_info_games(id_jeu)
-  
-        # Récupération sécurisée du pseudo (converti en str pour être sûr que les ID matchent)
-        user_id_str = str(game_pret["user_id"])
-        pseudo = users_dict.get(user_id_str, "Utilisateur inconnu")
-    
+         
+   
         # Ajout à la liste
         liste_info.append({
-            "classement": info_games_pret[0]["classement_jps_final"],
+            "classement": game_pret[0]["classement_jps_final"],
             "Nouveauté": nouveaute_def(game_pret),
-            "pseudo": pseudo,
+            "pseudo": game_pret["pseudo"],
             "nom": info_games_pret[0]["nom_jeu_complet"],
             "Nb_jeux_propose": 1,
         })
