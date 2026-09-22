@@ -309,7 +309,7 @@ def _final_page(user):
             continue
     
         # Calculs directes en mémoire
-        new_statut = nouveaute_def(game_id)
+        new_statut = nouveaute_def(game)
         is_several = game_id in plusieurs_set
     
         # Comptages rapides
@@ -531,7 +531,7 @@ def _final_page(user):
         pseudo = users_dict.get(user_id_str, "Utilisateur inconnu")
        
           
-        liste_info_valide.append ({"classement":  info_games_valide[0]["classement_jps_final"] ,  "Nouveauté": nouveaute_def(id_jeu), "pseudo":pseudo , "nom": info_games_valide[0]["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide":True})
+        liste_info_valide.append ({"classement":  info_games_valide[0]["classement_jps_final"] ,  "Nouveauté": nouveaute_def(game), "pseudo":pseudo , "nom": info_games_valide[0]["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide":True})
      
     df_jeux_valide_graphique  = pd.DataFrame(liste_info_valide)
 
@@ -554,7 +554,7 @@ def _final_page(user):
         # Ajout à la liste
         liste_info.append({
             "classement": info_games_pret[0]["classement_jps_final"],
-            "Nouveauté": nouveaute_def(id_jeu),
+            "Nouveauté": nouveaute_def(game_pret),
             "pseudo": pseudo,
             "nom": info_games_pret[0]["nom_jeu_complet"],
             "Nb_jeux_propose": 1,
@@ -579,7 +579,7 @@ def _final_page(user):
         # Ajout à la liste
         liste_jeu_selectionne.append({
             "classement": info_games_selec[0]["classement_jps_final"],
-            "Nouveauté": nouveaute_def(id_jeu),
+            "Nouveauté": nouveaute_def(game_selec),
             "nom": info_games_selec[0]["nom_jeu_complet"],
             "Nb_jeux_selec": 1,
         })
