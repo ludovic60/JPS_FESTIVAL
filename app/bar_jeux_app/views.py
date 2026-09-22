@@ -53,44 +53,10 @@ def main_app(user):
         _requests_page(user)
     elif page == "Liste suggestions":
         _requests_suggestion_page(user)    
-    elif page == "Creation mot de passe":
-        _password_page(user)
     elif page == "Recherche jeu":
          _list_page(f"Recherche jeu", "all", user)
     else:
         _final_page(user)
-
-############################################################################################################
-###-------------- page pour generer les mots de passe des user
-############################################################################################################
-
-
-def _password_page(user):
-     st.set_page_config(page_title="Générateur de Hash Bcrypt", page_icon="🔑")
-    
-     st.title("🔑 Générateur de Hash Bcrypt")
-     st.write("Saisissez un mot de passe ci-dessous pour obtenir sa version hachée.")
-    
-     ## # Champ de saisie sécurisé
-     password_input = st.text_input("Mot de passe à hacher", type="password")
-    
-     if st.button("Générer le hash"):
-        if password_input:
-             # Convertit le texte en octets
-             password_bytes = password_input.encode('utf-8')
-             # Génère un sel et hache le mot de passe
-             salt = bcrypt.gensalt()
-             hashed = bcrypt.hashpw(password_bytes, salt)
-             # Retourne la chaîne encodée à stocker en base                 
-             hashed_result = hashed.decode('utf-8') 
-             st.success("Mot de passe haché avec succès !")
-            
-             # Affichage du résultat dans un bloc de code pour faciliter le copie-coller
-             st.code(hashed_result, language="text")
-              
-             st.info("💡 **Remarque :** En raison du salage aléatoire de Bcrypt, chaque clic générera une empreinte différente, même pour un mot de passe identique.")
-     else:
-         st.warning("Veuillez saisir un mot de passe avant de cliquer.")
 
 
 
@@ -213,9 +179,11 @@ def _requests_page(user):
                   if user["role"] == "admin": 
                         if c6.button("traiter", key=f"modif_traiter_{r["_id"]}"):
                             storage_jeux.update_statut_request("ajout jeux", r["_id"],"traiter")
+                            st.write("update ajoux jeu faite")
                             st.rerun()
                         if c7.button("supprimer", key=f"modif_supp_{r["_id"]}"):
                             storage_jeux.remove_request("ajout jeux", r["_id"])
+                            st.write("update supprimer ajout jeu faite")
                             st.rerun()
 
 
@@ -252,6 +220,7 @@ def _requests_page(user):
                   if user["role"] == "admin": 
                       if c62.button("traiter", key=f"modif_traiter_{t["_id"]}"):
                           storage_jeux.update_statut_request("remarque fiche jeux", t["_id"],"traiter")
+                          st.write("update remarque faite")
                           st.rerun()
                       if c72.button("supprimer", key=f"modif_suppr_{t["_id"]}"):
                           storage_jeux.remove_request("remarque fiche jeux", t["_id"])
