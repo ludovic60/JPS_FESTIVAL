@@ -527,7 +527,7 @@ def _final_page(user):
         pseudo = users_dict.get(user_id_str, "Utilisateur inconnu")
        
           
-        liste_info_valide.append ({"classement":  info_games_valide[0]["classement_jps_final"] ,  "Nouveauté": nouveaute_def(game), "pseudo":pseudo , "nom": info_games_valide[0]["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide":True})
+        liste_info_valide.append ({"classement":  info_games_valide[0]["classement_jps_final"] ,  "Nouveauté": nouveaute_def(id_jeu), "pseudo":pseudo , "nom": info_games_valide[0]["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide":True})
      
     df_jeux_valide_graphique  = pd.DataFrame(liste_info_valide)
 
@@ -550,7 +550,7 @@ def _final_page(user):
         # Ajout à la liste
         liste_info.append({
             "classement": info_games_pret[0]["classement_jps_final"],
-            "Nouveauté": nouveaute_def(game_pret),
+            "Nouveauté": nouveaute_def(id_jeu),
             "pseudo": pseudo,
             "nom": info_games_pret[0]["nom_jeu_complet"],
             "Nb_jeux_propose": 1,
@@ -575,7 +575,7 @@ def _final_page(user):
         # Ajout à la liste
         liste_jeu_selectionne.append({
             "classement": info_games_selec[0]["classement_jps_final"],
-            "Nouveauté": nouveaute_def(game_selec),
+            "Nouveauté": nouveaute_def(id_jeu),
             "nom": info_games_selec[0]["nom_jeu_complet"],
             "Nb_jeux_selec": 1,
         })
