@@ -506,6 +506,8 @@ def _final_page(user):
      ###---------------------------------------------------- 
     liste_pret_validé = storage_jeux.get_validated_loans()
     liste_info_valide = []
+
+ 
     for game in  liste_pret_validé :
         id_jeu = game["id_jeux"]
         info_games_valide = storage_jeux.get_info_games(id_jeu)
@@ -556,21 +558,22 @@ def _final_page(user):
     liste_jeu_selec = storage_jeux.final_games()
 
 
+    liste_game_select = [game["id_jeux""] for game in liste_jeu_selec ]
+    liste__info_select = load_games(liste_game_select, None)
 
-    for game_selec in liste_jeu_selec:
+
+    for game_selec in liste__info_select:
 
    
         # Récupération des infos du jeu
         id_jeu = game_selec.get("id_jeux")
-        info_games_selec = storage_jeux.get_info_games(id_jeu)
-  
-    
+        
     
         # Ajout à la liste
         liste_jeu_selectionne.append({
-            "classement": info_games_selec[0]["classement_jps_final"],
+            "classement": game_selec.get("classement_jps_final"),
             "Nouveauté": nouveaute_def(game_selec),
-            "nom": info_games_selec[0]["nom_jeu_complet"],
+            "nom": game_selec.get("nom_jeu_complet"),
             "Nb_jeux_selec": 1,
         })
     df_jeux_select_graphique  = pd.DataFrame(liste_jeu_selectionne)
