@@ -179,7 +179,8 @@ def _requests_page(user):
                   if user["role"] == "admin": 
                         if c6.button("traiter", key=f"modif_traiter_{r["_id"]}"):
                             storage_jeux.update_statut_request("ajout jeux", r["_id"],"traiter")
-                            st.write("update ajoux jeu faite")
+                            print(r["_id"])
+                            print("traiter demande ajout")
                             st.rerun()
                         if c7.button("supprimer", key=f"modif_supp_{r["_id"]}"):
                             storage_jeux.remove_request("ajout jeux", r["_id"])
