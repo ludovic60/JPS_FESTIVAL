@@ -422,15 +422,28 @@ def _final_page(user):
           grid_options["columnDefs"].append(group_col)
       
       # Hauteur dynamique
-      dynamic_height = min(max(40 + (len(df_jeux) * 70) + 20, 200), 800)
+      dynamic_height = min(max(40 + (9 * 70) + 20, 200), 800)
       if "grid_version" not in st.session_state:
          st.session_state.grid_version = 0
       gb.configure_grid_options(alwaysShowHorizontalScroll=True)
 
       # Bouton de soumission unique en haut du tableau
-      submit_button = st.form_submit_button(
-            label="Enregistrer toutes les modifications"
-      )
+     col_btn1, col_btn2, col_btn3 , col_btn4  = st.columns(4)
+     with col_btn1 : 
+           submit_button = st.form_submit_button(
+                  label="Enregistrer toutes les modifications"
+            )
+      with col_btn2 : 
+          export_list_perso_button = st.form_submit_button(
+                label="export de votre liste")
+      with col_btn3 :  
+          export_list_valide_button = st.form_submit_button(
+                label="Export de la liste validée")
+      with col_btn4 :  
+          export_list_initiale_button = st.form_submit_button(
+                label="export de la liste initial")
+          
+     
       # le tableau
       grid_response = AgGrid(
           df_jeux,
