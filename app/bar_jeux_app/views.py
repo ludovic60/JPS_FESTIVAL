@@ -33,7 +33,7 @@ def main_app(user):
         
         if user["role"] == "admin":
             st.markdown("<span class='ws-tag-admin'>Admin</span>", unsafe_allow_html=True)
-            pages = ["Liste des jeux","Recherche jeu", "Demandes d'ajout / remarques","Liste suggestions", "Jeux sortis depuis dernier festival", "Jeux sortis avant dernier festival" , "Creation mot de passe"]
+            pages = ["Liste des jeux","Recherche jeu", "Demandes d'ajout / remarques","Liste suggestions", "Jeux sortis depuis dernier festival", "Jeux sortis avant dernier festival" ]
         else : 
             pages = ["Liste des jeux","Recherche jeu"]
         page = st.radio("Navigation", pages, label_visibility="collapsed")
@@ -212,8 +212,10 @@ def _requests_page(user):
                                          label_visibility="collapsed")
                   if user["role"] == "admin": 
                         if c6.button("traiter", key=f"modif_traiter_{r["_id"]}"):
+                            update_statut_request("ajout jeux", t["_id"],"traiter")
                             st.rerun()
                         if c7.button("supprimer", key=f"modif_supp_{r["_id"]}"):
+                            remove_request("ajout jeux", t["_id"])
                             st.rerun()
 
 
@@ -249,18 +251,19 @@ def _requests_page(user):
 
                   if user["role"] == "admin": 
                       if c62.button("traiter", key=f"modif_traiter_{t["_id"]}"):
+                          update_statut_request("remarque fiche jeux", t["_id"],"traiter")
                           st.rerun()
                       if c72.button("supprimer", key=f"modif_suppr_{t["_id"]}"):
+                          remove_request("remarque fiche jeux", t["_id"])
                           st.rerun()
 ############################################################################################################
 ###-------------- page où est affiché les jeux selectionné
 ############################################################################################################
 
 def _final_page(user):
-
     st.title("Liste des jeux")
-    st.markdown("##### Vous allez pouvoir remplir le tableau pour indiquer ce que vous pouvez emmener.")
-    st.markdown("##### Les administrateurs valideront les différents choix.")
+    st.write("Vous allez pouvoir remplir le tableau pour indiquer vos propositions de pret.   Les administrateurs valideront les différentes propositions pour définir votre liste de prêt définitive. ")
+
     
     # --- 1. CHARGEMENT GLOBAL DES DONNÉES EN AMONT (O(1) requêtes) ---
     finals = storage_jeux.final_games()
@@ -293,7 +296,7 @@ def _final_page(user):
     liste_jeu_plusieurs = storage_jeux.final_games_statut_plusieurs_exemplaire()
     plusieurs_set = {x["id_jeux"] for x in liste_jeu_plusieurs}
     
-    st.caption("Tableau croisé : jeux retenus par l'admin × personnes.")
+
     
     # --- 2. CONSTRUCTION ULTRA-RAPIDE DU DATAFRAME ---
     row_jeux = []
@@ -306,7 +309,7 @@ def _final_page(user):
             continue
     
         # Calculs directes en mémoire
-        new_statut = nouveaute_def(game)
+        new_statut = nouveaute_def(game_id)
         is_several = game_id in plusieurs_set
     
         # Comptages rapides
@@ -423,6 +426,12 @@ def _final_page(user):
       if "grid_version" not in st.session_state:
          st.session_state.grid_version = 0
       gb.configure_grid_options(alwaysShowHorizontalScroll=True)
+
+      # Bouton de soumission unique en haut du tableau
+      submit_button = st.form_submit_button(
+            label="Enregistrer toutes les modifications"
+      )
+      # le tableau
       grid_response = AgGrid(
           df_jeux,
           gridOptions=grid_options,
@@ -435,10 +444,7 @@ def _final_page(user):
       ) 
    
  
-      # Bouton de soumission unique en bas du tableau
-      submit_button = st.form_submit_button(
-            label="Enregistrer toutes les modifications"
-      )
+
 
      # --- Détection des changements ---
   
@@ -525,7 +531,7 @@ def _final_page(user):
         pseudo = users_dict.get(user_id_str, "Utilisateur inconnu")
        
           
-        liste_info_valide.append ({"classement":  info_games_valide[0]["classement_jps_final"] ,  "Nouveauté": nouveaute_def(game), "pseudo":pseudo , "nom": info_games_valide[0]["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide":True})
+        liste_info_valide.append ({"classement":  info_games_valide[0]["classement_jps_final"] ,  "Nouveauté": nouveaute_def(id_jeu), "pseudo":pseudo , "nom": info_games_valide[0]["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide":True})
      
     df_jeux_valide_graphique  = pd.DataFrame(liste_info_valide)
 
@@ -548,7 +554,7 @@ def _final_page(user):
         # Ajout à la liste
         liste_info.append({
             "classement": info_games_pret[0]["classement_jps_final"],
-            "Nouveauté": nouveaute_def(game_pret),
+            "Nouveauté": nouveaute_def(id_jeu),
             "pseudo": pseudo,
             "nom": info_games_pret[0]["nom_jeu_complet"],
             "Nb_jeux_propose": 1,
@@ -573,7 +579,7 @@ def _final_page(user):
         # Ajout à la liste
         liste_jeu_selectionne.append({
             "classement": info_games_selec[0]["classement_jps_final"],
-            "Nouveauté": nouveaute_def(game_selec),
+            "Nouveauté": nouveaute_def(id_jeu),
             "nom": info_games_selec[0]["nom_jeu_complet"],
             "Nb_jeux_selec": 1,
         })
@@ -800,9 +806,3 @@ def _final_page(user):
        st.plotly_chart(fig_hist, use_container_width=True)
     else:
         st.info("Aucun jeu prété / validé pour le moment.")
-
-
-
-
-
-
