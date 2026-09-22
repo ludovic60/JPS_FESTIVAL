@@ -428,18 +428,18 @@ def _final_page(user):
       gb.configure_grid_options(alwaysShowHorizontalScroll=True)
 
       # Bouton de soumission unique en haut du tableau
-     col_btn1, col_btn2, col_btn3 , col_btn4  = st.columns(4)
-     with col_btn1 : 
+      col_btn1, col_btn2, col_btn3 , col_btn4  = st.columns(4)
+      with col_btn1 : 
            submit_button = st.form_submit_button(
                   label="Enregistrer toutes les modifications"
-            )
-      with col_btn2 : 
+            )      
+       with col_btn2 : 
           export_list_perso_button = st.form_submit_button(
                 label="export de votre liste")
-      with col_btn3 :  
+       with col_btn3 :  
           export_list_valide_button = st.form_submit_button(
                 label="Export de la liste validée")
-      with col_btn4 :  
+       with col_btn4 :  
           export_list_initiale_button = st.form_submit_button(
                 label="export de la liste initial")
           
