@@ -629,14 +629,14 @@ def _final_page(user):
 
 
           st.subheader("Jeux selectionnés  par nouveauté")
-          if not df_jeux_select_graphique.empty:
-              df_nov = df_jeux_select_graphique["Nouveauté"].value_counts().reset_index()
-              df_nov.columns = ["Nouveauté", "Nombre"]
-              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 , color="Nouveauté", color_discrete_map=couleurs_nouveaute  )
-              fig_pie_nov.update_layout(height=250 , width=1000)
-              st.plotly_chart(fig_pie_nov, use_container_width=True)
-          else:
-              st.info("Aucun jeu coché pour le moment.")
+#          if not df_jeux_select_graphique.empty:
+#              df_nov = df_jeux_select_graphique["Nouveauté"].value_counts().reset_index()
+#              df_nov.columns = ["Nouveauté", "Nombre"]
+#              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 , color="Nouveauté", color_discrete_map=couleurs_nouveaute  )
+#              fig_pie_nov.update_layout(height=250 , width=1000)
+#              st.plotly_chart(fig_pie_nov, use_container_width=True)
+#          else:
+#              st.info("Aucun jeu coché pour le moment.")
 
 
  
@@ -651,38 +651,38 @@ def _final_page(user):
          
      
           st.subheader("Jeux proposés par Classement")
-          if not df_jeux_pret_graphique.empty:
-              df_cat = df_jeux_pret_graphique["classement"].value_counts().reset_index()
-              df_cat.columns = ["classement", "Nombre"]
-              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, color="classement", color_discrete_map=couleurs_classement )
-              fig_pie_cat.update_layout(height=250 , width=1000) 
-              fig_pie_cat.update_layout(
-                  legend=dict(
-                      orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
-                      yanchor="top",
-                      y=-0.2,  # Positionne la légende en dessous du graphique
-                      xanchor="center",
-                      x=0.5,
-                      font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
-                  ),
-                  margin=dict(
-                      t=30, b=100, l=20, r=20
-                  ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
-              )
-              st.plotly_chart(fig_pie_cat, use_container_width=True)
-
-          else:
-              st.info("Aucun jeu proposé pour le moment.")
+ #         if not df_jeux_pret_graphique.empty:
+ #             df_cat = df_jeux_pret_graphique["classement"].value_counts().reset_index()
+ #             df_cat.columns = ["classement", "Nombre"]
+ #             fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, color="classement", color_discrete_map=couleurs_classement )
+ #             fig_pie_cat.update_layout(height=250 , width=1000) 
+ #             fig_pie_cat.update_layout(
+ #                 legend=dict(
+ #                     orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
+ #                     yanchor="top",
+ #                     y=-0.2,  # Positionne la légende en dessous du graphique
+ #                     xanchor="center",
+ #                     x=0.5,
+ #                     font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
+ #                 ),
+ #                 margin=dict(
+ #                      t=30, b=100, l=20, r=20
+ #                 ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
+ #             )
+ #             st.plotly_chart(fig_pie_cat, use_container_width=True)
+ #
+ #          else:
+ #             st.info("Aucun jeu proposé pour le moment.")
 
           st.subheader("Jeux proposés par Nouveauté")
-          if not df_jeux_pret_graphique.empty:
-              df_nov = df_jeux_pret_graphique["Nouveauté"].value_counts().reset_index()
-              df_nov.columns = ["Nouveauté", "Nombre"]
-              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 , color="Nouveauté", color_discrete_map=couleurs_nouveaute )
-              fig_pie_nov.update_layout(height=250 , width=1000)
-              st.plotly_chart(fig_pie_nov, use_container_width=True)
-          else:
-              st.info("Aucun jeu proposé pour le moment.")
+ #         if not df_jeux_pret_graphique.empty:
+ #             df_nov = df_jeux_pret_graphique["Nouveauté"].value_counts().reset_index()
+ #             df_nov.columns = ["Nouveauté", "Nombre"]
+ #v             fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 , color="Nouveauté", color_discrete_map=couleurs_nouveaute )
+ #             fig_pie_nov.update_layout(height=250 , width=1000)
+ #             st.plotly_chart(fig_pie_nov, use_container_width=True)
+ #         else:
+ #             st.info("Aucun jeu proposé pour le moment.")
 
      
 
