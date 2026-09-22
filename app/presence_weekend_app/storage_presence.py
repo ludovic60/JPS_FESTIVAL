@@ -18,7 +18,7 @@ import commun.common_store as cs
 from commun.design_system import inject
 from commun.auth import require_auth, logout
 import commun.config as cfg
-from commun.security import hash_password, verify_password, token_hash
+
 
 
 
@@ -166,25 +166,3 @@ def clear_user_presence(user_id):
 
     
 
-
-# ---- Jetons de réinitialisation (partagés) ----
-def create_reset_token(user_id, token, hours=1):
-    tokens = cs.get_doc("weekend_reset_tokens", {})
-    tokens[token_hash(token)] = {
-        "user_id": user_id,
-        "expires_at": (datetime.now(timezone.utc) + timedelta(hours=hours)).isoformat(),
-        "used": False,
-    }
-    cs.put_doc("weekend_reset_tokens", tokens)
-
-
-def consume_reset_token(token):
-    tokens = cs.get_doc("weekend_reset_tokens", {})
-    rec = tokens.get(token_hash(token))
-    if not rec or rec.get("used"):
-        return None, "Jeton invalide ou déjà utilisé"
-    if datetime.now(timezone.utc) > datetime.fromisoformat(rec["expires_at"]):
-        return None, "Jeton expiré"
-    rec["used"] = True
-    cs.put_doc("weekend_reset_tokens", tokens)
-    return rec["user_id"], None
