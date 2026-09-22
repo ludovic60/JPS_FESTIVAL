@@ -212,10 +212,10 @@ def _requests_page(user):
                                          label_visibility="collapsed")
                   if user["role"] == "admin": 
                         if c6.button("traiter", key=f"modif_traiter_{r["_id"]}"):
-                            storage_jeux.update_statut_request("ajout jeux", t["_id"],"traiter")
+                            storage_jeux.update_statut_request("ajout jeux", r["_id"],"traiter")
                             st.rerun()
                         if c7.button("supprimer", key=f"modif_supp_{r["_id"]}"):
-                            storage_jeux.remove_request("ajout jeux", t["_id"])
+                            storage_jeux.remove_request("ajout jeux", r["_id"])
                             st.rerun()
 
 
