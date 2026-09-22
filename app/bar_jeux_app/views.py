@@ -212,8 +212,10 @@ def _requests_page(user):
                                          label_visibility="collapsed")
                   if user["role"] == "admin": 
                         if c6.button("traiter", key=f"modif_traiter_{r["_id"]}"):
+                            update_statut_request("ajout jeux", t["_id"],"traiter")
                             st.rerun()
                         if c7.button("supprimer", key=f"modif_supp_{r["_id"]}"):
+                            remove_request("ajout jeux", t["_id"])
                             st.rerun()
 
 
@@ -249,8 +251,10 @@ def _requests_page(user):
 
                   if user["role"] == "admin": 
                       if c62.button("traiter", key=f"modif_traiter_{t["_id"]}"):
+                          update_statut_request("remarque fiche jeux", t["_id"],"traiter")
                           st.rerun()
                       if c72.button("supprimer", key=f"modif_suppr_{t["_id"]}"):
+                          remove_request("remarque fiche jeux", t["_id"])
                           st.rerun()
 ############################################################################################################
 ###-------------- page où est affiché les jeux selectionné
