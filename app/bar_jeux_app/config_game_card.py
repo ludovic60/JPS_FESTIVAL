@@ -11,26 +11,15 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import commun.auth,  commun.config 
 import commun.common_store as cs
 
-def nouveaute_def( id_game) :
+
+def nouveaute_def(game_info):
+
+    periode_dernier_festival = (int( cs._secret("ANNEE_FESTIVAL"))-1) *100 + int(cs._secret("MOIS_FESTIVAL") )
         
-        VERT = "\033[32m"
-        BLEU = "\033[34m"
-        RESET = "\033[0m"
-        info_jeu= storage_jeux.get_info_games(id_game)       
-        New = ""
-        if ( info_jeu[0].get("mois_sortie")  and  info_jeu[0].get("annee_parution") ) :      
-       
-                periode_parution = int(str(info_jeu[0].get("annee_parution"))) *100 +  int(str(info_jeu[0].get("mois_sortie")) )
-                periode_dernier_festival = (int( cs._secret("ANNEE_FESTIVAL"))-1) *100 + int(cs._secret("MOIS_FESTIVAL") )
-                      
-                if periode_parution  >=  periode_dernier_festival :
-                               New = f"✨NOUVEAUTE"
-                else :   
-                               New = f"🏺ANCIEN"
-        else :
-                   New = f"🧐 INCONNU"
-           
-        return New            
+    if game_info.get("mois_sortie") and game_info.get("annee_parution"):
+        periode_parution = int(str(game_info["annee_parution"])) * 100 + int(str(game_info["mois_sortie"]))
+        return "✨NOUVEAUTE" if periode_parution >= periode_dernier_festival else "🏺ANCIEN"
+    return "🧐 INCONNU"
 
 def mise_forme_classement(classement) :
     if classement :
@@ -85,7 +74,7 @@ def _game_card(g, list_key, user , mode ):
             title = g.get("nom_jeu_complet") or g.get("nom_jeu") or "Jeu"
 
             st.markdown(f"### {title}")
-            st.markdown(f":blue[*{nouveaute_def( str(g['_id']))}*]")
+            st.markdown(f":blue[*{nouveaute_def(g)}*]")
 
             ##### gestion du classement =      
             le_classement = mise_forme_classement(g.get("classement_jps_final"))
