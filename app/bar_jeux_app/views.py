@@ -526,7 +526,7 @@ def _final_page(user):
     liste_info = []
     liste_pret_user = storage_jeux.get_all_loans()
     liste_game = [game["id_jeux"] for game in liste_pret_user ]
-    liste__info_pret_user = load_games(liste_game, None)
+    liste__info_pret_user = storage_jeux.load_games(liste_game, None)
 
 
     liste_pret_user_detail = pd.merge(
@@ -559,7 +559,7 @@ def _final_page(user):
 
 
     liste_game_select = [game["id_jeux"] for game in liste_jeu_selec ]
-    liste__info_select = load_games(liste_game_select, None)
+    liste__info_select = storage_jeux.load_games(liste_game_select, None)
 
 
     for game_selec in liste__info_select:
