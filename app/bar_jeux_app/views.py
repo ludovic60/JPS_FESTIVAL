@@ -507,8 +507,8 @@ def _final_page(user):
 
     ###########---- 0 dataframe pour alimenter les graph 
     # 1. Optimisation : création d'un dictionnaire d'utilisateurs {str(id): pseudo}
-    users_dict = {str(u["_id"]): u.get("pseudo", "Inconnu") for u in users}
-    users_dict_pd = pd.dataframe(users_dict)
+    ##users_dict = [ u for u in users]
+    users_dict_pd = pd.dataframe(users)
 
 
 
