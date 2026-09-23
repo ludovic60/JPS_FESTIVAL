@@ -580,22 +580,24 @@ def _final_page(user):
     
     liste__info_select = storage_jeux.load_games(liste_game_select, None)
 
-
-    for game_selec in liste__info_select:
-
+    df_jeux_select_graphique  = pd.DataFrame(liste__info_select)
+ 
+    if len(df_jeux_select_graphique) > 0:
+         df_jeux_select_graphique["Nouveauté"] = df_jeux_select_graphique.apply(nouveaute_def, axis=1)
+         df_jeux_select_graphique["Nb_jeux_selec"] = 1
    
+ 
+    # for game_selec in liste__info_select:
         # Récupération des infos du jeu
-        id_jeu = game_selec.get("id_jeux")
-        
-    
+     #    id_jeu = game_selec.get("id_jeux")
         # Ajout à la liste
-        liste_jeu_selectionne.append({
-            "classement": game_selec.get("classement_jps_final"),
-            "Nouveauté": nouveaute_def(game_selec),
-            "nom": game_selec.get("nom_jeu_complet"),
-            "Nb_jeux_selec": 1,
-        })
-    df_jeux_select_graphique  = pd.DataFrame(liste_jeu_selectionne)
+     #  liste_jeu_selectionne.append({
+     #       "classement": game_selec.get("classement_jps_final"),
+     #       "Nouveauté": nouveaute_def(game_selec),
+     #       "nom": game_selec.get("nom_jeu_complet"),
+     #       "Nb_jeux_selec": 1,
+     #   })
+    # df_jeux_select_graphique  = pd.DataFrame(liste_jeu_selectionne)
 
 
 
