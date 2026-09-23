@@ -295,7 +295,7 @@ def _final_page(user):
             "_id": game_id,                           
             "nouveaute": new_statut,
             "Annee": g.get("annee_parution", ""),
-            "Categorie jeu": mise_forme_classement(g.get("classement_jps_final")),
+            "Classement": mise_forme_classement(g.get("classement_jps_final")),
             "Couverture Jeu": g.get("couverture", ""),
             "Jeu": g.get("nom_jeu_complet", ""),
             "Plusieurs exemplaires souhaités": is_several,
@@ -331,7 +331,7 @@ def _final_page(user):
       columns_to_show = [
           "nouveaute",
           "Annee",
-          "Categorie jeu",
+          "Classement",
           "Couverture Jeu",
           "Jeu",
           "Plusieurs exemplaires souhaités",
@@ -344,7 +344,7 @@ def _final_page(user):
       gb.configure_column("_id", hide=True)
       gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Categorie jeu", editable=False, width=180, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True, pinned=True)
       
@@ -671,7 +671,7 @@ def _final_page(user):
        
           if not df_jeux_select_graphique.empty:
               df_cat = df_jeux_select_graphique["classement"].value_counts().reset_index()
-              df_cat.columns = ["classement_jps_final", "Nombre"]
+              df_cat.columns = ["classement", "Nombre"]
               fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, color="classement", color_discrete_map=couleurs_classement )
               fig_pie_cat.update_layout(height=250 , width=1000) 
               fig_pie_cat.update_layout(
