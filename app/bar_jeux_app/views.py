@@ -536,7 +536,7 @@ def _final_page(user):
     print(liste_game_preter)      
     st.write("taille de  liste_pret_user_pd")
     st.write(len(liste_pret_user_pd))
-    st.write(liste_pret_user_pd[id_jeux])
+    st.write(liste_pret_user_pd["id_jeux"])
     liste_game_preter = [ObjectId(game["id_jeux"]) for game in liste_pret_user ]
     
     liste_detail_preter = storage_jeux.load_games(liste_game_preter, None)
@@ -544,7 +544,7 @@ def _final_page(user):
     liste__info_pret_user  = pd.DataFrame(liste_detail_preter)
     st.write("taille de  liste__info_pret_user")
     st.write(len(liste__info_pret_user))
-    st.write(liste__info_pret_user[_id])
+    st.write(liste__info_pret_user["_id"])
  
 
     liste__info_pret_user = liste__info_pret_user.rename(columns={'_id': 'id_jeux'})
