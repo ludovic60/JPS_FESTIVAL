@@ -509,8 +509,7 @@ def _final_page(user):
     # 1. Optimisation : création d'un dictionnaire d'utilisateurs {str(id): pseudo}
     ##users_dict = [ u for u in users]
     users_dict_pd = pd.DataFrame(users)
-    st.write(users_dict_pd)
-    ####    liste__info_pret_valider_user = liste__info_pret_valider_user.rename(columns={'classement_jps_final': 'classement'})
+    users_dict_pd = users_dict_pd.rename(columns={'_id': 'user_id'})
 
 
 
