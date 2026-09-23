@@ -532,7 +532,7 @@ def _final_page(user):
     liste__info_pret_user = pd.DataFrame(storage_jeux.load_games(liste_game, None))
     liste__info_pret_user = liste__info_pret_user.rename(columns={'_id': 'id_jeux'})
  
-    print(liste__info_pret_user["id_jeux"])
+  
    
     liste_pret_user_detail = pd.merge(
            liste__info_pret_user,
@@ -541,8 +541,12 @@ def _final_page(user):
            how="outer",  
        )
     print("liste_detail pret user")
-    print( liste_pret_user_detail["id_jeux"])
-
+ 
+    print( liste_pret_user_detail[liste_pret_user_detail["id_jeux"] = "9e705c422573f38168868b69"])
+    print("jeu prete")
+    print( liste_pret_user_pd[liste_pret_user_pd["id_jeux"] = "9e705c422573f38168868b69"])
+    print("info jeu prete")
+    print( liste__info_pret_user[liste__info_pret_user["id_jeux"] = "9e705c422573f38168868b69"])
 
     liste_pret_user_detail['Nouveauté'] = df.apply(nouveaute_def(row), axis=1)
     liste_pret_user_detail['Nb_jeux_propose'] = 1
