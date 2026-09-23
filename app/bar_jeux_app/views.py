@@ -33,7 +33,7 @@ def main_app(user):
         
         if user["role"] == "admin":
             st.markdown("<span class='ws-tag-admin'>Admin</span>", unsafe_allow_html=True)
-            pages = ["Jeux sortis depuis dernier festival","Liste des jeux","Recherche jeu", "Demandes d'ajout / remarques","Liste suggestions",  "Jeux sortis avant dernier festival" ]
+            pages = ["Liste des jeux","Recherche jeu", "Demandes d'ajout / remarques","Liste suggestions", "Jeux sortis depuis dernier festival", "Jeux sortis avant dernier festival" ]
        
         #    pages = ["Liste des jeux","Recherche jeu", "Demandes d'ajout / remarques","Liste suggestions", "Jeux sortis depuis dernier festival", "Jeux sortis avant dernier festival" ]
         else : 
