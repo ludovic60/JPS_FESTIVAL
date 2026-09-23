@@ -737,7 +737,7 @@ def _final_page(user):
               )
               st.plotly_chart(fig_pie_cat, use_container_width=True)
  
-           else:
+          else:
               st.info("Aucun jeu proposé pour le moment.")
 
           st.subheader("Jeux proposés par Nouveauté")
