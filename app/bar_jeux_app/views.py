@@ -535,8 +535,10 @@ def _final_page(user):
         
     liste_detail = storage_jeux.load_games(liste_game_preter, None)
     liste__info_pret_user = pd.DataFrame(liste_detail)
+    print( len(liste__info_pret_user))
     liste__info_pret_user = liste__info_pret_user.rename(columns={'_id': 'id_jeux'})
-
+    print( len(liste__info_pret_user))
+    
     liste_pret_user_pd =pd.DataFrame(liste_pret_user)
     
  
