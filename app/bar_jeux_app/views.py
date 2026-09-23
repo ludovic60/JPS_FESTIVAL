@@ -536,7 +536,7 @@ def _final_page(user):
            liste__info_pret_user,
            liste_pret_user_pd,
            on=["id_jeux"],
-           how="inter",  
+           how="inner",  
        )
 
     
