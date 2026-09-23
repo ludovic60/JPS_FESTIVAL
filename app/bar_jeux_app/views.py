@@ -525,11 +525,11 @@ def _final_page(user):
     ###---------------------------------------------------- 
     liste_info = []
     liste_pret_user = storage_jeux.get_all_loans()
-    liste_game = [ObjectId(game["id_jeux"]) for game in liste_pret_user ]
+    liste_game_preter = [ObjectId(game["id_jeux"]) for game in liste_pret_user ]
     print("liste jeu loué")
-    print(liste_game)
+    print(liste_game_preter)
     liste_pret_user_pd =pd.DataFrame(liste_pret_user)
-    liste__info_pret_user = pd.DataFrame(storage_jeux.load_games(liste_game, None))
+    liste__info_pret_user = pd.DataFrame(storage_jeux.load_games(liste_game_preter, None))
     liste__info_pret_user = liste__info_pret_user.rename(columns={'_id': 'id_jeux'})
  
   
@@ -538,7 +538,7 @@ def _final_page(user):
            liste__info_pret_user,
            liste_pret_user_pd,
            on="id_jeux",
-           how="outer",  
+           how="inner",  
        )
     print("liste_detail pret user")
  
@@ -548,7 +548,7 @@ def _final_page(user):
     print("info jeu prete")
     print( liste__info_pret_user[liste__info_pret_user["id_jeux"] == "9e705c422573f38168868b69"])
 
-    liste_pret_user_detail['Nouveauté'] = df.apply(nouveaute_def(row), axis=1)
+    liste_pret_user_detail['Nouveauté'] = liste_pret_user_detail.apply(nouveaute_def(row), axis=1)
     liste_pret_user_detail['Nb_jeux_propose'] = 1
 
     df_jeux_pret_graphique  = liste_pret_user_detail   
