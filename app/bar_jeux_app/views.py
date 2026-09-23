@@ -542,8 +542,8 @@ def _final_page(user):
            on=["_id"],
            how="inner",  
        )
-
-    
+    print("liste_detail pret user")
+    print( liste_pret_user_detail)
     for game_pret in liste_pret_user_detail:
    
         print(game_pret)
