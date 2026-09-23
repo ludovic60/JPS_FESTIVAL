@@ -33,6 +33,8 @@ _COVERS = [
 ##############################################################
 def load_games(list_key, search_query=None):
     con_mongo = cs.mongo_enabled()
+    print("list key")
+    print(list_key)
     if   con_mongo : 
         db = cs.get_db()
         game_tb = db.jeux
