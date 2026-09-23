@@ -532,6 +532,7 @@ def _final_page(user):
     liste_pret_user_pd = pd.DataFrame(liste_pret_user)
  
     liste__info_pret_user = liste__info_pret_user.rename(columns={'_id': 'id_jeux'})
+    print(liste_pret_user_pd.get("id_jeux"))
     print("liste pret")
     print(liste_pret_user_pd)
     print("info jeu preter")
