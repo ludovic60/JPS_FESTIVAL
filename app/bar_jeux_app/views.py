@@ -536,7 +536,7 @@ def _final_page(user):
    
     liste_pret_user_detail = pd.merge(
            liste__info_pret_user,
-           liste_pret_user_pd,
+           liste_pret_user,
            on="id_jeux",
            how="outer",  
        )
