@@ -508,104 +508,140 @@ def _final_page(user):
     ###########---- 0 dataframe pour alimenter les graph 
     # 1. Optimisation : création d'un dictionnaire d'utilisateurs {str(id): pseudo}
     users_dict = {str(u["_id"]): u.get("pseudo", "Inconnu") for u in users}
-     ###---------------------------------------------------- 
+    users_dict_pd = pd.dataframe(users_dict)
+
+
+
+    ### ----------------------------------------------------------------------------------------------
+    ###  gestion dataframe pour les jeux pretés   ---------------------------------------------------- 
+    ### ----------------------------------------------------------------------------------------------
+
+
+    ########### dataframe des prets
     liste_pret_validé = storage_jeux.get_validated_loans()
-    liste_info_valide = []
-
+    liste_game_validé = [ObjectId(game["id_jeux"]) for game in liste_pret_validé ]
+    liste_pret_validé_pd = pd.DataFrame(liste_pret_validé)
+    
  
-    for game in  liste_pret_validé :
-        id_jeu = game["id_jeux"]
-        info_games_valide = storage_jeux.get_info_games(id_jeu)
-        # Récupération sécurisée du pseudo (converti en str pour être sûr que les ID matchent)
-        user_id_str = str(game["user_id"])
-        pseudo = users_dict.get(user_id_str, "Utilisateur inconnu")
-       
-          
-        liste_info_valide.append ({"classement":  info_games_valide[0]["classement_jps_final"] ,  "Nouveauté": nouveaute_def(game), "pseudo":pseudo , "nom": info_games_valide[0]["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide":True})
+    ####creation du dataframe si il y a des prets validé
+    if len(liste_pret_validé_pd) >0 :
+        ########### dataframe des infos jeux pretes
+        liste_detail_valider = storage_jeux.load_games(liste_game_validé, None)
+        liste__info_pret_valider_user  = pd.DataFrame(liste_detail_valider)
+        liste__info_pret_valider_user = liste__info_pret_valider_user.rename(columns={'_id': 'id_jeux'})
+        liste__info_pret_valider_user = liste__info_pret_valider_user.rename(columns={'classement_jps_final': 'classement'})
+
      
-    df_jeux_valide_graphique  = pd.DataFrame(liste_info_valide)
+        ###########  jointure des prets avec les infos de jeu
+        ########### nettoyage des clés pour les rendre compatible 
+        liste__info_pret_valider_user['id_jeux'] = liste__info_pret_user['id_jeux'].astype(str).str.strip()
+        liste_pret_validé_pd['id_jeux'] = liste_pret_user_pd['id_jeux'].astype(str).str.strip()
+    
+    
+        liste_pret__validé_user_detail = pd.merge(
+               liste__info_pret_valider_user,
+               liste_pret_validé_pd,
+               on="id_jeux",
+               how="inner",  
+           )
+        ###########  jointure des prets avec les infos de jeu
+        ########### nettoyage des clés pour les rendre compatible 
+        liste_pret__validé_user_detail['user_id'] = liste_pret__validé_user_detail['user_id'].astype(str).str.strip()
+        users_dict_pd['user_id'] = users_dict_pd['user_id'].astype(str).str.strip()
+    
+       
+     
+        df_jeux_valide_graphique=pd.merge(
+               liste_pret__validé_user_detail,
+               users_dict_pd,
+               on="user_id",
+               how="inner",  
+           )
+    
+        if len(df_jeux_valide_graphique) > 0:
+             df_jeux_valide_graphique["Nouveauté"] = df_jeux_valide_graphique.apply(nouveaute_def, axis=1)
+             df_jeux_valide_graphique["Nb_jeux_propose"] = 1
+    
+    else :
+        ####creation dataframe vide car pas de pret
+        df_jeux_valide_graphique = pd.DataFrame()
+    
+ 
+
+    ### ----------------------------------------------------------------------------------------------
+    ###  gestion dataframe pour les jeux pretés   ---------------------------------------------------- 
+    ### ----------------------------------------------------------------------------------------------
 
 
-
-    ###---------------------------------------------------- 
-    liste_info = []
+    ########### dataframe des prets
     liste_pret_user = storage_jeux.get_all_loans()
     liste_game_preter = [ObjectId(game["id_jeux"]) for game in liste_pret_user ]
     liste_pret_user_pd = pd.DataFrame(liste_pret_user)
- 
-    print(liste_game_preter)      
-    st.write("taille de  liste_pret_user_pd")
-    st.write(len(liste_pret_user_pd))
-    st.write(liste_pret_user_pd["id_jeux"])
-    liste_game_preter = [ObjectId(game["id_jeux"]) for game in liste_pret_user ]
-    
-    liste_detail_preter = storage_jeux.load_games(liste_game_preter, None)
-
-    liste__info_pret_user  = pd.DataFrame(liste_detail_preter)
-    st.write("taille de  liste__info_pret_user")
-    st.write(len(liste__info_pret_user))
     
  
-
-    liste__info_pret_user = liste__info_pret_user.rename(columns={'_id': 'id_jeux'})
+    ####creation du dataframe si il y a des prets
+    if len(liste_pret_user_pd) >0 :
+        ########### dataframe des infos jeux pretes
+        liste_detail_preter = storage_jeux.load_games(liste_game_preter, None)
+        liste__info_pret_user  = pd.DataFrame(liste_detail_preter)
+        liste__info_pret_user = liste__info_pret_user.rename(columns={'_id': 'id_jeux'})
+        liste__info_pret_user = liste__info_pret_user.rename(columns={'classement_jps_final': 'classement'})
+     
+        ###########  jointure des prets avec les infos de jeu
+        ########### nettoyage des clés pour les rendre compatible 
+        liste__info_pret_user['id_jeux'] = liste__info_pret_user['id_jeux'].astype(str).str.strip()
+        liste_pret_user_pd['id_jeux'] = liste_pret_user_pd['id_jeux'].astype(str).str.strip()
     
-    st.write(liste__info_pret_user["id_jeux"])
     
-    liste__info_pret_user['id_jeux'] = liste__info_pret_user['id_jeux'].astype(str).str.strip()
-    liste_pret_user_pd['id_jeux'] = liste_pret_user_pd['id_jeux'].astype(str).str.strip()
-
-   
-   
-    liste_pret_user_detail = pd.merge(
-           liste__info_pret_user,
-           liste_pret_user_pd,
-           on="id_jeux",
-           how="inner",  
-       )
-   
-    st.write("taille de  liste_pret_user_detail")
-    st.write(len(liste_pret_user_detail))
-    st.write(liste_pret_user_detail)
- 
-
-
-   
-    if len(liste_pret_user_detail) > 0:
-         liste_pret_user_detail["Nouveauté"] = liste_pret_user_detail.apply(nouveaute_def, axis=1)
-         liste_pret_user_detail["Nb_jeux_propose"] = 1
-
-    df_jeux_pret_graphique  = liste_pret_user_detail   
+        liste_pret_user_detail = pd.merge(
+               liste__info_pret_user,
+               liste_pret_user_pd,
+               on="id_jeux",
+               how="inner",  
+           )
+        ###########  jointure des prets avec les infos de jeu
+        ########### nettoyage des clés pour les rendre compatible 
+        liste_pret_user_detail['user_id'] = liste_pret_user_detail['user_id'].astype(str).str.strip()
+        users_dict_pd['user_id'] = users_dict_pd['user_id'].astype(str).str.strip()
     
-    ###---------------------------------------------------- 
-    liste_jeu_selectionne = []
+       
+     
+        df_jeux_pret_graphique=pd.merge(
+               liste_pret_user_detail,
+               users_dict_pd,
+               on="user_id",
+               how="inner",  
+           )
+    
+        if len(df_jeux_pret_graphique) > 0:
+             df_jeux_pret_graphique["Nouveauté"] = liste_pret_user_detail.apply(nouveaute_def, axis=1)
+             df_jeux_pret_graphique["Nb_jeux_propose"] = 1
+    
+    else :
+        ####creation dataframe vide car pas de pret
+        df_jeux_select_graphique = pd.DataFrame()
+    
+
+    ### ----------------------------------------------------------------------------------------------
+    ###  gestion dataframe pour les jeux selectionnnés   --------------------------------------------- 
+    ### ----------------------------------------------------------------------------------------------
+
     liste_jeu_selec = storage_jeux.final_games()
-
-
     liste_game_select = [ObjectId(game["id_jeux"]) for game in liste_jeu_selec ]
     
     liste__info_select = storage_jeux.load_games(liste_game_select, None)
 
     df_jeux_select_graphique  = pd.DataFrame(liste__info_select)
- 
+    df_jeux_select_graphique = df_jeux_select_graphique.rename(columns={'classement_jps_final': 'classement'})
+      
     if len(df_jeux_select_graphique) > 0:
          df_jeux_select_graphique["Nouveauté"] = df_jeux_select_graphique.apply(nouveaute_def, axis=1)
          df_jeux_select_graphique["Nb_jeux_selec"] = 1
    
  
-    # for game_selec in liste__info_select:
-        # Récupération des infos du jeu
-     #    id_jeu = game_selec.get("id_jeux")
-        # Ajout à la liste
-     #  liste_jeu_selectionne.append({
-     #       "classement": game_selec.get("classement_jps_final"),
-     #       "Nouveauté": nouveaute_def(game_selec),
-     #       "nom": game_selec.get("nom_jeu_complet"),
-     #       "Nb_jeux_selec": 1,
-     #   })
-    # df_jeux_select_graphique  = pd.DataFrame(liste_jeu_selectionne)
 
 
-
+    ###  gestion de l'affichage ---------------------------------------------------------------------------
     couleurs_classement = {"AMBIANCE": "#E655DA", ## rose
                            "COOP/SEMI COOP" :"#7A0EE3",####violet
                            "JEU DUO" :"#FF9224",          ##orange                 
@@ -621,8 +657,9 @@ def _final_page(user):
 
     couleurs_nouveaute = {"✨NOUVEAUTE": "#57B02C", "🏺ANCIEN": "#080808", "🧐 INCONNU": "#1128D6"}
   
-
-   ###########---- 1. Histogramme par joueur (Validés vs Cochés Utilisateur)
+    ### ----------------------------------------------------------------------------------------------
+    ###########---- 1. graphique lié aux jeux sélectionnés
+    ### ----------------------------------------------------------------------------------------------
    
     with col_graph1:
           st.subheader("Nombre Jeux selectionnés")
@@ -632,9 +669,9 @@ def _final_page(user):
           st.subheader("Jeux selectionnés par Classement")
        
           if not df_jeux_select_graphique.empty:
-              df_cat = df_jeux_select_graphique["classement_jps_final"].value_counts().reset_index()
+              df_cat = df_jeux_select_graphique["classement"].value_counts().reset_index()
               df_cat.columns = ["classement_jps_final", "Nombre"]
-              fig_pie_cat = px.pie(df_cat, names="classement_jps_final", values="Nombre", hole=0.3, color="classement_jps_final", color_discrete_map=couleurs_classement )
+              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, color="classement", color_discrete_map=couleurs_classement )
               fig_pie_cat.update_layout(height=250 , width=1000) 
               fig_pie_cat.update_layout(
                   legend=dict(
@@ -668,7 +705,10 @@ def _final_page(user):
  
           
         
-    ###########----2. Camembert Nouveautés (jeux cochés au moins une fois par un utilisateur)
+    ### ----------------------------------------------------------------------------------------------
+    ###########---- 1. graphique lié aux jeux prétés
+    ### ----------------------------------------------------------------------------------------------
+   
        
     with col_graph2:
           st.subheader("Nombre Jeux proposés ")
@@ -677,46 +717,46 @@ def _final_page(user):
          
      
           st.subheader("Jeux proposés par Classement")
- #         if not df_jeux_pret_graphique.empty:
- #             df_cat = df_jeux_pret_graphique["classement"].value_counts().reset_index()
- #             df_cat.columns = ["classement", "Nombre"]
- #             fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, color="classement", color_discrete_map=couleurs_classement )
- #             fig_pie_cat.update_layout(height=250 , width=1000) 
- #             fig_pie_cat.update_layout(
- #                 legend=dict(
- #                     orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
- #                     yanchor="top",
- #                     y=-0.2,  # Positionne la légende en dessous du graphique
- #                     xanchor="center",
- #                     x=0.5,
- #                     font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
- #                 ),
- #                 margin=dict(
- #                      t=30, b=100, l=20, r=20
- #                 ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
- #             )
- #             st.plotly_chart(fig_pie_cat, use_container_width=True)
- #
- #          else:
- #             st.info("Aucun jeu proposé pour le moment.")
+          if not df_jeux_pret_graphique.empty:
+              df_cat = df_jeux_pret_graphique["classement"].value_counts().reset_index()
+              df_cat.columns = ["classement", "Nombre"]
+              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, color="classement", color_discrete_map=couleurs_classement )
+              fig_pie_cat.update_layout(height=250 , width=1000) 
+              fig_pie_cat.update_layout(
+                  legend=dict(
+                      orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
+                      yanchor="top",
+                      y=-0.2,  # Positionne la légende en dessous du graphique
+                      xanchor="center",
+                      x=0.5,
+                      font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
+                  ),
+                  margin=dict(
+                       t=30, b=100, l=20, r=20
+                  ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
+              )
+              st.plotly_chart(fig_pie_cat, use_container_width=True)
+ 
+           else:
+              st.info("Aucun jeu proposé pour le moment.")
 
           st.subheader("Jeux proposés par Nouveauté")
- #         if not df_jeux_pret_graphique.empty:
- #             df_nov = df_jeux_pret_graphique["Nouveauté"].value_counts().reset_index()
- #             df_nov.columns = ["Nouveauté", "Nombre"]
- #v             fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 , color="Nouveauté", color_discrete_map=couleurs_nouveaute )
- #             fig_pie_nov.update_layout(height=250 , width=1000)
- #             st.plotly_chart(fig_pie_nov, use_container_width=True)
- #         else:
- #             st.info("Aucun jeu proposé pour le moment.")
+          if not df_jeux_pret_graphique.empty:
+              df_nov = df_jeux_pret_graphique["Nouveauté"].value_counts().reset_index()
+              df_nov.columns = ["Nouveauté", "Nombre"]
+              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 , color="Nouveauté", color_discrete_map=couleurs_nouveaute )
+              fig_pie_nov.update_layout(height=250 , width=1000)
+              st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+              st.info("Aucun jeu proposé pour le moment.")
 
      
 
+    ### ----------------------------------------------------------------------------------------------
+    ###########---- 1. graphique lié aux jeux validés
+    ### ----------------------------------------------------------------------------------------------
+   
 
-
- 
-
-      ###########----3. Camembert Catégories (Produits cochés au moins une fois par un utilisateur)
     with col_graph3:
           st.subheader("Nombre Jeux validés")
        
@@ -758,46 +798,49 @@ def _final_page(user):
           else:
               st.info("Aucun jeu validé pour le moment.")     
 
-
+    ### ----------------------------------------------------------------------------------------------
+    ###########---- histogrammes des jeux pretes par joueurs 
+    ### ----------------------------------------------------------------------------------------------
+   
  
     st.subheader("listes des prets  par Joueur")
 
     if df_jeux_pret_graphique.empty and df_jeux_valide_graphique.empty:
-       df_jeux_histogramme = pd.DataFrame(
-             columns=[
-                 "classement",
-                 "Nouveauté",
-                 "pseudo",
-                 "nom",
-                 "Nb_jeux_propose",
-                 "Nb_jeux_valide",
-                 "statut_valide",
-             ]
-         )
+         df_jeux_histogramme = pd.DataFrame(
+               columns=[
+                   "classement",
+                   "Nouveauté",
+                   "pseudo",
+                   "nom",
+                   "Nb_jeux_propose",
+                   "Nb_jeux_valide",
+                   "statut_valide",
+               ]
+           )
 
     elif df_jeux_pret_graphique.empty:
         
-       df_jeux_histogramme = df_jeux_valide_graphique.copy()     
-       df_jeux_histogramme["Nb_jeux_propose"] = 0
+         df_jeux_histogramme = df_jeux_valide_graphique.copy()     
+         df_jeux_histogramme["Nb_jeux_propose"] = 0
 
     # 3. Cas où seules les validations sont vides
     elif df_jeux_valide_graphique.empty:
      
-       df_jeux_histogramme = df_jeux_pret_graphique.copy()
-       df_jeux_histogramme["Nb_jeux_valide"] = 0       
-       df_jeux_histogramme["statut_valide"] = False
+         df_jeux_histogramme = df_jeux_pret_graphique.copy()
+         df_jeux_histogramme["Nb_jeux_valide"] = 0       
+         df_jeux_histogramme["statut_valide"] = False
     else : 
-       df_jeux_histogramme = pd.merge(
-           df_jeux_pret_graphique,
-           df_jeux_valide_graphique,
-           on=["pseudo", "nom", "classement", "Nouveauté"],
-           how="outer",  # 'outer' garde tout, même si un jeu n'est que dans l'un des deux tableaux
-       )
-       
-       # Remplacer les valeurs manquantes (NaN) par 0 ou False selon les colonnes
-       df_jeux_histogramme["Nb_jeux_propose"] = df_jeux_histogramme["Nb_jeux_propose"].fillna(0)
-       df_jeux_histogramme["Nb_jeux_valide"] = df_jeux_histogramme["Nb_jeux_valide"].fillna(0)
-       df_jeux_histogramme["statut_valide"] = df_jeux_histogramme["statut_valide"].fillna(False)
+         df_jeux_histogramme = pd.merge(
+             df_jeux_pret_graphique,
+             df_jeux_valide_graphique,
+             on=["pseudo", "nom", "classement", "Nouveauté"],
+             how="outer",  # 'outer' garde tout, même si un jeu n'est que dans l'un des deux tableaux
+         )
+         
+         # Remplacer les valeurs manquantes (NaN) par 0 ou False selon les colonnes
+         df_jeux_histogramme["Nb_jeux_propose"] = df_jeux_histogramme["Nb_jeux_propose"].fillna(0)
+         df_jeux_histogramme["Nb_jeux_valide"] = df_jeux_histogramme["Nb_jeux_valide"].fillna(0)
+         df_jeux_histogramme["statut_valide"] = df_jeux_histogramme["statut_valide"].fillna(False)
 
     #  Aggrégation des données pour obtenir la somme par pseudo
     df_jeux_histogramme["Nb_jeux_propose"] = pd.to_numeric(df_jeux_histogramme["Nb_jeux_propose"], errors="coerce").fillna(0).astype(int)   
