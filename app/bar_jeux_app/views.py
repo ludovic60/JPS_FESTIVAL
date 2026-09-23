@@ -530,6 +530,7 @@ def _final_page(user):
     liste_game_preter = [ObjectId(game["id_jeux"]) for game in liste_pret_user ]
           
     liste_detail = storage_jeux.load_games(liste_game_preter, None)
+    print(liste_detail)
   
     liste__info_pret_user = pd.DataFrame(liste_detail)
   
