@@ -555,7 +555,7 @@ def _final_page(user):
            on="id_jeux",
            how="inner",  
        )
-   print(len(liste_pret_user_detail))
+    print(len(liste_pret_user_detail))
 
 
    
