@@ -550,10 +550,10 @@ def _final_page(user):
    
         # Ajout à la liste
         liste_info.append({
-            "classement": game_pret["classement_jps_final"],
+            "classement": game_pret[0]["classement_jps_final"],
             "Nouveauté": nouveaute_def(game_pret),
-            "pseudo": game_pret["pseudo"],
-            "nom": info_games_pret["nom_jeu_complet"],
+            "pseudo": game_pret[0]["pseudo"],
+            "nom": info_games_pret[0]["nom_jeu_complet"],
             "Nb_jeux_propose": 1,
         })
     df_jeux_pret_graphique  = pd.DataFrame(liste_info)
