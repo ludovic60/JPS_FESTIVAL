@@ -528,16 +528,12 @@ def _final_page(user):
     liste_info = []
     liste_pret_user = storage_jeux.get_all_loans()
     liste_game_preter = [ObjectId(game["id_jeux"]) for game in liste_pret_user ]
-    print("liste jeu loué")
-    print(liste_game_preter)
-    #liste_game_preter = [ObjectId('9e705c422573f38168868b69'), ObjectId('2d8b89f7e9d1d3de59c75edf')]
-
-        
+          
     liste_detail = storage_jeux.load_games(liste_game_preter, None)
+  
     liste__info_pret_user = pd.DataFrame(liste_detail)
-    print( len(liste__info_pret_user))
+  
     liste__info_pret_user = liste__info_pret_user.rename(columns={'_id': 'id_jeux'})
-    print( len(liste__info_pret_user))
     
     liste_pret_user_pd =pd.DataFrame(liste_pret_user)
     
