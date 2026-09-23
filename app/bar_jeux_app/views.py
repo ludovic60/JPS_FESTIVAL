@@ -564,8 +564,8 @@ def _final_page(user):
     #print( liste__info_pret_user[liste__info_pret_user["id_jeux"] == "9e705c422573f38168868b69"])
     #print( liste__info_pret_user["id_jeux"] )
 
-
-    if not liste__info_pret_user.empty:
+   
+    if len(liste__info_pret_user)>0:
          liste_pret_user_detail["Nouveauté"] = liste_pret_user_detail.apply(nouveaute_def, axis=1)
          liste_pret_user_detail["Nb_jeux_propose"] = 1
 
