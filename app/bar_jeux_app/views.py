@@ -72,6 +72,8 @@ def main_app(user):
 
 def _list_page(title, list_key, user):
     st.title(title)
+    print("list key")
+    print(list_key)    
     
     with st.expander("➕ Demander l'ajout d'un jeu"):
         with st.form(f"req_{list_key}", clear_on_submit=True):
@@ -97,8 +99,7 @@ def _list_page(title, list_key, user):
     if list_key == "all" and not search_query:
         filtered_games = []
     else:
-        print("list key")
-        print(list_key)
+
         # Passer le terme de recherche directement à MongoDB
         games = storage_jeux.load_games(list_key, search_query=search_query)
     
