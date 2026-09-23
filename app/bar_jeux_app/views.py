@@ -248,6 +248,8 @@ def _final_page(user):
     # Récupération en BATCH des infos de tous les jeux d'un coup
     game_ids = [g.get('id_jeux') for g in finals]
     liste_object_id = [ObjectId(id_str) for id_str in game_ids]
+    print("list object id")
+    print(liste_object_id)
  
     games_info_list = storage_jeux.load_games(liste_object_id, None) 
  
