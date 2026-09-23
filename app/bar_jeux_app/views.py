@@ -531,7 +531,8 @@ def _final_page(user):
  
     liste__info_pret_user = liste__info_pret_user.rename(columns={'id': 'id_jeux'})
 
-
+    print(liste_pret_user_pd)
+    print(liste__info_pret_user)
     liste_pret_user_detail = pd.merge(
            liste__info_pret_user,
            liste_pret_user_pd,
