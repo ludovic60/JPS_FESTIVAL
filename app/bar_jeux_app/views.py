@@ -531,7 +531,7 @@ def _final_page(user):
     liste_detail32 = storage_jeux.load_games(liste_game_preter, None)
 
     print("liste_detail32")
-    print(liste_detail32)
+    print("liste_detail32")
     print("liste_detail3233")
     liste__info_pret_user = pd.DataFrame(liste_detail32)
   
