@@ -546,7 +546,8 @@ def _final_page(user):
     
     for game_pret in liste_pret_user_detail:
    
-       
+       print(game_pret)
+       print(game_pret[0])
    
         # Ajout à la liste
         liste_info.append({
