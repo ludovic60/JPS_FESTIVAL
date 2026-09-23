@@ -540,7 +540,7 @@ def _final_page(user):
     liste_pret_user_detail = pd.merge(
            liste__info_pret_user,
            liste_pret_user_pd,
-           on=["id_jeux"],
+           on="id_jeux",
            how="inner",  
        )
     print("liste_detail pret user")
