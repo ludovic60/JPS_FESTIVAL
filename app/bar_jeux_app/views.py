@@ -627,9 +627,9 @@ def _final_page(user):
           st.subheader("Jeux selectionnés par Classement")
        
           if not df_jeux_select_graphique.empty:
-              df_cat = df_jeux_select_graphique["classement"].value_counts().reset_index()
-              df_cat.columns = ["classement", "Nombre"]
-              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, color="classement", color_discrete_map=couleurs_classement )
+              df_cat = df_jeux_select_graphique["classement_jps_final"].value_counts().reset_index()
+              df_cat.columns = ["classement_jps_final", "Nombre"]
+              fig_pie_cat = px.pie(df_cat, names="classement_jps_final", values="Nombre", hole=0.3, color="classement", color_discrete_map=couleurs_classement )
               fig_pie_cat.update_layout(height=250 , width=1000) 
               fig_pie_cat.update_layout(
                   legend=dict(
@@ -650,14 +650,14 @@ def _final_page(user):
 
 
           st.subheader("Jeux selectionnés  par nouveauté")
-#          if not df_jeux_select_graphique.empty:
-#              df_nov = df_jeux_select_graphique["Nouveauté"].value_counts().reset_index()
-#              df_nov.columns = ["Nouveauté", "Nombre"]
-#              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 , color="Nouveauté", color_discrete_map=couleurs_nouveaute  )
-#              fig_pie_nov.update_layout(height=250 , width=1000)
-#              st.plotly_chart(fig_pie_nov, use_container_width=True)
-#          else:
-#              st.info("Aucun jeu coché pour le moment.")
+          if not df_jeux_select_graphique.empty:
+              df_nov = df_jeux_select_graphique["Nouveauté"].value_counts().reset_index()
+              df_nov.columns = ["Nouveauté", "Nombre"]
+              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 , color="Nouveauté", color_discrete_map=couleurs_nouveaute  )
+              fig_pie_nov.update_layout(height=250 , width=1000)
+              st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+              st.info("Aucun jeu coché pour le moment.")
 
 
  
