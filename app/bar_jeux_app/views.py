@@ -556,8 +556,10 @@ def _final_page(user):
     print("info jeu prete")
     print( liste__info_pret_user[liste__info_pret_user["id_jeux"] == "9e705c422573f38168868b69"])
 
-    liste_pret_user_detail["Nouveauté"] = liste_pret_user_detail.apply(nouveaute_def, axis=1)
-    liste_pret_user_detail["Nb_jeux_propose"] = 1
+
+    if not liste__info_pret_user.empty:
+         liste_pret_user_detail["Nouveauté"] = liste_pret_user_detail.apply(nouveaute_def, axis=1)
+         liste_pret_user_detail["Nb_jeux_propose"] = 1
 
     df_jeux_pret_graphique  = liste_pret_user_detail   
     print( df_jeux_pret_graphique)
