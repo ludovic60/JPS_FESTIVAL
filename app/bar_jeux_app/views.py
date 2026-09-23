@@ -526,17 +526,14 @@ def _final_page(user):
     liste_info = []
     liste_pret_user = storage_jeux.get_all_loans()
     liste_game = [ObjectId(game["id_jeux"]) for game in liste_pret_user ]
-    print("liste jeu")
+    print("liste jeu loué")
     print(liste_game)
-    liste__info_pret_user = pd.DataFrame(storage_jeux.load_games(liste_game, None))
-    liste_pret_user_pd = pd.DataFrame(liste_pret_user)
  
+    liste__info_pret_user = pd.DataFrame(storage_jeux.load_games(liste_game, None))
     liste__info_pret_user = liste__info_pret_user.rename(columns={'_id': 'id_jeux'})
-    print(liste_pret_user_pd["id_jeux"])
-    print("liste pret")
-    print(liste_pret_user_pd)
-    print("info jeu preter")
-    print(liste__info_pret_user)
+ 
+    print(liste__info_pret_user["id_jeux"])
+   
     liste_pret_user_detail = pd.merge(
            liste__info_pret_user,
            liste_pret_user_pd,
@@ -544,7 +541,7 @@ def _final_page(user):
            how="outer",  
        )
     print("liste_detail pret user")
-    print( liste_pret_user_detail)
+    print( liste_pret_user_detail["id_jeux"])
 
 
     liste_pret_user_detail['Nouveauté'] = df.apply(nouveaute_def(row), axis=1)
