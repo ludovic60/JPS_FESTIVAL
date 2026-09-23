@@ -546,9 +546,9 @@ def _final_page(user):
     
     for game_pret in liste_pret_user_detail:
    
-       print(game_pret)
-       print(game_pret[0])
-       print(game_pret.get("classement_jps_final"))
+        print(game_pret)
+        print(game_pret[0])
+        print(game_pret.get("classement_jps_final"))
         # Ajout à la liste
         liste_info.append({
             "classement": game_pret[0]["classement_jps_final"],
