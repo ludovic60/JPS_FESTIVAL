@@ -551,14 +551,16 @@ def _final_page(user):
     
     st.write(liste__info_pret_user["id_jeux"])
     
- 
-  
+    liste__info_pret_user['id_jeux'] = liste__info_pret_user['id_jeux'].astype(str).str.strip()
+    liste_pret_user_pd['id_jeux'] = liste_pret_user_pd['id_jeux'].astype(str).str.strip()
+
+   
    
     liste_pret_user_detail = pd.merge(
            liste__info_pret_user,
            liste_pret_user_pd,
            on="id_jeux",
-           how="outer",  
+           how="inner",  
        )
    
     st.write("taille de  liste_pret_user_detail")
