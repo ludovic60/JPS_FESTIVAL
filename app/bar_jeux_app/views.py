@@ -530,9 +530,12 @@ def _final_page(user):
     liste_game_preter = [ObjectId(game["id_jeux"]) for game in liste_pret_user ]
     print("liste jeu loué")
     print(liste_game_preter)
-    liste_pret_user_pd =pd.DataFrame(liste_pret_user)
+    liste_game_preter = [ObjectId("9e705c422573f38168868b69")]
     liste__info_pret_user = pd.DataFrame(storage_jeux.load_games(liste_game_preter, None))
     liste__info_pret_user = liste__info_pret_user.rename(columns={'_id': 'id_jeux'})
+
+    liste_pret_user_pd =pd.DataFrame(liste_pret_user)
+    
  
   
    
