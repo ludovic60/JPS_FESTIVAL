@@ -95,7 +95,7 @@ def _list_page(title, list_key, user):
     if list_key == "all" and not search_query:
         filtered_games = []
     else:
-        print(list_key)
+      
         # Passer le terme de recherche directement à MongoDB
         games = storage_jeux.load_games(list_key, search_query=search_query)
     
@@ -128,10 +128,10 @@ def _requests_suggestion_page(user):
     list_suggest = storage_jeux.get_game_suggestions_a_traiter()
     list_games_tmp =[]
     for sugg in list_suggest : 
-        print(sugg)
+        
         list_games_tmp.append(storage_jeux.get_info_games(sugg))
     list_games = [elem for sous_liste in list_games_tmp for elem in sous_liste]
-    print(list_games)
+   
     if list_games:
         per_row = 3
         # FIX : On utilise len(list_games) ici !
@@ -179,7 +179,7 @@ def _requests_page(user):
                   if user["role"] == "admin": 
                         if c6.button("traiter", key=f"modif_traiter_{r["_id"]}"):
                             storage_jeux.update_statut_request("ajout jeux", r["_id"],"traiter")
-                            print(r["_id"])
+                           
                             print("traiter demande ajout")
                             st.rerun()
                         if c7.button("supprimer", key=f"modif_supp_{r["_id"]}"):
@@ -248,8 +248,7 @@ def _final_page(user):
     # Récupération en BATCH des infos de tous les jeux d'un coup
     game_ids = [g.get('id_jeux') for g in finals]
     liste_object_id = [ObjectId(id_str) for id_str in game_ids]
-    print("list object id")
-    print(liste_object_id)
+  
  
     games_info_list = storage_jeux.load_games(liste_object_id, None) 
  
@@ -530,6 +529,8 @@ def _final_page(user):
     liste_game_preter = [ObjectId(game["id_jeux"]) for game in liste_pret_user ]
           
     liste_detail = storage_jeux.load_games(liste_game_preter, None)
+    print("liste_detail")
+ 
     print(liste_detail)
   
     liste__info_pret_user = pd.DataFrame(liste_detail)
@@ -547,14 +548,14 @@ def _final_page(user):
            on="id_jeux",
            how="inner",  
        )
-    print("liste_detail pret user")
+   # print("liste_detail pret user")
  
-    print( liste_pret_user_detail[liste_pret_user_detail["id_jeux"] == "9e705c422573f38168868b69"])
-    print("jeu prete")
-    print( liste_pret_user_pd[liste_pret_user_pd["id_jeux"] == "9e705c422573f38168868b69"])
-    print("info jeu prete")
-    print( liste__info_pret_user[liste__info_pret_user["id_jeux"] == "9e705c422573f38168868b69"])
-    print( liste__info_pret_user["id_jeux"] )
+    #print( liste_pret_user_detail[liste_pret_user_detail["id_jeux"] == "9e705c422573f38168868b69"])
+    #print("jeu prete")
+    #print( liste_pret_user_pd[liste_pret_user_pd["id_jeux"] == "9e705c422573f38168868b69"])
+    #print("info jeu prete")
+    #print( liste__info_pret_user[liste__info_pret_user["id_jeux"] == "9e705c422573f38168868b69"])
+    #print( liste__info_pret_user["id_jeux"] )
 
 
     if not liste__info_pret_user.empty:
@@ -562,8 +563,7 @@ def _final_page(user):
          liste_pret_user_detail["Nb_jeux_propose"] = 1
 
     df_jeux_pret_graphique  = liste_pret_user_detail   
-    print( df_jeux_pret_graphique)
-
+    
     ###---------------------------------------------------- 
     liste_jeu_selectionne = []
     liste_jeu_selec = storage_jeux.final_games()
