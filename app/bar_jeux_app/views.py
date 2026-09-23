@@ -531,20 +531,20 @@ def _final_page(user):
     liste_info = []
     liste_pret_user = storage_jeux.get_all_loans()
     liste_game_preter = [ObjectId(game["id_jeux"]) for game in liste_pret_user ]
+    liste_pret_user_pd = pd.DataFrame(liste_pret_user)
+ 
     print(liste_game_preter)      
-    liste_detail = storage_jeux.load_games(liste_game_preter, None)
-   
+     
 
-    #liste_detail32 = storage_jeux.load_games( list([ObjectId('9e705c422573f38168868b69'), ObjectId('2d8b89f7e9d1d3de59c75edf')]), None)
-    print("liste_detail32")
-    print(liste_detail)
-    print("liste_detail3233")
-    liste__info_pret_user = pd.DataFrame(liste_detail)
-    print(len(liste__info_pret_user))
-  
+    liste_game_preter = [ObjectId(game["id_jeux"]) for game in liste_pret_user ]
+    
+    liste_detail_preter = storage_jeux.load_games(liste_game_preter, None)
+
+    liste__info_pret_user  = pd.DataFrame(liste_detail_preter)
+
     liste__info_pret_user = liste__info_pret_user.rename(columns={'_id': 'id_jeux'})
     
-    liste_pret_user_pd =pd.DataFrame(liste_pret_user)
+    
     
  
   
@@ -555,17 +555,11 @@ def _final_page(user):
            on="id_jeux",
            how="inner",  
        )
-   # print("liste_detail pret user")
- 
-    #print( liste_pret_user_detail[liste_pret_user_detail["id_jeux"] == "9e705c422573f38168868b69"])
-    #print("jeu prete")
-    #print( liste_pret_user_pd[liste_pret_user_pd["id_jeux"] == "9e705c422573f38168868b69"])
-    #print("info jeu prete")
-    #print( liste__info_pret_user[liste__info_pret_user["id_jeux"] == "9e705c422573f38168868b69"])
-    #print( liste__info_pret_user["id_jeux"] )
+   print(len(liste_pret_user_detail))
+
 
    
-    if len(liste__info_pret_user)==0:
+    if len(liste__info_pret_user) > 0:
          liste_pret_user_detail["Nouveauté"] = liste_pret_user_detail.apply(nouveaute_def, axis=1)
          liste_pret_user_detail["Nb_jeux_propose"] = 1
 
