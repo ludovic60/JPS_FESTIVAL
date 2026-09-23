@@ -56,11 +56,4 @@ st.set_page_config(page_title="todo", page_icon="📋", layout="wide")
 inject()
 
 
-
-
-
-
-user = current_user()
-
-
 main_app(user)
