@@ -553,6 +553,7 @@ def _final_page(user):
     print( liste_pret_user_pd[liste_pret_user_pd["id_jeux"] == "9e705c422573f38168868b69"])
     print("info jeu prete")
     print( liste__info_pret_user[liste__info_pret_user["id_jeux"] == "9e705c422573f38168868b69"])
+    print( liste__info_pret_user["id_jeux"] )
 
 
     if not liste__info_pret_user.empty:
