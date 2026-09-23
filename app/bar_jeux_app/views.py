@@ -531,7 +531,7 @@ def _final_page(user):
     liste__info_pret_user = pd.DataFrame(storage_jeux.load_games(liste_game, None))
     liste_pret_user_pd = pd.DataFrame(liste_pret_user)
  
-    liste_pret_user_pd = liste_pret_user_pd.rename(columns={'_id': 'id_jeux'})
+    ##liste_pret_user_pd = liste_pret_user_pd.rename(columns={'_id': 'id_jeux'})
     print("liste pret")
     print(liste_pret_user_pd)
     print("info jeu preter")
@@ -539,7 +539,7 @@ def _final_page(user):
     liste_pret_user_detail = pd.merge(
            liste__info_pret_user,
            liste_pret_user_pd,
-           on=["id_jeux"],
+           on=["_id"],
            how="inner",  
        )
 
