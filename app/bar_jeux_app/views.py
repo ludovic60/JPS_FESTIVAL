@@ -541,24 +541,17 @@ def _final_page(user):
            liste__info_pret_user,
            liste_pret_user_pd,
            on="id_jeux",
-           how="inner",  
+           how="outer",  
        )
     print("liste_detail pret user")
     print( liste_pret_user_detail)
-    for game_pret in liste_pret_user_detail:
-   
-        print(game_pret)
-        print(game_pret[0])
-        print(game_pret.get("classement_jps_final"))
-        # Ajout à la liste
-        liste_info.append({
-            "classement": game_pret[0]["classement_jps_final"],
-            "Nouveauté": nouveaute_def(game_pret),
-            "pseudo": game_pret[0]["pseudo"],
-            "nom": info_games_pret[0]["nom_jeu_complet"],
-            "Nb_jeux_propose": 1,
-        })
-    df_jeux_pret_graphique  = pd.DataFrame(liste_info)
+
+
+    liste_pret_user_detail['Nouveauté'] = df.apply(nouveaute_def(row), axis=1)
+    liste_pret_user_detail['Nb_jeux_propose'] = 1
+
+    df_jeux_pret_graphique  = liste_pret_user_detail   
+    print( df_jeux_pret_graphique)
 
     ###---------------------------------------------------- 
     liste_jeu_selectionne = []
