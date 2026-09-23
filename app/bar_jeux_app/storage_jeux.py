@@ -62,6 +62,8 @@ def load_games(list_key, search_query=None):
                         filtre_tb= {"_id": {"$in": list_key}}
             else :
                 filtre_tb= {"_id": {"$in": list_key}}
+        print("filtre")
+        print(filtre_tb)
         
         resultats = list(game_tb.find(filtre_tb).sort({"nom_jeu_fichier":1}))
     else :
