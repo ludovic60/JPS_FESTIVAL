@@ -58,34 +58,39 @@ def todo_page(user):
     
 
        st.error(" - TACHES RESTANT A FAIRE ")
-       c1, c2, c3,c4 ,c5, c6= st.columns([4, 4, 1, 1, 1,1])
+       c1, c2, c3,c4 ,c5, c6 , c7 = st.columns([4, 3, 2, 4, 2 , 2, 2])
        c1.write("nom de la tache")
        c2.write("affecte a ")
        c3.write("statut")
-       c4.write("modifier")
-       c5.write("terminer ")
-       c6.write("supprimer ")                     
-       for t in get_todo("OPEN"):
+       c4.write("commentaire")
+       c5.write("modifier")
+       c6.write("terminer ")
+       c7.write("supprimer ")    
 
-           
+    
+       for t in get_todo("OPEN"):
+               
             label_todo = c1.text_input("t", value=t["todo"], key=f"edit_{t["_id"]}",
                                    label_visibility="collapsed")
             label_affecte = c2.text_input("t", value=t["affecte"], key=f"edit_qui_{t["_id"]}",
                                    label_visibility="collapsed")
             label_statut = c3.text_input("t", value=t["statut"], key=f"edit_statut_{t["_id"]}",
                                    label_visibility="collapsed")
-            
-            if c4.button("modifier", key=f"termin_{t["_id"]}"):
-                update_todo(t["_id"] ,label_affecte , label_statut)
+
+            commentaire_statut = c4.text_input("t", value=t["commentaire"], key=f"edit_comment_{t["_id"]}",
+                                   label_visibility="collapsed")
+           
+            if c5.button("modifier", key=f"termin_{t["_id"]}"):
+                update_todo(t["_id"] ,label_affecte , label_statut,commentaire_statut)
                 get_todo()
                 st.rerun()
            
-            if c5.button("terminer", key=f"modif_{t["_id"]}"):
+            if c6.button("terminer", key=f"modif_{t["_id"]}"):
                 update_todo(t["_id"] ,label_affecte, "terminer")
                 get_todo()
                 st.rerun()
         
-            if c6.button("Supprimer", key=f"supprim_{t["_id"]}"):
+            if c7.button("Supprimer", key=f"supprim_{t["_id"]}"):
                 delete_todo(t["_id"])              
                 get_todo()
                 st.rerun()
