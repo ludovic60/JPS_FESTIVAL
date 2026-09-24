@@ -361,7 +361,13 @@ def update_statut_request(type_request, req_id,statut):
     resquest_tb = db.demandes                                              
     filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "id_request": str(ObjectId(req_id)) }
     resultat = resquest_tb.update_many(filtre_tb, {"$set": {"statut" : statut} })
-
+    print("update requte type_request")
+    print(type_request)
+    print("update requte id_request")
+    print(str(ObjectId(req_id)))
+     
+    print("update requte annee")
+    print(cs._secret("ANNEE_FESTIVAL"))
 
 
 
