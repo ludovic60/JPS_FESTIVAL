@@ -325,13 +325,13 @@ def _final_page(user):
     with col_btn2 : 
 
          df_filtre_propose = df_jeux[df_jeux[f"{user['pseudo']}_propose"] == True]
-         df_test =df_jeux[ ["Couverture Jeu","Jeu" ,f"{user['pseudo']}_propose" ]]
+
          df_export_list_propose = df_filtre_propose[["Couverture Jeu","Jeu" ]]
          excel_data_propose = to_excel(df_export_list_propose ) 
       
          export_list_perso_button = st.download_button(
               label="📥 Export de votre liste",
-              data=b"",####excel_data_propose,
+              data=excel_data_propose,
               file_name="export_jeux_user.xlsx",
               mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
           )
@@ -918,8 +918,4 @@ def _final_page(user):
         st.info("Aucun jeu prété / validé pour le moment.")
 
     st.write("df_test")
-    df_filtre_propose = df_jeux[df_jeux[f"{user['pseudo']}_propose"] == True]
-    st.write( df_filtre_propose )
-    st.write("df_test2")
-    df_filtre_propose2 = df_jeux[df_jeux[f"{user['pseudo']}_propose"] == true]
-    st.write( df_filtre_propose2 )
+    st.write( df_export_list_propose )
