@@ -509,7 +509,7 @@ def _final_page(user):
         st.write("test")
 
     if export_list_initiale_button:
-        df_export_list_initiale = df_jeu [["Couverture Jeu","Jeu" ]]
+        df_export_list_initiale = df_jeux [["Couverture Jeu","Jeu" ]]
      
         to_excel(df_export_list_initiale , "liste_selection_jeu.xlsx") 
     
