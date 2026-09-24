@@ -96,10 +96,11 @@ def todo_page(user):
                 st.rerun()
 
        st.success(" - TACHES TERMINEE ")
-       c1, c2, c3= st.columns([4, 4, 1])
+       c1, c2, c3 , c4= st.columns([4, 3, 2, 4])
        c1.write("nom de la tache")
        c2.write("affecte a ")
        c3.write("statut")
+       c4.write("commentaire")
                      
        for t in get_todo("CLOSED"):
 
@@ -110,7 +111,8 @@ def todo_page(user):
                                    label_visibility="collapsed")
             label_statut = c3.text_input("t", value=t["statut"], key=f"edit_statut_{t["_id"]}",
                                    label_visibility="collapsed")
-            
+            commentaire_statut = c4.text_input("t", value=t["commentaire"], key=f"edit_comment_{t["_id"]}",
+                                   label_visibility="collapsed")           
            
-
+ 
 
