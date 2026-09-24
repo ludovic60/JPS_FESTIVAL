@@ -406,7 +406,7 @@ def _final_page(user):
       # Bouton de soumission unique en haut du tableau
       col_btn1, col_btn2, col_btn3 , col_btn4  = st.columns(4)
       with col_btn1 : 
-           submit_button = st.form_submit_button(
+           submit_button = st.button(
                   label="Enregistrer toutes les modifications"
             )      
       with col_btn2 : 
