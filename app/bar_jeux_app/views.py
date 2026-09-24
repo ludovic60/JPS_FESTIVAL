@@ -354,8 +354,7 @@ def _final_page(user):
 
     with col_btn4 :  
           df_export_list_initiale = df_jeux[["Couverture Jeu","Jeu" ]]
-          print("df_export_list_initiale")
-          print(df_export_list_initiale)
+     
           excel_data_initial = to_excel(df_export_list_initiale , "liste_selection_jeu.xlsx") 
     
           export_list_perso_button = st.download_button(
@@ -906,3 +905,6 @@ def _final_page(user):
        st.plotly_chart(fig_hist, use_container_width=True)
     else:
         st.info("Aucun jeu prété / validé pour le moment.")
+
+    write("df_export_list_initiale")
+    write(df_export_list_initiale)
