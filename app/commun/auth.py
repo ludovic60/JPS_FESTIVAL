@@ -96,7 +96,8 @@ def login_with_pseudo(pseudo, password):
             "id": user_data.id,
             "email": user_data.email,
             "role": user_data.user_metadata.get("role", "user"),
-            "pseudo": user_data.user_metadata.get("pseudo", pseudo.strip())
+            "pseudo": user_data.user_metadata.get("pseudo", pseudo.strip()),
+            "prete_jeu" : user_data.user_metadata.get("prete_jeu", pseudo.strip())
         }
         st.session_state["authenticated"] = True
         return None
