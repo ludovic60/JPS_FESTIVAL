@@ -415,7 +415,7 @@ def _final_page(user):
     gb.configure_column("Total coché par joueur", editable=False, width=80, suppressSizeToFit=True, pinned=True)
     gb.configure_column("Total coché validé par admin", editable=False, width=90, suppressSizeToFit=True, pinned=True)
       
-    gb.configure_grid_options(singleClickEdit=True, rowHeight=60)
+
     grid_options = gb.build()
       
     # En-têtes groupés par joueur
@@ -454,8 +454,9 @@ def _final_page(user):
     dynamic_height = 650 ##min(max(40 + (len(df_jeux) * 70) + 20, 200), 800)
     if "grid_version" not in st.session_state:
          st.session_state.grid_version = 0
-    gb.configure_grid_options(alwaysShowHorizontalScroll=True)
+    gb.configure_grid_options(alwaysShowHorizontalScroll=True, rowHeight=60)
 
+    ## gb.configure_grid_options(singleClickEdit=True
     if "df_courant" not in st.session_state:
           st.session_state.df_courant = df_jeux.copy() # copie du dataframe dans la session pour identifier les modifs 
      
