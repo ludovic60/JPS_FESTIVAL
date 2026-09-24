@@ -38,8 +38,11 @@ def get_todo(mode):
         filtre_tb = {}
         selc_tb = {"todo": 1, "_id": 1, "statut":1, "affecte":1, "pourcentage avancement":1}
         if mode == "CLOSED" :
+            filtre_tb = { "statut": { "$in" : ["TERMINER", "ABANDONNER"]}}
+        elif mode == "OPEN" :
+            filtre_tb = { "statut": { "$nin" : ["TERMINER", "ABANDONNER"]}}
+        else :
             filtre_tb = {}
-        elif mode == "OEND" :
         resultats = list(todo_tb.find(filtre_tb, selc_tb))
        
     else :
