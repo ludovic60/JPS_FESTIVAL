@@ -906,5 +906,5 @@ def _final_page(user):
     else:
         st.info("Aucun jeu prété / validé pour le moment.")
 
-    write("df_export_list_initiale")
-    write(df_export_list_initiale)
+    st.write("df_export_list_initiale")
+    st.write(df_export_list_initiale)
