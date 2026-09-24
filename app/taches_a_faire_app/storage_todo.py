@@ -64,7 +64,7 @@ def add_todo(label):
 
 
 
-def update_todo(todo_id, affectation, newstatut):
+def update_todo(todo_id, affectation, newstatut,newcomment):
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
@@ -72,7 +72,8 @@ def update_todo(todo_id, affectation, newstatut):
     
         upd_todo_id = ObjectId(todo_id)
     
-        resultats =  todo_tb.update_one({"_id": upd_todo_id}, {"$set": {"affecte": affectation, "statut": newstatut} })
+        resultats =  todo_tb.update_one({"_id": upd_todo_id}, {"$set": {"affecte": affectation, "statut": newstatut,"commentaire":newcomment} })
+ 
  
 
 
