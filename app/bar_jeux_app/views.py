@@ -455,7 +455,8 @@ def _final_page(user):
          st.session_state.grid_version = 0
       gb.configure_grid_options(alwaysShowHorizontalScroll=True)
 
-
+      if "df_courant" not in st.session_state:
+          st.session_state.df_courant = df_jeux.copy() # copie du dataframe dans la session pour identifier les modifs 
      
       # le tableau
       grid_response = AgGrid(
@@ -488,7 +489,7 @@ def _final_page(user):
            ]
      
            # On fusionne pour comparer cellule par cellule via les suffixes _old et _new
-           merged = df_jeux.merge(new_df, on="_id", suffixes=("_old", "_new"))
+           merged = st.session_state.df_courant.merge(new_df, on="_id", suffixes=("_old", "_new"))
      
            modifications_count = 0
      
