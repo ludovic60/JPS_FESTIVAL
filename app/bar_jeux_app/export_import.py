@@ -22,7 +22,7 @@ def to_csv(df) -> bytes:
 def to_excel(df , nom_fichier) :
     
     with pd.ExcelWriter(nom_fichier, engine='openpyxl') as writer:
-        df.to_excel(writer, index=False, sheet_name='liste_jeux')
+        df.to_excel(writer, index=False, sheet_name="liste_jeux")
         
         # 2. Récupérer la feuille Excel active
         worksheet = writer.sheets['Jeux']
