@@ -320,7 +320,7 @@ def _final_page(user):
                   label="Enregistrer toutes les modifications"
             )      
     with col_btn2 : 
-         if user['prete_jeu'] =True or user['prete_jeu'] ="True" :
+         if user['prete_jeu'] == True or user['prete_jeu'] == "True" :
              df_filtre_propose = df_jeux[df_jeux[f"{user['pseudo']}_propose"] == True]
     
              df_export_list_propose = df_filtre_propose[["Couverture Jeu","Jeu" ]]
@@ -337,7 +337,7 @@ def _final_page(user):
      
 
     with col_btn3 :  
-         if user['prete_jeu'] =True or user['prete_jeu'] ="True" :
+         if user['prete_jeu'] == True or user['prete_jeu'] == "True" :
              df_filtre_valide = df_jeux[df_jeux[f"{user['pseudo']}_valide"] == True]
               
              df_export_list_valide = df_filtre_valide[["Couverture Jeu","Jeu" ]]
