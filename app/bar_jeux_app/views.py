@@ -413,7 +413,7 @@ def _final_page(user):
 
 
          export_list_perso_button = st.download_button(
-              label="📥 Export de votre liste"
+              label="📥 Export de votre liste",
               data=excel_data,
               file_name="export_jeux.xlsx",
               mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -432,7 +432,7 @@ def _final_page(user):
     
 
          export_list_valide_button = st.download_button(
-              label="📥 Export de la liste validée"
+              label="📥 Export de la liste validée",
               data=excel_data,
               file_name="export_jeux.xlsx",
               mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -445,7 +445,7 @@ def _final_page(user):
           excel_data = to_excel(df_export_list_initiale , "liste_selection_jeu.xlsx") 
     
           export_list_perso_button = st.download_button(
-            label="📥 Export de la liste initial"
+            label="📥 Export de la liste initial",
             data=excel_data,
             file_name="export_jeux.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
