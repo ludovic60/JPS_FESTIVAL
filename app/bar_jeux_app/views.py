@@ -494,33 +494,25 @@ def _final_page(user):
     
  
     if export_list_perso_button:
- "field": f"{pseudo}_propose",
- "field": f"{pseudo}_valide",
-      gb.configure_column("_id", hide=True)
-      gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True, pinned=True)
+      #  "field": f"{pseudo}_propose",
+      #  "field": f"{pseudo}_valide",
+      #  gb.configure_column("_id", hide=True)
+      #  gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
+      #  gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=True)
+      #  gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=True)
+      #  gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
+      #  gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True, pinned=True)
       
 
     if export_list_valide_button:
 
     if export_list_initiale_button:
-        df_export_list_initiale = df_jeu ["Couverture Jeu","Jeu" ]
+        df_export_list_initiale = df_jeu [["Couverture Jeu","Jeu" ]]
+     
+        to_excel(df_export_list_initiale , "liste_selection_jeu.xlsx") 
     
-      with col_btn2 : 
-          export_list_perso_button = st.form_submit_button(
-                label="export de votre liste")
-      with col_btn3 :  
-          export_list_valide_button = st.form_submit_button(
-                label="Export de la liste validée")
-      with col_btn4 :  
-          export_list_initiale_button = st.form_submit_button(
-                label="export de la liste initial")
           
 
-def to_excel(df , nom_fichier) :
 
 
 
