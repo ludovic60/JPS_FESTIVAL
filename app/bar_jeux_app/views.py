@@ -310,7 +310,7 @@ def _final_page(user):
     
     df_jeux = pd.DataFrame(row_jeux)
 
-    # --- 3. FORMULAIRE STREAMLIT AVEC AGGRID ---
+    # ---tableau  avec le boutons au dessus  ---
     # Utilisation d'un st.form pour regrouper le tableau et le bouton de validation en bas
      # Bouton de soumission unique en haut du tableau
     col_btn1, col_btn2, col_btn3 , col_btn4  = st.columns(4)
@@ -368,20 +368,21 @@ def _final_page(user):
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
           )
 
-    with st.form(key="loans_form"):
-      image_renderer = JsCode("""
+    ###with st.form(key="loans_form"):
+    ####  le tableau
+    image_renderer = JsCode("""
       class ImageRenderer {
-          init(params) {
-              this.eGui = document.createElement('img');
-              this.eGui.setAttribute('src', params.value);
-              this.eGui.setAttribute('style', 'height: 45px; width: auto; border-radius: 4px; vertical-align: middle;');
-          }
-          getGui() { return this.eGui; }
+            init(params) {
+                this.eGui = document.createElement('img');
+                this.eGui.setAttribute('src', params.value);
+                this.eGui.setAttribute('style', 'height: 45px; width: auto; border-radius: 4px; vertical-align: middle;');
+            }
+            getGui() { return this.eGui; }
       }
-      """)
+    """)
       
-      #  On liste explicitement les noms des colonnes souhaitées
-      columns_to_show = [
+    #  On liste explicitement les noms des colonnes souhaitées
+    columns_to_show = [
           "nouveaute",
           "Annee",
           "Classement",
@@ -390,18 +391,18 @@ def _final_page(user):
           "Plusieurs exemplaires souhaités",
           "Total coché par joueur",
           "Total coché validé par admin"
-      ]
+    ]
       
-      # On passe la liste directement à partir du DataFrame
-      gb = GridOptionsBuilder.from_dataframe(df_jeux[columns_to_show])
-      gb.configure_column("_id", hide=True)
-      gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True, pinned=True)
+    # On passe la liste directement à partir du DataFrame
+    gb = GridOptionsBuilder.from_dataframe(df_jeux[columns_to_show])
+    gb.configure_column("_id", hide=True)
+    gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
+    gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=True)
+    gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=True)
+    gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
+    gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True, pinned=True)
       
-      gb.configure_column(
+    gb.configure_column(
           "Plusieurs exemplaires souhaités",
           editable=(user["role"] == "admin"),
           cellRenderer="agCheckboxCellRenderer",
@@ -409,16 +410,16 @@ def _final_page(user):
           width=90,
           suppressSizeToFit=True,
           pinned=True 
-      )
+    )
       
-      gb.configure_column("Total coché par joueur", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Total coché validé par admin", editable=False, width=90, suppressSizeToFit=True, pinned=True)
+    gb.configure_column("Total coché par joueur", editable=False, width=80, suppressSizeToFit=True, pinned=True)
+    gb.configure_column("Total coché validé par admin", editable=False, width=90, suppressSizeToFit=True, pinned=True)
       
-      gb.configure_grid_options(singleClickEdit=True, rowHeight=60)
-      grid_options = gb.build()
+    gb.configure_grid_options(singleClickEdit=True, rowHeight=60)
+    grid_options = gb.build()
       
-      # En-têtes groupés par joueur
-      for pseudo in pseudo_list:
+    # En-têtes groupés par joueur
+    for pseudo in pseudo_list:
           group_col = {
               "headerName": pseudo,
               "children": [
@@ -449,17 +450,17 @@ def _final_page(user):
           }
           grid_options["columnDefs"].append(group_col)
       
-      # Hauteur dynamique
-      dynamic_height = 650 ##min(max(40 + (len(df_jeux) * 70) + 20, 200), 800)
-      if "grid_version" not in st.session_state:
+    # Hauteur dynamique
+    dynamic_height = 650 ##min(max(40 + (len(df_jeux) * 70) + 20, 200), 800)
+    if "grid_version" not in st.session_state:
          st.session_state.grid_version = 0
-      gb.configure_grid_options(alwaysShowHorizontalScroll=True)
+    gb.configure_grid_options(alwaysShowHorizontalScroll=True)
 
-      if "df_courant" not in st.session_state:
+    if "df_courant" not in st.session_state:
           st.session_state.df_courant = df_jeux.copy() # copie du dataframe dans la session pour identifier les modifs 
      
-      # le tableau
-      grid_response = AgGrid(
+    # le tableau
+    grid_response = AgGrid(
           st.session_state.df_courant,  
           gridOptions=grid_options,
           update_mode=GridUpdateMode.VALUE_CHANGED,
@@ -468,13 +469,14 @@ def _final_page(user):
           fit_columns_on_grid_load=False,
           height=dynamic_height,
           key=f"aggrid_table_{st.session_state.grid_version}",
-      ) 
+    ) 
    
  
 
-     #### ------------------------------------------------------
-     # --- Détection des changements ---
-     #### ------------------------------------------------------
+
+    #### ------------------------------------------------------
+    # --- Détection des changements ---
+    #### ------------------------------------------------------
     if submit_button:
            updated_data = grid_response["data"]
            new_df = pd.DataFrame(updated_data)
