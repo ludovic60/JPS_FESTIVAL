@@ -502,9 +502,10 @@ def _final_page(user):
       #  gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=True)
       #  gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
       #  gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True, pinned=True)
-      
+      st.write("test")
 
     if export_list_valide_button:
+        st.write("test")
 
     if export_list_initiale_button:
         df_export_list_initiale = df_jeu [["Couverture Jeu","Jeu" ]]
