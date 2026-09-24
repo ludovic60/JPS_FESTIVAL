@@ -323,11 +323,13 @@ def _final_page(user):
                   label="Enregistrer toutes les modifications"
             )      
     with col_btn2 : 
-
-         df_filtre_propose = df_jeux[df_jeux[f"{user['pseudo']}_propose"] == True]
-
-         df_export_list_propose = df_filtre_propose[["Couverture Jeu","Jeu" ]]
-         excel_data_propose = to_excel(df_export_list_propose ) 
+         if user['prete_jeu'] =True or user['prete_jeu'] ="True" :
+             df_filtre_propose = df_jeux[df_jeux[f"{user['pseudo']}_propose"] == True]
+    
+             df_export_list_propose = df_filtre_propose[["Couverture Jeu","Jeu" ]]
+             excel_data_propose = to_excel(df_export_list_propose ) 
+         else :
+             excel_data_propose =b""
       
          export_list_perso_button = st.download_button(
               label="📥 Export de votre liste",
@@ -338,15 +340,13 @@ def _final_page(user):
      
 
     with col_btn3 :  
-
- 
-
-        df_filtre_valide = df_jeux[df_jeux[f"{user['pseudo']}_valide"] == True]
-         
-        df_export_list_valide = df_filtre_valide[["Couverture Jeu","Jeu" ]]
-        excel_data_valide = to_excel(df_export_list_valide ) 
-      
-
+         if user['prete_jeu'] =True or user['prete_jeu'] ="True" :
+             df_filtre_valide = df_jeux[df_jeux[f"{user['pseudo']}_valide"] == True]
+              
+             df_export_list_valide = df_filtre_valide[["Couverture Jeu","Jeu" ]]
+             excel_data_valide = to_excel(df_export_list_valide ) 
+         else :
+             excel_data_propose =b""   
      
         export_list_valide_button = st.download_button(
               label="📥 Export de la liste validée",
