@@ -411,11 +411,11 @@ def _final_page(user):
             )      
       with col_btn2 : 
 
-
+         excel_data_user=[]
          export_list_perso_button = st.download_button(
               label="📥 Export de votre liste",
-              data=excel_data,
-              file_name="export_jeux.xlsx",
+              data=excel_data_user,
+              file_name="export_jeux_user.xlsx",
               mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
           )
      
@@ -430,11 +430,11 @@ def _final_page(user):
         #  gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
         #  gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True, pinned=True)
     
-
+         excel_data_valide=[]
          export_list_valide_button = st.download_button(
               label="📥 Export de la liste validée",
-              data=excel_data,
-              file_name="export_jeux.xlsx",
+              data=excel_data_valide,
+              file_name="export_jeux_valide.xlsx",
               mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
           )
 
@@ -442,12 +442,12 @@ def _final_page(user):
       with col_btn4 :  
           df_export_list_initiale = df_jeux [["Couverture Jeu","Jeu" ]]
      
-          excel_data = to_excel(df_export_list_initiale , "liste_selection_jeu.xlsx") 
+          excel_data_initial = to_excel(df_export_list_initiale , "liste_selection_jeu.xlsx") 
     
           export_list_perso_button = st.download_button(
             label="📥 Export de la liste initial",
-            data=excel_data,
-            file_name="export_jeux.xlsx",
+            data=excel_data_initial,
+            file_name="liste_selection_jeu.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
           )
      
