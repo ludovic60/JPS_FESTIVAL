@@ -19,6 +19,23 @@ def to_csv(df) -> bytes:
     return df.to_csv(index=False).encode("utf-8-sig")
 
 
+def to_excel(df , nom_fichier) :
+    
+    with pd.ExcelWriter(nom_fichier, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='liste_jeux')
+        
+        # 2. Récupérer la feuille Excel active
+        worksheet = writer.sheets['Jeux']
+        
+        # --- DÉFINIR LA LARGEUR DES COLONNES ---
+        worksheet.column_dimensions['A'].width = 25  # Colonne A
+        worksheet.column_dimensions['B'].width = 40  # Colonne B
+        
+        # --- DÉFINIR LA HAUTEUR DES LIGNES ---
+        worksheet.row_dimensions[1].height = 25      # Ligne 1 (souvent les en-têtes)
+        worksheet.row_dimensions[2].height = 35      # Ligne 2 (première ligne de donn
+
+
 def to_pdf(df, title="Liste finale des prêts") -> bytes:
     from reportlab.lib.pagesizes import A4, landscape
     from reportlab.lib import colors
