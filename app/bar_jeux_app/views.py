@@ -465,7 +465,7 @@ def _final_page(user):
           st.session_state.df_courant,  
           gridOptions=grid_options,
           update_mode=GridUpdateMode.MANUAL,
-          data_return_mode=DataReturnMode.AS_INPUT,
+          data_return_mode=DataReturnMode.FILTERED_AND_SORTED,
           allow_unsafe_jscode=True,
           fit_columns_on_grid_load=False,
           height=dynamic_height,
