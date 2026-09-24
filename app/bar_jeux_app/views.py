@@ -327,7 +327,7 @@ def _final_page(user):
          excel_data_user=[]
          export_list_perso_button = st.download_button(
               label="📥 Export de votre liste",
-              data=excel_data_user,
+              data=b"",
               file_name="export_jeux_user.xlsx",
               mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
           )
@@ -347,7 +347,7 @@ def _final_page(user):
          excel_data_valide=[]
          export_list_valide_button = st.download_button(
               label="📥 Export de la liste validée",
-              data=excel_data_valide,
+              data=b"",
               file_name="export_jeux_valide.xlsx",
               mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
           )
