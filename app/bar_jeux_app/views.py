@@ -464,7 +464,7 @@ def _final_page(user):
           st.session_state.df_courant,  
           gridOptions=grid_options,
           update_mode=GridUpdateMode.NO_UPDATE,
-          data_return_mode=DataReturnMode.FILTERED_AND_SORTED,
+          data_return_mode=DataReturnMode.INPUT,
           allow_unsafe_jscode=True,
           fit_columns_on_grid_load=False,
           height=dynamic_height,
@@ -530,6 +530,8 @@ def _final_page(user):
                " mise(s) à jour !"
            )
            st.session_state.grid_version += 1
+           st.session_state.df_courant = new_df.copy() # copie du dataframe dans la session pour identifier les modifs 
+     
            time.sleep(1)
            st.rerun()
     
