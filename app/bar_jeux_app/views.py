@@ -73,8 +73,7 @@ def main_app(user):
 
 def _list_page(title, list_key, user):
     st.title(title)
-    print("list key")
-    print(list_key)    
+
     
     with st.expander("➕ Demander l'ajout d'un jeu"):
         with st.form(f"req_{list_key}", clear_on_submit=True):
