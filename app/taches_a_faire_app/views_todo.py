@@ -57,7 +57,7 @@ def todo_page(user):
        
     
 
-       st.markdown(" - TACHES RESTANT A FAIRE ")
+       st.error(" - TACHES RESTANT A FAIRE ")
        c1, c2, c3,c4 ,c5, c6= st.columns([4, 4, 1, 1, 1,1])
        c1.write("nom de la tache")
        c2.write("affecte a ")
@@ -90,7 +90,7 @@ def todo_page(user):
                 get_todo()
                 st.rerun()
 
-       st.markdown(" - TACHES TERMINEE ")
+       st.success(" - TACHES TERMINEE ")
        c1, c2, c3= st.columns([4, 4, 1])
        c1.write("nom de la tache")
        c2.write("affecte a ")
