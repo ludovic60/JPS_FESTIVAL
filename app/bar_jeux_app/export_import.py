@@ -19,9 +19,9 @@ def to_csv(df) -> bytes:
     return df.to_csv(index=False).encode("utf-8-sig")
 
 
-def to_excel(df , nom_fichier) :
+def to_excel(df) :
     output = io.BytesIO()
-    with pd.ExcelWriter(nom_fichier, engine='openpyxl') as writer:
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
         df.to_excel(writer, index=False, sheet_name="liste_jeux")
         
         # 2. Récupérer la feuille Excel active
