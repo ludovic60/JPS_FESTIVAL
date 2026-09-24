@@ -312,224 +312,203 @@ def _final_page(user):
 
     # ---tableau  avec le boutons au dessus  ---
     # Utilisation d'un st.form pour regrouper le tableau et le bouton de validation en bas
-     # Bouton de soumission unique en haut du tableau
-    col_btn1, col_btn2, col_btn3   = st.columns(3)
-    df_export_list_initiale = df_jeux[["Couverture Jeu","Jeu" ]]
+    # Bouton de soumission unique en haut du tableau
+    # 1. On crée 4 colonnes pour aligner les 4 boutons sur la même ligne
+    col_btn1, col_btn2, col_btn3, col_btn4 = st.columns(4)
     
-    print(user)
-
-   
-    with col_btn1 : 
-         if user['prete_jeu'] == True or user['prete_jeu'] == "True" :
-             df_filtre_propose = df_jeux[df_jeux[f"{user['pseudo']}_propose"] == True]
+    # ---Colonne 1 : Export Proposé ---
+    with col_btn1:
+        if user['prete_jeu'] == True or user['prete_jeu'] == "True":
+            df_filtre_propose = df_jeux[df_jeux[f"{user['pseudo']}_propose"] == True]
+            df_export_list_propose = df_filtre_propose[["Couverture Jeu", "Jeu"]]
+            excel_data_propose = to_excel(df_export_list_propose)
+        else:
+            excel_data_propose = b""
+        
+        st.download_button(
+            label="📥 Export de votre liste",
+            data=excel_data_propose,
+            file_name="export_jeux_user.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            use_container_width=True
+        )
     
-             df_export_list_propose = df_filtre_propose[["Couverture Jeu","Jeu" ]]
-             excel_data_propose = to_excel(df_export_list_propose ) 
-         else :
-             excel_data_propose =b""
-      
-         export_list_perso_button = st.download_button(
-              label="📥 Export de votre liste",
-              data=excel_data_propose,
-              file_name="export_jeux_user.xlsx",
-              mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-          )
-     
-
-    with col_btn2 :  
-         if user['prete_jeu'] == True or user['prete_jeu'] == "True" :
-             df_filtre_valide = df_jeux[df_jeux[f"{user['pseudo']}_valide"] == True]
-              
-             df_export_list_valide = df_filtre_valide[["Couverture Jeu","Jeu" ]]
-             excel_data_valide = to_excel(df_export_list_valide ) 
-         else :
-             excel_data_valide =b""   
-     
-         export_list_valide_button = st.download_button(
-              label="📥 Export de la liste validée",
-              data=excel_data_valide,
-              file_name="export_jeux_valide.xlsx",
-              mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-          )
-     
-
-    with col_btn3 :  
-          df_export_list_initiale = df_jeux[["Couverture Jeu","Jeu" ]]
-     
-          excel_data_initial = to_excel(df_export_list_initiale ) 
+    # ---Colonne 2 : Export Validé ---
+    with col_btn2:
+        if user['prete_jeu'] == True or user['prete_jeu'] == "True":
+            df_filtre_valide = df_jeux[df_jeux[f"{user['pseudo']}_valide"] == True]
+            df_export_list_valide = df_filtre_valide[["Couverture Jeu", "Jeu"]]
+            excel_data_valide = to_excel(df_export_list_valide)
+        else:
+            excel_data_valide = b""   
+        
+        st.download_button(
+            label="📥 Export de la liste validée",
+            data=excel_data_valide,
+            file_name="export_jeux_valide.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            use_container_width=True
+        )
     
-          export_list_perso_button = st.download_button(
-            label="📥 Export de la liste initial",
+    # ---Colonne 3 : Export Initial ---
+    with col_btn3:
+        df_export_list_initiale = df_jeux[["Couverture Jeu", "Jeu"]]
+        excel_data_initial = to_excel(df_export_list_initiale)
+        
+        st.download_button(
+            label="📥 Export de la liste initiale",
             data=excel_data_initial,
             file_name="liste_selection_jeu.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-          )
-    ##### creation d'un formulaire permettant de faire des modifications dans le tableau sans recalcul systématique
-    #### le bouton enregistrer permettra de detecter les modifs
-    with st.form(key="loans_form"):
-      image_renderer = JsCode("""
-      class ImageRenderer {
-          init(params) {
-              this.eGui = document.createElement('img');
-              this.eGui.setAttribute('src', params.value);
-              this.eGui.setAttribute('style', 'height: 45px; width: auto; border-radius: 4px; vertical-align: middle;');
-          }
-          getGui() { return this.eGui; }
-      }
-      """)
-      
-      #  On liste explicitement les noms des colonnes souhaitées
-      columns_to_show = [
-          "nouveaute",
-          "Annee",
-          "Classement",
-          "Couverture Jeu",
-          "Jeu",
-          "Plusieurs exemplaires souhaités",
-          "Total coché par joueur",
-          "Total coché validé par admin"
-      ]
-      
-      # On passe la liste directement à partir du DataFrame
-      gb = GridOptionsBuilder.from_dataframe(df_jeux[columns_to_show])
-      gb.configure_column("_id", hide=True)
-      gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True, pinned=True)
-      
-      gb.configure_column(
-          "Plusieurs exemplaires souhaités",
-          editable=(user["role"] == "admin"),
-          cellRenderer="agCheckboxCellRenderer",
-          cellEditor="agCheckboxCellEditor",
-          width=90,
-          suppressSizeToFit=True,
-          pinned=True 
-      )
-      
-      gb.configure_column("Total coché par joueur", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Total coché validé par admin", editable=False, width=90, suppressSizeToFit=True, pinned=True)
-      
-      gb.configure_grid_options(singleClickEdit=True, rowHeight=60)
-      grid_options = gb.build()
-      
-      # En-têtes groupés par joueur
-      for pseudo in pseudo_list:
-          group_col = {
-              "headerName": pseudo,
-              "children": [
-                  {
-                      "field": f"{pseudo}_propose",
-                      "headerName": "Je prête",
-                      "editable": (user["pseudo"] == pseudo or user["role"] == "admin"),
-                      "cellRenderer": "agCheckboxCellRenderer",
-                      "cellEditor": "agCheckboxCellEditor",
-                      "width": 100,
-                      "suppressSizeToFit": True,
-                  },
-                  {
-                      "field": f"{pseudo}_valide",
-                      "headerName": "Validé",
-                      "editable": (user["role"] == "admin"),
-                      "cellRenderer": "agCheckboxCellRenderer",
-                      "cellEditor": "agCheckboxCellEditor",
-                      "width": 100,
-                      "suppressSizeToFit": True,
-                      "cellStyle": JsCode("""
-                          function(params) {
-                              return params.value === true ? {backgroundColor: '#d4edda', color: '#155724'} : null;
-                          }
-                      """),
-                  },
-              ],
-          }
-          grid_options["columnDefs"].append(group_col)
-      
-      # Hauteur dynamique
-      dynamic_height = 650 ##min(max(40 + (len(df_jeux) * 70) + 20, 200), 800)
-      if "grid_version" not in st.session_state:
-         st.session_state.grid_version = 0
-      gb.configure_grid_options(alwaysShowHorizontalScroll=True)
-
-        
-      submit_button = st.form_submit_button( label="Enregistrer toutes les modifications" )   
-      # le tableau
-      grid_response = AgGrid(
-          df_jeux,
-          gridOptions=grid_options,
-          update_mode=GridUpdateMode.NO_UPDATE,
-          data_return_mode=DataReturnMode.AS_INPUT,
-          allow_unsafe_jscode=True,
-          fit_columns_on_grid_load=False,
-          height=dynamic_height,
-          key=f"aggrid_table_{st.session_state.grid_version}",
-      ) 
-   
- 
-
-     #### ------------------------------------------------------
-     # --- Détection des changements ---
-     #### ------------------------------------------------------
-    if submit_button:
-           updated_data = grid_response["data"]
-           new_df = pd.DataFrame(updated_data)
-     
-           # Les colonnes à surveiller
-           cols_to_check = [
-               "Plusieurs exemplaires souhaités"
-           ] + [
-               col
-               for col in new_df.columns
-               if "_propose" in col or "_valide" in col
-           ]
-     
-           # On fusionne pour comparer cellule par cellule via les suffixes _old et _new
-           merged = df_jeux.merge(new_df, on="_id", suffixes=("_old", "_new"))
-     
-           modifications_count = 0
-     
-           for _, row in merged.iterrows():
-             game_id = row["_id"]
-     
-             # On parcourt chaque colonne pour voir EXACTEMENT laquelle a changé
-             for col in cols_to_check:
-               val_old = row[f"{col}_old"]
-               val_new = row[f"{col}_new"]
-     
-               # Si la valeur a changé pour cette cellule précise
-               if val_old != val_new:
-                 modifications_count += 1
-     
-                 # --- CAS 1 : "Plusieurs exemplaires" ---
-                 if col == "Plusieurs exemplaires souhaités":
-                   if user["role"] == "admin":
-                     storage_jeux.toggle_admin_selected(game_id, val_new)
-     
-                 # --- CAS 2 : Colonne de prêt d'un utilisateur (ex: "pseudo_propose") ---
-                 elif "_propose" in col:
-                   # On extrait le pseudo du nom de la colonne (ex: "Alice_propose" -> "Alice")
-                   pseudo = col.replace("_propose", "")
-                   u_id = user_map[pseudo]
-                   storage_jeux.toggle_loan(game_id, str(u_id), val_new)
-     
-                 # --- CAS 3 : Colonne de validation admin d'un utilisateur (ex: "pseudo_valide") ---
-                 elif "_valide" in col:
-                   pseudo = col.replace("_valide", "")
-                   u_id = user_map[pseudo]
-                   storage_jeux.set_loan_valide_admin(game_id, str(u_id), val_new)
-     
-           st.success(
-               f"Enregistrement réussi : {modifications_count} cellule(s) modifiée(s)"
-               " mise(s) à jour !"
-           )
-           st.session_state.grid_version += 1
-           time.sleep(1)
-           st.rerun()
-  
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            use_container_width=True
+        )
+    
+    # ---Colonne 4 : Bouton d'enregistrement classique ---
+    with col_btn4:
+        # Un vrai st.button classique qui s'aligne parfaitement avec les autres
+        save_clicked = st.button("💾 Enregistrer", type="primary", use_container_width=True)
+    
     st.divider()
-   
+    
+    # 2. Initialisation de la session si nécessaire
+    if "df_courant" not in st.session_state:
+        st.session_state.df_courant = df_jeux.copy()
+    
+    # 3. Le tableau AgGrid (HORS du formulaire, avec update_mode=MANUAL pour la fluidité)
+    image_renderer = JsCode("""
+        class ImageRenderer {
+            init(params) {
+                this.eGui = document.createElement('img');
+                this.eGui.setAttribute('src', params.value);
+                this.eGui.setAttribute('style', 'height: 45px; width: auto; border-radius: 4px; vertical-align: middle;');
+            }
+            getGui() { return this.eGui; }
+        }
+    """)
+    
+    columns_to_show = [
+        "nouveaute", "Annee", "Classement", "Couverture Jeu", "Jeu",
+        "Plusieurs exemplaires souhaités", "Total coché par joueur", "Total coché validé par admin"
+    ]
+    
+    gb = GridOptionsBuilder.from_dataframe(df_jeux[columns_to_show])
+    gb.configure_column("_id", hide=True)
+    gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
+    gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=True)
+    gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=True)
+    gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
+    gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True, pinned=True)
+    
+    gb.configure_column(
+        "Plusieurs exemplaires souhaités",
+        editable=(user["role"] == "admin"),
+        cellRenderer="agCheckboxCellRenderer",
+        cellEditor="agCheckboxCellEditor",
+        width=90,
+        suppressSizeToFit=True,
+        pinned=True 
+    )
+    
+    gb.configure_column("Total coché par joueur", editable=False, width=80, suppressSizeToFit=True, pinned=True)
+    gb.configure_column("Total coché validé par admin", editable=False, width=90, suppressSizeToFit=True, pinned=True)
+    
+    gb.configure_grid_options(singleClickEdit=True, rowHeight=60, alwaysShowHorizontalScroll=True)
+    
+    # En-têtes groupés par joueur
+    for pseudo in pseudo_list:
+        group_col = {
+            "headerName": pseudo,
+            "children": [
+                {
+                    "field": f"{pseudo}_propose",
+                    "headerName": "Je prête",
+                    "editable": (user["pseudo"] == pseudo or user["role"] == "admin"),
+                    "cellRenderer": "agCheckboxCellRenderer",
+                    "cellEditor": "agCheckboxCellEditor",
+                    "width": 100,
+                    "suppressSizeToFit": True,
+                },
+                {
+                    "field": f"{pseudo}_valide",
+                    "headerName": "Validé",
+                    "editable": (user["role"] == "admin"),
+                    "cellRenderer": "agCheckboxCellRenderer",
+                    "cellEditor": "agCheckboxCellEditor",
+                    "width": 100,
+                    "suppressSizeToFit": True,
+                    "cellStyle": JsCode("""
+                        function(params) {
+                            return params.value === true ? {backgroundColor: '#d4edda', color: '#155724'} : null;
+                        }
+                    """),
+                },
+            ],
+        }
+        gb.configure_column(group_col) # ou grid_options["columnDefs"].append(group_col) selon votre syntaxe
+    
+    grid_options = gb.build()
+    
+    dynamic_height = 650
+    if "grid_version" not in st.session_state:
+        st.session_state.grid_version = 0
+    
+    grid_response = AgGrid(
+        st.session_state.df_courant,  
+        gridOptions=grid_options,
+        update_mode=GridUpdateMode.MANUAL, # <--- Garde la grille fluide sans envois intempestifs
+        data_return_mode=DataReturnMode.FILTERED_AND_SORTED,
+        allow_unsafe_jscode=True,
+        fit_columns_on_grid_load=False,
+        height=dynamic_height,
+        key=f"aggrid_table_{st.session_state.grid_version}",
+    ) 
+    
+    # 4. Traitement des modifications uniquement au clic sur le bouton "Enregistrer"
+    if save_clicked:
+        updated_data = grid_response["data"]
+        new_df = pd.DataFrame(updated_data)
+     
+        cols_to_check = [
+            "Plusieurs exemplaires souhaités"
+        ] + [
+            col for col in new_df.columns
+            if "_propose" in col or "_valide" in col
+        ]
+     
+        merged = st.session_state.df_courant.merge(new_df, on="_id", suffixes=("_old", "_new"))
+        modifications_count = 0
+     
+        for _, row in merged.iterrows():
+            game_id = row["_id"]
+     
+            for col in cols_to_check:
+                val_old = row[f"{col}_old"]
+                val_new = row[f"{col}_new"]
+     
+                if val_old != val_new:
+                    modifications_count += 1
+     
+                    if col == "Plusieurs exemplaires souhaités":
+                        if user["role"] == "admin":
+                            storage_jeux.toggle_admin_selected(game_id, val_new)
+                    elif "_propose" in col:
+                        pseudo = col.replace("_propose", "")
+                        u_id = user_map[pseudo]
+                        storage_jeux.toggle_loan(game_id, str(u_id), val_new)
+                    elif "_valide" in col:
+                        pseudo = col.replace("_valide", "")
+                        u_id = user_map[pseudo]
+                        storage_jeux.set_loan_valide_admin(game_id, str(u_id), val_new)
+     
+        st.success(f"Enregistrement réussi : {modifications_count} cellule(s) modifiée(s) mise(s) à jour !")
+        st.session_state.grid_version += 1
+        st.session_state.df_courant = new_df.copy() 
+     
+        time.sleep(1)
+        st.rerun()
+      
+    st.divider()
+       
     # --- PARTIE inferieurs : GRAPHIQUES ---
 
     col_graph1, col_graph2, col_graph3 = st.columns(3)
