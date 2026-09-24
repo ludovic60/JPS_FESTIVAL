@@ -30,13 +30,16 @@ _lock = Lock()
 
 # ----  gestion de la table Tâche  ----
 
-def get_todo():
+def get_todo(mode):
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
         todo_tb = db.todo
         filtre_tb = {}
         selc_tb = {"todo": 1, "_id": 1, "statut":1, "affecte":1, "pourcentage avancement":1}
+        if mode == "CLOSED" :
+            filtre_tb = {}
+        elif mode == "OEND" :
         resultats = list(todo_tb.find(filtre_tb, selc_tb))
        
     else :
