@@ -2,7 +2,7 @@
 import io
 
 import pandas as pd
-
+import openpyxl
 
 def loans_matrix(finals, users, loans):
     rows = []
