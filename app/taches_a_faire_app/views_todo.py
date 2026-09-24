@@ -91,7 +91,7 @@ def todo_page(user):
                 st.rerun()
 
        st.markdown(" - TACHES TERMINEE ")
-       c1, c2, c3= st.columns([4, 4, 1, 1, 1,1])
+       c1, c2, c3= st.columns([4, 4, 1])
        c1.write("nom de la tache")
        c2.write("affecte a ")
        c3.write("statut")
