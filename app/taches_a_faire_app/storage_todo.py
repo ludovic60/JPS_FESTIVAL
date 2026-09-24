@@ -56,7 +56,7 @@ def add_todo(label):
     if   con_mongo : 
         db = cs.get_db()
         todo_tb = db.todo
-        new_todo = {"_id": ObjectId(), "todo": label.strip() ,"affecte": "", "statut":"a faire"}
+        new_todo = {"_id": ObjectId(), "todo": label.strip() ,"affecte": "", "statut":"a faire" , "commentaire":""}
         filtre_tb = {}
         ins_tb = {}
         resultat = todo_tb.insert_one(new_todo)
