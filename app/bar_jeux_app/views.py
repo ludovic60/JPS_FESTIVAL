@@ -316,6 +316,55 @@ def _final_page(user):
 
     # --- 3. FORMULAIRE STREAMLIT AVEC AGGRID ---
     # Utilisation d'un st.form pour regrouper le tableau et le bouton de validation en bas
+     # Bouton de soumission unique en haut du tableau
+    col_btn1, col_btn2, col_btn3 , col_btn4  = st.columns(4)
+    with col_btn1 : 
+           submit_button = st.button(
+                  label="Enregistrer toutes les modifications"
+            )      
+    with col_btn2 : 
+
+         excel_data_user=[]
+         export_list_perso_button = st.download_button(
+              label="📥 Export de votre liste",
+              data=excel_data_user,
+              file_name="export_jeux_user.xlsx",
+              mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          )
+     
+
+    with col_btn3 :  
+
+        #  "field": f"{pseudo}_propose",
+        #  "field": f"{pseudo}_valide",
+        #  gb.configure_column("_id", hide=True)
+        #  gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
+        #  gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=True)
+        #  gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=True)
+        #  gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
+        #  gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True, pinned=True)
+    
+         excel_data_valide=[]
+         export_list_valide_button = st.download_button(
+              label="📥 Export de la liste validée",
+              data=excel_data_valide,
+              file_name="export_jeux_valide.xlsx",
+              mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          )
+     
+
+    with col_btn4 :  
+          df_export_list_initiale = df_jeux [["Couverture Jeu","Jeu" ]]
+     
+          excel_data_initial = to_excel(df_export_list_initiale , "liste_selection_jeu.xlsx") 
+    
+          export_list_perso_button = st.download_button(
+            label="📥 Export de la liste initial",
+            data=excel_data_initial,
+            file_name="liste_selection_jeu.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          )
+
     with st.form(key="loans_form"):
       image_renderer = JsCode("""
       class ImageRenderer {
@@ -403,53 +452,7 @@ def _final_page(user):
          st.session_state.grid_version = 0
       gb.configure_grid_options(alwaysShowHorizontalScroll=True)
 
-      # Bouton de soumission unique en haut du tableau
-      col_btn1, col_btn2, col_btn3 , col_btn4  = st.columns(4)
-      with col_btn1 : 
-           submit_button = st.button(
-                  label="Enregistrer toutes les modifications"
-            )      
-      with col_btn2 : 
 
-         excel_data_user=[]
-         export_list_perso_button = st.download_button(
-              label="📥 Export de votre liste",
-              data=excel_data_user,
-              file_name="export_jeux_user.xlsx",
-              mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-          )
-     
-      with col_btn3 :  
-
-        #  "field": f"{pseudo}_propose",
-        #  "field": f"{pseudo}_valide",
-        #  gb.configure_column("_id", hide=True)
-        #  gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-        #  gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-        #  gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=True)
-        #  gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
-        #  gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True, pinned=True)
-    
-         excel_data_valide=[]
-         export_list_valide_button = st.download_button(
-              label="📥 Export de la liste validée",
-              data=excel_data_valide,
-              file_name="export_jeux_valide.xlsx",
-              mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-          )
-
-     
-      with col_btn4 :  
-          df_export_list_initiale = df_jeux [["Couverture Jeu","Jeu" ]]
-     
-          excel_data_initial = to_excel(df_export_list_initiale , "liste_selection_jeu.xlsx") 
-    
-          export_list_perso_button = st.download_button(
-            label="📥 Export de la liste initial",
-            data=excel_data_initial,
-            file_name="liste_selection_jeu.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-          )
      
       # le tableau
       grid_response = AgGrid(
