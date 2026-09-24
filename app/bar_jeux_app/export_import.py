@@ -25,7 +25,7 @@ def to_excel(df , nom_fichier) :
         df.to_excel(writer, index=False, sheet_name="liste_jeux")
         
         # 2. Récupérer la feuille Excel active
-        worksheet = writer.sheets['Jeux']
+        worksheet = writer.sheets["liste_jeux"]
         
         # --- DÉFINIR LA LARGEUR DES COLONNES ---
         worksheet.column_dimensions['A'].width = 25  # Colonne A
