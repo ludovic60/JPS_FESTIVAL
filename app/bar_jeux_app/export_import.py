@@ -23,21 +23,45 @@ def to_excel(df) :
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='openpyxl') as writer:
         df.to_excel(writer, index=False, sheet_name="liste_jeux")
-        
-        # 2. Récupérer la feuille Excel active
         worksheet = writer.sheets["liste_jeux"]
         
-        # --- DÉFINIR LA LARGEUR DES COLONNES ---
-        worksheet.column_dimensions['A'].width = 25  # Colonne A
-        worksheet.column_dimensions['B'].width = 40  # Colonne B
+        # Supposons que la colonne des URLs d'images est la première (colonne A, index 1)
+        # On parcourt les lignes à partir de la ligne 2 (la ligne 1 étant l'en-tête)
+        for row_idx, url in enumerate(df['Couverture Jeu'], start=2):
+            if pd.notna(url) and str(url).startswith("http"):
+                try:
+                    # 1. Télécharger l'image depuis l'URL
+                    response = requests.get(url, timeout=5)
+                    if response.status_code == 200:
+                        img_io = io.BytesIO(response.content)
+                        
+                        # 2. Ouvrir avec Pillow pour redimensionner (optionnel mais conseillé pour Excel)
+                        img = PILImage.open(img_io)
+                        img.thumbnail((80, 80)) # Taille max de l'image dans la cellule
+                        
+                        # Sauvegarder dans un buffer temporaire pour openpyxl
+                        temp_img_io = io.BytesIO()
+                        img.save(temp_img_io, format="PNG")
+                        temp_img_io.seek(0)
+                        
+                        # 3. Créer l'objet Image pour openpyxl
+                        xl_img = OpenpyxlImage(temp_img_io)
+                        
+                        # 4. Positionner l'image dans la cellule correspondante (ex: A2, A3, etc.)
+                        cell_coordinate = f"A{row_idx}"
+                        worksheet.add_image(xl_img, cell_coordinate)
+                        
+                        # 5. Ajuster la hauteur de la ligne pour que l'image rentre bien visuellement
+                        worksheet.row_dimensions[row_idx].height = 65
+                except Exception as e:
+                    # En cas d'erreur de téléchargement, on ignore l'image pour ne pas bloquer l'export
+                    print(f"Erreur image ligne {row_idx}: {e}")
+                    pass
+                    
+        # Définir la largeur de la colonne A pour l'image
+        worksheet.column_dimensions['A'].width = 15
         
-        # --- DÉFINIR LA HAUTEUR DES LIGNES ---
-        worksheet.row_dimensions[1].height = 25      # Ligne 1 (souvent les en-têtes)
-        worksheet.row_dimensions[2].height = 35      # Ligne 2 (première ligne de données)
-
-    # Récupérer les données binaires du fichier Excel
-    fichier = output.getvalue()
-    return fichier
+    return output.getvalue()
 
 
 def to_pdf(df, title="Liste finale des prêts") -> bytes:
