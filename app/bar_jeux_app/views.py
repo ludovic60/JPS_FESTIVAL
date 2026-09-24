@@ -313,16 +313,13 @@ def _final_page(user):
     # ---tableau  avec le boutons au dessus  ---
     # Utilisation d'un st.form pour regrouper le tableau et le bouton de validation en bas
      # Bouton de soumission unique en haut du tableau
-    col_btn1, col_btn2, col_btn3 , col_btn4  = st.columns(4)
+    col_btn1, col_btn2, col_btn3   = st.columns(3)
     df_export_list_initiale = df_jeux[["Couverture Jeu","Jeu" ]]
     
     print(user)
 
+   
     with col_btn1 : 
-           submit_button = st.button(
-                  label="Enregistrer toutes les modifications"
-            )      
-    with col_btn2 : 
          if user['prete_jeu'] == True or user['prete_jeu'] == "True" :
              df_filtre_propose = df_jeux[df_jeux[f"{user['pseudo']}_propose"] == True]
     
@@ -339,7 +336,7 @@ def _final_page(user):
           )
      
 
-    with col_btn3 :  
+    with col_btn2 :  
          if user['prete_jeu'] == True or user['prete_jeu'] == "True" :
              df_filtre_valide = df_jeux[df_jeux[f"{user['pseudo']}_valide"] == True]
               
@@ -356,7 +353,7 @@ def _final_page(user):
           )
      
 
-    with col_btn4 :  
+    with col_btn3 :  
           df_export_list_initiale = df_jeux[["Couverture Jeu","Jeu" ]]
      
           excel_data_initial = to_excel(df_export_list_initiale ) 
@@ -367,22 +364,22 @@ def _final_page(user):
             file_name="liste_selection_jeu.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
           )
-
-    ###with st.form(key="loans_form"):
-    ####  le tableau
-    image_renderer = JsCode("""
+    ##### creation d'un formulaire permettant de faire des modifications dans le tableau sans recalcul systématique
+    #### le bouton enregistrer permettra de detecter les modifs
+    with st.form(key="loans_form"):
+      image_renderer = JsCode("""
       class ImageRenderer {
-            init(params) {
-                this.eGui = document.createElement('img');
-                this.eGui.setAttribute('src', params.value);
-                this.eGui.setAttribute('style', 'height: 45px; width: auto; border-radius: 4px; vertical-align: middle;');
-            }
-            getGui() { return this.eGui; }
+          init(params) {
+              this.eGui = document.createElement('img');
+              this.eGui.setAttribute('src', params.value);
+              this.eGui.setAttribute('style', 'height: 45px; width: auto; border-radius: 4px; vertical-align: middle;');
+          }
+          getGui() { return this.eGui; }
       }
-    """)
+      """)
       
-    #  On liste explicitement les noms des colonnes souhaitées
-    columns_to_show = [
+      #  On liste explicitement les noms des colonnes souhaitées
+      columns_to_show = [
           "nouveaute",
           "Annee",
           "Classement",
@@ -391,18 +388,18 @@ def _final_page(user):
           "Plusieurs exemplaires souhaités",
           "Total coché par joueur",
           "Total coché validé par admin"
-    ]
+      ]
       
-    # On passe la liste directement à partir du DataFrame
-    gb = GridOptionsBuilder.from_dataframe(df_jeux[columns_to_show])
-    gb.configure_column("_id", hide=True)
-    gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-    gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-    gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=True)
-    gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
-    gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True, pinned=True)
+      # On passe la liste directement à partir du DataFrame
+      gb = GridOptionsBuilder.from_dataframe(df_jeux[columns_to_show])
+      gb.configure_column("_id", hide=True)
+      gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True, pinned=True)
       
-    gb.configure_column(
+      gb.configure_column(
           "Plusieurs exemplaires souhaités",
           editable=(user["role"] == "admin"),
           cellRenderer="agCheckboxCellRenderer",
@@ -410,16 +407,16 @@ def _final_page(user):
           width=90,
           suppressSizeToFit=True,
           pinned=True 
-    )
+      )
       
-    gb.configure_column("Total coché par joueur", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-    gb.configure_column("Total coché validé par admin", editable=False, width=90, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Total coché par joueur", editable=False, width=80, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Total coché validé par admin", editable=False, width=90, suppressSizeToFit=True, pinned=True)
       
-
-    grid_options = gb.build()
+      gb.configure_grid_options(singleClickEdit=True, rowHeight=60)
+      grid_options = gb.build()
       
-    # En-têtes groupés par joueur
-    for pseudo in pseudo_list:
+      # En-têtes groupés par joueur
+      for pseudo in pseudo_list:
           group_col = {
               "headerName": pseudo,
               "children": [
@@ -450,34 +447,31 @@ def _final_page(user):
           }
           grid_options["columnDefs"].append(group_col)
       
-    # Hauteur dynamique
-    dynamic_height = 650 ##min(max(40 + (len(df_jeux) * 70) + 20, 200), 800)
-    if "grid_version" not in st.session_state:
+      # Hauteur dynamique
+      dynamic_height = 650 ##min(max(40 + (len(df_jeux) * 70) + 20, 200), 800)
+      if "grid_version" not in st.session_state:
          st.session_state.grid_version = 0
-    gb.configure_grid_options(alwaysShowHorizontalScroll=True, rowHeight=60)
+      gb.configure_grid_options(alwaysShowHorizontalScroll=True)
 
-    ## gb.configure_grid_options(singleClickEdit=True
-    if "df_courant" not in st.session_state:
-          st.session_state.df_courant = df_jeux.copy() # copie du dataframe dans la session pour identifier les modifs 
-     
-    # le tableau
-    grid_response = AgGrid(
-          st.session_state.df_courant,  
+        
+      submit_button = st.form_submit_button( label="Enregistrer toutes les modifications" )   
+      # le tableau
+      grid_response = AgGrid(
+          df_jeux,
           gridOptions=grid_options,
-          update_mode=GridUpdateMode.MANUAL,
-          data_return_mode=DataReturnMode.FILTERED_AND_SORTED,
+          update_mode=GridUpdateMode.NO_UPDATE,
+          data_return_mode=DataReturnMode.AS_INPUT,
           allow_unsafe_jscode=True,
           fit_columns_on_grid_load=False,
           height=dynamic_height,
           key=f"aggrid_table_{st.session_state.grid_version}",
-    ) 
+      ) 
    
  
 
-
-    #### ------------------------------------------------------
-    # --- Détection des changements ---
-    #### ------------------------------------------------------
+     #### ------------------------------------------------------
+     # --- Détection des changements ---
+     #### ------------------------------------------------------
     if submit_button:
            updated_data = grid_response["data"]
            new_df = pd.DataFrame(updated_data)
@@ -492,7 +486,7 @@ def _final_page(user):
            ]
      
            # On fusionne pour comparer cellule par cellule via les suffixes _old et _new
-           merged = st.session_state.df_courant.merge(new_df, on="_id", suffixes=("_old", "_new"))
+           merged = df_jeux.merge(new_df, on="_id", suffixes=("_old", "_new"))
      
            modifications_count = 0
      
@@ -531,18 +525,9 @@ def _final_page(user):
                " mise(s) à jour !"
            )
            st.session_state.grid_version += 1
-           st.session_state.df_courant = new_df.copy() # copie du dataframe dans la session pour identifier les modifs 
-     
            time.sleep(1)
            st.rerun()
-    
- 
-
-          
-
-
-
-
+  
     st.divider()
    
     # --- PARTIE inferieurs : GRAPHIQUES ---
