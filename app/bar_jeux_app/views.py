@@ -182,13 +182,11 @@ def _requests_page(user):
                                          label_visibility="collapsed")
                   if user["role"] == "admin": 
                         if c6.button("traiter", key=f"modif_traiter_{r["_id"]}"):
-                            storage_jeux.update_statut_request("ajout jeux", r["_id"],"traiter")
+                            storage_jeux.update_statut_request("ajout jeux", str(r["_id"]),"traiter")
                            
-                            print("traiter demande ajout")
                             st.rerun()
                         if c7.button("supprimer", key=f"modif_supp_{r["_id"]}"):
-                            storage_jeux.remove_request("ajout jeux", r["_id"])
-                            st.write("update supprimer ajout jeu faite")
+                            storage_jeux.remove_request("ajout jeux", str(r["_id"]))
                             st.rerun()
 
 
@@ -224,11 +222,10 @@ def _requests_page(user):
 
                   if user["role"] == "admin": 
                       if c62.button("traiter", key=f"modif_traiter_{t["_id"]}"):
-                          storage_jeux.update_statut_request("remarque fiche jeux", t["_id"],"traiter")
-                          st.write("update remarque faite")
+                          storage_jeux.update_statut_request("remarque fiche jeux", str(t["_id"]),"traiter")
                           st.rerun()
                       if c72.button("supprimer", key=f"modif_suppr_{t["_id"]}"):
-                          storage_jeux.remove_request("remarque fiche jeux", t["_id"])
+                          storage_jeux.remove_request("remarque fiche jeux", str(t["_id"]))
                           st.rerun()
 ############################################################################################################
 ###-------------- page où est affiché les jeux selectionné
