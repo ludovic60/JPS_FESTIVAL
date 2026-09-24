@@ -918,4 +918,8 @@ def _final_page(user):
         st.info("Aucun jeu prété / validé pour le moment.")
 
     st.write("df_test")
-    st.write( df_test )
+    df_filtre_propose = df_jeux[df_jeux[f"{user['pseudo']}_propose"] == True]
+    st.write( df_filtre_propose )
+    st.write("df_test2")
+    df_filtre_propose2 = df_jeux[df_jeux[f"{user['pseudo']}_propose"] == true]
+    st.write( df_filtre_propose2 )
