@@ -315,6 +315,9 @@ def _final_page(user):
      # Bouton de soumission unique en haut du tableau
     col_btn1, col_btn2, col_btn3 , col_btn4  = st.columns(4)
     df_export_list_initiale = df_jeux[["Couverture Jeu","Jeu" ]]
+    
+    print(user)
+
     with col_btn1 : 
            submit_button = st.button(
                   label="Enregistrer toutes les modifications"
