@@ -33,8 +33,6 @@ _COVERS = [
 ##############################################################
 def load_games(list_key, search_query=None):
     con_mongo = cs.mongo_enabled()
-    print("list key")
-    print(list_key)
     if   con_mongo : 
         db = cs.get_db()
         game_tb = db.jeux
@@ -44,17 +42,17 @@ def load_games(list_key, search_query=None):
                 filtre_tb ={"$or": [  {"nom_jeu_complet": regex_pattern},
                                      {"nom_jeu": regex_pattern},
                                      {"url_myludo": regex_pattern}]}
-                print("A")
+         
         else :
         
             if list_key == "est_selectionnable":
                 filtre_tb = {"est_selectionnable": list_key}
-                print("B")
+  
             elif list_key == "all":
                 filtre_tb = {}    
-                print("C")
+               
             elif len(list_key) <=7 :
-                print("D")   
+              
                 if datetime.strptime(list_key, "%Y_%m"): 
                         annee = list_key[:4]
                         mois = list_key[5:]
@@ -63,15 +61,13 @@ def load_games(list_key, search_query=None):
                             mois = mois[1]
             
                         filtre_tb = {"annee_parution" : annee , "mois_sortie" : mois }
-                        print("E")
+                   
                 else : 
                         filtre_tb= {"_id": {"$in": list_key}}
-                        print("F")
+                       
             else :
                 filtre_tb= {"_id": {"$in": list_key}}
-                print("G")
-        print("filtre")
-        print(filtre_tb)
+
         
         resultats = list(game_tb.find(filtre_tb).sort({"nom_jeu_fichier":1}))
     else :
@@ -211,7 +207,7 @@ def get_game_suggestions_a_traiter ():
         
         # distinct(field, filter) renvoie une liste de valeurs uniques
         resultats = list(game_suggest_tb.distinct("id_jeux", filtre_tb))
-        print(resultats)
+
     else :
         resultats =[]
     return resultats 
