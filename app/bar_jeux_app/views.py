@@ -6,7 +6,6 @@ import logging
 import plotly.express as px
 import pandas as pd
 import streamlit as st
-import bcrypt
 import config_bar_jeux
 import storage_jeux
 import export
