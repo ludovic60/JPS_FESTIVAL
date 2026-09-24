@@ -346,7 +346,7 @@ def _final_page(user):
              df_export_list_valide = df_filtre_valide[["Couverture Jeu","Jeu" ]]
              excel_data_valide = to_excel(df_export_list_valide ) 
          else :
-             excel_data_propose =b""   
+             excel_data_valide =b""   
      
          export_list_valide_button = st.download_button(
               label="📥 Export de la liste validée",
