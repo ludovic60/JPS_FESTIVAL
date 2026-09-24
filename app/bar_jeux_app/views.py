@@ -339,14 +339,7 @@ def _final_page(user):
 
     with col_btn3 :  
 
-        #  "field": f"{pseudo}_propose",
-        #  "field": f"{pseudo}_valide",
-        #  gb.configure_column("_id", hide=True)
-        #  gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-        #  gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-        #  gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=True)
-        #  gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
-        #  gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True, pinned=True)
+ 
 
         df_filtre_valide = df_jeux[df_jeux[f"{user['pseudo']}_valide"] == True]
          
@@ -357,7 +350,7 @@ def _final_page(user):
      
         export_list_valide_button = st.download_button(
               label="📥 Export de la liste validée",
-              data=b"" ,### excel_data_valide,
+              data=excel_data_valide,
               file_name="export_jeux_valide.xlsx",
               mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
           )
@@ -917,5 +910,3 @@ def _final_page(user):
     else:
         st.info("Aucun jeu prété / validé pour le moment.")
 
-    st.write("df_test")
-    st.write( df_export_list_propose )
