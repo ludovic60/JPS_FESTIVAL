@@ -307,7 +307,7 @@ def _final_page(user):
         for pseudo in pseudo_list:
             u_id = user_map[pseudo]
             row[f"{pseudo}_propose"] = (game_id, u_id) in loans_set
-            row[f"{pseudo}_admin"] = (game_id, u_id) in validated_loans_set
+            row[f"{pseudo}_valide"] = (game_id, u_id) in validated_loans_set
     
         row_jeux.append(row)
     
@@ -439,7 +439,7 @@ def _final_page(user):
                       "suppressSizeToFit": True,
                   },
                   {
-                      "field": f"{pseudo}_admin",
+                      "field": f"{pseudo}_valide",
                       "headerName": "Validé",
                       "editable": (user["role"] == "admin"),
                       "cellRenderer": "agCheckboxCellRenderer",
@@ -491,7 +491,7 @@ def _final_page(user):
            ] + [
                col
                for col in new_df.columns
-               if "_propose" in col or "_admin" in col
+               if "_propose" in col or "_valide" in col
            ]
      
            # On fusionne pour comparer cellule par cellule via les suffixes _old et _new
@@ -523,9 +523,9 @@ def _final_page(user):
                    u_id = user_map[pseudo]
                    storage_jeux.toggle_loan(game_id, str(u_id), val_new)
      
-                 # --- CAS 3 : Colonne de validation admin d'un utilisateur (ex: "pseudo_admin") ---
-                 elif "_admin" in col:
-                   pseudo = col.replace("_admin", "")
+                 # --- CAS 3 : Colonne de validation admin d'un utilisateur (ex: "pseudo_valide") ---
+                 elif "_valide" in col:
+                   pseudo = col.replace("_valide", "")
                    u_id = user_map[pseudo]
                    storage_jeux.set_loan_valide_admin(game_id, str(u_id), val_new)
      
