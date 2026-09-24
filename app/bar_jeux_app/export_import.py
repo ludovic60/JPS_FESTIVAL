@@ -20,7 +20,7 @@ def to_csv(df) -> bytes:
 
 
 def to_excel(df , nom_fichier) :
-    
+    output = io.BytesIO()
     with pd.ExcelWriter(nom_fichier, engine='openpyxl') as writer:
         df.to_excel(writer, index=False, sheet_name="liste_jeux")
         
@@ -33,7 +33,11 @@ def to_excel(df , nom_fichier) :
         
         # --- DÉFINIR LA HAUTEUR DES LIGNES ---
         worksheet.row_dimensions[1].height = 25      # Ligne 1 (souvent les en-têtes)
-        worksheet.row_dimensions[2].height = 35      # Ligne 2 (première ligne de donn
+        worksheet.row_dimensions[2].height = 35      # Ligne 2 (première ligne de données)
+
+    # Récupérer les données binaires du fichier Excel
+    fichier = output.getvalue()
+    return fichier
 
 
 def to_pdf(df, title="Liste finale des prêts") -> bytes:
