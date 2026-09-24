@@ -317,16 +317,21 @@ def _final_page(user):
     # Utilisation d'un st.form pour regrouper le tableau et le bouton de validation en bas
      # Bouton de soumission unique en haut du tableau
     col_btn1, col_btn2, col_btn3 , col_btn4  = st.columns(4)
+    df_export_list_initiale = df_jeux[["Couverture Jeu","Jeu" ]]
     with col_btn1 : 
            submit_button = st.button(
                   label="Enregistrer toutes les modifications"
             )      
     with col_btn2 : 
 
-         excel_data_user=[]
+         df_filtre_propose = df_jeu[df_jeu[f"{user['pseudo']}_propose"] == True]
+         
+         df_export_list_propose = df_filtre_propose[["Couverture Jeu","Jeu" ]]
+         excel_data_propose = to_excel(df_export_list_propose ) 
+      
          export_list_perso_button = st.download_button(
               label="📥 Export de votre liste",
-              data=b"",
+              data=excel_data_propose,
               file_name="export_jeux_user.xlsx",
               mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
           )
@@ -342,11 +347,17 @@ def _final_page(user):
         #  gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=True)
         #  gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
         #  gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True, pinned=True)
-    
-         excel_data_valide=[]
+
+         df_filtre_valide = df_jeu[df_jeu[f"{user['pseudo']}_valide"] == True]
+         
+         df_export_list_valide = df_filtre_valide[["Couverture Jeu","Jeu" ]]
+         excel_data_valide = to_excel(df_export_list_valide ) 
+      
+
+     
          export_list_valide_button = st.download_button(
               label="📥 Export de la liste validée",
-              data=b"",
+              data=excel_data_valide,
               file_name="export_jeux_valide.xlsx",
               mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
           )
