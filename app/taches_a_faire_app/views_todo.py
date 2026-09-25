@@ -19,7 +19,7 @@ import commun.common_store
 # APPLICATION PRINCIPALE
 # ==========================================================================
 def main_app(user: dict):
-    st.session_state["user_id_current"] = user["id"]
+    st.session_state["user_id_current"] = user["_id"]
     with st.sidebar:
         st.markdown("### 📋 taches à faire ")
         st.write(f"**{user['pseudo']}**")
