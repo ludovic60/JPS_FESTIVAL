@@ -67,11 +67,9 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
 
     # 1. CHARGEMENT INITIAL (Exécuté une seule fois par session utilisateur)
     bdd_key = f"db_loaded_{key_prefix}_{user_id}"
-    st.write(user_id)
 
     if bdd_key not in st.session_state:
         creneau_selc = get_presence(user_id)
-        st.write(creneau_selc)
         periode_db = set()
         taches_db = set()
 
