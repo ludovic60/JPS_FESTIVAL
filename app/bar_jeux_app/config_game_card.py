@@ -153,10 +153,10 @@ def _game_card(g, list_key, user , mode ):
                         args=(ckey_this_game, has_selected_this_game),
                     )          
                     if st.button(   "✅ valider la suggestion", key=f"valid_sug_{ckey_this_game}",  width=250,  wrap=True) :
-                                result_valid = storage_jeux.toggle_suggestion(ckey_this_game, user["id"], "suggestion Retenue", "all") 
+                                result_valid = storage_jeux.toggle_suggestion(ckey_this_game, user["_id"], "suggestion Retenue", "all") 
                                 on_admin_change(ckey_this_game, has_selected_this_game)
                     if st.button(  "❌ refuser la suggestion" ,  key=f"refuse_sug_{ckey_this_game}",  width=250,  wrap=True) :
-                                result_valid = storage_jeux.toggle_suggestion(ckey_this_game, user["id"], "suggestion refusée", "all")
+                                result_valid = storage_jeux.toggle_suggestion(ckey_this_game, user["_id"], "suggestion refusée", "all")
                     
                         
                     
@@ -164,12 +164,12 @@ def _game_card(g, list_key, user , mode ):
 
                     def on_user_change(game_id, currently_selected, source):
                         mode = "delete" if currently_selected else "insert"   
-                        storage_jeux.toggle_suggestion(ckey_this_game, user["id"] , mode ,source)
+                        storage_jeux.toggle_suggestion(ckey_this_game, user["_id"] , mode ,source)
                         st.rerun()
 
                     def on_user_change_pret(game_id, currently_selected, source):
                         mode = "delete" if currently_selected else "insert"   
-                        storage_jeux.toggle_suggestion(ckey_this_game, user["id"] , mode ,source)
+                        storage_jeux.toggle_suggestion(ckey_this_game, user["_id"] , mode ,source)
                         st.rerun() 
                         
                      # 1. On ne garde que les suggestions spécifiques à CE jeu
@@ -190,8 +190,8 @@ def _game_card(g, list_key, user , mode ):
                     uids_this_game_pret = [s["user_id"] for s in sugg_prete_this_game]
 
                     # 3. L'utilisateur a-t-il suggéré CE jeu ?
-                    has_suggested = user["id"] in uids_this_game
-                    has_suggested_prete = user["id"] in uids_this_game_pret
+                    has_suggested = user["_id"] in uids_this_game
+                    has_suggested_prete = user["_id"] in uids_this_game_pret
                         
                     
                     # 4. Affichage de la checkbox avec la bonne valeur
