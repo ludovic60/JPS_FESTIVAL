@@ -35,8 +35,6 @@ def main_app(user):
         if user["role"] == "admin":
             st.markdown("<span class='ws-tag-admin'>Admin</span>", unsafe_allow_html=True)
             pages = ["Liste des jeux","Recherche jeu", "Demandes d'ajout / remarques","Liste suggestions", "Jeux sortis depuis dernier festival", "Jeux sortis avant dernier festival" ]
-       
-        #    pages = ["Liste des jeux","Recherche jeu", "Demandes d'ajout / remarques","Liste suggestions", "Jeux sortis depuis dernier festival", "Jeux sortis avant dernier festival" ]
         else : 
             pages = ["Liste des jeux","Recherche jeu"]
         page = st.radio("Navigation", pages, label_visibility="collapsed")
@@ -182,11 +180,10 @@ def _requests_page(user):
                                          label_visibility="collapsed")
                   if user["role"] == "admin": 
                         if c6.button("traiter", key=f"modif_traiter_{r["_id"]}"):
-                            storage_jeux.update_statut_request("ajout jeux", str(r["_id"]),"traiter")
-                           
+                            update_statut_request("ajout jeux", t["_id"],"traiter")
                             st.rerun()
                         if c7.button("supprimer", key=f"modif_supp_{r["_id"]}"):
-                            storage_jeux.remove_request("ajout jeux", str(r["_id"]))
+                            remove_request("ajout jeux", t["_id"])
                             st.rerun()
 
 
@@ -222,10 +219,10 @@ def _requests_page(user):
 
                   if user["role"] == "admin": 
                       if c62.button("traiter", key=f"modif_traiter_{t["_id"]}"):
-                          storage_jeux.update_statut_request("remarque fiche jeux", str(t["_id"]),"traiter")
+                          update_statut_request("remarque fiche jeux", t["_id"],"traiter")
                           st.rerun()
                       if c72.button("supprimer", key=f"modif_suppr_{t["_id"]}"):
-                          storage_jeux.remove_request("remarque fiche jeux", str(t["_id"]))
+                          remove_request("remarque fiche jeux", t["_id"])
                           st.rerun()
 ############################################################################################################
 ###-------------- page où est affiché les jeux selectionné
@@ -481,8 +478,10 @@ def _final_page(user):
          st.session_state.grid_version = 0
       gb.configure_grid_options(alwaysShowHorizontalScroll=True)
 
-
-      submit_button = st.form_submit_button(label="💾 Enregistrer toutes les modifications"    )      
+      # Bouton de soumission unique en haut du tableau
+      submit_button = st.form_submit_button(
+            label="Enregistrer toutes les modifications"
+      )
       # le tableau
       grid_response = AgGrid(
           df_jeux,
@@ -496,6 +495,7 @@ def _final_page(user):
       ) 
    
  
+
 
      #### ------------------------------------------------------
      # --- Détection des changements ---

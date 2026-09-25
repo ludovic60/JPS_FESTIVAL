@@ -55,14 +55,5 @@ user = current_user()
 st.set_page_config(page_title="todo", page_icon="📋", layout="wide")
 inject()
 
-#storage_presence.init_storage()
-
-# Lien de réinitialisation : ?token=...
-params = st.query_params
-token = params.get("token")
-
-
-user = current_user()
-
 
 main_app(user)
