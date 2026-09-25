@@ -314,7 +314,35 @@ def _final_page(user):
     # Utilisation d'un st.form pour regrouper le tableau et le bouton de validation en bas
     # Bouton de soumission unique en haut du tableau
     # 1. On crée 4 colonnes pour aligner les 4 boutons sur la même ligne
-    col_btn1, col_btn2, col_btn3, col_btn4 = st.columns(4)
+
+    st.markdown("""
+             <style>
+             /* Style commun à tous les boutons (download + submit) */
+             div.stDownloadButton > button,
+             div.stFormSubmitButton > button {
+                 height: 42px;
+                 width: 100%;
+                 border-radius: 8px;
+                 font-weight: 600;
+                 border: 1px solid #d0d0d0;
+             }
+             
+             /* Réduit l'espace vertical entre le bloc des download_button et le form juste en dessous */
+             div[data-testid="stVerticalBlock"] > div:has(div.stDownloadButton) {
+                 margin-bottom: -15px;
+             }
+             
+             /* Optionnel : mettre en avant le bouton Enregistrer */
+             div.stFormSubmitButton > button {
+                 background-color: #2e7d32;
+                 color: white;
+             }
+             </style>
+    """, unsafe_allow_html=True)
+
+
+ 
+    col_btn1, col_btn2, col_btn3 = st.columns(3)
     
     # ---Colonne 1 : Export Proposé ---
     with col_btn1:
@@ -363,8 +391,7 @@ def _final_page(user):
             use_container_width=True
         )
     
-    # ---Colonne 4 : Bouton d'enregistrement classique ---
-    with col_btn4:
+
       
    
     with st.form(key="loans_form"):
