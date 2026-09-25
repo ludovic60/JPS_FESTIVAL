@@ -482,7 +482,7 @@ def _final_page(user):
       gb.configure_grid_options(alwaysShowHorizontalScroll=True)
 
 
-     submit_button = st.form_submit_button(label="💾 Enregistrer toutes les modifications"    )      
+      submit_button = st.form_submit_button(label="💾 Enregistrer toutes les modifications"    )      
       # le tableau
       grid_response = AgGrid(
           df_jeux,
