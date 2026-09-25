@@ -71,6 +71,7 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
 
     if bdd_key not in st.session_state:
         creneau_selc = get_presence(user_id)
+        st.write(creneau_selc)
         periode_db = set()
         taches_db = set()
 
