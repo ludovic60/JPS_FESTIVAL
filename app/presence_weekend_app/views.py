@@ -197,11 +197,11 @@ def presence_page(user: dict):
     st.title("Ma présence")
     st.caption("Cochez vos créneaux de disponibilité et vos tâches souhaitées. ATTENTION si vous ne cochez pas un créneau , les taches de ce jour ne seront pas enregistrées")
 
-    selected = presence_editor(user["id"], user["pseudo"], "self")
+    selected = presence_editor(user["_id"], user["pseudo"], "self")
 
     if st.button("Enregistrer", type="primary"):
         
-        set_presence(user["id"], user["pseudo"], selected)
+        set_presence(user["_id"], user["pseudo"], selected)
         st.success("Présence enregistrée")
 
 
