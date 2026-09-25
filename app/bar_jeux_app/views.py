@@ -339,7 +339,7 @@ def _final_page(user):
 
 
  
-    col_btn1, col_btn2, col_btn3 = st.columns(3)
+    col_btn1, col_btn2, col_btn3 , col_btn4 = st.columns(4)
     
     # ---Colonne 1 : Export Proposé ---
     with col_btn1:
@@ -384,6 +384,21 @@ def _final_page(user):
             label="📥 Export de la liste initiale",
             data=excel_data_initial,
             file_name="liste_selection_jeu.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            use_container_width=True
+        )
+    # ---Colonne 4 : Export list validé  ---
+    with col_btn4:
+
+        df_filtre_global_valide = df_jeux[df_jeux["Total coché validé par admin"] > 0]
+        df_export_liste_global_valide = df_filtre_global_valide[["Couverture Jeu", "Jeu"]]
+
+        excel_data_liste_global_valide = to_excel(df_export_liste_global_valide)
+        
+        st.download_button(
+            label="📥 Export de la liste complète validée",
+            data=excel_data_liste_global_valide,
+            file_name="liste_selection_valide_jeu.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             use_container_width=True
         )
@@ -930,4 +945,3 @@ def _final_page(user):
        st.plotly_chart(fig_hist, use_container_width=True)
     else:
         st.info("Aucun jeu prété / validé pour le moment.")
-
