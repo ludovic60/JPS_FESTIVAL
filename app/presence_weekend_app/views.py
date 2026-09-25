@@ -32,7 +32,7 @@ def on_page_change():
 # APPLICATION PRINCIPALE
 # ==========================================================================
 def main_app(user: dict):
-    st.session_state["user_id_current"] = user["id"]
+    st.session_state["user_id_current"] = user["_id"]
     with st.sidebar:
         st.markdown("### 📅 Week-end")
         st.write(f"**{user['pseudo']}**")
