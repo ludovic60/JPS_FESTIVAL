@@ -155,8 +155,10 @@ def _game_card(g, list_key, user , mode ):
                     if st.button(   "✅ valider la suggestion", key=f"valid_sug_{ckey_this_game}",  width=250,  wrap=True) :
                                 result_valid = storage_jeux.toggle_suggestion(ckey_this_game, user["_id"], "suggestion Retenue", "all") 
                                 on_admin_change(ckey_this_game, has_selected_this_game)
+                                st.rerun()
                     if st.button(  "❌ refuser la suggestion" ,  key=f"refuse_sug_{ckey_this_game}",  width=250,  wrap=True) :
                                 result_valid = storage_jeux.toggle_suggestion(ckey_this_game, user["_id"], "suggestion refusée", "all")
+                                st.rerun()
                     
                         
                     
