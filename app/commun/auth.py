@@ -58,7 +58,7 @@ def current_user():
     print(pseudo)
   
     
-    return get_user_by_pseudo(pseudo)
+    return cs.get_user_by_pseudo(pseudo)
 
 def login(email, password):
     try:
