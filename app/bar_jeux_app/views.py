@@ -6,15 +6,16 @@ import logging
 import plotly.express as px
 import pandas as pd
 import streamlit as st
-import bcrypt
 import config_bar_jeux
 import storage_jeux
-import export
 import os
 import sys
 import time
 from bson import ObjectId
 from config_game_card import _game_card , mise_forme_classement , nouveaute_def
+from export_import import to_excel
+
+
 # Ajoute le dossier parent à sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -53,44 +54,10 @@ def main_app(user):
         _requests_page(user)
     elif page == "Liste suggestions":
         _requests_suggestion_page(user)    
-    elif page == "Creation mot de passe":
-        _password_page(user)
     elif page == "Recherche jeu":
          _list_page(f"Recherche jeu", "all", user)
     else:
         _final_page(user)
-
-############################################################################################################
-###-------------- page pour generer les mots de passe des user
-############################################################################################################
-
-
-def _password_page(user):
-     st.set_page_config(page_title="Générateur de Hash Bcrypt", page_icon="🔑")
-    
-     st.title("🔑 Générateur de Hash Bcrypt")
-     st.write("Saisissez un mot de passe ci-dessous pour obtenir sa version hachée.")
-    
-     ## # Champ de saisie sécurisé
-     password_input = st.text_input("Mot de passe à hacher", type="password")
-    
-     if st.button("Générer le hash"):
-        if password_input:
-             # Convertit le texte en octets
-             password_bytes = password_input.encode('utf-8')
-             # Génère un sel et hache le mot de passe
-             salt = bcrypt.gensalt()
-             hashed = bcrypt.hashpw(password_bytes, salt)
-             # Retourne la chaîne encodée à stocker en base                 
-             hashed_result = hashed.decode('utf-8') 
-             st.success("Mot de passe haché avec succès !")
-            
-             # Affichage du résultat dans un bloc de code pour faciliter le copie-coller
-             st.code(hashed_result, language="text")
-              
-             st.info("💡 **Remarque :** En raison du salage aléatoire de Bcrypt, chaque clic générera une empreinte différente, même pour un mot de passe identique.")
-     else:
-         st.warning("Veuillez saisir un mot de passe avant de cliquer.")
 
 
 
@@ -104,6 +71,7 @@ def _password_page(user):
 
 def _list_page(title, list_key, user):
     st.title(title)
+
     
     with st.expander("➕ Demander l'ajout d'un jeu"):
         with st.form(f"req_{list_key}", clear_on_submit=True):
@@ -129,7 +97,7 @@ def _list_page(title, list_key, user):
     if list_key == "all" and not search_query:
         filtered_games = []
     else:
-        print(list_key)
+
         # Passer le terme de recherche directement à MongoDB
         games = storage_jeux.load_games(list_key, search_query=search_query)
     
@@ -162,10 +130,10 @@ def _requests_suggestion_page(user):
     list_suggest = storage_jeux.get_game_suggestions_a_traiter()
     list_games_tmp =[]
     for sugg in list_suggest : 
-        print(sugg)
+        
         list_games_tmp.append(storage_jeux.get_info_games(sugg))
     list_games = [elem for sous_liste in list_games_tmp for elem in sous_liste]
-    print(list_games)
+   
     if list_games:
         per_row = 3
         # FIX : On utilise len(list_games) ici !
@@ -278,6 +246,7 @@ def _final_page(user):
     # Récupération en BATCH des infos de tous les jeux d'un coup
     game_ids = [g.get('id_jeux') for g in finals]
     liste_object_id = [ObjectId(id_str) for id_str in game_ids]
+  
  
     games_info_list = storage_jeux.load_games(liste_object_id, None) 
  
@@ -309,7 +278,7 @@ def _final_page(user):
             continue
     
         # Calculs directes en mémoire
-        new_statut = nouveaute_def(game_id)
+        new_statut = nouveaute_def(game)
         is_several = game_id in plusieurs_set
     
         # Comptages rapides
@@ -320,7 +289,7 @@ def _final_page(user):
             "_id": game_id,                           
             "nouveaute": new_statut,
             "Annee": g.get("annee_parution", ""),
-            "Categorie jeu": mise_forme_classement(g.get("classement_jps_final")),
+            "Classement": mise_forme_classement(g.get("classement_jps_final")),
             "Couverture Jeu": g.get("couverture", ""),
             "Jeu": g.get("nom_jeu_complet", ""),
             "Plusieurs exemplaires souhaités": is_several,
@@ -332,14 +301,96 @@ def _final_page(user):
         for pseudo in pseudo_list:
             u_id = user_map[pseudo]
             row[f"{pseudo}_propose"] = (game_id, u_id) in loans_set
-            row[f"{pseudo}_admin"] = (game_id, u_id) in validated_loans_set
+            row[f"{pseudo}_valide"] = (game_id, u_id) in validated_loans_set
     
         row_jeux.append(row)
     
     df_jeux = pd.DataFrame(row_jeux)
 
-    # --- 3. FORMULAIRE STREAMLIT AVEC AGGRID ---
+    # ---tableau  avec le boutons au dessus  ---
     # Utilisation d'un st.form pour regrouper le tableau et le bouton de validation en bas
+    # Bouton de soumission unique en haut du tableau
+    # 1. On crée 4 colonnes pour aligner les 4 boutons sur la même ligne
+
+    st.markdown("""
+             <style>
+             /* Style commun à tous les boutons (download + submit) */
+             div.stDownloadButton > button,
+             div.stFormSubmitButton > button {
+                 height: 42px;
+                 width: 100%;
+                 border-radius: 8px;
+                 font-weight: 600;
+                 border: 1px solid #d0d0d0;
+             }
+             
+             /* Réduit l'espace vertical entre le bloc des download_button et le form juste en dessous */
+             div[data-testid="stVerticalBlock"] > div:has(div.stDownloadButton) {
+                 margin-bottom: -15px;
+             }
+             
+             /* Optionnel : mettre en avant le bouton Enregistrer */
+             div.stFormSubmitButton > button {
+                 background-color: #2e7d32;
+                 color: white;
+             }
+             </style>
+    """, unsafe_allow_html=True)
+
+
+ 
+    col_btn1, col_btn2, col_btn3 = st.columns(3)
+    
+    # ---Colonne 1 : Export Proposé ---
+    with col_btn1:
+        if user['prete_jeu'] == True or user['prete_jeu'] == "True":
+            df_filtre_propose = df_jeux[df_jeux[f"{user['pseudo']}_propose"] == True]
+            df_export_list_propose = df_filtre_propose[["Couverture Jeu", "Jeu"]]
+            excel_data_propose = to_excel(df_export_list_propose)
+        else:
+            excel_data_propose = b""
+        
+        st.download_button(
+            label="📥 Export de votre liste propose",
+            data=excel_data_propose,
+            file_name="export_jeux_propose_user.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            use_container_width=True
+        )
+    
+    # ---Colonne 2 : Export Validé ---
+    with col_btn2:
+        if user['prete_jeu'] == True or user['prete_jeu'] == "True":
+            df_filtre_valide = df_jeux[df_jeux[f"{user['pseudo']}_valide"] == True]
+            df_export_list_valide = df_filtre_valide[["Couverture Jeu", "Jeu"]]
+            excel_data_valide = to_excel(df_export_list_valide)
+        else:
+            excel_data_valide = b""   
+        
+        st.download_button(
+            label="📥 Export de votre liste validée",
+            data=excel_data_valide,
+            file_name="export_jeux_valide_user.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            use_container_width=True
+        )
+    
+    # ---Colonne 3 : Export Initial ---
+    with col_btn3:
+        df_export_list_initiale = df_jeux[["Couverture Jeu", "Jeu"]]
+        excel_data_initial = to_excel(df_export_list_initiale)
+        
+        st.download_button(
+            label="📥 Export de la liste initiale",
+            data=excel_data_initial,
+            file_name="liste_selection_jeu.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            use_container_width=True
+        )
+    
+
+      
+   
     with st.form(key="loans_form"):
       image_renderer = JsCode("""
       class ImageRenderer {
@@ -356,7 +407,7 @@ def _final_page(user):
       columns_to_show = [
           "nouveaute",
           "Annee",
-          "Categorie jeu",
+          "Classement",
           "Couverture Jeu",
           "Jeu",
           "Plusieurs exemplaires souhaités",
@@ -369,7 +420,7 @@ def _final_page(user):
       gb.configure_column("_id", hide=True)
       gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Categorie jeu", editable=False, width=180, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True, pinned=True)
       
@@ -404,7 +455,7 @@ def _final_page(user):
                       "suppressSizeToFit": True,
                   },
                   {
-                      "field": f"{pseudo}_admin",
+                      "field": f"{pseudo}_valide",
                       "headerName": "Validé",
                       "editable": (user["role"] == "admin"),
                       "cellRenderer": "agCheckboxCellRenderer",
@@ -422,7 +473,7 @@ def _final_page(user):
           grid_options["columnDefs"].append(group_col)
       
       # Hauteur dynamique
-      dynamic_height = min(max(40 + (len(df_jeux) * 70) + 20, 200), 800)
+      dynamic_height = 650 ##min(max(40 + (len(df_jeux) * 70) + 20, 200), 800)
       if "grid_version" not in st.session_state:
          st.session_state.grid_version = 0
       gb.configure_grid_options(alwaysShowHorizontalScroll=True)
@@ -439,15 +490,16 @@ def _final_page(user):
           data_return_mode=DataReturnMode.AS_INPUT,
           allow_unsafe_jscode=True,
           fit_columns_on_grid_load=False,
-          height=dynamic_height,
+          height=dynamic_height, 
           key=f"aggrid_table_{st.session_state.grid_version}",
       ) 
    
  
 
 
+     #### ------------------------------------------------------
      # --- Détection des changements ---
-  
+     #### ------------------------------------------------------
     if submit_button:
            updated_data = grid_response["data"]
            new_df = pd.DataFrame(updated_data)
@@ -458,7 +510,7 @@ def _final_page(user):
            ] + [
                col
                for col in new_df.columns
-               if "_propose" in col or "_admin" in col
+               if "_propose" in col or "_valide" in col
            ]
      
            # On fusionne pour comparer cellule par cellule via les suffixes _old et _new
@@ -490,9 +542,9 @@ def _final_page(user):
                    u_id = user_map[pseudo]
                    storage_jeux.toggle_loan(game_id, str(u_id), val_new)
      
-                 # --- CAS 3 : Colonne de validation admin d'un utilisateur (ex: "pseudo_admin") ---
-                 elif "_admin" in col:
-                   pseudo = col.replace("_admin", "")
+                 # --- CAS 3 : Colonne de validation admin d'un utilisateur (ex: "pseudo_valide") ---
+                 elif "_valide" in col:
+                   pseudo = col.replace("_valide", "")
                    u_id = user_map[pseudo]
                    storage_jeux.set_loan_valide_admin(game_id, str(u_id), val_new)
      
@@ -503,14 +555,11 @@ def _final_page(user):
            st.session_state.grid_version += 1
            time.sleep(1)
            st.rerun()
-
-
-
-
-
+    
+ 
 
     st.divider()
-   
+       
     # --- PARTIE inferieurs : GRAPHIQUES ---
 
     col_graph1, col_graph2, col_graph3 = st.columns(3)
@@ -519,74 +568,142 @@ def _final_page(user):
 
     ###########---- 0 dataframe pour alimenter les graph 
     # 1. Optimisation : création d'un dictionnaire d'utilisateurs {str(id): pseudo}
-    users_dict = {str(u["_id"]): u.get("pseudo", "Inconnu") for u in users}
-     ###---------------------------------------------------- 
+    ##users_dict = [ u for u in users]
+    users_dict_pd = pd.DataFrame(users)
+    users_dict_pd = users_dict_pd.rename(columns={'_id': 'user_id'})
+
+
+
+    ### ----------------------------------------------------------------------------------------------
+    ###  gestion dataframe pour les jeux pretés   ---------------------------------------------------- 
+    ### ----------------------------------------------------------------------------------------------
+
+
+    ########### dataframe des prets
     liste_pret_validé = storage_jeux.get_validated_loans()
-    liste_info_valide = []
-    for game in  liste_pret_validé :
-        id_jeu = game["id_jeux"]
-        info_games_valide = storage_jeux.get_info_games(id_jeu)
-        # Récupération sécurisée du pseudo (converti en str pour être sûr que les ID matchent)
-        user_id_str = str(game["user_id"])
-        pseudo = users_dict.get(user_id_str, "Utilisateur inconnu")
-       
-          
-        liste_info_valide.append ({"classement":  info_games_valide[0]["classement_jps_final"] ,  "Nouveauté": nouveaute_def(id_jeu), "pseudo":pseudo , "nom": info_games_valide[0]["nom_jeu_complet"],"Nb_jeux_valide":1, "statut_valide":True})
+    liste_game_validé = [ObjectId(game["id_jeux"]) for game in liste_pret_validé ]
+    liste_pret_validé_pd = pd.DataFrame(liste_pret_validé)
+    
+ 
+    ####creation du dataframe si il y a des prets validé
+    if len(liste_pret_validé_pd) >0 :
+        ########### dataframe des infos jeux pretes
+        liste_detail_valider = storage_jeux.load_games(liste_game_validé, None)
+        liste__info_pret_valider_user  = pd.DataFrame(liste_detail_valider)
+        liste__info_pret_valider_user = liste__info_pret_valider_user.rename(columns={'_id': 'id_jeux'})
+        liste__info_pret_valider_user = liste__info_pret_valider_user.rename(columns={'classement_jps_final': 'classement'})
+
      
-    df_jeux_valide_graphique  = pd.DataFrame(liste_info_valide)
-
-
-
-    ###---------------------------------------------------- 
-    liste_info = []
-    liste_pret_user = storage_jeux.get_all_loans()
+        ###########  jointure des prets avec les infos de jeu
+        ########### nettoyage des clés pour les rendre compatible 
+        liste__info_pret_valider_user['id_jeux'] = liste__info_pret_user['id_jeux'].astype(str).str.strip()
+        liste_pret_validé_pd['id_jeux'] = liste_pret_user_pd['id_jeux'].astype(str).str.strip()
+    
+    
+        liste_pret__validé_user_detail = pd.merge(
+               liste__info_pret_valider_user,
+               liste_pret_validé_pd,
+               on="id_jeux",
+               how="inner",  
+           )
+        ###########  jointure des prets avec les infos de jeu
+        ########### nettoyage des clés pour les rendre compatible 
+        liste_pret__validé_user_detail['user_id'] = liste_pret__validé_user_detail['user_id'].astype(str).str.strip()
+        users_dict_pd['user_id'] = users_dict_pd['user_id'].astype(str).str.strip()
+    
        
-    for game_pret in liste_pret_user:
-   
-        # Récupération des infos du jeu
-        id_jeu = game_pret["id_jeux"]
-        info_games_pret = storage_jeux.get_info_games(id_jeu)
-  
-        # Récupération sécurisée du pseudo (converti en str pour être sûr que les ID matchent)
-        user_id_str = str(game_pret["user_id"])
-        pseudo = users_dict.get(user_id_str, "Utilisateur inconnu")
+     
+        df_jeux_valide_graphique=pd.merge(
+               liste_pret__validé_user_detail,
+               users_dict_pd,
+               on="user_id",
+               how="inner",  
+           )
     
-        # Ajout à la liste
-        liste_info.append({
-            "classement": info_games_pret[0]["classement_jps_final"],
-            "Nouveauté": nouveaute_def(id_jeu),
-            "pseudo": pseudo,
-            "nom": info_games_pret[0]["nom_jeu_complet"],
-            "Nb_jeux_propose": 1,
-        })
-    df_jeux_pret_graphique  = pd.DataFrame(liste_info)
+        if len(df_jeux_valide_graphique) > 0:
+             df_jeux_valide_graphique["Nouveauté"] = df_jeux_valide_graphique.apply(nouveaute_def, axis=1)
+             df_jeux_valide_graphique["Nb_jeux_propose"] = 1
+    
+    else :
+        ####creation dataframe vide car pas de pret
+        df_jeux_valide_graphique = pd.DataFrame()
+    
+ 
 
-    ###---------------------------------------------------- 
-    liste_jeu_selectionne = []
+    ### ----------------------------------------------------------------------------------------------
+    ###  gestion dataframe pour les jeux pretés   ---------------------------------------------------- 
+    ### ----------------------------------------------------------------------------------------------
+
+
+    ########### dataframe des prets
+    liste_pret_user = storage_jeux.get_all_loans()
+    liste_game_preter = [ObjectId(game["id_jeux"]) for game in liste_pret_user ]
+    liste_pret_user_pd = pd.DataFrame(liste_pret_user)
+    
+ 
+    ####creation du dataframe si il y a des prets
+    if len(liste_pret_user_pd) >0 :
+        ########### dataframe des infos jeux pretes
+        liste_detail_preter = storage_jeux.load_games(liste_game_preter, None)
+        liste__info_pret_user  = pd.DataFrame(liste_detail_preter)
+        liste__info_pret_user = liste__info_pret_user.rename(columns={'_id': 'id_jeux'})
+        liste__info_pret_user = liste__info_pret_user.rename(columns={'classement_jps_final': 'classement'})
+     
+        ###########  jointure des prets avec les infos de jeu
+        ########### nettoyage des clés pour les rendre compatible 
+        liste__info_pret_user['id_jeux'] = liste__info_pret_user['id_jeux'].astype(str).str.strip()
+        liste_pret_user_pd['id_jeux'] = liste_pret_user_pd['id_jeux'].astype(str).str.strip()
+    
+    
+        liste_pret_user_detail = pd.merge(
+               liste__info_pret_user,
+               liste_pret_user_pd,
+               on="id_jeux",
+               how="inner",  
+           )
+        ###########  jointure des prets avec les infos de jeu
+        ########### nettoyage des clés pour les rendre compatible 
+        liste_pret_user_detail['user_id'] = liste_pret_user_detail['user_id'].astype(str).str.strip()
+        users_dict_pd['user_id'] = users_dict_pd['user_id'].astype(str).str.strip()
+    
+       
+     
+        df_jeux_pret_graphique=pd.merge(
+               liste_pret_user_detail,
+               users_dict_pd,
+               on="user_id",
+               how="inner",  
+           )
+    
+        if len(df_jeux_pret_graphique) > 0:
+             df_jeux_pret_graphique["Nouveauté"] = liste_pret_user_detail.apply(nouveaute_def, axis=1)
+             df_jeux_pret_graphique["Nb_jeux_propose"] = 1
+    
+    else :
+        ####creation dataframe vide car pas de pret
+        df_jeux_select_graphique = pd.DataFrame()
+    
+
+    ### ----------------------------------------------------------------------------------------------
+    ###  gestion dataframe pour les jeux selectionnnés   --------------------------------------------- 
+    ### ----------------------------------------------------------------------------------------------
+
     liste_jeu_selec = storage_jeux.final_games()
+    liste_game_select = [ObjectId(game["id_jeux"]) for game in liste_jeu_selec ]
+    
+    liste__info_select = storage_jeux.load_games(liste_game_select, None)
 
-
-
-    for game_selec in liste_jeu_selec:
-
+    df_jeux_select_graphique  = pd.DataFrame(liste__info_select)
+    df_jeux_select_graphique = df_jeux_select_graphique.rename(columns={'classement_jps_final': 'classement'})
+      
+    if len(df_jeux_select_graphique) > 0:
+         df_jeux_select_graphique["Nouveauté"] = df_jeux_select_graphique.apply(nouveaute_def, axis=1)
+         df_jeux_select_graphique["Nb_jeux_selec"] = 1
    
-        # Récupération des infos du jeu
-        id_jeu = game_selec.get("id_jeux")
-        info_games_selec = storage_jeux.get_info_games(id_jeu)
-  
-    
-    
-        # Ajout à la liste
-        liste_jeu_selectionne.append({
-            "classement": info_games_selec[0]["classement_jps_final"],
-            "Nouveauté": nouveaute_def(id_jeu),
-            "nom": info_games_selec[0]["nom_jeu_complet"],
-            "Nb_jeux_selec": 1,
-        })
-    df_jeux_select_graphique  = pd.DataFrame(liste_jeu_selectionne)
+ 
 
 
-
+    ###  gestion de l'affichage ---------------------------------------------------------------------------
     couleurs_classement = {"AMBIANCE": "#E655DA", ## rose
                            "COOP/SEMI COOP" :"#7A0EE3",####violet
                            "JEU DUO" :"#FF9224",          ##orange                 
@@ -602,8 +719,9 @@ def _final_page(user):
 
     couleurs_nouveaute = {"✨NOUVEAUTE": "#57B02C", "🏺ANCIEN": "#080808", "🧐 INCONNU": "#1128D6"}
   
-
-   ###########---- 1. Histogramme par joueur (Validés vs Cochés Utilisateur)
+    ### ----------------------------------------------------------------------------------------------
+    ###########---- 1. graphique lié aux jeux sélectionnés
+    ### ----------------------------------------------------------------------------------------------
    
     with col_graph1:
           st.subheader("Nombre Jeux selectionnés")
@@ -649,7 +767,10 @@ def _final_page(user):
  
           
         
-    ###########----2. Camembert Nouveautés (jeux cochés au moins une fois par un utilisateur)
+    ### ----------------------------------------------------------------------------------------------
+    ###########---- 1. graphique lié aux jeux prétés
+    ### ----------------------------------------------------------------------------------------------
+   
        
     with col_graph2:
           st.subheader("Nombre Jeux proposés ")
@@ -673,11 +794,11 @@ def _final_page(user):
                       font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
                   ),
                   margin=dict(
-                      t=30, b=100, l=20, r=20
+                       t=30, b=100, l=20, r=20
                   ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
               )
               st.plotly_chart(fig_pie_cat, use_container_width=True)
-
+ 
           else:
               st.info("Aucun jeu proposé pour le moment.")
 
@@ -693,11 +814,11 @@ def _final_page(user):
 
      
 
+    ### ----------------------------------------------------------------------------------------------
+    ###########---- 1. graphique lié aux jeux validés
+    ### ----------------------------------------------------------------------------------------------
+   
 
-
- 
-
-      ###########----3. Camembert Catégories (Produits cochés au moins une fois par un utilisateur)
     with col_graph3:
           st.subheader("Nombre Jeux validés")
        
@@ -739,46 +860,49 @@ def _final_page(user):
           else:
               st.info("Aucun jeu validé pour le moment.")     
 
-
+    ### ----------------------------------------------------------------------------------------------
+    ###########---- histogrammes des jeux pretes par joueurs 
+    ### ----------------------------------------------------------------------------------------------
+   
  
     st.subheader("listes des prets  par Joueur")
 
     if df_jeux_pret_graphique.empty and df_jeux_valide_graphique.empty:
-       df_jeux_histogramme = pd.DataFrame(
-             columns=[
-                 "classement",
-                 "Nouveauté",
-                 "pseudo",
-                 "nom",
-                 "Nb_jeux_propose",
-                 "Nb_jeux_valide",
-                 "statut_valide",
-             ]
-         )
+         df_jeux_histogramme = pd.DataFrame(
+               columns=[
+                   "classement",
+                   "Nouveauté",
+                   "pseudo",
+                   "nom",
+                   "Nb_jeux_propose",
+                   "Nb_jeux_valide",
+                   "statut_valide",
+               ]
+           )
 
     elif df_jeux_pret_graphique.empty:
         
-       df_jeux_histogramme = df_jeux_valide_graphique.copy()     
-       df_jeux_histogramme["Nb_jeux_propose"] = 0
+         df_jeux_histogramme = df_jeux_valide_graphique.copy()     
+         df_jeux_histogramme["Nb_jeux_propose"] = 0
 
     # 3. Cas où seules les validations sont vides
     elif df_jeux_valide_graphique.empty:
      
-       df_jeux_histogramme = df_jeux_pret_graphique.copy()
-       df_jeux_histogramme["Nb_jeux_valide"] = 0       
-       df_jeux_histogramme["statut_valide"] = False
+         df_jeux_histogramme = df_jeux_pret_graphique.copy()
+         df_jeux_histogramme["Nb_jeux_valide"] = 0       
+         df_jeux_histogramme["statut_valide"] = False
     else : 
-       df_jeux_histogramme = pd.merge(
-           df_jeux_pret_graphique,
-           df_jeux_valide_graphique,
-           on=["pseudo", "nom", "classement", "Nouveauté"],
-           how="outer",  # 'outer' garde tout, même si un jeu n'est que dans l'un des deux tableaux
-       )
-       
-       # Remplacer les valeurs manquantes (NaN) par 0 ou False selon les colonnes
-       df_jeux_histogramme["Nb_jeux_propose"] = df_jeux_histogramme["Nb_jeux_propose"].fillna(0)
-       df_jeux_histogramme["Nb_jeux_valide"] = df_jeux_histogramme["Nb_jeux_valide"].fillna(0)
-       df_jeux_histogramme["statut_valide"] = df_jeux_histogramme["statut_valide"].fillna(False)
+         df_jeux_histogramme = pd.merge(
+             df_jeux_pret_graphique,
+             df_jeux_valide_graphique,
+             on=["pseudo", "nom", "classement", "Nouveauté"],
+             how="outer",  # 'outer' garde tout, même si un jeu n'est que dans l'un des deux tableaux
+         )
+         
+         # Remplacer les valeurs manquantes (NaN) par 0 ou False selon les colonnes
+         df_jeux_histogramme["Nb_jeux_propose"] = df_jeux_histogramme["Nb_jeux_propose"].fillna(0)
+         df_jeux_histogramme["Nb_jeux_valide"] = df_jeux_histogramme["Nb_jeux_valide"].fillna(0)
+         df_jeux_histogramme["statut_valide"] = df_jeux_histogramme["statut_valide"].fillna(False)
 
     #  Aggrégation des données pour obtenir la somme par pseudo
     df_jeux_histogramme["Nb_jeux_propose"] = pd.to_numeric(df_jeux_histogramme["Nb_jeux_propose"], errors="coerce").fillna(0).astype(int)   
@@ -806,9 +930,4 @@ def _final_page(user):
        st.plotly_chart(fig_hist, use_container_width=True)
     else:
         st.info("Aucun jeu prété / validé pour le moment.")
-
-
-
-
-
 

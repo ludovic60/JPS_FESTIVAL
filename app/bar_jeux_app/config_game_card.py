@@ -11,26 +11,15 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import commun.auth,  commun.config 
 import commun.common_store as cs
 
-def nouveaute_def( id_game) :
+
+def nouveaute_def(game_info):
+
+    periode_dernier_festival = (int( cs._secret("ANNEE_FESTIVAL"))-1) *100 + int(cs._secret("MOIS_FESTIVAL") )
         
-        VERT = "\033[32m"
-        BLEU = "\033[34m"
-        RESET = "\033[0m"
-        info_jeu= storage_jeux.get_info_games(id_game)       
-        New = ""
-        if ( info_jeu[0].get("mois_sortie")  and  info_jeu[0].get("annee_parution") ) :      
-       
-                periode_parution = int(str(info_jeu[0].get("annee_parution"))) *100 +  int(str(info_jeu[0].get("mois_sortie")) )
-                periode_dernier_festival = (int( cs._secret("ANNEE_FESTIVAL"))-1) *100 + int(cs._secret("MOIS_FESTIVAL") )
-                      
-                if periode_parution  >=  periode_dernier_festival :
-                               New = f"✨NOUVEAUTE"
-                else :   
-                               New = f"🏺ANCIEN"
-        else :
-                   New = f"🧐 INCONNU"
-           
-        return New            
+    if game_info.get("mois_sortie") and game_info.get("annee_parution"):
+        periode_parution = int(str(game_info["annee_parution"])) * 100 + int(str(game_info["mois_sortie"]))
+        return "✨NOUVEAUTE" if periode_parution >= periode_dernier_festival else "🏺ANCIEN"
+    return "🧐 INCONNU"
 
 def mise_forme_classement(classement) :
     if classement :
@@ -85,7 +74,7 @@ def _game_card(g, list_key, user , mode ):
             title = g.get("nom_jeu_complet") or g.get("nom_jeu") or "Jeu"
 
             st.markdown(f"### {title}")
-            st.markdown(f":blue[*{nouveaute_def( str(g['_id']))}*]")
+            st.markdown(f":blue[*{nouveaute_def(g)}*]")
 
             ##### gestion du classement =      
             le_classement = mise_forme_classement(g.get("classement_jps_final"))
@@ -164,10 +153,10 @@ def _game_card(g, list_key, user , mode ):
                         args=(ckey_this_game, has_selected_this_game),
                     )          
                     if st.button(   "✅ valider la suggestion", key=f"valid_sug_{ckey_this_game}",  width=250,  wrap=True) :
-                                result_valid = storage_jeux.toggle_suggestion(ckey_this_game, user["id"], "suggestion Retenue", "all") 
+                                result_valid = storage_jeux.toggle_suggestion(ckey_this_game, user["_id"], "suggestion Retenue", "all") 
                                 on_admin_change(ckey_this_game, has_selected_this_game)
                     if st.button(  "❌ refuser la suggestion" ,  key=f"refuse_sug_{ckey_this_game}",  width=250,  wrap=True) :
-                                result_valid = storage_jeux.toggle_suggestion(ckey_this_game, user["id"], "suggestion refusée", "all")
+                                result_valid = storage_jeux.toggle_suggestion(ckey_this_game, user["_id"], "suggestion refusée", "all")
                     
                         
                     
@@ -175,12 +164,12 @@ def _game_card(g, list_key, user , mode ):
 
                     def on_user_change(game_id, currently_selected, source):
                         mode = "delete" if currently_selected else "insert"   
-                        storage_jeux.toggle_suggestion(ckey_this_game, user["id"] , mode ,source)
+                        storage_jeux.toggle_suggestion(ckey_this_game, user["_id"] , mode ,source)
                         st.rerun()
 
                     def on_user_change_pret(game_id, currently_selected, source):
                         mode = "delete" if currently_selected else "insert"   
-                        storage_jeux.toggle_suggestion(ckey_this_game, user["id"] , mode ,source)
+                        storage_jeux.toggle_suggestion(ckey_this_game, user["_id"] , mode ,source)
                         st.rerun() 
                         
                      # 1. On ne garde que les suggestions spécifiques à CE jeu
@@ -201,8 +190,8 @@ def _game_card(g, list_key, user , mode ):
                     uids_this_game_pret = [s["user_id"] for s in sugg_prete_this_game]
 
                     # 3. L'utilisateur a-t-il suggéré CE jeu ?
-                    has_suggested = user["id"] in uids_this_game
-                    has_suggested_prete = user["id"] in uids_this_game_pret
+                    has_suggested = user["_id"] in uids_this_game
+                    has_suggested_prete = user["_id"] in uids_this_game_pret
                         
                     
                     # 4. Affichage de la checkbox avec la bonne valeur

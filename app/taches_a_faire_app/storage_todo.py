@@ -22,6 +22,7 @@ import commun.config as cfg
 
 
 
+
 _lock = Lock()
 
 
@@ -29,13 +30,19 @@ _lock = Lock()
 
 # ----  gestion de la table Tâche  ----
 
-def get_todo():
+def get_todo(mode):
     con_mongo = cs.mongo_enabled()
     if   con_mongo : 
         db = cs.get_db()
         todo_tb = db.todo
         filtre_tb = {}
         selc_tb = {"todo": 1, "_id": 1, "statut":1, "affecte":1, "pourcentage avancement":1, "commentaire":1}
+        if mode == "CLOSED" :
+            filtre_tb = { "statut": { "$in" : ["TERMINER", "ABANDONNER"]}}
+        elif mode == "OPEN" :
+            filtre_tb = { "statut": { "$nin" : ["TERMINER", "ABANDONNER"]}}
+        else :
+            filtre_tb = {}
         resultats = list(todo_tb.find(filtre_tb, selc_tb))
        
     else :
@@ -49,7 +56,7 @@ def add_todo(label):
     if   con_mongo : 
         db = cs.get_db()
         todo_tb = db.todo
-        new_todo = {"_id": ObjectId(), "todo": label.strip() ,"affecte": "", "statut":"a faire"}
+        new_todo = {"_id": ObjectId(), "todo": label.strip() ,"affecte": "", "statut":"a faire" , "commentaire":""}
         filtre_tb = {}
         ins_tb = {}
         resultat = todo_tb.insert_one(new_todo)
@@ -66,6 +73,7 @@ def update_todo(todo_id, affectation, newstatut,newcomment):
         upd_todo_id = ObjectId(todo_id)
     
         resultats =  todo_tb.update_one({"_id": upd_todo_id}, {"$set": {"affecte": affectation, "statut": newstatut,"commentaire":newcomment} })
+ 
  
 
 

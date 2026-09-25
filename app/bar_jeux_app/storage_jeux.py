@@ -42,14 +42,17 @@ def load_games(list_key, search_query=None):
                 filtre_tb ={"$or": [  {"nom_jeu_complet": regex_pattern},
                                      {"nom_jeu": regex_pattern},
                                      {"url_myludo": regex_pattern}]}
+         
         else :
         
             if list_key == "est_selectionnable":
                 filtre_tb = {"est_selectionnable": list_key}
+  
             elif list_key == "all":
                 filtre_tb = {}    
+               
             elif len(list_key) <=7 :
-
+              
                 if datetime.strptime(list_key, "%Y_%m"): 
                         annee = list_key[:4]
                         mois = list_key[5:]
@@ -58,10 +61,13 @@ def load_games(list_key, search_query=None):
                             mois = mois[1]
             
                         filtre_tb = {"annee_parution" : annee , "mois_sortie" : mois }
+                   
                 else : 
                         filtre_tb= {"_id": {"$in": list_key}}
+                       
             else :
                 filtre_tb= {"_id": {"$in": list_key}}
+
         
         resultats = list(game_tb.find(filtre_tb).sort({"nom_jeu_fichier":1}))
     else :
@@ -201,7 +207,7 @@ def get_game_suggestions_a_traiter ():
         
         # distinct(field, filter) renvoie une liste de valeurs uniques
         resultats = list(game_suggest_tb.distinct("id_jeux", filtre_tb))
-        print(resultats)
+
     else :
         resultats =[]
     return resultats 
@@ -355,7 +361,13 @@ def update_statut_request(type_request, req_id,statut):
     resquest_tb = db.demandes                                              
     filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "id_request": str(ObjectId(req_id)) }
     resultat = resquest_tb.update_many(filtre_tb, {"$set": {"statut" : statut} })
-
+    print("update requte type_request")
+    print(type_request)
+    print("update requte id_request")
+    print(str(ObjectId(req_id)))
+     
+    print("update requte annee")
+    print(cs._secret("ANNEE_FESTIVAL"))
 
 
 

@@ -19,7 +19,7 @@ import commun.common_store
 # APPLICATION PRINCIPALE
 # ==========================================================================
 def main_app(user: dict):
-    st.session_state["user_id_current"] = user["id"]
+    st.session_state["user_id_current"] = user["_id"]
     with st.sidebar:
         st.markdown("### 📋 taches à faire ")
         st.write(f"**{user['pseudo']}**")
@@ -54,6 +54,10 @@ def todo_page(user):
                         if c2.form_submit_button("Ajouter", type="primary") and new_label.strip():
                             add_todo(new_label)
                             st.rerun()
+       
+    
+
+       st.error(" - TACHES RESTANT A FAIRE ")
        c1, c2, c3,c4 ,c5, c6 , c7 = st.columns([4, 3, 2, 4, 2 , 2, 2])
        c1.write("nom de la tache")
        c2.write("affecte a ")
@@ -61,10 +65,11 @@ def todo_page(user):
        c4.write("commentaire")
        c5.write("modifier")
        c6.write("terminer ")
-       c7.write("supprimer ")                     
-       for t in get_todo():
+       c7.write("supprimer ")    
 
-           
+    
+       for t in get_todo("OPEN"):
+               
             label_todo = c1.text_input("t", value=t["todo"], key=f"edit_{t["_id"]}",
                                    label_visibility="collapsed")
             label_affecte = c2.text_input("t", value=t["affecte"], key=f"edit_qui_{t["_id"]}",
@@ -89,4 +94,25 @@ def todo_page(user):
                 delete_todo(t["_id"])              
                 get_todo()
                 st.rerun()
+
+       st.success(" - TACHES TERMINEE ")
+       c1, c2, c3 , c4= st.columns([4, 3, 2, 4])
+       c1.write("nom de la tache")
+       c2.write("affecte a ")
+       c3.write("statut")
+       c4.write("commentaire")
+                     
+       for t in get_todo("CLOSED"):
+
+           
+            label_todo = c1.text_input("t", value=t["todo"], key=f"edit_{t["_id"]}",
+                                   label_visibility="collapsed")
+            label_affecte = c2.text_input("t", value=t["affecte"], key=f"edit_qui_{t["_id"]}",
+                                   label_visibility="collapsed")
+            label_statut = c3.text_input("t", value=t["statut"], key=f"edit_statut_{t["_id"]}",
+                                   label_visibility="collapsed")
+            commentaire_statut = c4.text_input("t", value=t["commentaire"], key=f"edit_comment_{t["_id"]}",
+                                   label_visibility="collapsed")           
+           
+ 
 

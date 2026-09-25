@@ -32,7 +32,7 @@ def on_page_change():
 # APPLICATION PRINCIPALE
 # ==========================================================================
 def main_app(user: dict):
-    st.session_state["user_id_current"] = user["id"]
+    st.session_state["user_id_current"] = user["_id"]
     with st.sidebar:
         st.markdown("### 📅 Week-end")
         st.write(f"**{user['pseudo']}**")
@@ -68,17 +68,17 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     # 1. CHARGEMENT INITIAL (Exécuté une seule fois par session utilisateur)
     bdd_key = f"db_loaded_{key_prefix}_{user_id}"
 
-    if bdd_key not in st.session_state:
-        creneau_selc = get_presence(user_id)
-        periode_db = set()
-        taches_db = set()
+   # if bdd_key not in st.session_state:
+    creneau_selc = get_presence(user_id)
+    periode_db = set()
+    taches_db = set()
 
-        for lstcre in creneau_selc:
-            for creneaux in lstcre.get("creneau", []):
+    for lstcre in creneau_selc:
+        for creneaux in lstcre.get("creneau", []):
                 periode_db.add(creneaux[0])  # ex: 'samedi_matin'
                 taches_db.add(f"{str(creneaux[1])}_{str(creneaux[0]).split("_")[0]}")  # ID tâche
 
-        st.session_state[bdd_key] = {"periodes": periode_db, "taches": taches_db}
+    st.session_state[bdd_key] = {"periodes": periode_db, "taches": taches_db}
 
     initial_periodes = st.session_state[bdd_key]["periodes"]
     initial_taches = st.session_state[bdd_key]["taches"]
@@ -197,11 +197,11 @@ def presence_page(user: dict):
     st.title("Ma présence")
     st.caption("Cochez vos créneaux de disponibilité et vos tâches souhaitées. ATTENTION si vous ne cochez pas un créneau , les taches de ce jour ne seront pas enregistrées")
 
-    selected = presence_editor(user["id"], user["pseudo"], "self")
+    selected = presence_editor(user["_id"], user["pseudo"], "self")
 
     if st.button("Enregistrer", type="primary"):
         
-        set_presence(user["id"], user["pseudo"], selected)
+        set_presence(user["_id"], user["pseudo"], selected)
         st.success("Présence enregistrée")
 
 

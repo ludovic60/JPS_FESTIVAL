@@ -75,8 +75,7 @@ def _clean(u):
 def get_users_loaner():
     db = get_db()
     if db is not None:
-        filtre_tb = {"role": {"$ne":"admin"} ,
-                     "prete_jeu" : "True" , 
+        filtre_tb = {"prete_jeu" : "True" , 
                      "$or": [
                         {"desactived_at": ""},
                         {"desactived_at": None},  # Bonne pratique : inclure les valeurs nulles ou absentes
