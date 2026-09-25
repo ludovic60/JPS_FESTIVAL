@@ -354,9 +354,9 @@ def _final_page(user):
             excel_data_propose = b""
         
         st.download_button(
-            label="📥 Export de votre liste",
+            label="📥 Export de votre liste propose",
             data=excel_data_propose,
-            file_name="export_jeux_user.xlsx",
+            file_name="export_jeux_propose_user.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             use_container_width=True
         )
@@ -371,9 +371,9 @@ def _final_page(user):
             excel_data_valide = b""   
         
         st.download_button(
-            label="📥 Export de la liste validée",
+            label="📥 Export de votre liste validée",
             data=excel_data_valide,
-            file_name="export_jeux_valide.xlsx",
+            file_name="export_jeux_valide_user.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             use_container_width=True
         )
