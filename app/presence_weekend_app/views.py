@@ -68,17 +68,17 @@ def presence_editor(user_id: str, user_name: str, key_prefix: str):
     # 1. CHARGEMENT INITIAL (Exécuté une seule fois par session utilisateur)
     bdd_key = f"db_loaded_{key_prefix}_{user_id}"
 
-    if bdd_key not in st.session_state:
-        creneau_selc = get_presence(user_id)
-        periode_db = set()
-        taches_db = set()
+   # if bdd_key not in st.session_state:
+    creneau_selc = get_presence(user_id)
+    periode_db = set()
+    taches_db = set()
 
-        for lstcre in creneau_selc:
-            for creneaux in lstcre.get("creneau", []):
+    for lstcre in creneau_selc:
+        for creneaux in lstcre.get("creneau", []):
                 periode_db.add(creneaux[0])  # ex: 'samedi_matin'
                 taches_db.add(f"{str(creneaux[1])}_{str(creneaux[0]).split("_")[0]}")  # ID tâche
 
-        st.session_state[bdd_key] = {"periodes": periode_db, "taches": taches_db}
+    st.session_state[bdd_key] = {"periodes": periode_db, "taches": taches_db}
 
     initial_periodes = st.session_state[bdd_key]["periodes"]
     initial_taches = st.session_state[bdd_key]["taches"]
