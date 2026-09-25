@@ -53,6 +53,7 @@ supabase = init_supabase()
 
 def current_user():
     user_supabase = st.session_state.get("user")
+    print(user_supabase)
     pseudo = user_supabase.user_metadata.get("pseudo", "")
     
     return get_user_by_pseudo(pseudo)
