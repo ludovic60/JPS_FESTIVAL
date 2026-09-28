@@ -835,9 +835,10 @@ def _final_page(user):
 
     with col_graph3:
           st.subheader("Nombre Jeux validés")
-       
-          st.metric(    label="Nombre jeux validés", value=df_jeux_valide_graphique['nom_jeu_complet'].nunique(),label_visibility="collapsed")
-         
+          if not df_jeux_valide_graphique.empty:
+                 st.metric(    label="Nombre jeux validés", value=df_jeux_valide_graphique['nom_jeu_complet'].nunique(),label_visibility="collapsed")
+          else 
+                      st.metric(    label="Nombre jeux validés", value=0,label_visibility="collapsed")
      
           st.subheader("Jeux validés par Classement")
           if not df_jeux_valide_graphique.empty:
