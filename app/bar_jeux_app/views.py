@@ -740,7 +740,7 @@ def _final_page(user):
    
     with col_graph1:
           st.subheader("Nombre Jeux selectionnés")
-       
+          print(df_jeux_select_graphique)
           st.metric(    label="Nombre jeux sélectionnés", value= df_jeux_select_graphique['Jeu'].nunique(),label_visibility="collapsed")
                     
           st.subheader("Jeux selectionnés par Classement")
