@@ -18,10 +18,19 @@ def nouveaute_def(game_info):
         
     if game_info.get("mois_sortie") and game_info.get("annee_parution"):
         periode_parution = int(str(game_info["annee_parution"])) * 100 + int(str(game_info["mois_sortie"]))
-        return "✨NOUVEAUTE" if periode_parution >= periode_dernier_festival elif ( "🏺JEU PLUS DE 20 ANS" if int(str(game_info["annee_parution"])) <= (int( cs._secret("ANNEE_FESTIVAL"))-20) else   "🏺ANCIEN" )
+        if periode_parution >= periode_dernier_festival  :
+            return "✨NOUVEAUTE" 
+        elif int(str(game_info["annee_parution"])) <= (int( cs._secret("ANNEE_FESTIVAL"))-20) :
+            return "🏺JEU PLUS DE 20 ANS"
+        else   
+            return "🏺ANCIEN" 
     elif  game_info.get("annee_parution") :
-         return "✨NOUVEAUTE" if    (  (int(str(game_info["annee_parution"])) == int( cs._secret("ANNEE_FESTIVAL")) ) or     (int(str(game_info["annee_parution"])) == int( cs._secret("ANNEE_FESTIVAL"))-1 )    else  "🧐 INCONNU"
-    return "🧐 INCONNU"    
+        if    (  (int(str(game_info["annee_parution"])) == int( cs._secret("ANNEE_FESTIVAL")) ) or     (int(str(game_info["annee_parution"])) == int( cs._secret("ANNEE_FESTIVAL"))-1 )   :
+              return "✨NOUVEAUTE"                       
+        else  
+              return "🧐 INCONNU"
+    else :
+        return "🧐 INCONNU"    
 
 def mise_forme_classement(classement) :
     if classement :
