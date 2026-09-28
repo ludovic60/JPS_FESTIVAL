@@ -740,8 +740,8 @@ def _final_page(user):
    
     with col_graph1:
           st.subheader("Nombre Jeux selectionnés")
-       
-          st.metric(    label="Nombre jeux sélectionnés", value= df_jeux_select_graphique['Jeu'].nunique(),label_visibility="collapsed")
+
+          st.metric(    label="Nombre jeux sélectionnés", value= df_jeux_select_graphique['nom_jeu_complet'].nunique(),label_visibility="collapsed")
                     
           st.subheader("Jeux selectionnés par Classement")
        
@@ -778,11 +778,6 @@ def _final_page(user):
           else:
               st.info("Aucun jeu coché pour le moment.")
 
-          st.subheader("Jeux selectionnés  par max joueur")
-
-
-          st.subheader("Jeux selectionnés  par nouveauté")
-
  
           
         
@@ -794,7 +789,7 @@ def _final_page(user):
     with col_graph2:
           st.subheader("Nombre Jeux proposés ")
       
-          st.metric(    label="Nombre jeux proposés", value= df_jeux_pret_graphique['Jeu'].nunique(),label_visibility="collapsed")
+          st.metric(    label="Nombre jeux proposés", value= df_jeux_pret_graphique['nom_jeu_complet'].nunique(),label_visibility="collapsed")
          
      
           st.subheader("Jeux proposés par Classement")
@@ -840,9 +835,10 @@ def _final_page(user):
 
     with col_graph3:
           st.subheader("Nombre Jeux validés")
-       
-          st.metric(    label="Nombre jeux validés", value=df_jeux_valide_graphique['Jeu'].nunique(),label_visibility="collapsed")
-         
+          if not df_jeux_valide_graphique.empty:
+                 st.metric(    label="Nombre jeux validés", value=df_jeux_valide_graphique['nom_jeu_complet'].nunique(),label_visibility="collapsed")
+          else :
+                      st.metric(    label="Nombre jeux validés", value=0,label_visibility="collapsed")
      
           st.subheader("Jeux validés par Classement")
           if not df_jeux_valide_graphique.empty:
