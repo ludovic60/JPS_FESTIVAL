@@ -442,11 +442,11 @@ def _final_page(user):
       
       # On passe la liste directement à partir du DataFrame
       gb = GridOptionsBuilder.from_dataframe(df_jeux[columns_to_show])
-      gb.configure_default_column(filterable=True, sortable=True, wrapHeaderText=True, autoHeaderHeight=True )
+      gb.configure_default_column(filterable=True, sortable=True )
       gb.configure_column("_id", hide=True)
       gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Jeu", editable=False, filterable=True, width=150, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Jeu", editable=False, filterable=True, sortable=True, width=150, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=False)
       gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=False)
       gb.configure_column("nbr max joueurs" , wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=50, suppressSizeToFit=True, pinned=False)
