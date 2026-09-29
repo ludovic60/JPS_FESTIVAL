@@ -294,9 +294,9 @@ def _final_page(user):
             "nouveaute": new_statut,
             "Annee": g.get("annee_parution", ""),
             "Classement": mise_forme_classement(g.get("classement_jps_final")),
-            "nbr_max_joueurs" : g.get("nbr_max_joueurs", ""),
-            "duree_min" : g.get("duree_min", ""),
-            "duree_max" : g.get("duree_max", ""),
+            "nbr max joueurs" : g.get("nbr_max_joueurs", ""),
+            "duree min" : g.get("duree_min", ""),
+            "duree max" : g.get("duree_max", ""),
             "Couverture Jeu": g.get("couverture", ""),
             "Jeu": g.get("nom_jeu_complet", ""),
             "Plusieurs exemplaires souhaités": is_several,
@@ -430,9 +430,9 @@ def _final_page(user):
           "nouveaute",
           "Annee",
           "Classement",
-          "nbr_max_joueurs",
-          "duree_min",
-          "duree_max",
+          "nbr max joueurs",
+          "duree min",
+          "duree max",
           "Couverture Jeu",
           "Jeu",
           "Plusieurs exemplaires souhaités",
@@ -442,15 +442,16 @@ def _final_page(user):
       
       # On passe la liste directement à partir du DataFrame
       gb = GridOptionsBuilder.from_dataframe(df_jeux[columns_to_show])
+      gb.configure_default_column(filterable=True, sortable=True, wrapHeaderText=True, autoHeaderHeight=True )
       gb.configure_column("_id", hide=True)
       gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Jeu", editable=False, filterable=True, width=150, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=False)
       gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=False)
-      gb.configure_column("nbr_max_joueurs", editable=False, width=50, suppressSizeToFit=True, pinned=False)
-      gb.configure_column("duree_min", editable=False, width=50, suppressSizeToFit=True, pinned=False)  
-      gb.configure_column("duree_max", editable=False, width=50, suppressSizeToFit=True, pinned=False)  
+      gb.configure_column("nbr max joueurs" , wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=50, suppressSizeToFit=True, pinned=False)
+      gb.configure_column("duree min", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=50, suppressSizeToFit=True, pinned=False)  
+      gb.configure_column("duree max", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=50, suppressSizeToFit=True, pinned=False)  
       
       gb.configure_column(
           "Plusieurs exemplaires souhaités",
