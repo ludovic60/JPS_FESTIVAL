@@ -348,10 +348,10 @@ def add_request(type_request, game_name, myludo_url, comments, by_name):
 
 def remove_request(type_request, req_id):
  con_mongo = cs.mongo_enabled()
-    st.write("remove requte type_request")
-    st.write(type_request)
+ st.write("remove requte type_request")
+ st.write(type_request)
 
-    st.write(str(ObjectId(req_id)))
+ st.write(str(ObjectId(req_id)))
      
  if   con_mongo : 
     db = cs.get_db()
