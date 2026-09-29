@@ -154,12 +154,12 @@ def _requests_page(user):
     st.subheader("Demandes d'ajout de jeux")
     reqs = storage_jeux.get_requests("ajout jeux")
 
-    st.error(" - TACHES RESTANT A FAIRE ")
+    
 
-    st.error(" - TACHES RESTANT A FAIRE ")
     if not reqs: 
         st.info("Aucune demande.")
     else :
+        st.error(" - AJOUT RESTANT A FAIRE ")
         c1, c2, c3, c4 , c5 ,c6,c7  = st.columns([3, 6, 1, 2 , 1, 2, 2])
         label = c1.text_input("t", value="NOM DU JEU", key=f"edit_game", label_visibility="collapsed")
         label = c2.text_input("t", value="MYLUDO URL", key=f"edit_myludo",label_visibility="collapsed") 
@@ -168,7 +168,7 @@ def _requests_page(user):
         label = c5.text_input("t", value="STATUT", key=f"edit_statut", label_visibility="collapsed")
         label = c6.text_input("t", value="", key=f"edit_vide1", label_visibility="collapsed")
         label = c7.text_input("t", value="", key=f"edit_vide2", label_visibility="collapsed")
-        for r in reqs:
+        for r in reqs if r["statut"] == "a traiter":
               
                   label = c1.text_input("t", value=r["game_name"], key=f"edit_game_{str(r["_id"])}",
                                          label_visibility="collapsed")
@@ -189,11 +189,41 @@ def _requests_page(user):
                         if c7.button("supprimer", key=f"modif_supp_{r["_id"]}"):
                             storage_jeux.remove_request("ajout jeux", r["_id"])
                             st.rerun()
-
+        st.success(" - AJOUTS FAITS ")
+        c1, c2, c3, c4 , c5 ,c6 = st.columns([3, 6, 1, 2 , 1, 2])
+        label = c1.text_input("t", value="NOM DU JEU", key=f"edit_game", label_visibility="collapsed")
+        label = c2.text_input("t", value="MYLUDO URL", key=f"edit_myludo",label_visibility="collapsed") 
+        label = c3.text_input("t", value="FAIT PAR", key=f"edit_by", label_visibility="collapsed")      
+        label = c4.text_input("t", value="DEMANDE LE", key=f"edit_date", label_visibility="collapsed") 
+        label = c5.text_input("t", value="STATUT", key=f"edit_statut", label_visibility="collapsed")
+        label = c6.text_input("t", value="", key=f"edit_vide1", label_visibility="collapsed")
+   
+        for r in reqs if r["statut"] == "traiter":
+              
+                  label = c1.text_input("t", value=r["game_name"], key=f"edit_game_{str(r["_id"])}",
+                                         label_visibility="collapsed")
+         
+                  label = c2.text_input("t", value=r["myludo_url"], key=f"edit_myludo_{str(r["_id"])}",
+                                         label_visibility="collapsed")      
+         
+                  label = c3.text_input("t", value=r["created_by"], key=f"edit_by_{str(r["_id"])}",
+                                         label_visibility="collapsed")      
+                  label = c4.text_input("t", value=r["created_at"], key=f"edit_date_{str(r["_id"])}",
+                                         label_visibility="collapsed") 
+                  label = c5.text_input("t", value=r["statut"], key=f"edit_statut_{str(r["_id"])}",
+                                         label_visibility="collapsed")
+                  if user["role"] == "admin": 
+                        if c6.button("supprimer", key=f"modif_supp_traiter_{r["_id"]}"):
+                            storage_jeux.remove_request("ajout jeux", r["_id"])
+                            st.rerun()    
+ 
+  
 
     st.subheader("liste des remarques par les joueurs")
-
+  
     remarks = storage_jeux.get_requests("remarque fiche jeux")
+    st.error(" - REMARQUE RESTANT A FAIRE ")
+ 
     if not reqs:
         st.info("Aucune remarque.")
     else :
@@ -228,6 +258,7 @@ def _requests_page(user):
                       if c72.button("supprimer", key=f"modif_suppr_{t["_id"]}"):
                           remove_request("remarque fiche jeux", t["_id"])
                           st.rerun()
+    st.error(" - REMARQUE RESTANT A FAIRE ")                
 ############################################################################################################
 ###-------------- page où est affiché les jeux selectionné
 ############################################################################################################
@@ -446,7 +477,7 @@ def _final_page(user):
       gb.configure_column("_id", hide=True)
       gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Jeu", editable=False, filterable=True, sortable=True, width=150, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Jeu", editable=False, filter="agTextColumnFilter", sortable=True, width=150, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=False)
       gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=False)
       gb.configure_column("nbr max joueurs" , wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=50, suppressSizeToFit=True, pinned=False)
