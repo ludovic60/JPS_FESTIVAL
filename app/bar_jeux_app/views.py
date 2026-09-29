@@ -294,6 +294,9 @@ def _final_page(user):
             "nouveaute": new_statut,
             "Annee": g.get("annee_parution", ""),
             "Classement": mise_forme_classement(g.get("classement_jps_final")),
+            "nbr_max_joueurs" : g.get("nbr_max_joueurs", ""),
+            "duree_min" : g.get("duree_min", ""),
+            "duree_max" : g.get("duree_max", ""),
             "Couverture Jeu": g.get("couverture", ""),
             "Jeu": g.get("nom_jeu_complet", ""),
             "Plusieurs exemplaires souhaités": is_several,
@@ -789,12 +792,34 @@ def _final_page(user):
 
 
           st.subheader("Jeux selectionnés par Nbr joueur max")
-
+          if not df_jeux_select_graphique.empty:
+                      df_nov = df_jeux_select_graphique.groupby('jeu')['nbr_max_joueurs'].nunique()
+                      df_nov.columns = ["nbr_max_joueurs", "Nombre"]
+                      fig_pie_nov = px.pie(df_nov, names="nbr_max_joueurs", values="Nombre", hole=0.3 , color="nbr_max_joueurs", color_discrete_map=couleurs_nouveaute  )
+                      fig_pie_nov.update_layout(height=250 , width=1000)
+                      st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+                      st.info("Aucun jeu coché pour le moment.")
    
           st.subheader("Jeux selectionnés par durée min")
-
+          if not df_jeux_select_graphique.empty:
+                      df_nov = df_jeux_select_graphique.groupby('jeu')['duree_min'].nunique()
+                      df_nov.columns = ["duree_min", "Nombre"]
+                      fig_pie_nov = px.pie(df_nov, names="duree_min", values="Nombre", hole=0.3 , color="duree_min", color_discrete_map=couleurs_nouveaute  )
+                      fig_pie_nov.update_layout(height=250 , width=1000)
+                      st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+                      st.info("Aucun jeu coché pour le moment.")
 
           st.subheader("Jeux selectionnés par durée max")
+          if not df_jeux_select_graphique.empty:
+                      df_nov = df_jeux_select_graphique.groupby('jeu')['duree_max'].nunique()
+                      df_nov.columns = ["duree_max", "Nombre"]
+                      fig_pie_nov = px.pie(df_nov, names="duree_max", values="Nombre", hole=0.3 , color="duree_max", color_discrete_map=couleurs_nouveaute  )
+                      fig_pie_nov.update_layout(height=250 , width=1000)
+                      st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+                      st.info("Aucun jeu coché pour le moment.")
           
         
     ### ----------------------------------------------------------------------------------------------
@@ -843,12 +868,35 @@ def _final_page(user):
               st.info("Aucun jeu proposé pour le moment.")
 
           st.subheader("Jeux proposés par Nbr joueur max")
-
+          if not df_jeux_select_graphique.empty:
+                      df_nov = df_jeux_pret_graphique.groupby('jeu')['nbr_max_joueurs'].nunique()
+                      df_nov.columns = ["nbr_max_joueurs", "Nombre"]
+                      fig_pie_nov = px.pie(df_nov, names="nbr_max_joueurs", values="Nombre", hole=0.3 , color="nbr_max_joueurs", color_discrete_map=couleurs_nouveaute  )
+                      fig_pie_nov.update_layout(height=250 , width=1000)
+                      st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+                      st.info("Aucun jeu coché pour le moment.")
    
           st.subheader("Jeux proposés par durée min")
-
+          if not df_jeux_select_graphique.empty:
+                      df_nov = df_jeux_pret_graphique.groupby('jeu')['duree_min'].nunique()
+                      df_nov.columns = ["duree_min", "Nombre"]
+                      fig_pie_nov = px.pie(df_nov, names="duree_min", values="Nombre", hole=0.3 , color="duree_min", color_discrete_map=couleurs_nouveaute  )
+                      fig_pie_nov.update_layout(height=250 , width=1000)
+                      st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+                      st.info("Aucun jeu coché pour le moment.")
 
           st.subheader("Jeux proposés par durée max")
+          if not df_jeux_select_graphique.empty:
+                      df_nov = df_jeux_pret_graphique.groupby('jeu')['duree_max'].nunique()
+                      df_nov.columns = ["duree_max", "Nombre"]
+                      fig_pie_nov = px.pie(df_nov, names="duree_max", values="Nombre", hole=0.3 , color="duree_max", color_discrete_map=couleurs_nouveaute  )
+                      fig_pie_nov.update_layout(height=250 , width=1000)
+                      st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+                      st.info("Aucun jeu coché pour le moment.")
+          
 
     ### ----------------------------------------------------------------------------------------------
     ###########---- 1. graphique lié aux jeux validés
@@ -897,14 +945,37 @@ def _final_page(user):
           else:
               st.info("Aucun jeu validé pour le moment.")     
 
-
+     
           st.subheader("Jeux validés par Nbr joueur max")
-
+          if not df_jeux_select_graphique.empty:
+                      df_nov = df_jeux_valide_graphique.groupby('jeu')['nbr_max_joueurs'].nunique()
+                      df_nov.columns = ["nbr_max_joueurs", "Nombre"]
+                      fig_pie_nov = px.pie(df_nov, names="nbr_max_joueurs", values="Nombre", hole=0.3 , color="nbr_max_joueurs", color_discrete_map=couleurs_nouveaute  )
+                      fig_pie_nov.update_layout(height=250 , width=1000)
+                      st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+                      st.info("Aucun jeu coché pour le moment.")
    
           st.subheader("Jeux validés par durée min")
-
+          if not df_jeux_select_graphique.empty:
+                      df_nov = df_jeux_valide_graphique.groupby('jeu')['duree_min'].nunique()
+                      df_nov.columns = ["duree_min", "Nombre"]
+                      fig_pie_nov = px.pie(df_nov, names="duree_min", values="Nombre", hole=0.3 , color="duree_min", color_discrete_map=couleurs_nouveaute  )
+                      fig_pie_nov.update_layout(height=250 , width=1000)
+                      st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+                      st.info("Aucun jeu coché pour le moment.")
 
           st.subheader("Jeux validés par durée max")
+          if not df_jeux_select_graphique.empty:
+                      df_nov = df_jeux_valide_graphique.groupby('jeu')['duree_max'].nunique()
+                      df_nov.columns = ["duree_max", "Nombre"]
+                      fig_pie_nov = px.pie(df_nov, names="duree_max", values="Nombre", hole=0.3 , color="duree_max", color_discrete_map=couleurs_nouveaute  )
+                      fig_pie_nov.update_layout(height=250 , width=1000)
+                      st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+                      st.info("Aucun jeu coché pour le moment.")
+
           
 
     ### ----------------------------------------------------------------------------------------------
