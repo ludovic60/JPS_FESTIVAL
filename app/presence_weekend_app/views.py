@@ -348,7 +348,7 @@ def admin_page():
             st.markdown("**Modifier les votes de cette personne :**")
         
             # 2. Appel de l'éditeur avec le prefixe dynamique
-            selected = presence_editor(
+            selected_user = presence_editor(
                 user_id, user_pseudo, key_prefix=dynamic_prefix
             )
 
@@ -356,15 +356,16 @@ def admin_page():
         
             # Bouton Enregistrer
             if st.button("Enregistrer les votes de cette personne", type="primary"):
-                st.write(selected)
-                set_presence(user_id, user_pseudo, selected)
+                st.write(selected_user)
+                set_presence(user_id, user_pseudo, selected_user)
+                st.success(f"selected_user")
                 st.success(f"Votes de {user_pseudo} enregistrés")
         
                 # Invalidation du cache pour forcer la re-lecture BDD au prochain tour
                 bdd_key = f"db_loaded_{dynamic_prefix}_{user_id}"
                 if bdd_key in st.session_state:
                     del st.session_state[bdd_key]
-        
+                time.sleep(2)
                 st.rerun()
 
 
