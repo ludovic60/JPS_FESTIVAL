@@ -201,17 +201,17 @@ def _requests_page(user):
    
         for r in reqs_traiter :
               
-                  label = c1.text_input("t", value=r["game_name"], key=f"edit_game_{str(r["_id"])}",
+                  label = c1.text_input("t", value=r["game_name"], key=f"edit_gametraiter_{str(r["_id"])}",
                                          label_visibility="collapsed")
          
-                  label = c2.text_input("t", value=r["myludo_url"], key=f"edit_myludo_{str(r["_id"])}",
+                  label = c2.text_input("t", value=r["myludo_url"], key=f"edit_myludotraiter_{str(r["_id"])}",
                                          label_visibility="collapsed")      
          
-                  label = c3.text_input("t", value=r["created_by"], key=f"edit_by_{str(r["_id"])}",
+                  label = c3.text_input("t", value=r["created_by"], key=f"edittraiter_by_{str(r["_id"])}",
                                          label_visibility="collapsed")      
-                  label = c4.text_input("t", value=r["created_at"], key=f"edit_date_{str(r["_id"])}",
+                  label = c4.text_input("t", value=r["created_at"], key=f"edittraiter_date_{str(r["_id"])}",
                                          label_visibility="collapsed") 
-                  label = c5.text_input("t", value=r["statut"], key=f"edit_statut_{str(r["_id"])}",
+                  label = c5.text_input("t", value=r["statut"], key=f"edittraiter_statut_{str(r["_id"])}",
                                          label_visibility="collapsed")
                   if user["role"] == "admin": 
                         if c6.button("supprimer", key=f"modif_supp_traiter_{r["_id"]}"):
