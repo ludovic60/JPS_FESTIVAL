@@ -192,12 +192,12 @@ def _requests_page(user):
                             st.rerun()
         st.success(" - AJOUTS FAITS ")
         c1, c2, c3, c4 , c5 ,c6 = st.columns([3, 6, 1, 2 , 1, 2])
-        label = c1.text_input("t", value="NOM DU JEU", key=f"edit_game", label_visibility="collapsed")
-        label = c2.text_input("t", value="MYLUDO URL", key=f"edit_myludo",label_visibility="collapsed") 
-        label = c3.text_input("t", value="FAIT PAR", key=f"edit_by", label_visibility="collapsed")      
-        label = c4.text_input("t", value="DEMANDE LE", key=f"edit_date", label_visibility="collapsed") 
-        label = c5.text_input("t", value="STATUT", key=f"edit_statut", label_visibility="collapsed")
-        label = c6.text_input("t", value="", key=f"edit_vide1", label_visibility="collapsed")
+        label = c1.text_input("t", value="NOM DU JEU", key=f"editfait_game", label_visibility="collapsed")
+        label = c2.text_input("t", value="MYLUDO URL", key=f"editfait_myludo",label_visibility="collapsed") 
+        label = c3.text_input("t", value="FAIT PAR", key=f"editfait_by", label_visibility="collapsed")      
+        label = c4.text_input("t", value="DEMANDE LE", key=f"editfait_date", label_visibility="collapsed") 
+        label = c5.text_input("t", value="STATUT", key=f"editfait_statut", label_visibility="collapsed")
+        label = c6.text_input("t", value="", key=f"editfait_vide1", label_visibility="collapsed")
    
         for r in reqs_traiter :
               
