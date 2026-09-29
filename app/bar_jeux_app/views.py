@@ -153,7 +153,8 @@ def _requests_page(user):
     ##st.title("Demandes d'ajout de jeux")
     st.subheader("Demandes d'ajout de jeux")
     reqs = storage_jeux.get_requests("ajout jeux")
-
+    reqs_a_traiter = [r for r in reqs if r["statut"] == "a traiter"]
+    reqs_traiter = [r for r in reqs if r["statut"] == "traiter"]
     
 
     if not reqs: 
@@ -168,7 +169,7 @@ def _requests_page(user):
         label = c5.text_input("t", value="STATUT", key=f"edit_statut", label_visibility="collapsed")
         label = c6.text_input("t", value="", key=f"edit_vide1", label_visibility="collapsed")
         label = c7.text_input("t", value="", key=f"edit_vide2", label_visibility="collapsed")
-        for r in reqs if r["statut"] == "a traiter":
+        for r in reqs_a_traiter :
               
                   label = c1.text_input("t", value=r["game_name"], key=f"edit_game_{str(r["_id"])}",
                                          label_visibility="collapsed")
@@ -198,7 +199,7 @@ def _requests_page(user):
         label = c5.text_input("t", value="STATUT", key=f"edit_statut", label_visibility="collapsed")
         label = c6.text_input("t", value="", key=f"edit_vide1", label_visibility="collapsed")
    
-        for r in reqs if r["statut"] == "traiter":
+        for r in reqs_traiter :
               
                   label = c1.text_input("t", value=r["game_name"], key=f"edit_game_{str(r["_id"])}",
                                          label_visibility="collapsed")
