@@ -352,10 +352,7 @@ def admin_page():
                 user_id, user_pseudo, key_prefix=dynamic_prefix
             )
 
-
-            selected = presence_editor(user["_id"], user["pseudo"], "self")
-
-            
+           
         
             # Bouton Enregistrer
             if st.button("Enregistrer les votes de cette personne", type="primary"):
