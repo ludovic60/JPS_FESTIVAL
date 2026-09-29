@@ -348,9 +348,7 @@ def admin_page():
             st.markdown("**Modifier les votes de cette personne :**")
         
             # 2. Appel de l'éditeur avec le prefixe dynamique
-            selected_user = presence_editor(
-                user_id, user_pseudo, key_prefix=dynamic_prefix
-            )
+            selected_user = presence_editor( user_id, user_pseudo, "self")
 
            
         
