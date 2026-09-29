@@ -153,6 +153,10 @@ def _requests_page(user):
     ##st.title("Demandes d'ajout de jeux")
     st.subheader("Demandes d'ajout de jeux")
     reqs = storage_jeux.get_requests("ajout jeux")
+
+    st.error(" - TACHES RESTANT A FAIRE ")
+
+    st.error(" - TACHES RESTANT A FAIRE ")
     if not reqs: 
         st.info("Aucune demande.")
     else :
