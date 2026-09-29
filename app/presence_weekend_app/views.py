@@ -329,7 +329,7 @@ def admin_page():
         
             # ON DYNAMISE LE PREFIX AVEC L'ID :
             # Cela garantit que chaque utilisateur a ses propres clés d'état
-            dynamic_prefix = f"admin_{user_id}"
+            dynamic_prefix = f"admin{user_pseudo}"
         
             logging.info(f"Utilisateur sélectionné : {user_pseudo} (ID: {user_id})")
         
@@ -348,7 +348,7 @@ def admin_page():
             st.markdown("**Modifier les votes de cette personne :**")
         
             # 2. Appel de l'éditeur avec le prefixe dynamique
-            selected_user = presence_editor( user_id, user_pseudo, "self")
+            selected_user = presence_editor( user_id, user_pseudo, str(dynamic_prefix))
 
            
         
