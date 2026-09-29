@@ -427,6 +427,9 @@ def _final_page(user):
           "nouveaute",
           "Annee",
           "Classement",
+          "nbr_max_joueurs",
+          "duree_min",
+          "duree_max",
           "Couverture Jeu",
           "Jeu",
           "Plusieurs exemplaires souhaités",
@@ -440,6 +443,8 @@ def _final_page(user):
       gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("nbr_max_joueurs", editable=False, width=180, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("duree_min", editable=False, width=180, suppressSizeToFit=True, pinned=True)  
       gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True, pinned=True)
       
@@ -750,7 +755,7 @@ def _final_page(user):
           st.subheader("Jeux selectionnés par Classement")
        
           if not df_jeux_select_graphique.empty:
-              df_cat = df_jeux_select_graphique["classement"].value_counts().reset_index()
+              df_cat = df_jeux_select_graphique.groupby('jeu')['classement'].nunique()
               df_cat.columns = ["classement", "Nombre"]
               fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, color="classement", color_discrete_map=couleurs_classement )
               fig_pie_cat.update_layout(height=250 , width=1000) 
@@ -774,7 +779,7 @@ def _final_page(user):
 
           st.subheader("Jeux selectionnés  par nouveauté")
           if not df_jeux_select_graphique.empty:
-              df_nov = df_jeux_select_graphique["Nouveauté"].value_counts().reset_index()
+              df_nov = df_jeux_select_graphique.groupby('jeu')['Nouveauté'].nunique()
               df_nov.columns = ["Nouveauté", "Nombre"]
               fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 , color="Nouveauté", color_discrete_map=couleurs_nouveaute  )
               fig_pie_nov.update_layout(height=250 , width=1000)
@@ -782,7 +787,14 @@ def _final_page(user):
           else:
               st.info("Aucun jeu coché pour le moment.")
 
- 
+
+          st.subheader("Jeux selectionnés par Nbr joueur max")
+
+   
+          st.subheader("Jeux selectionnés par durée min")
+
+
+          st.subheader("Jeux selectionnés par durée max")
           
         
     ### ----------------------------------------------------------------------------------------------
@@ -798,7 +810,7 @@ def _final_page(user):
      
           st.subheader("Jeux proposés par Classement")
           if not df_jeux_pret_graphique.empty:
-              df_cat = df_jeux_pret_graphique["classement"].value_counts().reset_index()
+              df_cat =  df_jeux_pret_graphique.groupby('jeu')['classement'].nunique()
               df_cat.columns = ["classement", "Nombre"]
               fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, color="classement", color_discrete_map=couleurs_classement )
               fig_pie_cat.update_layout(height=250 , width=1000) 
@@ -822,7 +834,7 @@ def _final_page(user):
 
           st.subheader("Jeux proposés par Nouveauté")
           if not df_jeux_pret_graphique.empty:
-              df_nov = df_jeux_pret_graphique["Nouveauté"].value_counts().reset_index()
+              df_nov = df_jeux_pret_graphique.groupby('jeu')['Nouveauté'].nunique()
               df_nov.columns = ["Nouveauté", "Nombre"]
               fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 , color="Nouveauté", color_discrete_map=couleurs_nouveaute )
               fig_pie_nov.update_layout(height=250 , width=1000)
@@ -830,7 +842,13 @@ def _final_page(user):
           else:
               st.info("Aucun jeu proposé pour le moment.")
 
-     
+          st.subheader("Jeux proposés par Nbr joueur max")
+
+   
+          st.subheader("Jeux proposés par durée min")
+
+
+          st.subheader("Jeux proposés par durée max")
 
     ### ----------------------------------------------------------------------------------------------
     ###########---- 1. graphique lié aux jeux validés
@@ -878,6 +896,16 @@ def _final_page(user):
               st.plotly_chart(fig_pie_nov2, use_container_width=True)
           else:
               st.info("Aucun jeu validé pour le moment.")     
+
+
+          st.subheader("Jeux validés par Nbr joueur max")
+
+   
+          st.subheader("Jeux validés par durée min")
+
+
+          st.subheader("Jeux validés par durée max")
+          
 
     ### ----------------------------------------------------------------------------------------------
     ###########---- histogrammes des jeux pretes par joueurs 
