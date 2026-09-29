@@ -348,6 +348,11 @@ def add_request(type_request, game_name, myludo_url, comments, by_name):
 
 def remove_request(type_request, req_id):
  con_mongo = cs.mongo_enabled()
+    print("remove requte type_request")
+    print(type_request)
+
+    print(str(ObjectId(req_id)))
+     
  if   con_mongo : 
     db = cs.get_db()
     resquest_tb = db.demandes                                              
