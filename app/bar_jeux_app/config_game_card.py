@@ -28,9 +28,11 @@ def nouveaute_def(game_info):
             return "🏺ANCIEN" 
     elif  game_info.get("annee_parution") :
         if    (  (int(str(game_info["annee_parution"])) == int( cs._secret("ANNEE_FESTIVAL")) ) or     (int(str(game_info["annee_parution"])) == int( cs._secret("ANNEE_FESTIVAL"))-1 )  ) :
-              return "✨NOUVEAUTE"                       
+              return "✨NOUVEAUTE"     
+        elif int(str(game_info["annee_parution"])) <= (int( cs._secret("ANNEE_FESTIVAL"))-20) :
+            return "🏺JEU PLUS DE 20 ANS"    
         else : 
-              return "🧐 INCONNU"
+              return "🏺ANCIEN" 
     else :
         return "🧐 INCONNU"    
 
