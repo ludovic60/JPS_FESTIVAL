@@ -481,7 +481,7 @@ def _final_page(user):
       gb.configure_column("Jeu", editable=False, filter="agTextColumnFilter", sortable=True, width=150, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=False)
       gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=False)
-      gb.configure_column("nbr max joueurs" , wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=50, suppressSizeToFit=True, pinned=False)
+      gb.configure_column("nbr max joueurs" , wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=70, suppressSizeToFit=True, pinned=False)
       gb.configure_column("duree min", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=50, suppressSizeToFit=True, pinned=False)  
       gb.configure_column("duree max", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=50, suppressSizeToFit=True, pinned=False)  
       
@@ -779,6 +779,33 @@ def _final_page(user):
                           }
 
     couleurs_nouveaute = {"✨NOUVEAUTE": "#57B02C", "🏺ANCIEN": "#080808", "🧐 INCONNU": "#1128D6"}
+
+    couleurs_nbr_joueur = {"1": "#E655DA", ## rose
+                           "2" :"#7A0EE3",####violet
+                           "DUO" :"#FF9224",          ##orange                 
+                           "3" :"#1FC7FF",##bleu clair
+                           "4": "#C7C5C5", ### gris
+                           "5": "#080808",   ### black                         
+                           "6": "#57B02C", ## vert 
+                           "7": "#F5E20C", ## jaune 
+                           "8": "#E67A70", ### rouge  
+                           "9": "#8C0E07",   ### rouge   foncé                     
+                           "10": "#1128D6" ### bleu foncé
+                          }
+
+
+     couleurs_duree = {"10": "#E655DA", ## rose
+                       "15" :"#7A0EE3",####violet
+                       "20" :"#FF9224",          ##orange                 
+                       "25" :"#1FC7FF",##bleu clair
+                       "30", ### gris
+                       "35": "#080808",   ### black                         
+                       "40": "#57B02C", ## vert 
+                       "45": "#F5E20C", ## jaune 
+                       "60": "#E67A70", ### rouge  
+                       "90": "#8C0E07",   ### rouge   foncé                     
+                       "180": "#1128D6" ### bleu foncé
+                      }
   
     ### ----------------------------------------------------------------------------------------------
     ###########---- 1. graphique lié aux jeux sélectionnés
@@ -830,8 +857,21 @@ def _final_page(user):
           if not df_jeux_select_graphique.empty:
                       df_nov = df_jeux_select_graphique.groupby('nbr_max_joueurs')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
                       df_nov.columns = ["nbr max joueurs", "Nombre"]
-                      fig_pie_nov = px.pie(df_nov, names="nbr max joueurs", values="Nombre", hole=0.3 , color="nbr max joueurs", color_discrete_map=couleurs_nouveaute  )
+                      fig_pie_nov = px.pie(df_nov, names="nbr max joueurs", values="Nombre", hole=0.3 , color="nbr max joueurs", color_discrete_map=couleurs_nbr_joueur  )
                       fig_pie_nov.update_layout(height=250 , width=1000)
+                      fig_pie_nov.update_layout(
+                         legend=dict(
+                             orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
+                             yanchor="top",
+                             y=-0.2,  # Positionne la légende en dessous du graphique
+                             xanchor="center",
+                             x=0.5,
+                             font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
+                         ),
+                         margin=dict(
+                             t=30, b=100, l=20, r=20
+                         ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
+                      )
                       st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
                       st.info("Aucun jeu coché pour le moment.")
@@ -840,7 +880,20 @@ def _final_page(user):
           if not df_jeux_select_graphique.empty:
                       df_nov = df_jeux_select_graphique.groupby('duree_min')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
                       df_nov.columns = ["duree min", "Nombre"]
-                      fig_pie_nov = px.pie(df_nov, names="duree min", values="Nombre", hole=0.3 , color="duree min", color_discrete_map=couleurs_nouveaute  )
+                      fig_pie_nov = px.pie(df_nov, names="duree min", values="Nombre", hole=0.3 , color="duree min", color_discrete_map=couleurs_duree  )
+                      fig_pie_nov.update_layout(
+                         legend=dict(
+                             orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
+                             yanchor="top",
+                             y=-0.2,  # Positionne la légende en dessous du graphique
+                             xanchor="center",
+                             x=0.5,
+                             font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
+                         ),
+                         margin=dict(
+                             t=30, b=100, l=20, r=20
+                         ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
+                      )
                       fig_pie_nov.update_layout(height=250 , width=1000)
                       st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
@@ -850,7 +903,20 @@ def _final_page(user):
           if not df_jeux_select_graphique.empty:
                       df_nov = df_jeux_select_graphique.groupby('duree_max')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
                       df_nov.columns = ["duree max", "Nombre"]
-                      fig_pie_nov = px.pie(df_nov, names="duree max", values="Nombre", hole=0.3 , color="duree max", color_discrete_map=couleurs_nouveaute  )
+                      fig_pie_nov = px.pie(df_nov, names="duree max", values="Nombre", hole=0.3 , color="duree max", color_discrete_map=couleurs_duree  )
+                      fig_pie_nov.update_layout(
+                         legend=dict(
+                             orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
+                             yanchor="top",
+                             y=-0.2,  # Positionne la légende en dessous du graphique
+                             xanchor="center",
+                             x=0.5,
+                             font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
+                         ),
+                         margin=dict(
+                             t=30, b=100, l=20, r=20
+                         ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
+                      )
                       fig_pie_nov.update_layout(height=250 , width=1000)
                       st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
@@ -903,30 +969,69 @@ def _final_page(user):
               st.info("Aucun jeu proposé pour le moment.")
 
           st.subheader("Jeux proposés par Nbr joueur max")
-          if not df_jeux_select_graphique.empty:
+          if not df_jeux_pret_graphique.empty:
                       df_nov = df_jeux_pret_graphique.groupby('nbr_max_joueurs')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
                       df_nov.columns = ["nbr max joueurs", "Nombre"]
-                      fig_pie_nov = px.pie(df_nov, names="nbr max joueurs", values="Nombre", hole=0.3 , color="nbr max joueurs", color_discrete_map=couleurs_nouveaute  )
+                      fig_pie_nov = px.pie(df_nov, names="nbr max joueurs", values="Nombre", hole=0.3 , color="nbr max joueurs", color_discrete_map=couleurs_nbr_joueur  )
+                      fig_pie_nov.update_layout(
+                         legend=dict(
+                             orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
+                             yanchor="top",
+                             y=-0.2,  # Positionne la légende en dessous du graphique
+                             xanchor="center",
+                             x=0.5,
+                             font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
+                         ),
+                         margin=dict(
+                             t=30, b=100, l=20, r=20
+                         ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
+                      )
                       fig_pie_nov.update_layout(height=250 , width=1000)
                       st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
                       st.info("Aucun jeu coché pour le moment.")
    
           st.subheader("Jeux proposés par durée min")
-          if not df_jeux_select_graphique.empty:
+          if not df_jeux_pret_graphique.empty:
                       df_nov = df_jeux_pret_graphique.groupby('duree_min')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
                       df_nov.columns = ["duree min", "Nombre"]
-                      fig_pie_nov = px.pie(df_nov, names="duree min", values="Nombre", hole=0.3 , color="duree min", color_discrete_map=couleurs_nouveaute  )
+                      fig_pie_nov = px.pie(df_nov, names="duree min", values="Nombre", hole=0.3 , color="duree min", color_discrete_map=couleurs_duree  )
+                      fig_pie_nov.update_layout(
+                         legend=dict(
+                             orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
+                             yanchor="top",
+                             y=-0.2,  # Positionne la légende en dessous du graphique
+                             xanchor="center",
+                             x=0.5,
+                             font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
+                         ),
+                         margin=dict(
+                             t=30, b=100, l=20, r=20
+                         ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
+                      )
                       fig_pie_nov.update_layout(height=250 , width=1000)
                       st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
                       st.info("Aucun jeu coché pour le moment.")
 
           st.subheader("Jeux proposés par durée max")
-          if not df_jeux_select_graphique.empty:
+          if not df_jeux_pret_graphique.empty:
                       df_nov = df_jeux_pret_graphique.groupby('duree_max')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
                       df_nov.columns = ["duree max", "Nombre"]
-                      fig_pie_nov = px.pie(df_nov, names="duree max", values="Nombre", hole=0.3 , color="duree max", color_discrete_map=couleurs_nouveaute  )
+                      fig_pie_nov = px.pie(df_nov, names="duree max", values="Nombre", hole=0.3 , color="duree max", color_discrete_map=couleurs_duree  )
+                      fig_pie_nov.update_layout(
+                         legend=dict(
+                             orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
+                             yanchor="top",
+                             y=-0.2,  # Positionne la légende en dessous du graphique
+                             xanchor="center",
+                             x=0.5,
+                             font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
+                         ),
+                         margin=dict(
+                             t=30, b=100, l=20, r=20
+                         ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
+                      )
                       fig_pie_nov.update_layout(height=250 , width=1000)
                       st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
@@ -982,30 +1087,69 @@ def _final_page(user):
 
      
           st.subheader("Jeux validés par Nbr joueur max")
-          if not df_jeux_select_graphique.empty:
+          if not df_jeux_valide_graphique.empty:
               df_nov4 = df_jeux_valide_graphique.groupby('nbr_max_joueurs')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_nov4.columns = ["nbr max joueurs", "Nombre"]
-              fig_pie_nov = px.pie(df_nov4, names="nbr max joueurs", values="Nombre", hole=0.3 , color="nbr max joueurs", color_discrete_map=couleurs_nouveaute  )
+              fig_pie_nov = px.pie(df_nov4, names="nbr max joueurs", values="Nombre", hole=0.3 , color="nbr max joueurs", color_discrete_map=couleurs_nbr_joueur  )
+              fig_pie_nov.update_layout(
+                         legend=dict(
+                             orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
+                             yanchor="top",
+                             y=-0.2,  # Positionne la légende en dessous du graphique
+                             xanchor="center",
+                             x=0.5,
+                             font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
+                         ),
+                         margin=dict(
+                             t=30, b=100, l=20, r=20
+                         ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
+              )
               fig_pie_nov.update_layout(height=250 , width=1000)
               st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
               st.info("Aucun jeu coché pour le moment.")
    
           st.subheader("Jeux validés par durée min")
-          if not df_jeux_select_graphique.empty:
+          if not df_jeux_valide_graphique.empty:
               df_nov = df_jeux_valide_graphique.groupby('duree_min')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_nov.columns = ["duree min", "Nombre"]
-              fig_pie_nov = px.pie(df_nov, names="duree min", values="Nombre", hole=0.3 , color="duree min", color_discrete_map=couleurs_nouveaute  )
+              fig_pie_nov = px.pie(df_nov, names="duree min", values="Nombre", hole=0.3 , color="duree min", color_discrete_map=couleurs_duree  )
+              fig_pie_nov.update_layout(
+                         legend=dict(
+                             orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
+                             yanchor="top",
+                             y=-0.2,  # Positionne la légende en dessous du graphique
+                             xanchor="center",
+                             x=0.5,
+                             font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
+                         ),
+                         margin=dict(
+                             t=30, b=100, l=20, r=20
+                         ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
+              )
               fig_pie_nov.update_layout(height=250 , width=1000)
               st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
               st.info("Aucun jeu coché pour le moment.")
 
           st.subheader("Jeux validés par durée max")
-          if not df_jeux_select_graphique.empty:
+          if not df_jeux_valide_graphique.empty:
               df_nov = df_jeux_valide_graphique.groupby('duree_max')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_nov.columns = ["duree max", "Nombre"]
-              fig_pie_nov = px.pie(df_nov, names="duree max", values="Nombre", hole=0.3 , color="duree max", color_discrete_map=couleurs_nouveaute  )
+              fig_pie_nov = px.pie(df_nov, names="duree max", values="Nombre", hole=0.3 , color="duree max", color_discrete_map=couleurs_duree  )
+              fig_pie_nov.update_layout(
+                         legend=dict(
+                             orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
+                             yanchor="top",
+                             y=-0.2,  # Positionne la légende en dessous du graphique
+                             xanchor="center",
+                             x=0.5,
+                             font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
+                         ),
+                         margin=dict(
+                             t=30, b=100, l=20, r=20
+                         ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
+              )
               fig_pie_nov.update_layout(height=250 , width=1000)
               st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
