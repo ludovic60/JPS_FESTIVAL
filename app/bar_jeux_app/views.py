@@ -798,7 +798,7 @@ def _final_page(user):
                        "15" :"#7A0EE3",####violet
                        "20" :"#FF9224",          ##orange                 
                        "25" :"#1FC7FF",##bleu clair
-                       "30", ### gris
+                       "30": "#C7C5C5", ### gris
                        "35": "#080808",   ### black                         
                        "40": "#57B02C", ## vert 
                        "45": "#F5E20C", ## jaune 
