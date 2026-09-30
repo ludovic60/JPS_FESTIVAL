@@ -794,7 +794,7 @@ def _final_page(user):
                           }
 
 
-     couleurs_duree = {"10": "#E655DA", ## rose
+    couleurs_duree = {"10": "#E655DA", ## rose
                        "15" :"#7A0EE3",####violet
                        "20" :"#FF9224",          ##orange                 
                        "25" :"#1FC7FF",##bleu clair
@@ -805,7 +805,7 @@ def _final_page(user):
                        "60": "#E67A70", ### rouge  
                        "90": "#8C0E07",   ### rouge   foncé                     
                        "180": "#1128D6" ### bleu foncé
-                      }
+                          }
   
     ### ----------------------------------------------------------------------------------------------
     ###########---- 1. graphique lié aux jeux sélectionnés
