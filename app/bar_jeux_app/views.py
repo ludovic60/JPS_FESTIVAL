@@ -314,7 +314,7 @@ def _final_page(user):
             continue
     
         # Calculs directes en mémoire
-        new_statut = nouveaute_def(game)
+        new_statut = nouveaute_def(g)
         is_several = game_id in plusieurs_set
     
         # Comptages rapides
