@@ -786,9 +786,9 @@ def _final_page(user):
     liste_valeur_duree_max =   df_jeux["duree max"].unique().tolist()
     liste_duree = list(set(liste_valeur_duree_min + liste_valeur_duree_max))
  
-    couleurs_nbr_joueur = tools. calc_color(liste_valeur_nbr_joueur) 
+    couleurs_nbr_joueur = commun.tools.calc_color(liste_valeur_nbr_joueur) 
 
-    couleurs_duree = tools.calc_color(liste_duree) 
+    couleurs_duree = commun.tools.calc_color(liste_duree) 
   
     ### ----------------------------------------------------------------------------------------------
     ###########---- 1. graphique lié aux jeux sélectionnés
