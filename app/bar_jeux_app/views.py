@@ -19,7 +19,7 @@ from export_import import to_excel
 # Ajoute le dossier parent à sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-import commun.auth,  commun.config 
+import commun.auth,  commun.config , commun.tools
 import commun.common_store as cs
 logging.basicConfig(
     level=logging.INFO,
