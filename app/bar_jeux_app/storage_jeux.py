@@ -353,15 +353,16 @@ def remove_request(type_request, req_id):
  if   con_mongo : 
     db = cs.get_db()
     resquest_tb = db.demandes                                              
-    filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "id_request": str((req_id)) }
+    filtre_tb = {"annees": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "id_request": str((req_id)) }
     resultat = resquest_tb.delete_many(filtre_tb)
 
 def update_statut_request(type_request, req_id,statut):
  con_mongo = cs.mongo_enabled()
+ print( str(ObjectId(req_id)) )  
  if   con_mongo : 
     db = cs.get_db()
     resquest_tb = db.demandes                                              
-    filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "id_request": str((req_id)) }
+    filtre_tb = {"annees": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "id_request": str((req_id)) }
     resultat = resquest_tb.update_many(filtre_tb, {"$set": {"statut" : statut} })
 
 
