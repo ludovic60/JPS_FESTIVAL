@@ -350,19 +350,23 @@ def add_request(type_request, game_name, myludo_url, comments, by_name):
 def remove_request(type_request, req_id):
  con_mongo = cs.mongo_enabled()
  print( str(ObjectId(req_id)) )   
+ print(  type_request)
+ print(   cs._secret("ANNEE_FESTIVAL"))
  if   con_mongo : 
     db = cs.get_db()
     resquest_tb = db.demandes                                              
-    filtre_tb = {"annees": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "id_request": str((req_id)) }
+    filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "id_request": str((req_id)) }
     resultat = resquest_tb.delete_many(filtre_tb)
 
 def update_statut_request(type_request, req_id,statut):
  con_mongo = cs.mongo_enabled()
- print( str(ObjectId(req_id)) )  
+ print( str(ObjectId(req_id)) )   
+ print(  type_request)
+ print(   cs._secret("ANNEE_FESTIVAL"))
  if   con_mongo : 
     db = cs.get_db()
     resquest_tb = db.demandes                                              
-    filtre_tb = {"annees": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "id_request": str((req_id)) }
+    filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "id_request": str((req_id)) }
     resultat = resquest_tb.update_many(filtre_tb, {"$set": {"statut" : statut} })
 
 
