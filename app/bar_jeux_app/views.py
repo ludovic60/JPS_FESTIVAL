@@ -545,7 +545,7 @@ def _final_page(user):
       )
       # le tableau
       grid_response = AgGrid(
-          df_jeux.sort_values(by="nom"),  
+          df_jeux.sort_values(by="nom_jeu_complet"),  
           gridOptions=grid_options,
           update_mode=GridUpdateMode.NO_UPDATE,
           data_return_mode=DataReturnMode.AS_INPUT,
