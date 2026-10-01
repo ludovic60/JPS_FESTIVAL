@@ -352,7 +352,7 @@ def remove_request(type_request, req_id):
  st.write(type_request)
 
  st.write(str(ObjectId(req_id)))
-     
+ print( str(ObjectId(req_id)) )   
  if   con_mongo : 
     db = cs.get_db()
     resquest_tb = db.demandes                                              
