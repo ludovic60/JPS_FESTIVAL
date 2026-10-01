@@ -5,7 +5,7 @@ import random
 random.seed(42)
 def  calc_color( liste) : 
     couleurs_fixes = {}
-    for val in liste_valeurs:
+    for val in liste :
         if val == "n/a":
             couleurs_fixes[val] = "#C7C5C5" # Gris fixe pour n/a
         else:
