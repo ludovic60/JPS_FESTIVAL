@@ -781,9 +781,9 @@ def _final_page(user):
     couleurs_nouveaute = {"✨NOUVEAUTE": "#57B02C", "🏺ANCIEN": "#080808", "🧐 INCONNU": "#1128D6"}
 
 
-    liste_valeur_nbr_joueur =   df_jeu["nbr_max_joueurs"].unique().tolist()
-    liste_valeur_duree_min =   df_jeu["duree_min"].unique().tolist()
-    liste_valeur_duree_max =   df_jeu["duree_max"].unique().tolist()
+    liste_valeur_nbr_joueur =   df_jeux["nbr_max_joueurs"].unique().tolist()
+    liste_valeur_duree_min =   df_jeux["duree_min"].unique().tolist()
+    liste_valeur_duree_max =   df_jeux["duree_max"].unique().tolist()
     liste_duree = list(set(liste_valeur_duree_min + liste_valeur_duree_max))
  
     couleurs_nbr_joueur = tools. calc_color(liste_valeur_nbr_joueur) 
