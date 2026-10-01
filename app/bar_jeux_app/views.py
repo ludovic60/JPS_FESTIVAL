@@ -780,32 +780,15 @@ def _final_page(user):
 
     couleurs_nouveaute = {"✨NOUVEAUTE": "#57B02C", "🏺ANCIEN": "#080808", "🧐 INCONNU": "#1128D6"}
 
-    couleurs_nbr_joueur = {"1": "#E655DA", ## rose
-                           "2" :"#7A0EE3",####violet
-                           "DUO" :"#FF9224",          ##orange                 
-                           "3" :"#1FC7FF",##bleu clair
-                           "4": "#C7C5C5", ### gris
-                           "5": "#080808",   ### black                         
-                           "6": "#57B02C", ## vert 
-                           "7": "#F5E20C", ## jaune 
-                           "8": "#E67A70", ### rouge  
-                           "9": "#8C0E07",   ### rouge   foncé                     
-                           "10": "#1128D6" ### bleu foncé
-                          }
 
+    liste_valeur_nbr_joueur =   df_jeu["nbr_max_joueurs"].unique().tolist()
+    liste_valeur_duree_min =   df_jeu["duree_min"].unique().tolist()
+    liste_valeur_duree_max =   df_jeu["duree_max"].unique().tolist()
+    liste_duree = list(set(liste_valeur_duree_min + liste_valeur_duree_max))
+ 
+    couleurs_nbr_joueur = tools.
 
-    couleurs_duree = {"10": "#E655DA", ## rose
-                       "15" :"#7A0EE3",####violet
-                       "20" :"#FF9224",          ##orange                 
-                       "25" :"#1FC7FF",##bleu clair
-                       "30": "#C7C5C5", ### gris
-                       "35": "#080808",   ### black                         
-                       "40": "#57B02C", ## vert 
-                       "45": "#F5E20C", ## jaune 
-                       "60": "#E67A70", ### rouge  
-                       "90": "#8C0E07",   ### rouge   foncé                     
-                       "180": "#1128D6" ### bleu foncé
-                          }
+    couleurs_duree = tools.
   
     ### ----------------------------------------------------------------------------------------------
     ###########---- 1. graphique lié aux jeux sélectionnés
