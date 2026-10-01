@@ -795,11 +795,11 @@ def _final_page(user):
     ### ----------------------------------------------------------------------------------------------
    
     with col_graph1:
-          st.subheader("Nombre Jeux selectionnés")
+          st.markdown("#### Nombre Jeux selectionnés")
 
           st.metric(    label="Nombre jeux sélectionnés", value= df_jeux_select_graphique['nom_jeu_complet'].nunique(),label_visibility="collapsed")
                     
-          st.subheader("Jeux selectionnés par Classement")
+          st.markdown("#### Jeux selectionnés par Classement")
        
           if not df_jeux_select_graphique.empty:
               df_cat = df_jeux_select_graphique.groupby('classement')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
@@ -824,7 +824,7 @@ def _final_page(user):
               st.info("Aucun jeu coché pour le moment.")
 
 
-          st.subheader("Jeux selectionnés  par nouveauté")
+          st.markdown("#### Jeux selectionnés  par nouveauté")
           if not df_jeux_select_graphique.empty:
               df_nov = df_jeux_select_graphique.groupby('Nouveauté')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_nov.columns = ["Nouveauté", "Nombre"]
@@ -835,7 +835,7 @@ def _final_page(user):
               st.info("Aucun jeu coché pour le moment.")
 
 
-          st.subheader("Jeux selectionnés par Nbr joueur max")
+          st.markdown("#### Jeux selectionnés par Nbr joueur max")
           if not df_jeux_select_graphique.empty:
                       df_nov = df_jeux_select_graphique.groupby('nbr_max_joueurs')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
                       df_nov.columns = ["nbr max joueurs", "Nombre"]
@@ -858,7 +858,7 @@ def _final_page(user):
           else:
                       st.info("Aucun jeu coché pour le moment.")
    
-          st.subheader("Jeux selectionnés par durée min")
+          st.markdown("#### Jeux selectionnés par durée min")
           if not df_jeux_select_graphique.empty:
                       df_nov = df_jeux_select_graphique.groupby('duree_min')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
                       df_nov.columns = ["duree min", "Nombre"]
@@ -881,7 +881,7 @@ def _final_page(user):
           else:
                       st.info("Aucun jeu coché pour le moment.")
 
-          st.subheader("Jeux selectionnés par durée max")
+          st.markdown("#### Jeux selectionnés par durée max")
           if not df_jeux_select_graphique.empty:
                       df_nov = df_jeux_select_graphique.groupby('duree_max')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
                       df_nov.columns = ["duree max", "Nombre"]
@@ -911,12 +911,12 @@ def _final_page(user):
    
        
     with col_graph2:
-          st.subheader("Nombre Jeux proposés ")
+          st.markdown("#### Nombre Jeux proposés ")
       
           st.metric(    label="Nombre jeux proposés", value= df_jeux_pret_graphique['nom_jeu_complet'].nunique(),label_visibility="collapsed")
          
      
-          st.subheader("Jeux proposés par Classement")
+          st.markdown("#### Jeux proposés par Classement")
           if not df_jeux_pret_graphique.empty:
               df_cat =  df_jeux_pret_graphique.groupby('classement')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_cat.columns = ["classement", "Nombre"]
@@ -940,7 +940,7 @@ def _final_page(user):
           else:
               st.info("Aucun jeu proposé pour le moment.")
 
-          st.subheader("Jeux proposés par Nouveauté")
+          st.markdown("#### Jeux proposés par Nouveauté")
           if not df_jeux_pret_graphique.empty:
               df_nov = df_jeux_pret_graphique.groupby('Nouveauté')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_nov.columns = ["Nouveauté", "Nombre"]
@@ -950,7 +950,7 @@ def _final_page(user):
           else:
               st.info("Aucun jeu proposé pour le moment.")
 
-          st.subheader("Jeux proposés par Nbr joueur max")
+          st.markdown("#### Jeux proposés par Nbr joueur max")
           if not df_jeux_pret_graphique.empty:
                       df_nov = df_jeux_pret_graphique.groupby('nbr_max_joueurs')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
                       df_nov.columns = ["nbr max joueurs", "Nombre"]
@@ -973,7 +973,7 @@ def _final_page(user):
           else:
                       st.info("Aucun jeu coché pour le moment.")
    
-          st.subheader("Jeux proposés par durée min")
+          st.markdown("#### Jeux proposés par durée min")
           if not df_jeux_pret_graphique.empty:
                       df_nov = df_jeux_pret_graphique.groupby('duree_min')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
                       df_nov.columns = ["duree min", "Nombre"]
@@ -996,7 +996,7 @@ def _final_page(user):
           else:
                       st.info("Aucun jeu coché pour le moment.")
 
-          st.subheader("Jeux proposés par durée max")
+          st.markdown("#### Jeux proposés par durée max")
           if not df_jeux_pret_graphique.empty:
                       df_nov = df_jeux_pret_graphique.groupby('duree_max')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
                       df_nov.columns = ["duree max", "Nombre"]
@@ -1026,13 +1026,13 @@ def _final_page(user):
    
 
     with col_graph3:
-          st.subheader("Nombre Jeux validés")
+          st.markdown("#### Nombre Jeux validés")
           if not df_jeux_valide_graphique.empty:
                  st.metric(    label="Nombre jeux validés", value=df_jeux_valide_graphique['nom_jeu_complet'].nunique(),label_visibility="collapsed")
           else :
                       st.metric(    label="Nombre jeux validés", value=0,label_visibility="collapsed")
      
-          st.subheader("Jeux validés par Classement")
+          st.markdown("#### Jeux validés par Classement")
           if not df_jeux_valide_graphique.empty:
               df_cat2 = df_jeux_valide_graphique.groupby('classement')['nom_jeu_complet'].nunique()
               df_cat2.columns = ["classement", "Nombre"]
@@ -1057,7 +1057,7 @@ def _final_page(user):
               st.info("Aucun jeu validé pour le moment.")
 
 
-          st.subheader("Jeux validés par Nouveauté")
+          st.markdown("#### Jeux validés par Nouveauté")
           if not df_jeux_valide_graphique.empty:
               df_nov2 = df_jeux_valide_graphique.groupby('Nouveauté')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_nov2.columns = ["Nouveauté", "Nombre"]
@@ -1068,7 +1068,7 @@ def _final_page(user):
               st.info("Aucun jeu validé pour le moment.")     
 
      
-          st.subheader("Jeux validés par Nbr joueur max")
+          st.markdown("#### Jeux validés par Nbr joueur max")
           if not df_jeux_valide_graphique.empty:
               df_nov4 = df_jeux_valide_graphique.groupby('nbr_max_joueurs')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_nov4.columns = ["nbr max joueurs", "Nombre"]
@@ -1091,7 +1091,7 @@ def _final_page(user):
           else:
               st.info("Aucun jeu coché pour le moment.")
    
-          st.subheader("Jeux validés par durée min")
+          st.markdown("#### Jeux validés par durée min")
           if not df_jeux_valide_graphique.empty:
               df_nov = df_jeux_valide_graphique.groupby('duree_min')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_nov.columns = ["duree min", "Nombre"]
@@ -1114,7 +1114,7 @@ def _final_page(user):
           else:
               st.info("Aucun jeu coché pour le moment.")
 
-          st.subheader("Jeux validés par durée max")
+          st.markdown("#### Jeux validés par durée max")
           if not df_jeux_valide_graphique.empty:
               df_nov = df_jeux_valide_graphique.groupby('duree_max')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_nov.columns = ["duree max", "Nombre"]
