@@ -349,10 +349,6 @@ def add_request(type_request, game_name, myludo_url, comments, by_name):
 
 def remove_request(type_request, req_id):
  con_mongo = cs.mongo_enabled()
- st.write("remove requte type_request")
- st.write(type_request)
-
- st.write(str(ObjectId(req_id)))
  print( str(ObjectId(req_id)) )   
  if   con_mongo : 
     db = cs.get_db()
@@ -367,13 +363,7 @@ def update_statut_request(type_request, req_id,statut):
     resquest_tb = db.demandes                                              
     filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "id_request": str((req_id)) }
     resultat = resquest_tb.update_many(filtre_tb, {"$set": {"statut" : statut} })
-    st.write("update requte type_request")
-    st.write(type_request)
-    st.write("update requte id_request")
-    st.write(str(ObjectId(req_id)))
-     
-    st.write("update requte annee")
-    st.write(cs._secret("ANNEE_FESTIVAL"))
+
 
 
 
