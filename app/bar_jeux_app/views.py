@@ -858,7 +858,7 @@ def _final_page(user):
           else:
                       st.info("Aucun jeu coché pour le moment.")
    
-          st.markdown("#### Jeux selectionnés par durée min")
+          st.markdown("#### Jeux selectionnés durée min")
           if not df_jeux_select_graphique.empty:
                       df_nov = df_jeux_select_graphique.groupby('duree_min')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
                       df_nov.columns = ["duree min", "Nombre"]
@@ -881,7 +881,7 @@ def _final_page(user):
           else:
                       st.info("Aucun jeu coché pour le moment.")
 
-          st.markdown("#### Jeux selectionnés par durée max")
+          st.markdown("#### Jeux selectionnés durée max")
           if not df_jeux_select_graphique.empty:
                       df_nov = df_jeux_select_graphique.groupby('duree_max')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
                       df_nov.columns = ["duree max", "Nombre"]
