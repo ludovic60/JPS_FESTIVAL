@@ -17,9 +17,24 @@ def nouveaute_def(game_info):
     periode_dernier_festival = (int( cs._secret("ANNEE_FESTIVAL"))-1) *100 + int(cs._secret("MOIS_FESTIVAL") )
         
     if game_info.get("mois_sortie") and game_info.get("annee_parution"):
+        
         periode_parution = int(str(game_info["annee_parution"])) * 100 + int(str(game_info["mois_sortie"]))
-        return "✨NOUVEAUTE" if periode_parution >= periode_dernier_festival else "🏺ANCIEN"
-    return "🧐 INCONNU"
+        
+        if periode_parution >= periode_dernier_festival  :
+            return "✨NOUVEAUTE" 
+        elif int(str(game_info["annee_parution"])) <= (int( cs._secret("ANNEE_FESTIVAL"))-20) :
+            return "🏺JEU PLUS DE 20 ANS"
+        else   :
+            return "🏺ANCIEN" 
+    elif  game_info.get("annee_parution") :
+        if    (  (int(str(game_info["annee_parution"])) == int( cs._secret("ANNEE_FESTIVAL")) ) or     (int(str(game_info["annee_parution"])) == int( cs._secret("ANNEE_FESTIVAL"))-1 )  ) :
+              return "✨NOUVEAUTE"     
+        elif int(str(game_info["annee_parution"])) <= (int( cs._secret("ANNEE_FESTIVAL"))-20) :
+            return "🏺JEU PLUS DE 20 ANS"    
+        else : 
+              return "🏺ANCIEN" 
+    else :
+        return "🧐 INCONNU"    
 
 def mise_forme_classement(classement) :
     if classement :
@@ -155,8 +170,10 @@ def _game_card(g, list_key, user , mode ):
                     if st.button(   "✅ valider la suggestion", key=f"valid_sug_{ckey_this_game}",  width=250,  wrap=True) :
                                 result_valid = storage_jeux.toggle_suggestion(ckey_this_game, user["_id"], "suggestion Retenue", "all") 
                                 on_admin_change(ckey_this_game, has_selected_this_game)
+                                st.rerun()
                     if st.button(  "❌ refuser la suggestion" ,  key=f"refuse_sug_{ckey_this_game}",  width=250,  wrap=True) :
                                 result_valid = storage_jeux.toggle_suggestion(ckey_this_game, user["_id"], "suggestion refusée", "all")
+                                st.rerun()
                     
                         
                     

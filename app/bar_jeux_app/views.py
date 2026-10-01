@@ -19,7 +19,7 @@ from export_import import to_excel
 # Ajoute le dossier parent à sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-import commun.auth,  commun.config 
+import commun.auth,  commun.config , commun.tools
 import commun.common_store as cs
 logging.basicConfig(
     level=logging.INFO,
@@ -153,9 +153,14 @@ def _requests_page(user):
     ##st.title("Demandes d'ajout de jeux")
     st.subheader("Demandes d'ajout de jeux")
     reqs = storage_jeux.get_requests("ajout jeux")
+    reqs_a_traiter = [r for r in reqs if r["statut"] == "a traiter"]
+    reqs_traiter = [r for r in reqs if r["statut"] == "traiter"]
+    
+
     if not reqs: 
         st.info("Aucune demande.")
     else :
+        st.error(" - AJOUT RESTANT A FAIRE ")
         c1, c2, c3, c4 , c5 ,c6,c7  = st.columns([3, 6, 1, 2 , 1, 2, 2])
         label = c1.text_input("t", value="NOM DU JEU", key=f"edit_game", label_visibility="collapsed")
         label = c2.text_input("t", value="MYLUDO URL", key=f"edit_myludo",label_visibility="collapsed") 
@@ -164,7 +169,7 @@ def _requests_page(user):
         label = c5.text_input("t", value="STATUT", key=f"edit_statut", label_visibility="collapsed")
         label = c6.text_input("t", value="", key=f"edit_vide1", label_visibility="collapsed")
         label = c7.text_input("t", value="", key=f"edit_vide2", label_visibility="collapsed")
-        for r in reqs:
+        for r in reqs_a_traiter :
               
                   label = c1.text_input("t", value=r["game_name"], key=f"edit_game_{str(r["_id"])}",
                                          label_visibility="collapsed")
@@ -180,16 +185,46 @@ def _requests_page(user):
                                          label_visibility="collapsed")
                   if user["role"] == "admin": 
                         if c6.button("traiter", key=f"modif_traiter_{r["_id"]}"):
-                            update_statut_request("ajout jeux", t["_id"],"traiter")
+                            storage_jeux.update_statut_request("ajout jeux", r["_id"],"traiter")
                             st.rerun()
                         if c7.button("supprimer", key=f"modif_supp_{r["_id"]}"):
-                            remove_request("ajout jeux", t["_id"])
+                            storage_jeux.remove_request("ajout jeux", r["_id"])
                             st.rerun()
-
+        st.success(" - AJOUTS FAITS ")
+        c1, c2, c3, c4 , c5 ,c6 = st.columns([3, 6, 1, 2 , 1, 2])
+        label = c1.text_input("t", value="NOM DU JEU", key=f"editfait_game", label_visibility="collapsed")
+        label = c2.text_input("t", value="MYLUDO URL", key=f"editfait_myludo",label_visibility="collapsed") 
+        label = c3.text_input("t", value="FAIT PAR", key=f"editfait_by", label_visibility="collapsed")      
+        label = c4.text_input("t", value="DEMANDE LE", key=f"editfait_date", label_visibility="collapsed") 
+        label = c5.text_input("t", value="STATUT", key=f"editfait_statut", label_visibility="collapsed")
+        label = c6.text_input("t", value="", key=f"editfait_vide1", label_visibility="collapsed")
+   
+        for r in reqs_traiter :
+              
+                  label = c1.text_input("t", value=r["game_name"], key=f"edit_gametraiter_{str(r["_id"])}",
+                                         label_visibility="collapsed")
+         
+                  label = c2.text_input("t", value=r["myludo_url"], key=f"edit_myludotraiter_{str(r["_id"])}",
+                                         label_visibility="collapsed")      
+         
+                  label = c3.text_input("t", value=r["created_by"], key=f"edittraiter_by_{str(r["_id"])}",
+                                         label_visibility="collapsed")      
+                  label = c4.text_input("t", value=r["created_at"], key=f"edittraiter_date_{str(r["_id"])}",
+                                         label_visibility="collapsed") 
+                  label = c5.text_input("t", value=r["statut"], key=f"edittraiter_statut_{str(r["_id"])}",
+                                         label_visibility="collapsed")
+                  if user["role"] == "admin": 
+                        if c6.button("supprimer", key=f"modif_supp_traiter_{r["_id"]}"):
+                            storage_jeux.remove_request("ajout jeux", r["_id"])
+                            st.rerun()    
+ 
+  
 
     st.subheader("liste des remarques par les joueurs")
-
+  
     remarks = storage_jeux.get_requests("remarque fiche jeux")
+    st.error(" - REMARQUE RESTANT A FAIRE ")
+ 
     if not reqs:
         st.info("Aucune remarque.")
     else :
@@ -224,6 +259,7 @@ def _requests_page(user):
                       if c72.button("supprimer", key=f"modif_suppr_{t["_id"]}"):
                           remove_request("remarque fiche jeux", t["_id"])
                           st.rerun()
+    st.error(" - REMARQUE RESTANT A FAIRE ")                
 ############################################################################################################
 ###-------------- page où est affiché les jeux selectionné
 ############################################################################################################
@@ -278,7 +314,7 @@ def _final_page(user):
             continue
     
         # Calculs directes en mémoire
-        new_statut = nouveaute_def(game)
+        new_statut = nouveaute_def(g)
         is_several = game_id in plusieurs_set
     
         # Comptages rapides
@@ -290,6 +326,9 @@ def _final_page(user):
             "nouveaute": new_statut,
             "Annee": g.get("annee_parution", ""),
             "Classement": mise_forme_classement(g.get("classement_jps_final")),
+            "nbr max joueurs" : g.get("nbr_max_joueurs", ""),
+            "duree min" : g.get("duree_min", ""),
+            "duree max" : g.get("duree_max", ""),
             "Couverture Jeu": g.get("couverture", ""),
             "Jeu": g.get("nom_jeu_complet", ""),
             "Plusieurs exemplaires souhaités": is_several,
@@ -423,6 +462,9 @@ def _final_page(user):
           "nouveaute",
           "Annee",
           "Classement",
+          "nbr max joueurs",
+          "duree min",
+          "duree max",
           "Couverture Jeu",
           "Jeu",
           "Plusieurs exemplaires souhaités",
@@ -432,12 +474,16 @@ def _final_page(user):
       
       # On passe la liste directement à partir du DataFrame
       gb = GridOptionsBuilder.from_dataframe(df_jeux[columns_to_show])
+      gb.configure_default_column(filterable=True, sortable=True )
       gb.configure_column("_id", hide=True)
       gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Jeu", editable=False, width=150, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Jeu", editable=False, filter="agTextColumnFilter", sortable=True, width=150, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=False)
+      gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=False)
+      gb.configure_column("nbr max joueurs" , wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=70, suppressSizeToFit=True, pinned=False)
+      gb.configure_column("duree min", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=50, suppressSizeToFit=True, pinned=False)  
+      gb.configure_column("duree max", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=50, suppressSizeToFit=True, pinned=False)  
       
       gb.configure_column(
           "Plusieurs exemplaires souhaités",
@@ -499,7 +545,7 @@ def _final_page(user):
       )
       # le tableau
       grid_response = AgGrid(
-          df_jeux,
+          df_jeux.sort_values(by="Jeu"),  
           gridOptions=grid_options,
           update_mode=GridUpdateMode.NO_UPDATE,
           data_return_mode=DataReturnMode.AS_INPUT,
@@ -733,20 +779,30 @@ def _final_page(user):
                           }
 
     couleurs_nouveaute = {"✨NOUVEAUTE": "#57B02C", "🏺ANCIEN": "#080808", "🧐 INCONNU": "#1128D6"}
+
+
+    liste_valeur_nbr_joueur =   df_jeux["nbr max joueurs"].unique().tolist()
+    liste_valeur_duree_min =   df_jeux["duree min"].unique().tolist()
+    liste_valeur_duree_max =   df_jeux["duree max"].unique().tolist()
+    liste_duree = list(set(liste_valeur_duree_min + liste_valeur_duree_max))
+ 
+    couleurs_nbr_joueur = commun.tools.calc_color(liste_valeur_nbr_joueur) 
+
+    couleurs_duree = commun.tools.calc_color(liste_duree) 
   
     ### ----------------------------------------------------------------------------------------------
     ###########---- 1. graphique lié aux jeux sélectionnés
     ### ----------------------------------------------------------------------------------------------
    
     with col_graph1:
-          st.subheader("Nombre Jeux selectionnés")
+          st.markdown("#### Nombre Jeux selectionnés")
 
           st.metric(    label="Nombre jeux sélectionnés", value= df_jeux_select_graphique['nom_jeu_complet'].nunique(),label_visibility="collapsed")
                     
-          st.subheader("Jeux selectionnés par Classement")
+          st.markdown("#### Jeux selectionnés par Classement")
        
           if not df_jeux_select_graphique.empty:
-              df_cat = df_jeux_select_graphique["classement"].value_counts().reset_index()
+              df_cat = df_jeux_select_graphique.groupby('classement')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_cat.columns = ["classement", "Nombre"]
               fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, color="classement", color_discrete_map=couleurs_classement )
               fig_pie_cat.update_layout(height=250 , width=1000) 
@@ -768,9 +824,9 @@ def _final_page(user):
               st.info("Aucun jeu coché pour le moment.")
 
 
-          st.subheader("Jeux selectionnés  par nouveauté")
+          st.markdown("#### Jeux selectionnés  par nouveauté")
           if not df_jeux_select_graphique.empty:
-              df_nov = df_jeux_select_graphique["Nouveauté"].value_counts().reset_index()
+              df_nov = df_jeux_select_graphique.groupby('Nouveauté')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_nov.columns = ["Nouveauté", "Nombre"]
               fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 , color="Nouveauté", color_discrete_map=couleurs_nouveaute  )
               fig_pie_nov.update_layout(height=250 , width=1000)
@@ -778,7 +834,75 @@ def _final_page(user):
           else:
               st.info("Aucun jeu coché pour le moment.")
 
- 
+
+          st.markdown("#### Jeux selectionnés par Nbr joueur max")
+          if not df_jeux_select_graphique.empty:
+                      df_nov = df_jeux_select_graphique.groupby('nbr_max_joueurs')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
+                      df_nov.columns = ["nbr max joueurs", "Nombre"]
+                      fig_pie_nov = px.pie(df_nov, names="nbr max joueurs", values="Nombre", hole=0.3 , color="nbr max joueurs", color_discrete_map=couleurs_nbr_joueur  )
+                      fig_pie_nov.update_layout(height=250 , width=1000)
+                      fig_pie_nov.update_layout(
+                         legend=dict(
+                             orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
+                             yanchor="top",
+                             y=-0.2,  # Positionne la légende en dessous du graphique
+                             xanchor="center",
+                             x=0.5,
+                             font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
+                         ),
+                         margin=dict(
+                             t=30, b=100, l=20, r=20
+                         ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
+                      )
+                      st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+                      st.info("Aucun jeu coché pour le moment.")
+   
+          st.markdown("#### Jeux selectionnés durée min")
+          if not df_jeux_select_graphique.empty:
+                      df_nov = df_jeux_select_graphique.groupby('duree_min')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
+                      df_nov.columns = ["duree min", "Nombre"]
+                      fig_pie_nov = px.pie(df_nov, names="duree min", values="Nombre", hole=0.3 , color="duree min", color_discrete_map=couleurs_duree  )
+                      fig_pie_nov.update_layout(
+                         legend=dict(
+                             orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
+                             yanchor="top",
+                             y=-0.2,  # Positionne la légende en dessous du graphique
+                             xanchor="center",
+                             x=0.5,
+                             font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
+                         ),
+                         margin=dict(
+                             t=30, b=100, l=20, r=20
+                         ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
+                      )
+                      fig_pie_nov.update_layout(height=250 , width=1000)
+                      st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+                      st.info("Aucun jeu coché pour le moment.")
+
+          st.markdown("#### Jeux selectionnés durée max")
+          if not df_jeux_select_graphique.empty:
+                      df_nov = df_jeux_select_graphique.groupby('duree_max')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
+                      df_nov.columns = ["duree max", "Nombre"]
+                      fig_pie_nov = px.pie(df_nov, names="duree max", values="Nombre", hole=0.3 , color="duree max", color_discrete_map=couleurs_duree  )
+                      fig_pie_nov.update_layout(
+                         legend=dict(
+                             orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
+                             yanchor="top",
+                             y=-0.2,  # Positionne la légende en dessous du graphique
+                             xanchor="center",
+                             x=0.5,
+                             font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
+                         ),
+                         margin=dict(
+                             t=30, b=100, l=20, r=20
+                         ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
+                      )
+                      fig_pie_nov.update_layout(height=250 , width=1000)
+                      st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+                      st.info("Aucun jeu coché pour le moment.")
           
         
     ### ----------------------------------------------------------------------------------------------
@@ -787,14 +911,14 @@ def _final_page(user):
    
        
     with col_graph2:
-          st.subheader("Nombre Jeux proposés ")
+          st.markdown("#### Nombre Jeux proposés ")
       
           st.metric(    label="Nombre jeux proposés", value= df_jeux_pret_graphique['nom_jeu_complet'].nunique(),label_visibility="collapsed")
          
      
-          st.subheader("Jeux proposés par Classement")
+          st.markdown("#### Jeux proposés par Classement")
           if not df_jeux_pret_graphique.empty:
-              df_cat = df_jeux_pret_graphique["classement"].value_counts().reset_index()
+              df_cat =  df_jeux_pret_graphique.groupby('classement')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_cat.columns = ["classement", "Nombre"]
               fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, color="classement", color_discrete_map=couleurs_classement )
               fig_pie_cat.update_layout(height=250 , width=1000) 
@@ -816,9 +940,9 @@ def _final_page(user):
           else:
               st.info("Aucun jeu proposé pour le moment.")
 
-          st.subheader("Jeux proposés par Nouveauté")
+          st.markdown("#### Jeux proposés par Nouveauté")
           if not df_jeux_pret_graphique.empty:
-              df_nov = df_jeux_pret_graphique["Nouveauté"].value_counts().reset_index()
+              df_nov = df_jeux_pret_graphique.groupby('Nouveauté')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_nov.columns = ["Nouveauté", "Nombre"]
               fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 , color="Nouveauté", color_discrete_map=couleurs_nouveaute )
               fig_pie_nov.update_layout(height=250 , width=1000)
@@ -826,7 +950,75 @@ def _final_page(user):
           else:
               st.info("Aucun jeu proposé pour le moment.")
 
-     
+          st.markdown("#### Jeux proposés par Nbr joueur max")
+          if not df_jeux_pret_graphique.empty:
+                      df_nov = df_jeux_pret_graphique.groupby('nbr_max_joueurs')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
+                      df_nov.columns = ["nbr max joueurs", "Nombre"]
+                      fig_pie_nov = px.pie(df_nov, names="nbr max joueurs", values="Nombre", hole=0.3 , color="nbr max joueurs", color_discrete_map=couleurs_nbr_joueur  )
+                      fig_pie_nov.update_layout(
+                         legend=dict(
+                             orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
+                             yanchor="top",
+                             y=-0.2,  # Positionne la légende en dessous du graphique
+                             xanchor="center",
+                             x=0.5,
+                             font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
+                         ),
+                         margin=dict(
+                             t=30, b=100, l=20, r=20
+                         ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
+                      )
+                      fig_pie_nov.update_layout(height=250 , width=1000)
+                      st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+                      st.info("Aucun jeu coché pour le moment.")
+   
+          st.markdown("#### Jeux proposés par durée min")
+          if not df_jeux_pret_graphique.empty:
+                      df_nov = df_jeux_pret_graphique.groupby('duree_min')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
+                      df_nov.columns = ["duree min", "Nombre"]
+                      fig_pie_nov = px.pie(df_nov, names="duree min", values="Nombre", hole=0.3 , color="duree min", color_discrete_map=couleurs_duree  )
+                      fig_pie_nov.update_layout(
+                         legend=dict(
+                             orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
+                             yanchor="top",
+                             y=-0.2,  # Positionne la légende en dessous du graphique
+                             xanchor="center",
+                             x=0.5,
+                             font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
+                         ),
+                         margin=dict(
+                             t=30, b=100, l=20, r=20
+                         ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
+                      )
+                      fig_pie_nov.update_layout(height=250 , width=1000)
+                      st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+                      st.info("Aucun jeu coché pour le moment.")
+
+          st.markdown("#### Jeux proposés par durée max")
+          if not df_jeux_pret_graphique.empty:
+                      df_nov = df_jeux_pret_graphique.groupby('duree_max')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
+                      df_nov.columns = ["duree max", "Nombre"]
+                      fig_pie_nov = px.pie(df_nov, names="duree max", values="Nombre", hole=0.3 , color="duree max", color_discrete_map=couleurs_duree  )
+                      fig_pie_nov.update_layout(
+                         legend=dict(
+                             orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
+                             yanchor="top",
+                             y=-0.2,  # Positionne la légende en dessous du graphique
+                             xanchor="center",
+                             x=0.5,
+                             font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
+                         ),
+                         margin=dict(
+                             t=30, b=100, l=20, r=20
+                         ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
+                      )
+                      fig_pie_nov.update_layout(height=250 , width=1000)
+                      st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+                      st.info("Aucun jeu coché pour le moment.")
+          
 
     ### ----------------------------------------------------------------------------------------------
     ###########---- 1. graphique lié aux jeux validés
@@ -834,15 +1026,15 @@ def _final_page(user):
    
 
     with col_graph3:
-          st.subheader("Nombre Jeux validés")
+          st.markdown("#### Nombre Jeux validés")
           if not df_jeux_valide_graphique.empty:
                  st.metric(    label="Nombre jeux validés", value=df_jeux_valide_graphique['nom_jeu_complet'].nunique(),label_visibility="collapsed")
           else :
                       st.metric(    label="Nombre jeux validés", value=0,label_visibility="collapsed")
      
-          st.subheader("Jeux validés par Classement")
+          st.markdown("#### Jeux validés par Classement")
           if not df_jeux_valide_graphique.empty:
-              df_cat2 = df_jeux_valide_graphique["classement"].value_counts().reset_index()
+              df_cat2 = df_jeux_valide_graphique.groupby('classement')['nom_jeu_complet'].nunique()
               df_cat2.columns = ["classement", "Nombre"]
               fig_pie_cat2 = px.pie(df_cat2, names="classement", values="Nombre", hole=0.3 ,  color="classement", color_discrete_map=couleurs_classement )
               fig_pie_cat2.update_layout(height=250 , width=1000) 
@@ -865,15 +1057,87 @@ def _final_page(user):
               st.info("Aucun jeu validé pour le moment.")
 
 
-          st.subheader("Jeux validés par Nouveauté")
+          st.markdown("#### Jeux validés par Nouveauté")
           if not df_jeux_valide_graphique.empty:
-              df_nov2 = df_jeux_valide_graphique["Nouveauté"].value_counts().reset_index()
+              df_nov2 = df_jeux_valide_graphique.groupby('Nouveauté')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_nov2.columns = ["Nouveauté", "Nombre"]
               fig_pie_nov2 = px.pie(df_nov2, names="Nouveauté", values="Nombre", hole=0.3 ,color="Nouveauté", color_discrete_map=couleurs_nouveaute)
               fig_pie_nov2.update_layout(height=250 , width=1000)
               st.plotly_chart(fig_pie_nov2, use_container_width=True)
           else:
               st.info("Aucun jeu validé pour le moment.")     
+
+     
+          st.markdown("#### Jeux validés par Nbr joueur max")
+          if not df_jeux_valide_graphique.empty:
+              df_nov4 = df_jeux_valide_graphique.groupby('nbr_max_joueurs')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
+              df_nov4.columns = ["nbr max joueurs", "Nombre"]
+              fig_pie_nov = px.pie(df_nov4, names="nbr max joueurs", values="Nombre", hole=0.3 , color="nbr max joueurs", color_discrete_map=couleurs_nbr_joueur  )
+              fig_pie_nov.update_layout(
+                         legend=dict(
+                             orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
+                             yanchor="top",
+                             y=-0.2,  # Positionne la légende en dessous du graphique
+                             xanchor="center",
+                             x=0.5,
+                             font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
+                         ),
+                         margin=dict(
+                             t=30, b=100, l=20, r=20
+                         ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
+              )
+              fig_pie_nov.update_layout(height=250 , width=1000)
+              st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+              st.info("Aucun jeu coché pour le moment.")
+   
+          st.markdown("#### Jeux validés par durée min")
+          if not df_jeux_valide_graphique.empty:
+              df_nov = df_jeux_valide_graphique.groupby('duree_min')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
+              df_nov.columns = ["duree min", "Nombre"]
+              fig_pie_nov = px.pie(df_nov, names="duree min", values="Nombre", hole=0.3 , color="duree min", color_discrete_map=couleurs_duree  )
+              fig_pie_nov.update_layout(
+                         legend=dict(
+                             orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
+                             yanchor="top",
+                             y=-0.2,  # Positionne la légende en dessous du graphique
+                             xanchor="center",
+                             x=0.5,
+                             font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
+                         ),
+                         margin=dict(
+                             t=30, b=100, l=20, r=20
+                         ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
+              )
+              fig_pie_nov.update_layout(height=250 , width=1000)
+              st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+              st.info("Aucun jeu coché pour le moment.")
+
+          st.markdown("#### Jeux validés par durée max")
+          if not df_jeux_valide_graphique.empty:
+              df_nov = df_jeux_valide_graphique.groupby('duree_max')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
+              df_nov.columns = ["duree max", "Nombre"]
+              fig_pie_nov = px.pie(df_nov, names="duree max", values="Nombre", hole=0.3 , color="duree max", color_discrete_map=couleurs_duree  )
+              fig_pie_nov.update_layout(
+                         legend=dict(
+                             orientation="h",  # Légende horizontale (passe les éléments en ligne/grille en bas)
+                             yanchor="top",
+                             y=-0.2,  # Positionne la légende en dessous du graphique
+                             xanchor="center",
+                             x=0.5,
+                             font=dict(size=10),  # Réduit légèrement la taille du texte si nécessaire
+                         ),
+                         margin=dict(
+                             t=30, b=100, l=20, r=20
+                         ),  # Augmente la marge du bas (b) pour laisser de la place à la légende
+              )
+              fig_pie_nov.update_layout(height=250 , width=1000)
+              st.plotly_chart(fig_pie_nov, use_container_width=True)
+          else:
+              st.info("Aucun jeu coché pour le moment.")
+
+          
 
     ### ----------------------------------------------------------------------------------------------
     ###########---- histogrammes des jeux pretes par joueurs 

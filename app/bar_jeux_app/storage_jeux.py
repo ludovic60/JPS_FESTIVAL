@@ -26,6 +26,7 @@ _COVERS = [
 ]
 
 
+import streamlit as st
 
 
 ##############################################################
@@ -317,7 +318,6 @@ def add_request(type_request, game_name, myludo_url, comments, by_name):
             db = cs.get_db()
             resquest_tb = db.demandes
             new_request= {                    
-                    "id_request": str(ObjectId()),
                     "annee" : cs._secret("ANNEE_FESTIVAL"), 
                     "type_request" : "ajout jeux", 
                     "game_name": game_name.strip(), 
@@ -333,7 +333,6 @@ def add_request(type_request, game_name, myludo_url, comments, by_name):
             db = cs.get_db()
             resquest_tb = db.demandes
             new_request= {                    
-                    "id_request": str(ObjectId()),
                     "annee" : cs._secret("ANNEE_FESTIVAL"),
                     "type_request" : "remarque fiche jeux", 
                     "game_name": game_name.strip(), 
@@ -348,26 +347,26 @@ def add_request(type_request, game_name, myludo_url, comments, by_name):
 
 def remove_request(type_request, req_id):
  con_mongo = cs.mongo_enabled()
+ print( str(ObjectId(req_id)) )   
+ print(  type_request)
+ print(   cs._secret("ANNEE_FESTIVAL"))
  if   con_mongo : 
     db = cs.get_db()
     resquest_tb = db.demandes                                              
-    filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "id_request": str(ObjectId(req_id)) }
+    filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "_id": ObjectId(str(req_id)) }
     resultat = resquest_tb.delete_many(filtre_tb)
 
 def update_statut_request(type_request, req_id,statut):
  con_mongo = cs.mongo_enabled()
+ print( str(ObjectId(req_id)) )   
+ print(  type_request)
+ print(   cs._secret("ANNEE_FESTIVAL"))
  if   con_mongo : 
     db = cs.get_db()
     resquest_tb = db.demandes                                              
-    filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "id_request": str(ObjectId(req_id)) }
+    filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL"), "type_request" : type_request,   "_id": ObjectId(str(req_id)) }
     resultat = resquest_tb.update_many(filtre_tb, {"$set": {"statut" : statut} })
-    print("update requte type_request")
-    print(type_request)
-    print("update requte id_request")
-    print(str(ObjectId(req_id)))
-     
-    print("update requte annee")
-    print(cs._secret("ANNEE_FESTIVAL"))
+
 
 
 

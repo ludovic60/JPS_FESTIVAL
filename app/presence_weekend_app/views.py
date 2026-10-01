@@ -329,7 +329,7 @@ def admin_page():
         
             # ON DYNAMISE LE PREFIX AVEC L'ID :
             # Cela garantit que chaque utilisateur a ses propres clés d'état
-            dynamic_prefix = f"admin_{user_id}"
+            dynamic_prefix = f"admin{user_pseudo}"
         
             logging.info(f"Utilisateur sélectionné : {user_pseudo} (ID: {user_id})")
         
@@ -348,20 +348,22 @@ def admin_page():
             st.markdown("**Modifier les votes de cette personne :**")
         
             # 2. Appel de l'éditeur avec le prefixe dynamique
-            selected = presence_editor(
-                user_id, user_pseudo, key_prefix=dynamic_prefix
-            )
+            selected_user = presence_editor( user_id, user_pseudo, str(dynamic_prefix))
+
+           
         
             # Bouton Enregistrer
             if st.button("Enregistrer les votes de cette personne", type="primary"):
-                set_presence(user_id, user_pseudo, selected)
+                st.write(selected_user)
+                set_presence(user_id, user_pseudo, selected_user)
+                st.success(f"selected_user")
                 st.success(f"Votes de {user_pseudo} enregistrés")
         
                 # Invalidation du cache pour forcer la re-lecture BDD au prochain tour
                 bdd_key = f"db_loaded_{dynamic_prefix}_{user_id}"
                 if bdd_key in st.session_state:
                     del st.session_state[bdd_key]
-        
+                time.sleep(2)
                 st.rerun()
 
 
