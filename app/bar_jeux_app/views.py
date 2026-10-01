@@ -820,7 +820,6 @@ def _final_page(user):
        
           if not df_jeux_select_graphique.empty:
               df_cat = df_jeux_select_graphique.groupby('classement')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
-              print(df_cat)
               df_cat.columns = ["classement", "Nombre"]
               fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, color="classement", color_discrete_map=couleurs_classement )
               fig_pie_cat.update_layout(height=250 , width=1000) 
