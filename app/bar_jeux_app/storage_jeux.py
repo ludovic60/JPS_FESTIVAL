@@ -433,3 +433,91 @@ def set_loan_valide_admin(ckey, user_id, value):
 
     
     return {}
+
+    
+
+#############################################################################
+
+
+
+
+
+
+
+
+import openpyxl
+from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
+import pandas as pd
+
+
+def export_excel_A4 : 
+        # 1. Préparation du DataFrame et ajout de colonnes externes
+        data = {
+            "Nom": ["Alice", "Bob", "Charlie", "David"],
+            "Vente": [15000, 8000, 12000, 5000],
+        }
+        df = pd.DataFrame(data)
+        
+        
+        
+        # Ajout de colonnes ne provenant pas du DataFrame initial
+        df["Région"] = ["Nord", "Sud", "Est", "Ouest"]
+        df["Commentaire"] = ["Excellent", "À surveiller", "Très bien", "Insuffisant"]
+        
+        # Export initial vers un fichier Excel
+        file_name = "export_personnalise.xlsx"
+        df.to_excel(file_name, index=False, sheet_name="Rapport")
+        
+        # 2. Chargement du fichier avec openpyxl pour la mise en forme avancée
+        wb = openpyxl.load_workbook(file_name)
+        ws = wb["Rapport"]
+        
+        # --- Largeur des colonnes ---
+        column_widths = {"A": 18, "B": 15, "C": 15, "D": 25}
+        for col, width in column_widths.items():
+            ws.column_dimensions[col].width = width
+        
+        # --- Hauteur des lignes ---
+        ws.row_dimensions[1].height = 30  # Hauteur de la ligne d'en-tête
+        for row in range(2, ws.max_row + 1):
+            ws.row_dimensions[row].height = 22  # Hauteur des lignes de données
+        
+        # --- Définition des bordures (taille 'thin' et couleur grise) ---
+        thin_border = Border(
+            left=Side(style="thin", color="B0B0B0"),
+            right=Side(style="thin", color="B0B0B0"),
+            top=Side(style="thin", color="B0B0B0"),
+            bottom=Side(style="thin", color="B0B0B0"),
+        )
+        
+        # --- Couleurs conditionnelles et application des bordures ---
+        fill_green = PatternFill(
+            start_color="C6EFCE", end_color="C6EFCE", fill_type="solid"
+        )  # Vert clair
+        fill_red = PatternFill(
+            start_color="FFC7CE", end_color="FFC7CE", fill_type="solid"
+        )  # Rouge clair
+        
+        for row in range(2, ws.max_row + 1):
+            # Appliquer les bordures à toute la ligne du tableau
+            for col in range(1, ws.max_column + 1):
+                ws.cell(row=row, column=col).border = thin_border
+        
+            # Condition sur la colonne "Vente" (colonne 2 / B)
+            cell_vente = ws.cell(row=row, column=2)
+            if isinstance(cell_vente.value, (int, float)):
+                if cell_vente.value >= 10000:
+                    cell_vente.fill = fill_green  # Vert si >= 10 000
+                else:
+                    cell_vente.fill = fill_red  # Rouge sinon
+        
+        # --- Configuration de l'impression au format A3 ---
+        ws.page_setup.paperSize = ws.PAPERSIZE_A3  # Format A3
+        ws.page_setup.orientation = (  # Optionnel : Mode Paysage (Landscape)
+            ws.ORIENTATION_LANDSCAPE
+        )
+        ws.sheet_properties.pageSetUpPr.fitToPage = True
+        ws.page_setup.fitToWidth = 1  # Ajuster à 1 page de largeur
+        
+        # Sauvegarde du fichier final
+        wb.save(file_name)
