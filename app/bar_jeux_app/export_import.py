@@ -3,7 +3,7 @@
 import pandas as pd
 import openpyxl
 import io
-
+import config_bar_jeux
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 
@@ -186,26 +186,30 @@ def export_excel_bytes(df, page_size, mode):
     cell_classement = ws.cell(row=row, column=classement_col_idx)
     val = cell_classement.value
 
-    if val == "ENQUETE/ESCAPE/ENIGME/CASSETETE":
+    if val == config_bar_jeux._CLS_ENQUETE_ESCAPE :
       cell_classement.fill = fill_blue_light
-    elif val == "COOP/SEMI COOP":
+    elif val == config_bar_jeux._CLS_COOP :
       cell_classement.fill = fill_violet
-    elif val == "INITIE":
+    elif val == config_bar_jeux._CLS_INITIE :
       cell_classement.fill = fill_yellow
-    elif val == "ENFANT":
+    elif val == config_bar_jeux._CLS_ENFANT :
       cell_classement.fill = fill_blue
-    elif val == "AMBIANCE":
+    elif val == config_bar_jeux._CLS_AMBIANCE :
       cell_classement.fill = fill_green
-    elif val == "FAMILLE":
+    elif val == config_bar_jeux._CLS_FAMILLE :
       cell_classement.fill = fill_pink
-    elif val == "EXPERT":
+    elif val == config_bar_jeux._CLS_EXPERT :
       cell_classement.fill = fill_red
-    elif val == "EXPERT +":
+    elif val == config_bar_jeux._CLS_EXPERT_PLUS :
       cell_classement.fill = fill_red_fonce
-    elif val == "NON CLASSE":
+    elif val == config_bar_jeux._CLS_NON CLASSE :
       cell_classement.fill = fill_grey
-    elif val == "JEU DUO":
+    elif val == config_bar_jeux._CLS_DUO :
       cell_classement.fill = fill_orange
+
+
+    
+
 
   ws.sheet_properties.pageSetUpPr.fitToPage = True
   ws.page_setup.fitToWidth = 1
