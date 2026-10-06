@@ -451,7 +451,7 @@ def set_loan_valide_admin(ckey, user_id, value):
 
 
 
-def export_excel_bytes(df, page_size):
+def export_excel_bytes(df, page_size, mode):
   # Copie pour éviter de modifier le DataFrame original de Streamlit
   df_export = df.copy()
 
@@ -477,9 +477,9 @@ def export_excel_bytes(df, page_size):
 
   # --- Largeur des colonnes & Format ---
   if page_size == "A3":
-    target_widths = {"Classement": 10, "Jeu": 20}
+    target_widths = {"Classement":20, "Jeu": 40}
     for i in range(1, 21):
-      target_widths[f"Jeu{i:02d}"] = 1
+      target_widths[f"Jeu{i:02d}"] = 4
 
     for header_name, width in target_widths.items():
       if header_name in col_indices:
@@ -488,7 +488,7 @@ def export_excel_bytes(df, page_size):
 
     ws.row_dimensions[1].height = 30  # En-tête
     for row in range(2, ws.max_row + 1):
-      ws.row_dimensions[row].height = 7  # Données
+      ws.row_dimensions[row].height = 15  # Données
 
     ws.page_setup.paperSize = ws.PAPERSIZE_A3
     ws.page_setup.orientation = ws.ORIENTATION_PORTRAIT
@@ -569,8 +569,36 @@ def export_excel_bytes(df, page_size):
   ws.sheet_properties.pageSetUpPr.fitToPage = True
   ws.page_setup.fitToWidth = 1
 
-  # Sauvegarde dans un buffer final et récupération des octets (bytes)
-  output_final = io.BytesIO()
-  wb.save(output_final)
-  output_final.seek(0)
-  return output_final.getvalue()
+  if mode == "excel" :  
+
+      # Sauvegarde dans un buffer final et récupération des octets (bytes)
+      output_final = io.BytesIO()
+      wb.save(output_final)
+      output_final.seek(0)
+      return output_final.getvalue()
+  elif mode == "pdf" :
+      # --- Conversion en PDF via LibreOffice (dans un dossier temporaire) ---
+      with tempfile.TemporaryDirectory() as tmpdirname:
+        excel_path = os.path.join(tmpdirname, "temp.xlsx")
+        wb.save(excel_path)
+    
+        # Appel de LibreOffice en arrière-plan pour convertir le fichier
+        subprocess.run(
+            [
+                "libreoffice",
+                "--headless",
+                "--convert-to",
+                "pdf",
+                "--outdir",
+                tmpdirname,
+                excel_path,
+            ],
+            check=True,
+        )
+    
+        pdf_path = os.path.join(tmpdirname, "temp.pdf")
+    
+        # Lecture du fichier PDF converti sous forme de bytes
+        with open(pdf_path, "rb") as f:
+          pdf_bytes = f.read()
+        return pdf_bytes
