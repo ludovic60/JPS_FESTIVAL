@@ -456,13 +456,7 @@ import pandas as pd
 
 
 def export_excel( datafr , page_size , file_name) : 
-        # 1. Préparation du DataFrame et ajout de colonnes externes
-        data = {
-            "Nom": ["Alice", "Bob", "Charlie", "David"],
-            "Vente": [15000, 8000, 12000, 5000],
-        }
-        df = pd.DataFrame(data)
-        
+
         
         
         # Ajout de colonnes ne provenant pas du DataFrame initial
@@ -549,11 +543,50 @@ def export_excel( datafr , page_size , file_name) :
         
         # --- Couleurs conditionnelles et application des bordures ---
         fill_green = PatternFill(
-            start_color="C6EFCE", end_color="C6EFCE", fill_type="solid"
-        )  # Vert clair
+            start_color="57B02C", end_color="57B02C", fill_type="solid"
+        )  # FAMILLE
         fill_red = PatternFill(
-            start_color="FFC7CE", end_color="FFC7CE", fill_type="solid"
-        )  # Rouge clair
+            start_color="E67A70", end_color="E67A70", fill_type="solid"
+        )  # EXPERT
+
+        fill_red_fonce = PatternFill(
+            start_color="8C0E07", end_color="8C0E07", fill_type="solid"
+        )  # EXPERT +
+
+        fill_grey = PatternFill(
+            start_color="C7C5C5", end_color="C7C5C5", fill_type="solid"
+        )  # NON CLASSE
+
+
+
+        fill_orange = PatternFill(
+            start_color="FF9224", end_color="FF9224", fill_type="solid"
+        )  # JEU DUO
+
+
+        fill_pink = PatternFill(
+            start_color="E655DA", end_color="E655DA", fill_type="solid"
+        )  # AMBIANCE
+
+        fill_yellow = PatternFill(
+            start_color="F5E20C", end_color="F5E20C", fill_type="solid"
+        )  # INITIE
+
+
+        fill_blue = PatternFill(
+            start_color="1128D6", end_color="1128D6", fill_type="solid"
+        )  # ENFANT
+
+        fill_violet = PatternFill(
+            start_color="7A0EE3", end_color="7A0EE3", fill_type="solid"
+        )  # COOP/SEMI COOP
+
+        fill_blue_light = PatternFill(
+            start_color="1FC7FF", end_color="1FC7FF", fill_type="solid"
+        )  # ENQUETE/ESCAPE/ENIGME/CASSETETE
+
+
+
         
         for row in range(2, ws.max_row + 1):
             # Appliquer les bordures à toute la ligne du tableau
@@ -562,17 +595,30 @@ def export_excel( datafr , page_size , file_name) :
         
             # Condition sur la colonne "classement" (colonne 2 / B)
             cell_classement = ws.cell(row=row, column=1)
-           if cell_classement.value = 10000:
-                    cell_vente.fill = fill_green  # Vert si >= 10 000
-           elif cell_classement.value = 10000:
-                    cell_vente.fill = fill_red  # Rouge sinon
-                          elif cell_classement.value = 10000:
-                    cell_vente.fill = fill_red  # Rouge sinon
-           elif cell_classement.value = 10000:
-                    cell_vente.fill = fill_red  # Rouge sinon
-           elif cell_classement.value = 10000:
-                    cell_vente.fill = fill_red  # Rouge sinon
-        
+           if cell_classement.value == "ENQUETE/ESCAPE/ENIGME/CASSETETE":
+                    cell_vente.fill = fill_blue_light  
+           elif cell_classement.value == "COOP/SEMI COOP":
+                    cell_vente.fill = fill_violet    
+           elif cell_classement.value = INITIE:
+                    cell_vente.fill = fill_yellow  
+           elif cell_classement.value == "ENFANT":
+                    cell_vente.fill = fill_blue 
+           elif cell_classement.value == "AMBIANCE":
+                    cell_vente.fill = fill_green  
+           elif cell_classement.value == "FAMILLE":
+                    cell_vente.fill = fill_pink  
+           elif cell_classement.value == "EXPERT":
+                    cell_vente.fill = fill_red  
+           elif cell_classement.value == "EXPERT +":
+                    cell_vente.fill = fill_red_fonce  
+           elif cell_classement.value == "NON CLASSE":
+                    cell_vente.fill = fill_grey  
+           elif cell_classement.value == "JEU DUO":
+                    cell_vente.fill = fill_orange  
+
+
+
+
         # --- Configuration de l'impression au format A3 ---
  
         ws.sheet_properties.pageSetUpPr.fitToPage = True
