@@ -484,7 +484,7 @@ def export_excel( df , page_size , file_name) :
         # Export initial vers un fichier Excel
        
         df.to_excel(file_name, index=False, sheet_name="Liste_jeux")
-        6
+        
         # 2. Chargement du fichier avec openpyxl pour la mise en forme avancée
         wb = openpyxl.load_workbook(file_name)
         ws = wb["Liste_jeux"]
@@ -586,23 +586,23 @@ def export_excel( df , page_size , file_name) :
             if cell_classement.value == "ENQUETE/ESCAPE/ENIGME/CASSETETE":
                     cell_vente.fill = fill_blue_light  
             elif cell_classement.value == "COOP/SEMI COOP":
-                    cell_vente.fill = fill_violet    
+                    cell_classement.fill = fill_violet    
             elif cell_classement.value == "INITIE":
-                    cell_vente.fill = fill_yellow  
+                    cell_classement.fill = fill_yellow  
             elif cell_classement.value == "ENFANT":
-                    cell_vente.fill = fill_blue 
+                    cell_classement.fill = fill_blue 
             elif cell_classement.value == "AMBIANCE":
-                    cell_vente.fill = fill_green  
+                    cell_classement.fill = fill_green  
             elif cell_classement.value == "FAMILLE":
-                    cell_vente.fill = fill_pink  
+                    cell_classement.fill = fill_pink  
             elif cell_classement.value == "EXPERT":
-                    cell_vente.fill = fill_red  
+                    cell_classement.fill = fill_red  
             elif cell_classement.value == "EXPERT +":
-                    cell_vente.fill = fill_red_fonce  
+                    cell_classement.fill = fill_red_fonce  
             elif cell_classement.value == "NON CLASSE":
-                    cell_vente.fill = fill_grey  
+                    cell_classement.fill = fill_grey  
             elif cell_classement.value == "JEU DUO":
-                    cell_vente.fill = fill_orange  
+                    cell_classement.fill = fill_orange  
 
 
 
