@@ -9,10 +9,7 @@ import config_bar_jeux
 from bson import ObjectId
 
 
-import io
-import openpyxl
-from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
-from openpyxl.utils import get_column_letter
+
 
 import os
 import sys
