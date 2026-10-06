@@ -57,7 +57,7 @@ def mise_forme_classement(classement) :
         elif classement == "AMBIANCE":
                   classement_formate = config_bar_jeux._CLS_AMBIANCE
         elif classement == "NON CLASSE":
-                  classement_formate = config_bar_jeux._CLS_NON CLASSE
+                  classement_formate = config_bar_jeux._CLS_NON_CLASSE
         elif classement == "PBM CLASSEMENT":
                   classement_formate = f"❓ {classement}"
         else : 
