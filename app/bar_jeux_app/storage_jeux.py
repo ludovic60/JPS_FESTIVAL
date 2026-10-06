@@ -455,7 +455,7 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 import pandas as pd
 
 
-def export_excel( datafr , page_size , file_name) : 
+def export_excel( df , page_size , file_name) : 
 
         
         
