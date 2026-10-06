@@ -1,8 +1,11 @@
 """Export CSV / PDF de la liste finale des prêts."""
-import io
 
 import pandas as pd
 import openpyxl
+import io
+
+from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
+from openpyxl.utils import get_column_letter
 
 def loans_matrix(finals, users, loans):
     rows = []
