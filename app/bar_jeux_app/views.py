@@ -480,14 +480,14 @@ def _final_page(user):
       gb = GridOptionsBuilder.from_dataframe(df_jeux[columns_to_show])
       gb.configure_default_column(filterable=True, sortable=True )
       gb.configure_column("_id", hide=True)
-      gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("nouveaute", editable=False, filter="agTextColumnFilter", width=80, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Jeu", editable=False, filter="agTextColumnFilter", sortable=True, width=150, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=False)
-      gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=False)
-      gb.configure_column("nbr max joueurs" , wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=70, suppressSizeToFit=True, pinned=False)
-      gb.configure_column("duree min", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=50, suppressSizeToFit=True, pinned=False)  
-      gb.configure_column("duree max", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=50, suppressSizeToFit=True, pinned=False)  
+      gb.configure_column("Classement", editable=False, filter="agTextColumnFilter", width=180, suppressSizeToFit=True, pinned=False)
+      gb.configure_column("nbr max joueurs" , filter="agTextColumnFilter", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=70, suppressSizeToFit=True, pinned=False)
+      gb.configure_column("duree min", filter="agTextColumnFilter", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=50, suppressSizeToFit=True, pinned=False)  
+      gb.configure_column("duree max", filter="agTextColumnFilter", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=50, suppressSizeToFit=True, pinned=False)  
       
       gb.configure_column(
           "Plusieurs exemplaires souhaités",
