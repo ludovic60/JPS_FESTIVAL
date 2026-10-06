@@ -16,6 +16,23 @@ _MOIS_FR = {
 }
 
 
+_CLS_FAMILLE = f"⚪⚪⚪ FAMILLE"
+_CLS_INITIE  = f"🟡⚪⚪ INITIE"
+_CLS_EXPERT  = f"🔴🔴⚪ EXPERT"
+_CLS_EXPERT_PLUS = f"🔴🔴🔴 EXPERT+"
+_CLS_ENFANT = f"🧸 ENFANT"                                        
+_CLS_DUO  = f"👥 JEU DUO"                                       
+_CLS_COOP   = f"🤝 COOP/SEMI COOP"                             
+_CLS_ENQUETE_ESCAPE   = f"🕵️ ENQUETE/ESCAPE/ENIGME/CASSETETE"                            
+_CLS_AMBIANCE = f"🎉 AMBIANCE"
+_CLS_NON CLASSE = f"🤔 NON CLASSE"
+        elif classement == "":
+                  classement_formate = f"❓ PBM CLASSEMENT"
+        else : 
+                  classement_formate = f"❓❓❓ {classement}"
+
+
+
 def month_keys():
     """Liste (clé, libellé) d'Octobre 2025 à Octobre 2026 inclus."""
     keys = []
