@@ -492,7 +492,7 @@ def export_excel( datafr , page_size , file_name) :
 
        if  page_size == A3 :
                 # --- Largeur des colonnes ---
-                column_widths = {"classement": 10, "nom": 20,  
+                column_widths = {"classement": 10, "Jeu": 20,  
                                 "Jeu01" : 1,
                                 "Jeu02" : 1,
                                 "Jeu03": 1,
