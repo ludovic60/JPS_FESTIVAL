@@ -416,8 +416,11 @@ def _final_page(user):
     
     # ---Colonne 3 : Export Initial ---
     with col_btn3:
-        df_export_list_initiale = df_jeux[["Couverture Jeu", "Jeu"]]
-        excel_data_initial = to_excel(df_export_list_initiale)
+        # df_export_list_initiale = df_jeux[["Couverture Jeu", "Jeu"]]
+        # excel_data_initial = to_excel(df_export_list_initiale)
+        df_export_list_initiale = df_jeux[["Classement", "Jeu"]]
+        excel_data_initial = storage_jeux.export_excel( df_export_list_initiale , "A3" , "liste_selection_jeu.xlsx") : 
+
         
         st.download_button(
             label="📥 Export de la liste initiale",
@@ -432,7 +435,7 @@ def _final_page(user):
         df_filtre_global_valide = df_jeux[df_jeux["Total coché validé par admin"] > 0]
         df_export_liste_global_valide = df_filtre_global_valide[["Classement", "Jeu"]]
 
-        excel_data_liste_global_valide = export_excel( df_export_liste_global_valide , "A3" , "liste_selection_valide_jeu.xlsx") : 
+        excel_data_liste_global_valide = storage_jeux.export_excel( df_export_liste_global_valide , "A3" , "liste_selection_valide_jeu.xlsx") : 
 
         
         st.download_button(
