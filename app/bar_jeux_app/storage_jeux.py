@@ -492,27 +492,28 @@ def export_excel( df , page_size , file_name) :
 
         if  page_size == "A3" :
                 # --- Largeur des colonnes ---
-                column_widths = {"Classement": 10, "Jeu": 20,  
-                                "Jeu01" : 1,
-                                "Jeu02" : 1,
-                                "Jeu03": 1,
-                                "Jeu04": 1,
-                                "Jeu05": 1,
-                                "Jeu06": 1,
-                                "Jeu07": 1,
-                                "Jeu08": 1,
-                                "Jeu09": 1,
-                                "Jeu10": 1,
-                                "Jeu11": 1,
-                                "Jeu12": 1,
-                                "Jeu13": 1,
-                                "Jeu14": 1,
-                                "Jeu15": 1,
-                                "Jeu16": 1,
-                                "Jeu17": 1,
-                                "Jeu18": 1,
-                                "Jeu19": 1,
-                                "Jeu20": 1}
+                column_widths = {"A": 10, ##classement
+                                 "B": 20,  ##Jeu
+                                 "C" : 1,
+                                 "D" : 1,
+                                 "E": 1,
+                                 "F": 1,
+                                 "G": 1,
+                                 "H": 1,
+                                 "I": 1,
+                                 "J": 1,
+                                 "K": 1,
+                                 "L": 1,
+                                 "M": 1,
+                                 "N": 1,
+                                 "O": 1,
+                                 "P": 1,
+                                 "Q": 1,
+                                 "R": 1,
+                                 "S": 1,
+                                 "T": 1,
+                                 "U": 1,
+                                 "V": 1}
                 for col, width in column_widths.items():
                     ws.column_dimensions[col].width = width
                 
