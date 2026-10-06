@@ -35,31 +35,31 @@ def nouveaute_def( id_game) :
 def mise_forme_classement(classement) :
     if classement :
         if classement == "FAMILLE":
-                  classement_formate = f"⚪⚪⚪ {classement}"
+                  classement_formate = config_bar_jeux._CLS_FAMILLE
         elif classement == "INITIE":
-                  classement_formate = f"🟡⚪⚪ {classement}"
+                  classement_formate = config_bar_jeux._CLS_INITIE
         elif classement == "EXPERT":
-                  classement_formate = f"🔴🔴⚪ {classement}"
+                  classement_formate = config_bar_jeux._CLS_EXPERT
         elif classement == "EXPERT+":
-                  classement_formate = f"🔴🔴🔴 {classement}"
+                  classement_formate = config_bar_jeux._CLS_EXPERT_PLUS
         elif classement == "ENFANT":
-                  classement_formate = f"🧸 {classement}"                                        
+                  classement_formate = config_bar_jeux._CLS_ENFANT                                       
         elif classement == "JEU DUO":
-                  classement_formate = f"👥 {classement}"                                       
+                  classement_formate = config_bar_jeux._CLS_DUO                                     
         elif classement == "COOP/SEMI COOP":
-                  classement_formate = f"🤝 {classement}"                             
+                  classement_formate = config_bar_jeux._CLS_COOP                             
         elif classement == "ENQUETE/ESCAPE/ENIGME/CASSETETE":
-                  classement_formate = f"🕵️ {classement}"                            
+                  classement_formate = config_bar_jeux._CLS_ENQUETE_ESCAPE                            
         elif classement == "AMBIANCE":
-                  classement_formate = f"🎉 {classement}"
+                  classement_formate = config_bar_jeux._CLS_AMBIANCE
         elif classement == "NON CLASSE":
-                  classement_formate = f"🤔 {classement}"
+                  classement_formate = config_bar_jeux._CLS_NON CLASSE
         elif classement == "PBM CLASSEMENT":
                   classement_formate = f"❓ {classement}"
         else : 
                   classement_formate = f"❓❓❓ {classement}"
     else :
-                  classement_formate = ""           
+                  classement_formate = ""                     
 
     return classement_formate    
 
