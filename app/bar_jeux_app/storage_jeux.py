@@ -583,25 +583,25 @@ def export_excel( datafr , page_size , file_name) :
         
             # Condition sur la colonne "classement" (colonne 2 / B)
             cell_classement = ws.cell(row=row, column=1)
-           if cell_classement.value == "ENQUETE/ESCAPE/ENIGME/CASSETETE":
+            if cell_classement.value == "ENQUETE/ESCAPE/ENIGME/CASSETETE":
                     cell_vente.fill = fill_blue_light  
-           elif cell_classement.value == "COOP/SEMI COOP":
+            elif cell_classement.value == "COOP/SEMI COOP":
                     cell_vente.fill = fill_violet    
-           elif cell_classement.value = INITIE:
+            elif cell_classement.value = INITIE:
                     cell_vente.fill = fill_yellow  
-           elif cell_classement.value == "ENFANT":
+            elif cell_classement.value == "ENFANT":
                     cell_vente.fill = fill_blue 
-           elif cell_classement.value == "AMBIANCE":
+            elif cell_classement.value == "AMBIANCE":
                     cell_vente.fill = fill_green  
-           elif cell_classement.value == "FAMILLE":
+            elif cell_classement.value == "FAMILLE":
                     cell_vente.fill = fill_pink  
-           elif cell_classement.value == "EXPERT":
+            elif cell_classement.value == "EXPERT":
                     cell_vente.fill = fill_red  
-           elif cell_classement.value == "EXPERT +":
+            elif cell_classement.value == "EXPERT +":
                     cell_vente.fill = fill_red_fonce  
-           elif cell_classement.value == "NON CLASSE":
+            elif cell_classement.value == "NON CLASSE":
                     cell_vente.fill = fill_grey  
-           elif cell_classement.value == "JEU DUO":
+            elif cell_classement.value == "JEU DUO":
                     cell_vente.fill = fill_orange  
 
 
