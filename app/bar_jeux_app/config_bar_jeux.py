@@ -26,10 +26,7 @@ _CLS_COOP   = f"🤝 COOP/SEMI COOP"
 _CLS_ENQUETE_ESCAPE   = f"🕵️ ENQUETE/ESCAPE/ENIGME/CASSETETE"                            
 _CLS_AMBIANCE = f"🎉 AMBIANCE"
 _CLS_NON CLASSE = f"🤔 NON CLASSE"
-        elif classement == "":
-                  classement_formate = f"❓ PBM CLASSEMENT"
-        else : 
-                  classement_formate = f"❓❓❓ {classement}"
+
 
 
 
