@@ -15,6 +15,20 @@ _MOIS_FR = {
     7: "Juillet", 8: "Août", 9: "Septembre", 10: "Octobre", 11: "Novembre", 12: "Décembre",
 }
 
+_CLS_FAMILLE = f"⚪⚪⚪ FAMILLE"
+_CLS_INITIE = f"🟡⚪⚪ INITIE}"
+_CLS_EXPERT  = f"🔴🔴⚪ EXPERT"
+_CLS_EXPERT_PLUS  = f"🔴🔴🔴 {classement}"
+_CLS_ENFANT = f"🧸 {classement}"                                        
+_CLS_JEU_DUO = f"👥 {classement}"                                       
+_CLS_COOP_sEMI_COOP  = f"🤝 {classement}"                             
+_CLS_ENQUETE_ESCAPE= f"🕵️ {classement}"                            
+_CLS_AMBIANCE = f"🎉 {classement}"
+_CLS_NON_CLASSE = f"🤔 {classement}"
+
+
+
+
 
 def month_keys():
     """Liste (clé, libellé) d'Octobre 2025 à Octobre 2026 inclus."""
