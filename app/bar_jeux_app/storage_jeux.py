@@ -492,7 +492,7 @@ def export_excel( datafr , page_size , file_name) :
 
        if  page_size == A3 :
                 # --- Largeur des colonnes ---
-                column_widths = {"classement": 10, "Jeu": 20,  
+                column_widths = {"Classement": 10, "Jeu": 20,  
                                 "Jeu01" : 1,
                                 "Jeu02" : 1,
                                 "Jeu03": 1,
@@ -548,39 +548,27 @@ def export_excel( datafr , page_size , file_name) :
         fill_red = PatternFill(
             start_color="E67A70", end_color="E67A70", fill_type="solid"
         )  # EXPERT
-
         fill_red_fonce = PatternFill(
             start_color="8C0E07", end_color="8C0E07", fill_type="solid"
         )  # EXPERT +
-
         fill_grey = PatternFill(
             start_color="C7C5C5", end_color="C7C5C5", fill_type="solid"
         )  # NON CLASSE
-
-
-
         fill_orange = PatternFill(
             start_color="FF9224", end_color="FF9224", fill_type="solid"
         )  # JEU DUO
-
-
         fill_pink = PatternFill(
             start_color="E655DA", end_color="E655DA", fill_type="solid"
         )  # AMBIANCE
-
         fill_yellow = PatternFill(
             start_color="F5E20C", end_color="F5E20C", fill_type="solid"
         )  # INITIE
-
-
         fill_blue = PatternFill(
             start_color="1128D6", end_color="1128D6", fill_type="solid"
         )  # ENFANT
-
         fill_violet = PatternFill(
             start_color="7A0EE3", end_color="7A0EE3", fill_type="solid"
         )  # COOP/SEMI COOP
-
         fill_blue_light = PatternFill(
             start_color="1FC7FF", end_color="1FC7FF", fill_type="solid"
         )  # ENQUETE/ESCAPE/ENIGME/CASSETETE
