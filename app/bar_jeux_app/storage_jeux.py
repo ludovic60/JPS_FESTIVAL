@@ -490,7 +490,7 @@ def export_excel( datafr , page_size , file_name) :
         ws = wb["Liste_jeux"]
 
 
-       if  page_size == A3 :
+        if  page_size == "A3" :
                 # --- Largeur des colonnes ---
                 column_widths = {"Classement": 10, "Jeu": 20,  
                                 "Jeu01" : 1,
