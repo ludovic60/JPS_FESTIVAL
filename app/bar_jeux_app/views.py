@@ -430,9 +430,10 @@ def _final_page(user):
     with col_btn4:
 
         df_filtre_global_valide = df_jeux[df_jeux["Total coché validé par admin"] > 0]
-        df_export_liste_global_valide = df_filtre_global_valide[["Couverture Jeu", "Jeu"]]
+        df_export_liste_global_valide = df_filtre_global_valide[["Classement", "Jeu"]]
 
-        excel_data_liste_global_valide = to_excel(df_export_liste_global_valide)
+        excel_data_liste_global_valide = export_excel( df_export_liste_global_valide , "A3" , "liste_selection_valide_jeu.xlsx") : 
+
         
         st.download_button(
             label="📥 Export de la liste complète validée",
