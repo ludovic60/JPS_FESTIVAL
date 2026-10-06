@@ -587,7 +587,7 @@ def export_excel( df , page_size , file_name) :
                     cell_vente.fill = fill_blue_light  
             elif cell_classement.value == "COOP/SEMI COOP":
                     cell_vente.fill = fill_violet    
-            elif cell_classement.value == INITIE:
+            elif cell_classement.value == "INITIE":
                     cell_vente.fill = fill_yellow  
             elif cell_classement.value == "ENFANT":
                     cell_vente.fill = fill_blue 
