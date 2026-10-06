@@ -526,7 +526,7 @@ def export_excel( datafr , page_size , file_name) :
                    
                    ws.ORIENTATION_PORTRAIT
                 )
-       else  : ##---  page_size == A4 
+        else  : ##---  page_size == A4 
                 ws.page_setup.paperSize = ws.PAPERSIZE_A4  # Format A3
                 ws.page_setup.orientation = (  
                     ws.ORIENTATION_LANDSCAPE
