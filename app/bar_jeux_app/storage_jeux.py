@@ -8,10 +8,11 @@ from threading import Lock
 import config_bar_jeux
 from bson import ObjectId
 
+
+import io
 import openpyxl
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
-import pandas as pd
-
+from openpyxl.utils import get_column_letter
 
 import os
 import sys
@@ -450,168 +451,126 @@ def set_loan_valide_admin(ckey, user_id, value):
 
 
 
-import openpyxl
-from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
-import pandas as pd
+def export_excel_bytes(df, page_size):
+  # Copie pour éviter de modifier le DataFrame original de Streamlit
+  df_export = df.copy()
 
+  # Ajout des colonnes Jeu01 à Jeu20
+  for i in range(1, 21):
+    df_export[f"Jeu{i:02d}"] = ""
 
-def export_excel( df , page_size , file_name) : 
+  # Création d'un buffer en mémoire pour pandas
+  excel_buffer = io.BytesIO()
+  df_export.to_excel(excel_buffer, index=False, sheet_name="Liste_jeux")
+  excel_buffer.seek(0)
 
-        
-        
-        # Ajout de colonnes ne provenant pas du DataFrame initial
-        df["Jeu01"] = ""
-        df["Jeu02"] = ""
-        df["Jeu03"] = ""
-        df["Jeu04"] = ""
-        df["Jeu05"] = ""
-        df["Jeu06"] = ""
-        df["Jeu07"] = ""
-        df["Jeu08"] = ""
-        df["Jeu09"] = ""
-        df["Jeu10"] = ""
-        df["Jeu11"] = ""
-        df["Jeu12"] = ""
-        df["Jeu13"] = ""
-        df["Jeu14"] = ""
-        df["Jeu15"] = ""
-        df["Jeu16"] = ""
-        df["Jeu17"] = ""
-        df["Jeu18"] = ""
-        df["Jeu19"] = ""
-        df["Jeu20"] = ""
-        
-        # Export initial vers un fichier Excel
-       
-        df.to_excel(file_name, index=False, sheet_name="Liste_jeux")
-        
-        # 2. Chargement du fichier avec openpyxl pour la mise en forme avancée
-        wb = openpyxl.load_workbook(file_name)
-        ws = wb["Liste_jeux"]
+  # Chargement avec openpyxl depuis le buffer
+  wb = openpyxl.load_workbook(excel_buffer)
+  ws = wb["Liste_jeux"]
 
+  # --- Recherche dynamique des indices de colonnes ---
+  col_indices = {}
+  for col_idx in range(1, ws.max_column + 1):
+    header_val = ws.cell(row=1, column=col_idx).value
+    if header_val:
+      col_indices[header_val] = col_idx
 
-        if  page_size == "A3" :
-                # --- Largeur des colonnes ---
-                column_widths = {"A": 10, ##classement
-                                 "B": 20,  ##Jeu
-                                 "C" : 1,
-                                 "D" : 1,
-                                 "E": 1,
-                                 "F": 1,
-                                 "G": 1,
-                                 "H": 1,
-                                 "I": 1,
-                                 "J": 1,
-                                 "K": 1,
-                                 "L": 1,
-                                 "M": 1,
-                                 "N": 1,
-                                 "O": 1,
-                                 "P": 1,
-                                 "Q": 1,
-                                 "R": 1,
-                                 "S": 1,
-                                 "T": 1,
-                                 "U": 1,
-                                 "V": 1}
-                for col, width in column_widths.items():
-                    ws.column_dimensions[col].width = width
-                
-                # --- Hauteur des lignes ---
-                ws.row_dimensions[1].height = 30  # Hauteur de la ligne d'en-tête
-                for row in range(2, ws.max_row + 1):
-                    ws.row_dimensions[row].height = 7  # Hauteur des lignes de données
+  # --- Largeur des colonnes & Format ---
+  if page_size == "A3":
+    target_widths = {"Classement": 10, "Jeu": 20}
+    for i in range(1, 21):
+      target_widths[f"Jeu{i:02d}"] = 1
 
-                ws.page_setup.paperSize = ws.PAPERSIZE_A3  # Format A3
-                ws.page_setup.orientation = (  
-                   
-                   ws.ORIENTATION_PORTRAIT
-                )
-        else  : ##---  page_size == A4 
-                ws.page_setup.paperSize = ws.PAPERSIZE_A4  # Format A3
-                ws.page_setup.orientation = (  
-                    ws.ORIENTATION_LANDSCAPE
-                   
-                )
-         
-        # --- Définition des bordures (taille 'thin' et couleur grise) ---
-        thin_border = Border(
-            left=Side(style="thin", color="B0B0B0"),
-            right=Side(style="thin", color="B0B0B0"),
-            top=Side(style="thin", color="B0B0B0"),
-            bottom=Side(style="thin", color="B0B0B0"),
-        )
-        
-        # --- Couleurs conditionnelles et application des bordures ---
-        fill_green = PatternFill(
-            start_color="57B02C", end_color="57B02C", fill_type="solid"
-        )  # FAMILLE
-        fill_red = PatternFill(
-            start_color="E67A70", end_color="E67A70", fill_type="solid"
-        )  # EXPERT
-        fill_red_fonce = PatternFill(
-            start_color="8C0E07", end_color="8C0E07", fill_type="solid"
-        )  # EXPERT +
-        fill_grey = PatternFill(
-            start_color="C7C5C5", end_color="C7C5C5", fill_type="solid"
-        )  # NON CLASSE
-        fill_orange = PatternFill(
-            start_color="FF9224", end_color="FF9224", fill_type="solid"
-        )  # JEU DUO
-        fill_pink = PatternFill(
-            start_color="E655DA", end_color="E655DA", fill_type="solid"
-        )  # AMBIANCE
-        fill_yellow = PatternFill(
-            start_color="F5E20C", end_color="F5E20C", fill_type="solid"
-        )  # INITIE
-        fill_blue = PatternFill(
-            start_color="1128D6", end_color="1128D6", fill_type="solid"
-        )  # ENFANT
-        fill_violet = PatternFill(
-            start_color="7A0EE3", end_color="7A0EE3", fill_type="solid"
-        )  # COOP/SEMI COOP
-        fill_blue_light = PatternFill(
-            start_color="1FC7FF", end_color="1FC7FF", fill_type="solid"
-        )  # ENQUETE/ESCAPE/ENIGME/CASSETETE
+    for header_name, width in target_widths.items():
+      if header_name in col_indices:
+        col_letter = get_column_letter(col_indices[header_name])
+        ws.column_dimensions[col_letter].width = width
 
+    ws.row_dimensions[1].height = 30  # En-tête
+    for row in range(2, ws.max_row + 1):
+      ws.row_dimensions[row].height = 7  # Données
 
+    ws.page_setup.paperSize = ws.PAPERSIZE_A3
+    ws.page_setup.orientation = ws.ORIENTATION_PORTRAIT
+  else:  # Format A4
+    ws.page_setup.paperSize = ws.PAPERSIZE_A4
+    ws.page_setup.orientation = ws.ORIENTATION_LANDSCAPE
 
-        
-        for row in range(2, ws.max_row + 1):
-            # Appliquer les bordures à toute la ligne du tableau
-            for col in range(1, ws.max_column + 1):
-                ws.cell(row=row, column=col).border = thin_border
-        
-            # Condition sur la colonne "classement" (colonne 2 / B)
-            cell_classement = ws.cell(row=row, column=1)
-            if cell_classement.value == "ENQUETE/ESCAPE/ENIGME/CASSETETE":
-                    cell_vente.fill = fill_blue_light  
-            elif cell_classement.value == "COOP/SEMI COOP":
-                    cell_classement.fill = fill_violet    
-            elif cell_classement.value == "INITIE":
-                    cell_classement.fill = fill_yellow  
-            elif cell_classement.value == "ENFANT":
-                    cell_classement.fill = fill_blue 
-            elif cell_classement.value == "AMBIANCE":
-                    cell_classement.fill = fill_green  
-            elif cell_classement.value == "FAMILLE":
-                    cell_classement.fill = fill_pink  
-            elif cell_classement.value == "EXPERT":
-                    cell_classement.fill = fill_red  
-            elif cell_classement.value == "EXPERT +":
-                    cell_classement.fill = fill_red_fonce  
-            elif cell_classement.value == "NON CLASSE":
-                    cell_classement.fill = fill_grey  
-            elif cell_classement.value == "JEU DUO":
-                    cell_classement.fill = fill_orange  
+  # --- Définition des bordures ---
+  thin_border = Border(
+      left=Side(style="thin", color="B0B0B0"),
+      right=Side(style="thin", color="B0B0B0"),
+      top=Side(style="thin", color="B0B0B0"),
+      bottom=Side(style="thin", color="B0B0B0"),
+  )
 
+  # --- Couleurs conditionnelles ---
+  fill_green = PatternFill(
+      start_color="57B02C", end_color="57B02C", fill_type="solid"
+  )  # AMBIANCE
+  fill_red = PatternFill(
+      start_color="E67A70", end_color="E67A70", fill_type="solid"
+  )  # EXPERT
+  fill_red_fonce = PatternFill(
+      start_color="8C0E07", end_color="8C0E07", fill_type="solid"
+  )  # EXPERT +
+  fill_grey = PatternFill(
+      start_color="C7C5C5", end_color="C7C5C5", fill_type="solid"
+  )  # NON CLASSE
+  fill_orange = PatternFill(
+      start_color="FF9224", end_color="FF9224", fill_type="solid"
+  )  # JEU DUO
+  fill_pink = PatternFill(
+      start_color="E655DA", end_color="E655DA", fill_type="solid"
+  )  # FAMILLE
+  fill_yellow = PatternFill(
+      start_color="F5E20C", end_color="F5E20C", fill_type="solid"
+  )  # INITIE
+  fill_blue = PatternFill(
+      start_color="1128D6", end_color="1128D6", fill_type="solid"
+  )  # ENFANT
+  fill_violet = PatternFill(
+      start_color="7A0EE3", end_color="7A0EE3", fill_type="solid"
+  )  # COOP/SEMI COOP
+  fill_blue_light = PatternFill(
+      start_color="1FC7FF", end_color="1FC7FF", fill_type="solid"
+  )  # ENQUETE/ESCAPE/ENIGME/CASSETETE
 
+  classement_col_idx = col_indices.get("Classement", 1)
 
+  for row in range(2, ws.max_row + 1):
+    for col in range(1, ws.max_column + 1):
+      ws.cell(row=row, column=col).border = thin_border
 
-        # --- Configuration de l'impression au format A3 ---
- 
-        ws.sheet_properties.pageSetUpPr.fitToPage = True
-        ws.page_setup.fitToWidth = 1  # Ajuster à 1 page de largeur
-        
-        # Sauvegarde du fichier final
-        wb.save(file_name)
+    cell_classement = ws.cell(row=row, column=classement_col_idx)
+    val = cell_classement.value
+
+    if val == "ENQUETE/ESCAPE/ENIGME/CASSETETE":
+      cell_classement.fill = fill_blue_light
+    elif val == "COOP/SEMI COOP":
+      cell_classement.fill = fill_violet
+    elif val == "INITIE":
+      cell_classement.fill = fill_yellow
+    elif val == "ENFANT":
+      cell_classement.fill = fill_blue
+    elif val == "AMBIANCE":
+      cell_classement.fill = fill_green
+    elif val == "FAMILLE":
+      cell_classement.fill = fill_pink
+    elif val == "EXPERT":
+      cell_classement.fill = fill_red
+    elif val == "EXPERT +":
+      cell_classement.fill = fill_red_fonce
+    elif val == "NON CLASSE":
+      cell_classement.fill = fill_grey
+    elif val == "JEU DUO":
+      cell_classement.fill = fill_orange
+
+  ws.sheet_properties.pageSetUpPr.fitToPage = True
+  ws.page_setup.fitToWidth = 1
+
+  # Sauvegarde dans un buffer final et récupération des octets (bytes)
+  output_final = io.BytesIO()
+  wb.save(output_final)
+  output_final.seek(0)
+  return output_final.getvalue()
