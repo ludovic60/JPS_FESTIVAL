@@ -8,6 +8,11 @@ from threading import Lock
 import config_bar_jeux
 from bson import ObjectId
 
+import openpyxl
+from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
+import pandas as pd
+
+
 import os
 import sys
 # Ajoute le dossier parent à sys.path
@@ -450,7 +455,7 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 import pandas as pd
 
 
-def export_excel_A4 : 
+def export_excel( datafr , page_size , file_name) : 
         # 1. Préparation du DataFrame et ajout de colonnes externes
         data = {
             "Nom": ["Alice", "Bob", "Charlie", "David"],
@@ -461,27 +466,79 @@ def export_excel_A4 :
         
         
         # Ajout de colonnes ne provenant pas du DataFrame initial
-        df["Région"] = ["Nord", "Sud", "Est", "Ouest"]
-        df["Commentaire"] = ["Excellent", "À surveiller", "Très bien", "Insuffisant"]
+        df["Jeu01"] = ""
+        df["Jeu02"] = ""
+        df["Jeu03"] = ""
+        df["Jeu04"] = ""
+        df["Jeu05"] = ""
+        df["Jeu06"] = ""
+        df["Jeu07"] = ""
+        df["Jeu08"] = ""
+        df["Jeu09"] = ""
+        df["Jeu10"] = ""
+        df["Jeu11"] = ""
+        df["Jeu12"] = ""
+        df["Jeu13"] = ""
+        df["Jeu14"] = ""
+        df["Jeu15"] = ""
+        df["Jeu16"] = ""
+        df["Jeu17"] = ""
+        df["Jeu18"] = ""
+        df["Jeu19"] = ""
+        df["Jeu20"] = ""
         
         # Export initial vers un fichier Excel
-        file_name = "export_personnalise.xlsx"
-        df.to_excel(file_name, index=False, sheet_name="Rapport")
-        
+       
+        df.to_excel(file_name, index=False, sheet_name="Liste_jeux")
+        6
         # 2. Chargement du fichier avec openpyxl pour la mise en forme avancée
         wb = openpyxl.load_workbook(file_name)
-        ws = wb["Rapport"]
-        
-        # --- Largeur des colonnes ---
-        column_widths = {"A": 18, "B": 15, "C": 15, "D": 25}
-        for col, width in column_widths.items():
-            ws.column_dimensions[col].width = width
-        
-        # --- Hauteur des lignes ---
-        ws.row_dimensions[1].height = 30  # Hauteur de la ligne d'en-tête
-        for row in range(2, ws.max_row + 1):
-            ws.row_dimensions[row].height = 22  # Hauteur des lignes de données
-        
+        ws = wb["Liste_jeux"]
+
+
+       if  page_size == A3 :
+                # --- Largeur des colonnes ---
+                column_widths = {"classement": 10, "nom": 20,  
+                                "Jeu01" : 1,
+                                "Jeu02" : 1,
+                                "Jeu03": 1,
+                                "Jeu04": 1,
+                                "Jeu05": 1,
+                                "Jeu06": 1,
+                                "Jeu07": 1,
+                                "Jeu08": 1,
+                                "Jeu09": 1,
+                                "Jeu10": 1,
+                                "Jeu11": 1,
+                                "Jeu12": 1,
+                                "Jeu13": 1,
+                                "Jeu14": 1,
+                                "Jeu15": 1,
+                                "Jeu16": 1,
+                                "Jeu17": 1,
+                                "Jeu18": 1,
+                                "Jeu19": 1,
+                                "Jeu20": 1}
+                for col, width in column_widths.items():
+                    ws.column_dimensions[col].width = width
+                
+                # --- Hauteur des lignes ---
+                ws.row_dimensions[1].height = 30  # Hauteur de la ligne d'en-tête
+                for row in range(2, ws.max_row + 1):
+                    ws.row_dimensions[row].height = 7  # Hauteur des lignes de données
+
+                ws.page_setup.paperSize = ws.PAPERSIZE_A3  # Format A3
+                ws.page_setup.orientation = (  
+                   
+                   ws.ORIENTATION_PORTRAIT
+                )
+       else  : ##---  page_size == A4 
+                ws.page_setup.paperSize = ws.PAPERSIZE_A4  # Format A3
+                ws.page_setup.orientation = (  
+                    ws.ORIENTATION_LANDSCAPE
+                   
+                )
+         
         # --- Définition des bordures (taille 'thin' et couleur grise) ---
         thin_border = Border(
             left=Side(style="thin", color="B0B0B0"),
@@ -503,19 +560,21 @@ def export_excel_A4 :
             for col in range(1, ws.max_column + 1):
                 ws.cell(row=row, column=col).border = thin_border
         
-            # Condition sur la colonne "Vente" (colonne 2 / B)
-            cell_vente = ws.cell(row=row, column=2)
-            if isinstance(cell_vente.value, (int, float)):
-                if cell_vente.value >= 10000:
+            # Condition sur la colonne "classement" (colonne 2 / B)
+            cell_classement = ws.cell(row=row, column=1)
+           if cell_classement.value = 10000:
                     cell_vente.fill = fill_green  # Vert si >= 10 000
-                else:
+           elif cell_classement.value = 10000:
+                    cell_vente.fill = fill_red  # Rouge sinon
+                          elif cell_classement.value = 10000:
+                    cell_vente.fill = fill_red  # Rouge sinon
+           elif cell_classement.value = 10000:
+                    cell_vente.fill = fill_red  # Rouge sinon
+           elif cell_classement.value = 10000:
                     cell_vente.fill = fill_red  # Rouge sinon
         
         # --- Configuration de l'impression au format A3 ---
-        ws.page_setup.paperSize = ws.PAPERSIZE_A3  # Format A3
-        ws.page_setup.orientation = (  # Optionnel : Mode Paysage (Landscape)
-            ws.ORIENTATION_LANDSCAPE
-        )
+ 
         ws.sheet_properties.pageSetUpPr.fitToPage = True
         ws.page_setup.fitToWidth = 1  # Ajuster à 1 page de largeur
         
