@@ -384,7 +384,7 @@ def _final_page(user):
     with col_btn1:
         if user['prete_jeu'] == True or user['prete_jeu'] == "True":
             df_filtre_propose = df_jeux[df_jeux[f"{user['pseudo']}_propose"] == True]
-            df_export_list_propose = df_filtre_propose[["Couverture Jeu", "Jeu"]]
+            df_export_list_propose = df_filtre_propose[["Jeu"]].sort_values(by="Jeu"), 
             excel_data_propose = to_excel(df_export_list_propose)
         else:
             excel_data_propose = b""
@@ -401,7 +401,7 @@ def _final_page(user):
     with col_btn2:
         if user['prete_jeu'] == True or user['prete_jeu'] == "True":
             df_filtre_valide = df_jeux[df_jeux[f"{user['pseudo']}_valide"] == True]
-            df_export_list_valide = df_filtre_valide[["Couverture Jeu", "Jeu"]]
+            df_export_list_valide = df_filtre_valide[["Jeu"]].sort_values(by="Jeu"), 
             excel_data_valide = to_excel(df_export_list_valide)
         else:
             excel_data_valide = b""   
@@ -418,8 +418,8 @@ def _final_page(user):
     with col_btn3:
         # df_export_list_initiale = df_jeux[["Couverture Jeu", "Jeu"]]
         # excel_data_initial = to_excel(df_export_list_initiale)
-        df_export_list_initiale = df_jeux[["Classement", "Jeu"]]
-        excel_data_initial = export_excel_bytes( df_export_list_initiale , "A3" ,"pdf" )    
+        df_export_list_initiale = df_jeux[["Classement", "Total coché par joueur","Jeu"]] .sort_values(by="Jeu"), 
+        excel_data_initial = export_excel_bytes( df_export_list_initiale , "A3" ,"pdf" ,"couleur"  )    
 
         st.download_button(
             label="📥 la liste initiale en pdf A3",
@@ -431,8 +431,8 @@ def _final_page(user):
 
         # df_export_list_initiale = df_jeux[["Couverture Jeu", "Jeu"]]
         # excel_data_initial = to_excel(df_export_list_initiale)
-        df_export_list_initiale = df_jeux[["Classement", "Jeu"]]
-        excel_data_initial = export_excel_bytes( df_export_list_initiale , "A3" ,"excel" )    
+        df_export_list_initiale = df_jeux[["Classement", "Total coché par joueur","Jeu"]].sort_values(by="Jeu"), 
+        excel_data_initial = export_excel_bytes( df_export_list_initiale , "A3" ,"excel" ,"couleur")    
 
         st.download_button(
             label="📥 la liste initiale en excel A3",
@@ -445,8 +445,9 @@ def _final_page(user):
     with col_btn4:
         # df_export_list_initiale = df_jeux[["Couverture Jeu", "Jeu"]]
         # excel_data_initial = to_excel(df_export_list_initiale)
-        df_export_list_initiale = df_jeux[["Classement", "Jeu"]]
-        excel_data_initial = export_excel_bytes( df_export_list_initiale , "A3" ,"pdf" )    
+        df_export_list_initiale = df_jeux[["Classement", "Total coché par joueur","Jeu"]].sort_values(by="Jeu"), 
+        df_export_list_initiale = df_export_list_initiale.rename(columns={"AncienNom1": "NouveauNom"})
+        excel_data_initial = export_excel_bytes( df_export_list_initiale , "A4" ,"pdf", "couleur" )    
 
         st.download_button(
             label="📥 la liste initiale en pdf A4",
@@ -458,8 +459,8 @@ def _final_page(user):
 
         # df_export_list_initiale = df_jeux[["Couverture Jeu", "Jeu"]]
         # excel_data_initial = to_excel(df_export_list_initiale)
-        df_export_list_initiale = df_jeux[["Classement", "Jeu"]]
-        excel_data_initial = export_excel_bytes( df_export_list_initiale , "A3" ,"excel" )    
+        df_export_list_initiale = df_jeux[["Classement","Total coché par joueur","Jeu"]].sort_values(by="Jeu"), 
+        excel_data_initial = export_excel_bytes( df_export_list_initiale , "A4" ,"excel", "couleur" )    
 
         st.download_button(
             label="📥 la liste initiale en excel A4",
@@ -475,9 +476,9 @@ def _final_page(user):
     with col_btn5:
 
         df_filtre_global_valide = df_jeux[df_jeux["Total coché validé par admin"] > 0]
-        df_export_liste_global_valide = df_filtre_global_valide[["Classement", "Jeu"]]
-
-        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A3" ,"pdf" ) 
+        #df_export_liste_global_valide = df_filtre_global_valide[["Classement", "Total coché validé par admin","Jeu"]].sort_values(by="Jeu")
+        df_export_liste_global_valide = df_filtre_global_valide[["Classement", "Total coché validé par admin","Jeu"]]
+        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A3" ,"pdf", "blanc" ) 
 
         
         st.download_button(
@@ -489,9 +490,10 @@ def _final_page(user):
         )
 
         df_filtre_global_valide = df_jeux[df_jeux["Total coché validé par admin"] > 0]
-        df_export_liste_global_valide = df_filtre_global_valide[["Classement", "Jeu"]]
+        #df_export_liste_global_valide = df_filtre_global_valide[["Classement", "Total coché validé par admin","Jeu"]].sort_values(by="Jeu")
+        df_export_liste_global_valide = df_filtre_global_valide[["Classement", "Total coché validé par admin","Jeu"]]
 
-        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A3" ,"excel" ) 
+        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A3" ,"excel","blanc") 
 
         
         st.download_button(
@@ -505,9 +507,10 @@ def _final_page(user):
     with col_btn6:
 
         df_filtre_global_valide = df_jeux[df_jeux["Total coché validé par admin"] > 0]
-        df_export_liste_global_valide = df_filtre_global_valide[["Classement", "Jeu"]]
+        #df_export_liste_global_valide = df_filtre_global_valide[["Classement", "Jeu"]].sort_values(by="Jeu") 
+        df_export_liste_global_valide = df_filtre_global_valide[["Classement", "Total coché validé par admin","Jeu"]]
 
-        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A4" ,"pdf" ) 
+        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A4" ,"pdf","blanc" ) 
 
         
         st.download_button(
@@ -519,9 +522,9 @@ def _final_page(user):
         )
 
         df_filtre_global_valide = df_jeux[df_jeux["Total coché validé par admin"] > 0]
-        df_export_liste_global_valide = df_filtre_global_valide[["Classement", "Jeu"]]
+        df_export_liste_global_valide = df_filtre_global_valide[["Classement", "Total coché validé par admin","Jeu"]].sort_values(by="Jeu"), 
 
-        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A4" ,"excel" ) 
+        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A4" ,"excel","blanc" ) 
 
         
         st.download_button(
