@@ -378,7 +378,7 @@ def _final_page(user):
 
 
  
-    col_btn1, col_btn2, col_btn3 , col_btn4 = st.columns(4)
+    col_btn1, col_btn2, col_btn3 , col_btn4, col_btn5 , col_btn6  = st.columns(6)
     
     # ---Colonne 1 : Export Proposé ---
     with col_btn1:
@@ -419,24 +419,51 @@ def _final_page(user):
         # df_export_list_initiale = df_jeux[["Couverture Jeu", "Jeu"]]
         # excel_data_initial = to_excel(df_export_list_initiale)
         df_export_list_initiale = df_jeux[["Classement", "Jeu"]]
-        excel_data_initial = export_excel_bytes( df_export_list_initiale , "A3" ,"pdf" ) 
-
-      
+        excel_data_initial = export_excel_bytes( df_export_list_initiale , "A3" ,"pdf" )    
 
         st.download_button(
-            label="📥 Export de la liste initiale",
+            label="📥 Export de la liste initiale en pdf",
+            data=excel_data_initial,
+            file_name="liste_selection_jeu.pdf",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            use_container_width=True
+        )
+
+     with col_btn4:
+        # df_export_list_initiale = df_jeux[["Couverture Jeu", "Jeu"]]
+        # excel_data_initial = to_excel(df_export_list_initiale)
+        df_export_list_initiale = df_jeux[["Classement", "Jeu"]]
+        excel_data_initial = export_excel_bytes( df_export_list_initiale , "A3" ,"excel" )    
+
+        st.download_button(
+            label="📥 Export de la liste initiale en excel",
             data=excel_data_initial,
             file_name="liste_selection_jeu.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             use_container_width=True
         )
     # ---Colonne 4 : Export list validé  ---
-    with col_btn4:
+    with col_btn5:
 
         df_filtre_global_valide = df_jeux[df_jeux["Total coché validé par admin"] > 0]
         df_export_liste_global_valide = df_filtre_global_valide[["Classement", "Jeu"]]
 
         excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A3" ,"pdf" ) 
+
+        
+        st.download_button(
+            label="📥 Export de la liste complète validée",
+            data=excel_data_liste_global_valide,
+            file_name="liste_selection_valide_jeu.pdf",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            use_container_width=True
+        )
+    with col_btn6:
+
+        df_filtre_global_valide = df_jeux[df_jeux["Total coché validé par admin"] > 0]
+        df_export_liste_global_valide = df_filtre_global_valide[["Classement", "Jeu"]]
+
+        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A3" ,"excel" ) 
 
         
         st.download_button(
