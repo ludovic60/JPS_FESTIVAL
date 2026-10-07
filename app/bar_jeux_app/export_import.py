@@ -15,6 +15,8 @@ from reportlab.platypus import Paragraph, SimpleDocTemplate, Table, TableStyle
 
 from reportlab.lib.styles import ParagraphStyle
 
+from tools  import remove_emojis
+
 
 def loans_matrix(finals, users, loans):
     rows = []
