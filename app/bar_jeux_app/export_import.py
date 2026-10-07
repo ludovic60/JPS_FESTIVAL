@@ -165,6 +165,7 @@ def export_excel_bytes(df, page_size, mode):
       target_widths = {"Classement": 90, "Jeu": 160}
       for i in range(1, 21):
         target_widths[f"Jeu{i:02d}"] = 18  
+    
 
     doc = SimpleDocTemplate(
         pdf_buffer,
@@ -224,8 +225,10 @@ def export_excel_bytes(df, page_size, mode):
           row_cells.append(Paragraph(val_str, style_cell))
       table_data.append(row_cells)
 
-
-      
+    # application de la largeur des colonnes
+    col_widths_list = [
+        target_widths.get(col, default_col_width) for col in columns
+    ]  
     # Création du tableau avec repetition de l'en-tête (repeatRows=1)
     table = Table(table_data, colWidths=col_widths_list , repeatRows=1)
 
