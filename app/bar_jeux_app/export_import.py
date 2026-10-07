@@ -101,7 +101,7 @@ def to_pdf(df, title="Liste finale des prêts") -> bytes:
 def export_excel_bytes(df, page_size, mode):
   df_export = df.copy()
   for i in range(1, 21):
-    df_export[f"Jeu{i:02d}"] = ""
+    df_export[f"{i:02d}"] = ""
 
   # --- Si mode EXCEL : on utilise openpyxl (votre code original) ---
   if mode == "excel":
@@ -158,13 +158,13 @@ def export_excel_bytes(df, page_size, mode):
       default_col_width = 25
       target_widths = {"Classement": 90, "Jeu": 160}
       for i in range(1, 21):
-        target_widths[f"Jeu{i:02d}"] = 18  
+        target_widths[f"{i:02d}"] = 18  
     else:
       pagesize = landscape(A4)
       default_col_width = 25
       target_widths = {"Classement": 90, "Jeu": 160}
       for i in range(1, 21):
-        target_widths[f"Jeu{i:02d}"] = 18  
+        target_widths[f"{i:02d}"] = 18  
     
 
     doc = SimpleDocTemplate(
@@ -181,7 +181,7 @@ def export_excel_bytes(df, page_size, mode):
     style_jeu = ParagraphStyle(
         name="StyleJeu",
         fontName="Helvetica",
-        fontSize=12,  # Taille de police réduite pour la colonne Jeu
+        fontSize=10,  # Taille de police réduite pour la colonne Jeu
         leading=8,  # Interligne adapté
         alignment=1,  # Centré (0=Gauche, 1=Centre, 2=Droite)
     )
