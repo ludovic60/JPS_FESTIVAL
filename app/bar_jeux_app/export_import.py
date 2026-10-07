@@ -107,6 +107,7 @@ def to_pdf(df, title="Liste finale des prêts") -> bytes:
 
 def export_excel_bytes(df, page_size, mode):
   df_export = df.copy()
+  df.insert(1, "NbrEx", "")  
   for i in range(1, 21):
     df_export[f"{i:02d}"] = ""
 
@@ -125,7 +126,7 @@ def export_excel_bytes(df, page_size, mode):
         col_indices[header_val] = col_idx
 
     if page_size == "A3":
-      target_widths = {"Classement": 90, "Jeu": 160}
+      target_widths = {"Classement": 90, "NbrEx": 30, "Jeu": 160}
       for i in range(1, 21):
         target_widths[f"Jeu{i:02d}"] = 18
       for header_name, width in target_widths.items():
@@ -168,9 +169,9 @@ def export_excel_bytes(df, page_size, mode):
     if page_size == "A3":
       pagesize = portrait(A3)
       default_col_width = 25
-      target_widths = {"Classement": 70, "Jeu": 180}
+      target_widths = {"Classement": 70, "NbrEx" : 20 , "Jeu": 170}
       for i in range(1, 21):
-        target_widths[f"{i:02d}"] = 30  
+        target_widths[f"{i:02d}"] = 25  
       ### hauteur des lignes
       header_height = 20
       data_row_height = 30
@@ -199,7 +200,7 @@ def export_excel_bytes(df, page_size, mode):
     style_jeu = ParagraphStyle(
         name="StyleJeu",
         fontName="Helvetica",
-        fontSize=10,  # Taille de police réduite pour la colonne Jeu
+        fontSize=14,  # Taille de police réduite pour la colonne Jeu
         leading=10,  # Interligne adapté
         alignment=1,  # Centré (0=Gauche, 1=Centre, 2=Droite)
     )
@@ -216,7 +217,7 @@ def export_excel_bytes(df, page_size, mode):
 
     # Style standard pour le reste des cellules
     style_cell = ParagraphStyle(
-        name="StyleCell", fontName="Helvetica", fontSize=7, leading=9, alignment=1
+        name="StyleCell", fontName="Helvetica", fontSize=12, leading=9, alignment=1
     )
 
     # Préparation des données en enveloppant chaque texte dans un Paragraph
