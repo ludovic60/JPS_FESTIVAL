@@ -566,7 +566,7 @@ def _final_page(user):
       gb = GridOptionsBuilder.from_dataframe(df_jeux[columns_to_show])
       gb.configure_default_column(filterable=True, sortable=True )
       gb.configure_column("_id", hide=True)
-      gb.configure_column("nouveaute", editable=False, filter="agTextColumnFilter", width=90, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("nouveaute", editable=False, filter="agTextColumnFilter", width=110, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Couverture Jeu", editable=False,  wrapHeaderText=True, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Jeu", editable=False, filter="agTextColumnFilter", sortable=True, width=150, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=False)
@@ -580,13 +580,15 @@ def _final_page(user):
           editable=(user["role"] == "admin"),
           cellRenderer="agCheckboxCellRenderer",
           cellEditor="agCheckboxCellEditor",
-          width=90,
+          filter="agTextColumnFilter", 
+          width=110,
+          wrapHeaderText=True,
           suppressSizeToFit=True,
           pinned=True 
       )
       
-      gb.configure_column("Total coché par joueur",  wrapHeaderText=True, editable=False, width=80, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Total coché validé par admin",  wrapHeaderText=True, editable=False, width=90, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Total coché par joueur",   filter="agTextColumnFilter", wrapHeaderText=True, editable=False, width=80, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Total coché validé par admin",   filter="agTextColumnFilter", wrapHeaderText=True, editable=False, width=90, suppressSizeToFit=True, pinned=True)
       
       gb.configure_grid_options(singleClickEdit=True, rowHeight=60)
       grid_options = gb.build()
