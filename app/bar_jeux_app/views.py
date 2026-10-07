@@ -749,8 +749,8 @@ def _final_page(user):
      
         ###########  jointure des prets avec les infos de jeu
         ########### nettoyage des clés pour les rendre compatible 
-        liste__info_pret_valider_user['id_jeux'] = liste__info_pret_user['id_jeux'].astype(str).str.strip()
-        liste_pret_validé_pd['id_jeux'] = liste_pret_user_pd['id_jeux'].astype(str).str.strip()
+        liste__info_pret_valider_user['id_jeux'] = liste__info_pret_valider_user['id_jeux'].astype(str).str.strip()
+        liste_pret_validé_pd['id_jeux'] = liste__info_pret_valider_user['id_jeux'].astype(str).str.strip()
     
     
         liste_pret__validé_user_detail = pd.merge(
