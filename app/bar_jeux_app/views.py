@@ -481,7 +481,7 @@ def _final_page(user):
 
         
         st.download_button(
-            label="📥 la liste complète validée en pdf A3",
+            label="📥 la liste validée en pdf A3",
             data=excel_data_liste_global_valide,
             file_name="liste_selection_valide_jeu.pdf",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -495,7 +495,7 @@ def _final_page(user):
 
         
         st.download_button(
-            label="📥 la liste complète validée en excel A3",
+            label="📥 la liste validée en excel A3",
             data=excel_data_liste_global_valide,
             file_name="liste_selection_valide_jeu.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -511,7 +511,7 @@ def _final_page(user):
 
         
         st.download_button(
-            label="📥 la liste complète validée en pdf A4",
+            label="📥 la liste validée en pdf A4",
             data=excel_data_liste_global_valide,
             file_name="liste_selection_valide_jeu.pdf",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -525,7 +525,7 @@ def _final_page(user):
 
         
         st.download_button(
-            label="📥 la liste complète validée en excel A4",
+            label="📥 la liste validée en excel A4",
             data=excel_data_liste_global_valide,
             file_name="liste_selection_valide_jeu.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -572,8 +572,8 @@ def _final_page(user):
       gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=False)
       gb.configure_column("Classement", editable=False, filter="agTextColumnFilter", width=180, suppressSizeToFit=True, pinned=False)
       gb.configure_column("nbr max joueurs" , filter="agTextColumnFilter", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=70, suppressSizeToFit=True, pinned=False)
-      gb.configure_column("duree min", filter="agTextColumnFilter", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=50, suppressSizeToFit=True, pinned=False)  
-      gb.configure_column("duree max", filter="agTextColumnFilter", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=50, suppressSizeToFit=True, pinned=False)  
+      gb.configure_column("duree min", filter="agTextColumnFilter", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=60, suppressSizeToFit=True, pinned=False)  
+      gb.configure_column("duree max", filter="agTextColumnFilter", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=60, suppressSizeToFit=True, pinned=False)  
       
       gb.configure_column(
           "Plusieurs exemplaires souhaités",
@@ -585,8 +585,8 @@ def _final_page(user):
           pinned=True 
       )
       
-      gb.configure_column("Total coché par joueur", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Total coché validé par admin", editable=False, width=90, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Total coché par joueur",  wrapHeaderText=True, editable=False, width=80, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Total coché validé par admin",  wrapHeaderText=True, editable=False, width=90, suppressSizeToFit=True, pinned=True)
       
       gb.configure_grid_options(singleClickEdit=True, rowHeight=60)
       grid_options = gb.build()
