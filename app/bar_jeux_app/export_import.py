@@ -128,6 +128,10 @@ def export_excel_bytes(df, page_size, mode):
           ].width = width
       ws.page_setup.paperSize = ws.PAPERSIZE_A3
       ws.page_setup.orientation = ws.ORIENTATION_PORTRAIT
+    
+    
+    
+    
     else:
       ws.page_setup.paperSize = ws.PAPERSIZE_A4
       ws.page_setup.orientation = ws.ORIENTATION_LANDSCAPE
@@ -147,8 +151,9 @@ def export_excel_bytes(df, page_size, mode):
     wb.save(output_final)
     output_final.seek(0)
     return output_final.getvalue()
-
+  ########################################################################
   # --- Si mode PDF : Génération propre en pur Python via ReportLab ---
+  ########################################################################
   elif mode == "pdf":
     pdf_buffer = io.BytesIO()
 
@@ -158,14 +163,20 @@ def export_excel_bytes(df, page_size, mode):
       default_col_width = 25
       target_widths = {"Classement": 70, "Jeu": 180}
       for i in range(1, 21):
-        target_widths[f"{i:02d}"] = 22  
+        target_widths[f"{i:02d}"] = 30  
+      ### hauteur des lignes
+      header_height = 20
+      data_row_height = 30
+      
     else:
       pagesize = landscape(A4)
       default_col_width = 25
       target_widths = {"Classement": 70, "Jeu": 180}
       for i in range(1, 21):
-        target_widths[f"{i:02d}"] = 22  
-    
+        target_widths[f"{i:02d}"] = 30
+      ### hauteur des lignes
+      header_height = 30
+      data_row_height = 18
 
     doc = SimpleDocTemplate(
         pdf_buffer,
@@ -229,8 +240,14 @@ def export_excel_bytes(df, page_size, mode):
     col_widths_list = [
         target_widths.get(col, default_col_width) for col in columns
     ]  
+
+    # --- Définition de la hauteur des lignes ---
+    row_heights_list = [header_height] + [data_row_height] * len(df_export)
+
+
+      
     # Création du tableau avec repetition de l'en-tête (repeatRows=1)
-    table = Table(table_data, colWidths=col_widths_list , repeatRows=1)
+    table = Table(table_data, colWidths=col_widths_list , rowHeights=row_heights_list, repeatRows=1)
 
     # Style global du tableau (grille, fonds, etc.)
     style = [
