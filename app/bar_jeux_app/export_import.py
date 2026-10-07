@@ -175,6 +175,15 @@ def export_excel_bytes(df, page_size, mode):
       ### hauteur des lignes
       header_height = 20
       data_row_height = 30
+
+      doc = SimpleDocTemplate(
+        pdf_buffer,
+        pagesize=pagesize,
+        rightMargin=20,
+        leftMargin=20,
+        topMargin=10,
+        bottomMargin=10,
+    )
       
     else:
       pagesize = landscape(A4)
@@ -185,15 +194,16 @@ def export_excel_bytes(df, page_size, mode):
       ### hauteur des lignes
       header_height = 20
       data_row_height =30
-
-    doc = SimpleDocTemplate(
+      doc = SimpleDocTemplate(
         pdf_buffer,
         pagesize=pagesize,
         rightMargin=20,
         leftMargin=20,
-        topMargin=20,
-        bottomMargin=20,
+        topMargin=10,
+        bottomMargin=10,
     )
+
+    
     elements = []
 
     # Style spécifique pour la colonne Jeu (taille plus petite et retour à la ligne)
