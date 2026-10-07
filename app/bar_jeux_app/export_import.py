@@ -174,7 +174,7 @@ def export_excel_bytes(df, page_size, mode):
         target_widths[f"{i:02d}"] = 28
       ### hauteur des lignes
       header_height = 20
-      data_row_height = 33
+      data_row_height = 30
       
     else:
       pagesize = landscape(A4)
@@ -184,7 +184,7 @@ def export_excel_bytes(df, page_size, mode):
         target_widths[f"{i:02d}"] = 25
       ### hauteur des lignes
       header_height = 20
-      data_row_height =33
+      data_row_height =30
 
     doc = SimpleDocTemplate(
         pdf_buffer,
@@ -200,7 +200,7 @@ def export_excel_bytes(df, page_size, mode):
     style_jeu = ParagraphStyle(
         name="StyleJeu",
         fontName="Helvetica",
-        fontSize=14,  # Taille de police réduite pour la colonne Jeu
+        fontSize=12,  # Taille de police réduite pour la colonne Jeu
         leading=14,  # Interligne adapté
         alignment=1,  # Centré (0=Gauche, 1=Centre, 2=Droite)
     )
