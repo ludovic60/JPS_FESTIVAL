@@ -156,15 +156,15 @@ def export_excel_bytes(df, page_size, mode):
     if page_size == "A3":
       pagesize = portrait(A3)
       default_col_width = 25
-      target_widths = {"Classement": 90, "Jeu": 160}
+      target_widths = {"Classement": 70, "Jeu": 180}
       for i in range(1, 21):
-        target_widths[f"{i:02d}"] = 18  
+        target_widths[f"{i:02d}"] = 22  
     else:
       pagesize = landscape(A4)
       default_col_width = 25
-      target_widths = {"Classement": 90, "Jeu": 160}
+      target_widths = {"Classement": 70, "Jeu": 180}
       for i in range(1, 21):
-        target_widths[f"{i:02d}"] = 18  
+        target_widths[f"{i:02d}"] = 22  
     
 
     doc = SimpleDocTemplate(
@@ -182,7 +182,7 @@ def export_excel_bytes(df, page_size, mode):
         name="StyleJeu",
         fontName="Helvetica",
         fontSize=10,  # Taille de police réduite pour la colonne Jeu
-        leading=8,  # Interligne adapté
+        leading=10,  # Interligne adapté
         alignment=1,  # Centré (0=Gauche, 1=Centre, 2=Droite)
     )
 
