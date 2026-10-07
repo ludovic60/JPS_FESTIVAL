@@ -429,7 +429,7 @@ def _final_page(user):
             use_container_width=True
         )
 
-     with col_btn4:
+    with col_btn4:
         # df_export_list_initiale = df_jeux[["Couverture Jeu", "Jeu"]]
         # excel_data_initial = to_excel(df_export_list_initiale)
         df_export_list_initiale = df_jeux[["Classement", "Jeu"]]
