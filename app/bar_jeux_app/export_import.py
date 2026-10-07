@@ -215,5 +215,5 @@ def export_excel_bytes(df, page_size, mode):
 
     pdf_buffer.seek(0)
     return pdf_buffer.getvalue()
-      return pdf_bytes
+
 
