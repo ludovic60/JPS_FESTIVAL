@@ -209,8 +209,8 @@ def export_excel_bytes(df, page_size, mode):
     style_header = ParagraphStyle(
         name="StyleHeader",
         fontName="Helvetica-Bold",
-        fontSize=8,
-        leading=10,
+        fontSize=7,
+        leading=7,
         textColor=colors.whitesmoke,
         alignment=1,
     )
