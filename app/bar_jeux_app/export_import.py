@@ -97,7 +97,7 @@ def to_pdf(df, title="Liste finale des prêts") -> bytes:
 
 
 
- def export_excel_bytes(df, page_size, mode):
+def export_excel_bytes(df, page_size, mode):
   # Copie pour éviter de modifier le DataFrame original de Streamlit
   df_export = df.copy()
 
