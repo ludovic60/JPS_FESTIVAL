@@ -169,7 +169,7 @@ def export_excel_bytes(df, page_size, mode):
     if page_size == "A3":
       pagesize = portrait(A3)
       default_col_width = 25
-      target_widths = {"Classement": 70, "NbrEx" : 20 , "Jeu": 170}
+      target_widths = {"Classement": 70, "NbrEx" : 25 , "Jeu": 170}
       for i in range(1, 21):
         target_widths[f"{i:02d}"] = 28
       ### hauteur des lignes
