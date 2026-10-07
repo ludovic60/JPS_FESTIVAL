@@ -11,7 +11,10 @@ import os
 import streamlit as st
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A3, A4, landscape, portrait
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.platypus import Paragraph, SimpleDocTemplate, Table, TableStyle
+
+from reportlab.lib.styles import ParagraphStyle
+
 
 def loans_matrix(finals, users, loans):
     rows = []
