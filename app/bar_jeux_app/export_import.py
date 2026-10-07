@@ -7,6 +7,10 @@ import config_bar_jeux
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 
+import os
+import subprocess
+import tempfile
+
 def loans_matrix(finals, users, loans):
     rows = []
     for ckey, g in finals:
