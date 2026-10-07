@@ -234,6 +234,7 @@ def export_excel_bytes(df, page_size, mode):
       row_cells = []
       for idx, val in enumerate(row):
         val_str = "" if pd.isna(val) else str(val)
+        val_str = remove_emojis(val_str)  
         if idx == jeu_idx:
           # Applique le style spécifique à la colonne "Jeu"
           row_cells.append(Paragraph(val_str, style_jeu))
