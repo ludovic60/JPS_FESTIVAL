@@ -8,6 +8,9 @@ from threading import Lock
 import config_bar_jeux
 from bson import ObjectId
 
+
+
+
 import os
 import sys
 # Ajoute le dossier parent à sys.path
@@ -433,3 +436,13 @@ def set_loan_valide_admin(ckey, user_id, value):
 
     
     return {}
+
+    
+
+#############################################################################
+
+
+
+
+
+

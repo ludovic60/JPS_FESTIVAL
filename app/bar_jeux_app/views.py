@@ -13,7 +13,7 @@ import sys
 import time
 from bson import ObjectId
 from config_game_card import _game_card , mise_forme_classement , nouveaute_def
-from export_import import to_excel
+from export_import import to_excel , export_excel_bytes
 
 
 # Ajoute le dossier parent à sys.path
@@ -378,7 +378,7 @@ def _final_page(user):
 
 
  
-    col_btn1, col_btn2, col_btn3 , col_btn4 = st.columns(4)
+    col_btn1, col_btn2, col_btn3 , col_btn4, col_btn5 , col_btn6  = st.columns(6)
     
     # ---Colonne 1 : Export Proposé ---
     with col_btn1:
@@ -416,26 +416,116 @@ def _final_page(user):
     
     # ---Colonne 3 : Export Initial ---
     with col_btn3:
-        df_export_list_initiale = df_jeux[["Couverture Jeu", "Jeu"]]
-        excel_data_initial = to_excel(df_export_list_initiale)
-        
+        # df_export_list_initiale = df_jeux[["Couverture Jeu", "Jeu"]]
+        # excel_data_initial = to_excel(df_export_list_initiale)
+        df_export_list_initiale = df_jeux[["Classement", "Jeu"]]
+        excel_data_initial = export_excel_bytes( df_export_list_initiale , "A3" ,"pdf" )    
+
         st.download_button(
-            label="📥 Export de la liste initiale",
+            label="📥 la liste initiale en pdf A3",
+            data=excel_data_initial,
+            file_name="liste_selection_jeu.pdf",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            use_container_width=True
+        )
+
+        # df_export_list_initiale = df_jeux[["Couverture Jeu", "Jeu"]]
+        # excel_data_initial = to_excel(df_export_list_initiale)
+        df_export_list_initiale = df_jeux[["Classement", "Jeu"]]
+        excel_data_initial = export_excel_bytes( df_export_list_initiale , "A3" ,"excel" )    
+
+        st.download_button(
+            label="📥 la liste initiale en excel A3",
             data=excel_data_initial,
             file_name="liste_selection_jeu.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             use_container_width=True
         )
-    # ---Colonne 4 : Export list validé  ---
+
     with col_btn4:
+        # df_export_list_initiale = df_jeux[["Couverture Jeu", "Jeu"]]
+        # excel_data_initial = to_excel(df_export_list_initiale)
+        df_export_list_initiale = df_jeux[["Classement", "Jeu"]]
+        excel_data_initial = export_excel_bytes( df_export_list_initiale , "A3" ,"pdf" )    
+
+        st.download_button(
+            label="📥 la liste initiale en pdf A4",
+            data=excel_data_initial,
+            file_name="liste_selection_jeu.pdf",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            use_container_width=True
+        )
+
+        # df_export_list_initiale = df_jeux[["Couverture Jeu", "Jeu"]]
+        # excel_data_initial = to_excel(df_export_list_initiale)
+        df_export_list_initiale = df_jeux[["Classement", "Jeu"]]
+        excel_data_initial = export_excel_bytes( df_export_list_initiale , "A3" ,"excel" )    
+
+        st.download_button(
+            label="📥 la liste initiale en excel A4",
+            data=excel_data_initial,
+            file_name="liste_selection_jeu.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            use_container_width=True
+        )
+
+
+ 
+    # ---Colonne 4 : Export list validé  ---
+    with col_btn5:
 
         df_filtre_global_valide = df_jeux[df_jeux["Total coché validé par admin"] > 0]
-        df_export_liste_global_valide = df_filtre_global_valide[["Couverture Jeu", "Jeu"]]
+        df_export_liste_global_valide = df_filtre_global_valide[["Classement", "Jeu"]]
 
-        excel_data_liste_global_valide = to_excel(df_export_liste_global_valide)
+        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A3" ,"pdf" ) 
+
         
         st.download_button(
-            label="📥 Export de la liste complète validée",
+            label="📥 la liste validée en pdf A3",
+            data=excel_data_liste_global_valide,
+            file_name="liste_selection_valide_jeu.pdf",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            use_container_width=True
+        )
+
+        df_filtre_global_valide = df_jeux[df_jeux["Total coché validé par admin"] > 0]
+        df_export_liste_global_valide = df_filtre_global_valide[["Classement", "Jeu"]]
+
+        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A3" ,"excel" ) 
+
+        
+        st.download_button(
+            label="📥 la liste validée en excel A3",
+            data=excel_data_liste_global_valide,
+            file_name="liste_selection_valide_jeu.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            use_container_width=True
+        )
+    
+    with col_btn6:
+
+        df_filtre_global_valide = df_jeux[df_jeux["Total coché validé par admin"] > 0]
+        df_export_liste_global_valide = df_filtre_global_valide[["Classement", "Jeu"]]
+
+        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A4" ,"pdf" ) 
+
+        
+        st.download_button(
+            label="📥 la liste validée en pdf A4",
+            data=excel_data_liste_global_valide,
+            file_name="liste_selection_valide_jeu.pdf",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            use_container_width=True
+        )
+
+        df_filtre_global_valide = df_jeux[df_jeux["Total coché validé par admin"] > 0]
+        df_export_liste_global_valide = df_filtre_global_valide[["Classement", "Jeu"]]
+
+        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A4" ,"excel" ) 
+
+        
+        st.download_button(
+            label="📥 la liste validée en excel A4",
             data=excel_data_liste_global_valide,
             file_name="liste_selection_valide_jeu.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -476,27 +566,29 @@ def _final_page(user):
       gb = GridOptionsBuilder.from_dataframe(df_jeux[columns_to_show])
       gb.configure_default_column(filterable=True, sortable=True )
       gb.configure_column("_id", hide=True)
-      gb.configure_column("nouveaute", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Couverture Jeu", editable=False, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("nouveaute", editable=False, filter="agTextColumnFilter", width=110, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Couverture Jeu", editable=False,  wrapHeaderText=True, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Jeu", editable=False, filter="agTextColumnFilter", sortable=True, width=150, suppressSizeToFit=True, pinned=True)
       gb.configure_column("Annee", editable=False, width=80, suppressSizeToFit=True, pinned=False)
-      gb.configure_column("Classement", editable=False, width=180, suppressSizeToFit=True, pinned=False)
-      gb.configure_column("nbr max joueurs" , wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=70, suppressSizeToFit=True, pinned=False)
-      gb.configure_column("duree min", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=50, suppressSizeToFit=True, pinned=False)  
-      gb.configure_column("duree max", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=50, suppressSizeToFit=True, pinned=False)  
+      gb.configure_column("Classement", editable=False, filter="agTextColumnFilter", width=180, suppressSizeToFit=True, pinned=False)
+      gb.configure_column("nbr max joueurs" , filter="agTextColumnFilter", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=80, suppressSizeToFit=True, pinned=False)
+      gb.configure_column("duree min", filter="agTextColumnFilter", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=70, suppressSizeToFit=True, pinned=False)  
+      gb.configure_column("duree max", filter="agTextColumnFilter", wrapHeaderText=True, autoHeaderHeight=True, editable=False, width=70, suppressSizeToFit=True, pinned=False)  
       
       gb.configure_column(
           "Plusieurs exemplaires souhaités",
           editable=(user["role"] == "admin"),
           cellRenderer="agCheckboxCellRenderer",
           cellEditor="agCheckboxCellEditor",
-          width=90,
+          filter="agTextColumnFilter", 
+          width=110,
+          wrapHeaderText=True,
           suppressSizeToFit=True,
           pinned=True 
       )
       
-      gb.configure_column("Total coché par joueur", editable=False, width=80, suppressSizeToFit=True, pinned=True)
-      gb.configure_column("Total coché validé par admin", editable=False, width=90, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Total coché par joueur",   filter="agTextColumnFilter", wrapHeaderText=True, editable=False, width=80, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Total coché validé par admin",   filter="agTextColumnFilter", wrapHeaderText=True, editable=False, width=90, suppressSizeToFit=True, pinned=True)
       
       gb.configure_grid_options(singleClickEdit=True, rowHeight=60)
       grid_options = gb.build()

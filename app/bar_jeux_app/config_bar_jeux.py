@@ -25,7 +25,8 @@ _CLS_DUO  = f"👥 JEU DUO"
 _CLS_COOP   = f"🤝 COOP/SEMI COOP"                             
 _CLS_ENQUETE_ESCAPE   = f"🕵️ ENQUETE/ESCAPE/ENIGME/CASSETETE"                            
 _CLS_AMBIANCE = f"🎉 AMBIANCE"
-_CLS_NON CLASSE = f"🤔 NON CLASSE"
+_CLS_NON_CLASSE = f"🤔 NON CLASSE"
+
 
 
 

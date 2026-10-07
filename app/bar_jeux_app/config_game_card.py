@@ -57,16 +57,16 @@ def mise_forme_classement(classement) :
         elif classement == "AMBIANCE":
                   classement_formate = config_bar_jeux._CLS_AMBIANCE
         elif classement == "NON CLASSE":
-                  classement_formate = config_bar_jeux._CLS_NON CLASSE
+                  classement_formate = config_bar_jeux._CLS_NON_CLASSE
         elif classement == "PBM CLASSEMENT":
                   classement_formate = f"❓ {classement}"
         else : 
                   classement_formate = f"❓❓❓ {classement}"
     else :
-                  classement_formate = ""           
+                  classement_formate = ""                     
 
-
-    return classement_formate    
+    return classement_formate           
+   
 
 def _game_card(g, list_key, user , mode ):
     #ckey = f"{list_key}::{str(g['_id'])}"
@@ -171,6 +171,8 @@ def _game_card(g, list_key, user , mode ):
                     if st.button(   "✅ valider la suggestion", key=f"valid_sug_{ckey_this_game}",  width=250,  wrap=True) :
                                 result_valid = storage_jeux.toggle_suggestion(ckey_this_game, user["_id"], "suggestion Retenue", "all") 
                                 on_admin_change(ckey_this_game, has_selected_this_game)
+
+                                liste_preteur = storage_jeux.get_game_suggestions(ckey_this_game, "pret")
                                 st.rerun()
                     if st.button(  "❌ refuser la suggestion" ,  key=f"refuse_sug_{ckey_this_game}",  width=250,  wrap=True) :
                                 result_valid = storage_jeux.toggle_suggestion(ckey_this_game, user["_id"], "suggestion refusée", "all")
