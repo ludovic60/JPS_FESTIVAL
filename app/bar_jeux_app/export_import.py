@@ -181,8 +181,8 @@ def export_excel_bytes(df, page_size, mode):
         pagesize=pagesize,
         rightMargin=20,
         leftMargin=20,
-        topMargin=10,
-        bottomMargin=10,
+        topMargin=8,
+        bottomMargin=8,
     )
       
     else:
