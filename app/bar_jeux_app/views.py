@@ -452,7 +452,7 @@ def _final_page(user):
 
         
         st.download_button(
-            label="📥 Export de la liste complète validée",
+            label="📥 Export de la liste complète validée en pdf",
             data=excel_data_liste_global_valide,
             file_name="liste_selection_valide_jeu.pdf",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -467,7 +467,7 @@ def _final_page(user):
 
         
         st.download_button(
-            label="📥 Export de la liste complète validée",
+            label="📥 Export de la liste complète validée en excel",
             data=excel_data_liste_global_valide,
             file_name="liste_selection_valide_jeu.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
