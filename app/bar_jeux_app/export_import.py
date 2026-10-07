@@ -171,7 +171,7 @@ def export_excel_bytes(df, page_size, mode):
       default_col_width = 25
       target_widths = {"Classement": 70, "NbrEx" : 20 , "Jeu": 170}
       for i in range(1, 21):
-        target_widths[f"{i:02d}"] = 30
+        target_widths[f"{i:02d}"] = 28
       ### hauteur des lignes
       header_height = 20
       data_row_height = 30
@@ -201,7 +201,7 @@ def export_excel_bytes(df, page_size, mode):
         name="StyleJeu",
         fontName="Helvetica",
         fontSize=14,  # Taille de police réduite pour la colonne Jeu
-        leading=12,  # Interligne adapté
+        leading=14,  # Interligne adapté
         alignment=1,  # Centré (0=Gauche, 1=Centre, 2=Droite)
     )
 
