@@ -202,7 +202,7 @@ def export_excel_bytes(df, page_size, mode):
       cell_classement.fill = fill_red
     elif val == config_bar_jeux._CLS_EXPERT_PLUS :
       cell_classement.fill = fill_red_fonce
-    elif val == config_bar_jeux._CLS_NON CLASSE :
+    elif val == config_bar_jeux._CLS_NON_CLASSE :
       cell_classement.fill = fill_grey
     elif val == config_bar_jeux._CLS_DUO :
       cell_classement.fill = fill_orange
