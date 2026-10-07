@@ -10,6 +10,9 @@ from openpyxl.utils import get_column_letter
 import os
 import subprocess
 import tempfile
+import aspose.cells as ac
+import streamlit as st
+
 
 def loans_matrix(finals, users, loans):
     rows = []
@@ -94,9 +97,7 @@ def to_pdf(df, title="Liste finale des prêts") -> bytes:
 
 
 
- 
-
-def export_excel_bytes(df, page_size, mode):
+ def export_excel_bytes(df, page_size, mode):
   # Copie pour éviter de modifier le DataFrame original de Streamlit
   df_export = df.copy()
 
@@ -122,7 +123,7 @@ def export_excel_bytes(df, page_size, mode):
 
   # --- Largeur des colonnes & Format ---
   if page_size == "A3":
-    target_widths = {"Classement":20, "Jeu": 40}
+    target_widths = {"Classement": 20, "Jeu": 40}
     for i in range(1, 21):
       target_widths[f"Jeu{i:02d}"] = 4
 
@@ -190,64 +191,52 @@ def export_excel_bytes(df, page_size, mode):
     cell_classement = ws.cell(row=row, column=classement_col_idx)
     val = cell_classement.value
 
-    if val == config_bar_jeux._CLS_ENQUETE_ESCAPE :
+    if val == config_bar_jeux._CLS_ENQUETE_ESCAPE:
       cell_classement.fill = fill_blue_light
-    elif val == config_bar_jeux._CLS_COOP :
+    elif val == config_bar_jeux._CLS_COOP:
       cell_classement.fill = fill_violet
-    elif val == config_bar_jeux._CLS_INITIE :
+    elif val == config_bar_jeux._CLS_INITIE:
       cell_classement.fill = fill_yellow
-    elif val == config_bar_jeux._CLS_ENFANT :
+    elif val == config_bar_jeux._CLS_ENFANT:
       cell_classement.fill = fill_blue
-    elif val == config_bar_jeux._CLS_AMBIANCE :
+    elif val == config_bar_jeux._CLS_AMBIANCE:
       cell_classement.fill = fill_green
-    elif val == config_bar_jeux._CLS_FAMILLE :
+    elif val == config_bar_jeux._CLS_FAMILLE:
       cell_classement.fill = fill_pink
-    elif val == config_bar_jeux._CLS_EXPERT :
+    elif val == config_bar_jeux._CLS_EXPERT:
       cell_classement.fill = fill_red
-    elif val == config_bar_jeux._CLS_EXPERT_PLUS :
+    elif val == config_bar_jeux._CLS_EXPERT_PLUS:
       cell_classement.fill = fill_red_fonce
-    elif val == config_bar_jeux._CLS_NON_CLASSE :
+    elif val == config_bar_jeux._CLS_NON_CLASSE:
       cell_classement.fill = fill_grey
-    elif val == config_bar_jeux._CLS_DUO :
+    elif val == config_bar_jeux._CLS_DUO:
       cell_classement.fill = fill_orange
-
-
-    
-
 
   ws.sheet_properties.pageSetUpPr.fitToPage = True
   ws.page_setup.fitToWidth = 1
 
-  if mode == "excel" :  
+  if mode == "excel":
+    # Sauvegarde dans un buffer final et récupération des octets (bytes)
+    output_final = io.BytesIO()
+    wb.save(output_final)
+    output_final.seek(0)
+    return output_final.getvalue()
 
-      # Sauvegarde dans un buffer final et récupération des octets (bytes)
-      output_final = io.BytesIO()
-      wb.save(output_final)
-      output_final.seek(0)
-      return output_final.getvalue()
-  elif mode == "pdf" :
-      # --- Conversion en PDF via LibreOffice (dans un dossier temporaire) ---
-      with tempfile.TemporaryDirectory() as tmpdirname:
-        excel_path = os.path.join(tmpdirname, "temp.xlsx")
-        wb.save(excel_path)
-    
-        # Appel de LibreOffice en arrière-plan pour convertir le fichier
-        subprocess.run(
-            [
-                "libreoffice",
-                "--headless",
-                "--convert-to",
-                "pdf",
-                "--outdir",
-                tmpdirname,
-                excel_path,
-            ],
-            check=True,
-        )
-    
-        pdf_path = os.path.join(tmpdirname, "temp.pdf")
-    
-        # Lecture du fichier PDF converti sous forme de bytes
-        with open(pdf_path, "rb") as f:
-          pdf_bytes = f.read()
-        return pdf_bytes
+  elif mode == "pdf":
+    # --- Conversion en PDF via Aspose.Cells (Pur Python, sans LibreOffice) ---
+    with tempfile.TemporaryDirectory() as tmpdirname:
+      excel_path = os.path.join(tmpdirname, "temp.xlsx")
+      pdf_path = os.path.join(tmpdirname, "temp.pdf")
+
+      # Sauvegarde du fichier openpyxl stylisé
+      wb.save(excel_path)
+
+      # Chargement et conversion directe en PDF
+      workbook = ac.Workbook(excel_path)
+      workbook.save(pdf_path, ac.SaveFormat.PDF)
+
+      # Lecture du fichier PDF converti sous forme de bytes
+      with open(pdf_path, "rb") as f:
+        pdf_bytes = f.read()
+      return pdf_bytes
+
