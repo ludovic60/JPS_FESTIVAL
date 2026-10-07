@@ -15,7 +15,11 @@ from reportlab.platypus import Paragraph, SimpleDocTemplate, Table, TableStyle
 
 from reportlab.lib.styles import ParagraphStyle
 
-from tools  import remove_emojis
+# Ajoute le dossier parent à sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+
+from commun.tools  import remove_emojis
 
 
 def loans_matrix(finals, users, loans):
