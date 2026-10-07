@@ -181,10 +181,10 @@ def export_excel_bytes(df, page_size, mode):
       default_col_width = 25
       target_widths = {"Classement": 70, "NbrEx" : 25 ,"Jeu": 180}
       for i in range(1, 21):
-        target_widths[f"{i:02d}"] = 30
+        target_widths[f"{i:02d}"] = 25
       ### hauteur des lignes
       header_height = 30
-      data_row_height = 18
+      data_row_height =30
 
     doc = SimpleDocTemplate(
         pdf_buffer,
