@@ -179,7 +179,7 @@ def export_excel_bytes(df, page_size, mode):
     else:
       pagesize = landscape(A4)
       default_col_width = 25
-      target_widths = {"Classement": 70, "Jeu": 180}
+      target_widths = {"Classement": 70, "NbrEx" : 25 ,"Jeu": 180}
       for i in range(1, 21):
         target_widths[f"{i:02d}"] = 30
       ### hauteur des lignes
