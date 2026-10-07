@@ -14,7 +14,8 @@ from reportlab.lib.pagesizes import A3, A4, landscape, portrait
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Table, TableStyle
 
 from reportlab.lib.styles import ParagraphStyle
-
+import os
+import sys
 # Ajoute le dossier parent à sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
