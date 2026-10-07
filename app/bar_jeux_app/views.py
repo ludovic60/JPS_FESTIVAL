@@ -13,7 +13,7 @@ import sys
 import time
 from bson import ObjectId
 from config_game_card import _game_card , mise_forme_classement , nouveaute_def
-from export_import import to_excel
+from export_import import to_excel , export_excel_bytes
 
 
 # Ajoute le dossier parent à sys.path
@@ -419,7 +419,7 @@ def _final_page(user):
         # df_export_list_initiale = df_jeux[["Couverture Jeu", "Jeu"]]
         # excel_data_initial = to_excel(df_export_list_initiale)
         df_export_list_initiale = df_jeux[["Classement", "Jeu"]]
-        excel_data_initial = storage_jeux.export_excel_bytes( df_export_list_initiale , "A3" ) 
+        excel_data_initial = export_excel_bytes( df_export_list_initiale , "A3" ) 
 
       
 
@@ -436,7 +436,7 @@ def _final_page(user):
         df_filtre_global_valide = df_jeux[df_jeux["Total coché validé par admin"] > 0]
         df_export_liste_global_valide = df_filtre_global_valide[["Classement", "Jeu"]]
 
-        excel_data_liste_global_valide = storage_jeux.export_excel_bytes( df_export_liste_global_valide , "A3" ) 
+        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A3" ) 
 
         
         st.download_button(
