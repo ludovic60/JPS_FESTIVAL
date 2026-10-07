@@ -174,7 +174,7 @@ def export_excel_bytes(df, page_size, mode):
         target_widths[f"{i:02d}"] = 28
       ### hauteur des lignes
       header_height = 20
-      data_row_height = 30
+      data_row_height = 29
 
       doc = SimpleDocTemplate(
         pdf_buffer,
