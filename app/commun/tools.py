@@ -1,5 +1,5 @@
 import random
-
+import re
 # Fixer le seed (42) garantit que les couleurs attribuées ne changeront JAMAIS, 
 # même si vous relancez le script ou l'application.
 random.seed(42)
