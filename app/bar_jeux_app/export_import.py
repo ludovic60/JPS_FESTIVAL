@@ -118,9 +118,9 @@ def export_excel_bytes(df, page_size, mode):
         col_indices[header_val] = col_idx
 
     if page_size == "A3":
-      target_widths = {"Classement": 20, "Jeu": 40}
+      target_widths = {"Classement": 90, "Jeu": 160}
       for i in range(1, 21):
-        target_widths[f"Jeu{i:02d}"] = 4
+        target_widths[f"Jeu{i:02d}"] = 18
       for header_name, width in target_widths.items():
         if header_name in col_indices:
           ws.column_dimensions[
@@ -152,11 +152,19 @@ def export_excel_bytes(df, page_size, mode):
   elif mode == "pdf":
     pdf_buffer = io.BytesIO()
 
-    # Orientation du PDF
+     # Orientation du PDF
     if page_size == "A3":
       pagesize = portrait(A3)
+      default_col_width = 25
+      target_widths = {"Classement": 90, "Jeu": 160}
+      for i in range(1, 21):
+        target_widths[f"Jeu{i:02d}"] = 18  
     else:
       pagesize = landscape(A4)
+      default_col_width = 25
+      target_widths = {"Classement": 90, "Jeu": 160}
+      for i in range(1, 21):
+        target_widths[f"Jeu{i:02d}"] = 18  
 
     doc = SimpleDocTemplate(
         pdf_buffer,
@@ -172,7 +180,7 @@ def export_excel_bytes(df, page_size, mode):
     style_jeu = ParagraphStyle(
         name="StyleJeu",
         fontName="Helvetica",
-        fontSize=6,  # Taille de police réduite pour la colonne Jeu
+        fontSize=12,  # Taille de police réduite pour la colonne Jeu
         leading=8,  # Interligne adapté
         alignment=1,  # Centré (0=Gauche, 1=Centre, 2=Droite)
     )
@@ -216,8 +224,10 @@ def export_excel_bytes(df, page_size, mode):
           row_cells.append(Paragraph(val_str, style_cell))
       table_data.append(row_cells)
 
+
+      
     # Création du tableau avec repetition de l'en-tête (repeatRows=1)
-    table = Table(table_data, repeatRows=1)
+    table = Table(table_data, colWidths=col_widths_list , repeatRows=1)
 
     # Style global du tableau (grille, fonds, etc.)
     style = [
