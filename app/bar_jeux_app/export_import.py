@@ -247,6 +247,3 @@ def export_excel_bytes(df, page_size, mode):
         with open(pdf_path, "rb") as f:
           pdf_bytes = f.read()
         return pdf_bytes
-   
-    doc.build([Paragraph(title, styles["Title"]), Spacer(1, 12), table])
-    return buf.getvalue()
