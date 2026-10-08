@@ -85,8 +85,7 @@ def todo_page(user):
                 st.rerun()
            
             if c6.button("terminer", key=f"modif_{t["_id"]}"):
-                update_todo(t["_id"] ,label_affecte, "terminer","")
-                
+                update_todo(t["_id"] ,label_affecte, "TERMINER","")                
                 st.rerun()
         
             if c7.button("Supprimer", key=f"supprim_{t["_id"]}"):
