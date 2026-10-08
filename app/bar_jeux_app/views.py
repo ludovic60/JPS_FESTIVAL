@@ -1279,7 +1279,7 @@ def _final_page(user):
     st.write( df_jeux_pret_graphique[df_jeux_pret_graphique["pseudo"] == "Lie"])    
     st.write( df_jeux_valide_graphique[df_jeux_valide_graphique["pseudo"] == "Lie"]) 
 
-     st.write( df_jeux_valide_graphique[liste_pret__validé_user_detail['user_id'] == "6a9d189113d4bdfa2f988833"])
+    st.write( df_jeux_valide_graphique[liste_pret__validé_user_detail['user_id'] == "6a9d189113d4bdfa2f988833"])
 
 
  
