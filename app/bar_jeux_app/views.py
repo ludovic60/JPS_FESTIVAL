@@ -1274,10 +1274,10 @@ def _final_page(user):
     df_jeux_histogramme["Nb_jeux_valide"] = pd.to_numeric(df_jeux_histogramme["Nb_jeux_valide"], errors="coerce").fillna(0).astype(int)
     df_grouped = df_jeux_histogramme.groupby("pseudo")[["Nb_jeux_propose", "Nb_jeux_valide"]].sum().reset_index()
 
-    print( df_grouped[df_grouped["pseudo"] == "Lie"]) 
-    print( df_jeux_histogramme[df_jeux_histogramme["pseudo"] == "Lie"]) 
-    print( df_jeux_pret_graphique[df_jeux_pret_graphique["pseudo"] == "Lie"])    
-    print( df_jeux_valide_graphique[df_jeux_valide_graphique["pseudo"] == "Lie"]) 
+    st.write( df_grouped[df_grouped["pseudo"] == "Lie"]) 
+    st.write( df_jeux_histogramme[df_jeux_histogramme["pseudo"] == "Lie"]) 
+    st.write( df_jeux_pret_graphique[df_jeux_pret_graphique["pseudo"] == "Lie"])    
+    st.write( df_jeux_valide_graphique[df_jeux_valide_graphique["pseudo"] == "Lie"]) 
 
 
  
