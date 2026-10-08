@@ -85,7 +85,7 @@ def todo_page(user):
                 st.rerun()
            
             if c6.button("terminer", key=f"modif_{t["_id"]}"):
-                update_todo(t["_id"] ,label_affecte, "terminer")
+                update_todo(t["_id"] ,label_affecte, "terminer","")
                 
                 st.rerun()
         
