@@ -478,7 +478,7 @@ def _final_page(user):
 
         #df_export_liste_global_valide = df_filtre_global_valide[["Classement", "NbrEx","Jeu"]].sort_values(by="Jeu")
      
-        df_export_liste_global_valide = df_export_valide[["Classement", "NbrEx","Jeu"]]
+        df_export_liste_global_valide = df_filtre_global_valide[["Classement", "NbrEx","Jeu"]]
       
         excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A3" ,"pdf", "blanc" ) 
         
@@ -1236,7 +1236,7 @@ def _final_page(user):
                    "classement",
                    "Nouveauté",
                    "pseudo",
-                   "nom",
+                   "nom_jeu_complet",
                    "Nb_jeux_propose",
                    "Nb_jeux_valide",
                    "statut_valide",
@@ -1258,7 +1258,7 @@ def _final_page(user):
          df_jeux_histogramme = pd.merge(
              df_jeux_pret_graphique,
              df_jeux_valide_graphique,
-             on=["pseudo", "nom", "classement", "Nouveauté"],
+             on=["pseudo", "nom_jeu_complet", "classement", "Nouveauté"],
              how="outer",  # 'outer' garde tout, même si un jeu n'est que dans l'un des deux tableaux
          )
          
