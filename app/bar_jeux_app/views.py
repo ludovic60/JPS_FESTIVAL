@@ -1115,7 +1115,7 @@ def _final_page(user):
      
           st.markdown("#### Jeux validés par Classement")
           if not df_jeux_valide_graphique.empty:
-              df_cat2 = df_jeux_valide_graphique.groupby('classement')['nom_jeu_complet'].nunique()
+              df_cat2 =  df_jeux_valide_graphique.groupby('classement')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_cat2.columns = ["classement", "Nombre"]
               fig_pie_cat2 = px.pie(df_cat2, names="classement", values="Nombre", hole=0.3 ,  color="classement", color_discrete_map=couleurs_classement )
               fig_pie_cat2.update_layout(height=250 , width=1000) 
