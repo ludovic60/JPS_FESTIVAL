@@ -1263,6 +1263,9 @@ def _final_page(user):
          )
          
          # Remplacer les valeurs manquantes (NaN) par 0 ou False selon les colonnes
+
+         liste_colonnes = list(df_jeux_histogramme.columns)
+         print(liste_colonnes)
          df_jeux_histogramme["Nb_jeux_valide"] = df_jeux_histogramme["Nb_jeux_valide"].fillna(0)
          df_jeux_histogramme["Nb_jeux_propose"] = df_jeux_histogramme["Nb_jeux_propose"].fillna(0)
 
