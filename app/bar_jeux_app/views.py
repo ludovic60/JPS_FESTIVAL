@@ -1238,8 +1238,7 @@ def _final_page(user):
                    "pseudo",
                    "nom_jeu_complet",
                    "Nb_jeux_propose",
-                   "Nb_jeux_valide",
-                   "statut_valide",
+                   "Nb_jeux_valide"
                ]
            )
 
@@ -1253,7 +1252,7 @@ def _final_page(user):
      
          df_jeux_histogramme = df_jeux_pret_graphique.copy()
          df_jeux_histogramme["Nb_jeux_valide"] = 0       
-         df_jeux_histogramme["statut_valide"] = False
+       
     else : 
          df_jeux_histogramme = pd.merge(
              df_jeux_pret_graphique,
@@ -1269,7 +1268,7 @@ def _final_page(user):
          df_jeux_histogramme["Nb_jeux_valide"] = df_jeux_histogramme["Nb_jeux_valide"].fillna(0)
          df_jeux_histogramme["Nb_jeux_propose"] = df_jeux_histogramme["Nb_jeux_propose"].fillna(0)
 
-         df_jeux_histogramme["statut_valide"] = df_jeux_histogramme["statut_valide"].fillna(False)
+ 
 
     #  Aggrégation des données pour obtenir la somme par pseudo
     df_jeux_histogramme["Nb_jeux_propose"] = pd.to_numeric(df_jeux_histogramme["Nb_jeux_propose"], errors="coerce").fillna(0).astype(int)   
