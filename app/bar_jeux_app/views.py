@@ -767,7 +767,7 @@ def _final_page(user):
     
         if len(df_jeux_valide_graphique) > 0:
              df_jeux_valide_graphique["Nouveauté"] = df_jeux_valide_graphique.apply(nouveaute_def, axis=1)
-             df_jeux_valide_graphique["Nb_jeux_propose"] = 1
+             df_jeux_valide_graphique["Nb_jeux_valide"] = 1
     
     else :
         ####creation dataframe vide car pas de pret
