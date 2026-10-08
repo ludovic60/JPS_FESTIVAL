@@ -15,7 +15,6 @@ from bson import ObjectId
 from config_game_card import _game_card , mise_forme_classement , nouveaute_def
 from export_import import to_excel , export_excel_bytes
 
-
 # Ajoute le dossier parent à sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -1274,6 +1273,8 @@ def _final_page(user):
     df_jeux_histogramme["Nb_jeux_propose"] = pd.to_numeric(df_jeux_histogramme["Nb_jeux_propose"], errors="coerce").fillna(0).astype(int)   
     df_jeux_histogramme["Nb_jeux_valide"] = pd.to_numeric(df_jeux_histogramme["Nb_jeux_valide"], errors="coerce").fillna(0).astype(int)
     df_grouped = df_jeux_histogramme.groupby("pseudo")[["Nb_jeux_propose", "Nb_jeux_valide"]].sum().reset_index()
+
+    print( df_grouped[df_grouped["pseudo"] == "Lie"]) 
     if not df_jeux_histogramme.empty:
    
        fig_hist = px.bar( 
