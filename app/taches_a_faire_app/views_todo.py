@@ -82,17 +82,15 @@ def todo_page(user):
            
             if c5.button("modifier", key=f"termin_{t["_id"]}"):
                 update_todo(t["_id"] ,label_affecte , label_statut,commentaire_statut)
-                get_todo()
                 st.rerun()
            
             if c6.button("terminer", key=f"modif_{t["_id"]}"):
                 update_todo(t["_id"] ,label_affecte, "terminer")
-                get_todo()
+                
                 st.rerun()
         
             if c7.button("Supprimer", key=f"supprim_{t["_id"]}"):
                 delete_todo(t["_id"])              
-                get_todo()
                 st.rerun()
 
        st.success(" - TACHES TERMINEE ")
