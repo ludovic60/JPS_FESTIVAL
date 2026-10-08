@@ -1275,6 +1275,12 @@ def _final_page(user):
     df_grouped = df_jeux_histogramme.groupby("pseudo")[["Nb_jeux_propose", "Nb_jeux_valide"]].sum().reset_index()
 
     print( df_grouped[df_grouped["pseudo"] == "Lie"]) 
+    print( df_jeux_histogramme[df_jeux_histogramme["pseudo"] == "Lie"]) 
+    print( df_jeux_pret_graphique[df_jeux_pret_graphique["pseudo"] == "Lie"])    
+    print( df_jeux_valide_graphique[df_jeux_valide_graphique["pseudo"] == "Lie"]) 
+
+
+ 
     if not df_jeux_histogramme.empty:
    
        fig_hist = px.bar( 
