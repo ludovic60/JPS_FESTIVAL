@@ -46,39 +46,39 @@ def to_excel(df) :
         
         # Supposons que la colonne des URLs d'images est la première (colonne A, index 1)
         # On parcourt les lignes à partir de la ligne 2 (la ligne 1 étant l'en-tête)
-        for row_idx, url in enumerate(df['Couverture Jeu'], start=2):
-            if pd.notna(url) and str(url).startswith("http"):
-                try:
-                    # 1. Télécharger l'image depuis l'URL
-                    response = requests.get(url, timeout=5)
-                    if response.status_code == 200:
-                        img_io = io.BytesIO(response.content)
+       # for row_idx, url in enumerate(df['Couverture Jeu'], start=2):
+        #     if pd.notna(url) and str(url).startswith("http"):
+        #        try:
+        #             # 1. Télécharger l'image depuis l'URL
+        #            response = requests.get(url, timeout=5)
+        #            if response.status_code == 200:
+        #                  img_io = io.BytesIO(response.content)
+        #                 
+        #                 # 2. Ouvrir avec Pillow pour redimensionner (optionnel mais conseillé pour Excel)
+        #                 img = PILImage.open(img_io)
+        #                 img.thumbnail((80, 80)) # Taille max de l'image dans la cellule
+        #                 
+        #                  # Sauvegarder dans un buffer temporaire pour openpyxl
+        #                temp_img_io = io.BytesIO()
+        #                img.save(temp_img_io, format="PNG")
+        #                temp_img_io.seek(0)
                         
-                        # 2. Ouvrir avec Pillow pour redimensionner (optionnel mais conseillé pour Excel)
-                        img = PILImage.open(img_io)
-                        img.thumbnail((80, 80)) # Taille max de l'image dans la cellule
+        #                # 3. Créer l'objet Image pour openpyxl
+        #                xl_img = OpenpyxlImage(temp_img_io)
                         
-                        # Sauvegarder dans un buffer temporaire pour openpyxl
-                        temp_img_io = io.BytesIO()
-                        img.save(temp_img_io, format="PNG")
-                        temp_img_io.seek(0)
-                        
-                        # 3. Créer l'objet Image pour openpyxl
-                        xl_img = OpenpyxlImage(temp_img_io)
-                        
-                        # 4. Positionner l'image dans la cellule correspondante (ex: A2, A3, etc.)
-                        cell_coordinate = f"A{row_idx}"
-                        worksheet.add_image(xl_img, cell_coordinate)
-                        
-                        # 5. Ajuster la hauteur de la ligne pour que l'image rentre bien visuellement
-                        worksheet.row_dimensions[row_idx].height = 65
-                except Exception as e:
-                    # En cas d'erreur de téléchargement, on ignore l'image pour ne pas bloquer l'export
-                    print(f"Erreur image ligne {row_idx}: {e}")
-                    pass
+        #                # 4. Positionner l'image dans la cellule correspondante (ex: A2, A3, etc.)
+        #                cell_coordinate = f"A{row_idx}"
+        #                worksheet.add_image(xl_img, cell_coordinate)
+        #                
+        #               # 5. Ajuster la hauteur de la ligne pour que l'image rentre bien visuellement
+        #               worksheet.row_dimensions[row_idx].height = 65
+        #        except Exception as e:
+        #            # En cas d'erreur de téléchargement, on ignore l'image pour ne pas bloquer l'export
+        #            print(f"Erreur image ligne {row_idx}: {e}")
+        #             pass
                     
-        # Définir la largeur de la colonne A pour l'image
-        worksheet.column_dimensions['A'].width = 15
+        # # Définir la largeur de la colonne A pour l'image
+        # worksheet.column_dimensions['A'].width = 15
         
     return output.getvalue()
 
