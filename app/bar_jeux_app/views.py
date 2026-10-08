@@ -352,28 +352,23 @@ def _final_page(user):
     # 1. On crée 4 colonnes pour aligner les 4 boutons sur la même ligne
 
     st.markdown("""
-             <style>
-             /* Style commun à tous les boutons (download + submit) */
-             div.stDownloadButton > button,
-             div.stFormSubmitButton > button {
-                 height: 42px;
-                 width: 100%;
-                 border-radius: 8px;
-                 font-weight: 600;
-                 border: 1px solid #d0d0d0;
-             }
-             
-             /* Réduit l'espace vertical entre le bloc des download_button et le form juste en dessous */
-             div[data-testid="stVerticalBlock"] > div:has(div.stDownloadButton) {
-                 margin-bottom: -15px;
-             }
-             
-             /* Optionnel : mettre en avant le bouton Enregistrer */
-             div.stFormSubmitButton > button {
-                 background-color: #2e7d32;
-                 color: white;
-             }
-             </style>
+        <style>
+        div.stDownloadButton > button,
+        div.stFormSubmitButton > button {
+            height: 42px;
+            width: 100%;
+            border-radius: 8px;
+            font-weight: 600;
+            border: 1px solid #d0d0d0;
+        }
+        div[data-testid="stVerticalBlock"] > div:has(div.stDownloadButton) {
+            margin-bottom: -15px;
+        }
+        div.stFormSubmitButton > button {
+            background-color: #2e7d32;
+            color: white;
+        }
+        </style>
     """, unsafe_allow_html=True)
 
 
@@ -394,8 +389,11 @@ def _final_page(user):
             data=excel_data_propose,
             file_name="export_jeux_propose_user.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True
+            use_container_width=True,
+            key="btn_download_propose"
         )
+         
+        
     
     # ---Colonne 2 : Export Validé ---
     with col_btn2:
@@ -411,7 +409,9 @@ def _final_page(user):
             data=excel_data_valide,
             file_name="export_jeux_valide_user.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True
+            use_container_width=True,
+            key="btn_download_valide"
+        
         )
 
  
@@ -428,7 +428,9 @@ def _final_page(user):
             data=excel_data_initial,
             file_name="liste_selection_jeu.pdf",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True
+            use_container_width=True,
+            key="btn_download_initial_pdf_A3"
+        
         )
 
         excel_data_initial = export_excel_bytes( df_export_list_initiale , "A3" ,"excel" ,"couleur")    
@@ -438,7 +440,8 @@ def _final_page(user):
             data=excel_data_initial,
             file_name="liste_selection_jeu.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True
+            use_container_width=True,
+            key="btn_download_initial_excel_A3"
         )
 
     with col_btn4:
@@ -450,7 +453,8 @@ def _final_page(user):
             data=excel_data_initial,
             file_name="liste_selection_jeu.pdf",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True
+            use_container_width=True,
+            key="btn_download_initial_pdf_A4"
         )
 
         excel_data_initial = export_excel_bytes( df_export_list_initiale , "A4" ,"excel", "couleur" )    
@@ -460,7 +464,8 @@ def _final_page(user):
             data=excel_data_initial,
             file_name="liste_selection_jeu.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True
+            use_container_width=True,
+            key="btn_download_initial_excel_A4"
         )
 
 
@@ -487,7 +492,8 @@ def _final_page(user):
             data=excel_data_liste_global_valide,
             file_name="liste_selection_valide_jeu.pdf",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True
+            use_container_width=True,
+            key="btn_download_valide_pdf_A3"
         )
 
 
@@ -498,7 +504,8 @@ def _final_page(user):
             data=excel_data_liste_global_valide,
             file_name="liste_selection_valide_jeu.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True
+            use_container_width=True,
+            key="btn_download_valide_excel_A3"
         )
     
     with col_btn6:
@@ -510,7 +517,8 @@ def _final_page(user):
             data=excel_data_liste_global_valide,
             file_name="liste_selection_valide_jeu.pdf",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True
+            use_container_width=True,
+            key="btn_download_valide_pdf_A4"
         )
 
   
@@ -521,7 +529,8 @@ def _final_page(user):
             data=excel_data_liste_global_valide,
             file_name="liste_selection_valide_jeu.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True
+            use_container_width=True,
+            key="btn_download_valide_excel_A4"
         )
     
 
