@@ -419,7 +419,7 @@ def _final_page(user):
     with col_btn3:
         df_export_initiale = df_jeux.copy()
         df_export_initiale = df_export_initiale.rename(columns={"Total coché par joueur": "NbrEx"})
-        df_export_list_initiale = df_export_initiale[["Classement", "NbrEx","Jeu"]].sort_values(by="Jeu"),
+        df_export_list_initiale = df_export_initiale[["Classement", "NbrEx","Jeu"]].sort_values(by="Jeu")
     
         excel_data_initial = export_excel_bytes( df_export_list_initiale , "A3" ,"pdf" ,"couleur"  )    
 
