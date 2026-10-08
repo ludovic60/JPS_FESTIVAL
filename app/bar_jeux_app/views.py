@@ -471,6 +471,9 @@ def _final_page(user):
         df_export_valide = df_jeux.copy()
      
         df_export_valide = df_export_valide.rename(columns={"Total coché validé par admin": "NbrEx"})
+        #  Convertir explicitement en entier (en gérant d'éventuels vides/NaN par 0 si besoin)
+        df_export_valide["NbrEx"] = ( pd.to_numeric(df_export_valide["NbrEx"], errors="coerce").fillna(0).astype(int)   )
+             
         df_filtre_global_valide = df_export_valide[df_export_valide["NbrEx"] > 0]
 
         #df_export_liste_global_valide = df_filtre_global_valide[["Classement", "NbrEx","Jeu"]].sort_values(by="Jeu")
@@ -717,7 +720,7 @@ def _final_page(user):
 
 
     ### ----------------------------------------------------------------------------------------------
-    ###  gestion dataframe pour les jeux pretés   ---------------------------------------------------- 
+    ###  gestion dataframe pour les jeux validé   ---------------------------------------------------- 
     ### ----------------------------------------------------------------------------------------------
 
 
