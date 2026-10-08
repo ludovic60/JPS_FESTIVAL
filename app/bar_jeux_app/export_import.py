@@ -46,39 +46,39 @@ def to_excel(df) :
         
         # Supposons que la colonne des URLs d'images est la première (colonne A, index 1)
         # On parcourt les lignes à partir de la ligne 2 (la ligne 1 étant l'en-tête)
-        for row_idx, url in enumerate(df['Couverture Jeu'], start=2):
-            if pd.notna(url) and str(url).startswith("http"):
-                try:
-                    # 1. Télécharger l'image depuis l'URL
-                    response = requests.get(url, timeout=5)
-                    if response.status_code == 200:
-                        img_io = io.BytesIO(response.content)
+       # for row_idx, url in enumerate(df['Couverture Jeu'], start=2):
+        #     if pd.notna(url) and str(url).startswith("http"):
+        #        try:
+        #             # 1. Télécharger l'image depuis l'URL
+        #            response = requests.get(url, timeout=5)
+        #            if response.status_code == 200:
+        #                  img_io = io.BytesIO(response.content)
+        #                 
+        #                 # 2. Ouvrir avec Pillow pour redimensionner (optionnel mais conseillé pour Excel)
+        #                 img = PILImage.open(img_io)
+        #                 img.thumbnail((80, 80)) # Taille max de l'image dans la cellule
+        #                 
+        #                  # Sauvegarder dans un buffer temporaire pour openpyxl
+        #                temp_img_io = io.BytesIO()
+        #                img.save(temp_img_io, format="PNG")
+        #                temp_img_io.seek(0)
                         
-                        # 2. Ouvrir avec Pillow pour redimensionner (optionnel mais conseillé pour Excel)
-                        img = PILImage.open(img_io)
-                        img.thumbnail((80, 80)) # Taille max de l'image dans la cellule
+        #                # 3. Créer l'objet Image pour openpyxl
+        #                xl_img = OpenpyxlImage(temp_img_io)
                         
-                        # Sauvegarder dans un buffer temporaire pour openpyxl
-                        temp_img_io = io.BytesIO()
-                        img.save(temp_img_io, format="PNG")
-                        temp_img_io.seek(0)
-                        
-                        # 3. Créer l'objet Image pour openpyxl
-                        xl_img = OpenpyxlImage(temp_img_io)
-                        
-                        # 4. Positionner l'image dans la cellule correspondante (ex: A2, A3, etc.)
-                        cell_coordinate = f"A{row_idx}"
-                        worksheet.add_image(xl_img, cell_coordinate)
-                        
-                        # 5. Ajuster la hauteur de la ligne pour que l'image rentre bien visuellement
-                        worksheet.row_dimensions[row_idx].height = 65
-                except Exception as e:
-                    # En cas d'erreur de téléchargement, on ignore l'image pour ne pas bloquer l'export
-                    print(f"Erreur image ligne {row_idx}: {e}")
-                    pass
+        #                # 4. Positionner l'image dans la cellule correspondante (ex: A2, A3, etc.)
+        #                cell_coordinate = f"A{row_idx}"
+        #                worksheet.add_image(xl_img, cell_coordinate)
+        #                
+        #               # 5. Ajuster la hauteur de la ligne pour que l'image rentre bien visuellement
+        #               worksheet.row_dimensions[row_idx].height = 65
+        #        except Exception as e:
+        #            # En cas d'erreur de téléchargement, on ignore l'image pour ne pas bloquer l'export
+        #            print(f"Erreur image ligne {row_idx}: {e}")
+        #             pass
                     
-        # Définir la largeur de la colonne A pour l'image
-        worksheet.column_dimensions['A'].width = 15
+        # # Définir la largeur de la colonne A pour l'image
+        # worksheet.column_dimensions['A'].width = 15
         
     return output.getvalue()
 
@@ -105,8 +105,9 @@ def to_pdf(df, title="Liste finale des prêts") -> bytes:
 
 
 
-def export_excel_bytes(df, page_size, mode):
+def export_excel_bytes(df, page_size, mode ,color_or_blanc):
   df_export = df.copy()
+
   for i in range(1, 21):
     df_export[f"{i:02d}"] = ""
 
@@ -125,7 +126,7 @@ def export_excel_bytes(df, page_size, mode):
         col_indices[header_val] = col_idx
 
     if page_size == "A3":
-      target_widths = {"Classement": 90, "Jeu": 160}
+      target_widths = {"Classement": 90, "NbrEx": 30, "Jeu": 160}
       for i in range(1, 21):
         target_widths[f"Jeu{i:02d}"] = 18
       for header_name, width in target_widths.items():
@@ -168,39 +169,49 @@ def export_excel_bytes(df, page_size, mode):
     if page_size == "A3":
       pagesize = portrait(A3)
       default_col_width = 25
-      target_widths = {"Classement": 70, "Jeu": 180}
+      target_widths = {"Classement": 70, "NbrEx" : 25 , "Jeu": 170}
       for i in range(1, 21):
-        target_widths[f"{i:02d}"] = 30  
+        target_widths[f"{i:02d}"] = 28
       ### hauteur des lignes
       header_height = 20
-      data_row_height = 30
-      
-    else:
-      pagesize = landscape(A4)
-      default_col_width = 25
-      target_widths = {"Classement": 70, "Jeu": 180}
-      for i in range(1, 21):
-        target_widths[f"{i:02d}"] = 30
-      ### hauteur des lignes
-      header_height = 30
-      data_row_height = 18
+      data_row_height = 29
 
-    doc = SimpleDocTemplate(
+      doc = SimpleDocTemplate(
         pdf_buffer,
         pagesize=pagesize,
         rightMargin=20,
         leftMargin=20,
-        topMargin=20,
-        bottomMargin=20,
+        topMargin=8,
+        bottomMargin=8,
     )
+      
+    else:
+      pagesize = landscape(A4)
+      default_col_width = 25
+      target_widths = {"Classement": 70, "NbrEx" : 25 ,"Jeu": 220}
+      for i in range(1, 21):
+        target_widths[f"{i:02d}"] = 25
+      ### hauteur des lignes
+      header_height = 20
+      data_row_height =30
+      doc = SimpleDocTemplate(
+        pdf_buffer,
+        pagesize=pagesize,
+        rightMargin=20,
+        leftMargin=20,
+        topMargin=10,
+        bottomMargin=10,
+    )
+
+    
     elements = []
 
     # Style spécifique pour la colonne Jeu (taille plus petite et retour à la ligne)
     style_jeu = ParagraphStyle(
         name="StyleJeu",
         fontName="Helvetica",
-        fontSize=10,  # Taille de police réduite pour la colonne Jeu
-        leading=10,  # Interligne adapté
+        fontSize=12,  # Taille de police réduite pour la colonne Jeu
+        leading=14,  # Interligne adapté
         alignment=1,  # Centré (0=Gauche, 1=Centre, 2=Droite)
     )
 
@@ -208,15 +219,15 @@ def export_excel_bytes(df, page_size, mode):
     style_header = ParagraphStyle(
         name="StyleHeader",
         fontName="Helvetica-Bold",
-        fontSize=8,
-        leading=10,
+        fontSize=7,
+        leading=7,
         textColor=colors.whitesmoke,
         alignment=1,
     )
 
     # Style standard pour le reste des cellules
     style_cell = ParagraphStyle(
-        name="StyleCell", fontName="Helvetica", fontSize=7, leading=9, alignment=1
+        name="StyleCell", fontName="Helvetica", fontSize=10, leading=9, alignment=1
     )
 
     # Préparation des données en enveloppant chaque texte dans un Paragraph
@@ -267,29 +278,30 @@ def export_excel_bytes(df, page_size, mode):
     ]
 
     # Application des couleurs conditionnelles sur la colonne "Classement"
-    try:
-      classement_idx = columns.index("Classement")
-      color_map = {
-          config_bar_jeux._CLS_ENQUETE_ESCAPE: colors.HexColor("#1FC7FF"),
-          config_bar_jeux._CLS_COOP: colors.HexColor("#7A0EE3"),
-          config_bar_jeux._CLS_INITIE: colors.HexColor("#F5E20C"),
-          config_bar_jeux._CLS_ENFANT: colors.HexColor("#1128D6"),
-          config_bar_jeux._CLS_AMBIANCE: colors.HexColor("#57B02C"),
-          config_bar_jeux._CLS_FAMILLE: colors.HexColor("#E655DA"),
-          config_bar_jeux._CLS_EXPERT: colors.HexColor("#E67A70"),
-          config_bar_jeux._CLS_EXPERT_PLUS: colors.HexColor("#8C0E07"),
-          config_bar_jeux._CLS_NON_CLASSE: colors.HexColor("#C7C5C5"),
-          config_bar_jeux._CLS_DUO: colors.HexColor("#FF9224"),
-      }
-
-      for row_idx, row in enumerate(df_export.itertuples(index=False), start=1):
-        val = getattr(row, "Classement", None)
-        if val in color_map:
-          style.append(
-              ("BACKGROUND", (classement_idx, row_idx), (classement_idx, row_idx), color_map[val])
-          )
-    except Exception:
-      pass
+    if color_or_blanc == "couleur" : 
+        try:
+          classement_idx = columns.index("Classement")
+          color_map = {
+              config_bar_jeux._CLS_ENQUETE_ESCAPE: colors.HexColor("#1FC7FF"),
+              config_bar_jeux._CLS_COOP: colors.HexColor("#7A0EE3"),
+              config_bar_jeux._CLS_INITIE: colors.HexColor("#F5E20C"),
+              config_bar_jeux._CLS_ENFANT: colors.HexColor("#1128D6"),
+              config_bar_jeux._CLS_AMBIANCE: colors.HexColor("#57B02C"),
+              config_bar_jeux._CLS_FAMILLE: colors.HexColor("#E655DA"),
+              config_bar_jeux._CLS_EXPERT: colors.HexColor("#E67A70"),
+              config_bar_jeux._CLS_EXPERT_PLUS: colors.HexColor("#8C0E07"),
+              config_bar_jeux._CLS_NON_CLASSE: colors.HexColor("#C7C5C5"),
+              config_bar_jeux._CLS_DUO: colors.HexColor("#FF9224"),
+          }
+    
+          for row_idx, row in enumerate(df_export.itertuples(index=False), start=1):
+            val = getattr(row, "Classement", None)
+            if val in color_map:
+              style.append(
+                  ("BACKGROUND", (classement_idx, row_idx), (classement_idx, row_idx), color_map[val])
+              )
+        except Exception:
+          pass
 
     table.setStyle(TableStyle(style))
     elements.append(table)
