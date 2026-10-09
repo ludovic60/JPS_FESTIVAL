@@ -733,6 +733,8 @@ def _final_page(user):
     if len(liste_pret_validé_pd) >0 :
         ########### dataframe des infos jeux pretes
         print(liste_game_validé)
+        if isinstance(liste_game_validé, list):
+                print("C'est une liste !")
         liste_detail_valider = storage_jeux.load_games(liste_game_validé, None)
         liste__info_pret_valider_user  = pd.DataFrame(liste_detail_valider)
         liste__info_pret_valider_user = liste__info_pret_valider_user.rename(columns={'_id': 'id_jeux'})
