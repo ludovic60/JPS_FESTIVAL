@@ -723,55 +723,37 @@ def _final_page(user):
     ### ----------------------------------------------------------------------------------------------
 
 
-    ########### dataframe des prets
+    ########### dataframe des prets valide
+
     liste_pret_validé = storage_jeux.get_validated_loans()
-    liste_game_validé = [ObjectId(game["id_jeux"]) for game in liste_pret_validé ]
-    liste_pret_validé_pd = pd.DataFrame(liste_pret_validé)
     
- 
-    ####creation du dataframe si il y a des prets validé
-    if len(liste_pret_validé_pd) >0 :
-        ########### dataframe des infos jeux pretes
+    if len(liste_pret_validé) > 0:
+        liste_pret_validé_pd = pd.DataFrame(liste_pret_validé)
+        liste_pret_validé_pd['id_jeux'] = liste_pret_validé_pd['id_jeux'].astype(str).str.strip()
+        liste_pret_validé_pd['user_id'] = liste_pret_validé_pd['user_id'].astype(str).str.strip()
 
+        liste_game_validé = [ObjectId(game["id_jeux"]) for game in liste_pret_validé]
         liste_detail_valider = storage_jeux.load_games(liste_game_validé, None)
-        liste__info_pret_valider_user  = pd.DataFrame(liste_detail_valider)
-        liste__info_pret_valider_user = liste__info_pret_valider_user.rename(columns={'_id': 'id_jeux'})
-        liste__info_pret_valider_user = liste__info_pret_valider_user.rename(columns={'classement_jps_final': 'classement'})
-
-     
-        ###########  jointure des prets avec les infos de jeu
-        ########### nettoyage des clés pour les rendre compatible 
+        
+        liste__info_pret_valider_user = pd.DataFrame(liste_detail_valider)
+        liste__info_pret_valider_user = liste__info_pret_valider_user.rename(columns={'_id': 'id_jeux', 'classement_jps_final': 'classement'})
         liste__info_pret_valider_user['id_jeux'] = liste__info_pret_valider_user['id_jeux'].astype(str).str.strip()
-        liste_pret_validé_pd['id_jeux'] = liste__info_pret_valider_user['id_jeux'].astype(str).str.strip()
-    
-    
-        liste_pret__validé_user_detail = pd.merge(
-               liste__info_pret_valider_user,
-               liste_pret_validé_pd,
-               on="id_jeux",
-               how="inner",  
-           )
-        ###########  jointure des prets avec les infos de jeu
-        ########### nettoyage des clés pour les rendre compatible 
-        liste_pret__validé_user_detail['user_id'] = liste_pret__validé_user_detail['user_id'].astype(str).str.strip()
+
+        users_dict_pd = pd.DataFrame(users).rename(columns={'_id': 'user_id'})
         users_dict_pd['user_id'] = users_dict_pd['user_id'].astype(str).str.strip()
-    
-       
-     
-        df_jeux_valide_graphique=pd.merge(
-               liste_pret__validé_user_detail,
-               users_dict_pd,
-               on="user_id",
-               how="inner",  
-           )
-    
+
+        # Jointures propres
+        liste_pret__validé_user_detail = pd.merge(liste__info_pret_valider_user, liste_pret_validé_pd, on="id_jeux", how="inner")
+        df_jeux_valide_graphique = pd.merge(liste_pret__validé_user_detail, users_dict_pd, on="user_id", how="inner")
+
         if len(df_jeux_valide_graphique) > 0:
              df_jeux_valide_graphique["Nouveauté"] = df_jeux_valide_graphique.apply(nouveaute_def, axis=1)
              df_jeux_valide_graphique["Nb_jeux_valide"] = 1
-    
-    else :
+    else:
         ####creation dataframe vide car pas de pret
         df_jeux_valide_graphique = pd.DataFrame()
+
+
     
  
 
