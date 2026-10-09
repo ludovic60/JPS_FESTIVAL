@@ -1282,7 +1282,18 @@ def _final_page(user):
     st.write( df_jeux_valide_graphique[liste_pret__validé_user_detail['user_id'] == "6a9d189113d4bdfa2f988833"])
     st.write("df_filtre_global_valide")
     st.write(df_filtre_global_valide)
- 
+
+
+
+    st.write("liste_game_validé")
+
+    st.write(liste_game_validé)
+
+    st.write("liste_pret_validé_pd")
+    st.write(liste_pret_validé_pd)
+    st.write("liste__info_pret_valider_user")
+    st.write(liste__info_pret_valider_user)
+
 
 
  
