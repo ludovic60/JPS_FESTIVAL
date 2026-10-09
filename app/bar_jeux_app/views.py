@@ -761,54 +761,56 @@ def _final_page(user):
     ###  gestion dataframe pour les jeux pretés   ---------------------------------------------------- 
     ### ----------------------------------------------------------------------------------------------
 
-
-    ########### dataframe des prets
-    liste_pret_user = storage_jeux.get_all_loans()
-    liste_game_preter = [ObjectId(game["id_jeux"]) for game in liste_pret_user ]
-    liste_pret_user_pd = pd.DataFrame(liste_pret_user)
+   liste_pret_user = storage_jeux.get_all_loans()
     
- 
     ####creation du dataframe si il y a des prets
-    if len(liste_pret_user_pd) >0 :
-        ########### dataframe des infos jeux pretes
-        liste_detail_preter = storage_jeux.load_games(liste_game_preter, None)
-        liste__info_pret_user  = pd.DataFrame(liste_detail_preter)
-        liste__info_pret_user = liste__info_pret_user.rename(columns={'_id': 'id_jeux'})
-        liste__info_pret_user = liste__info_pret_user.rename(columns={'classement_jps_final': 'classement'})
-     
-        ###########  jointure des prets avec les infos de jeu
-        ########### nettoyage des clés pour les rendre compatible 
-        liste__info_pret_user['id_jeux'] = liste__info_pret_user['id_jeux'].astype(str).str.strip()
+    if len(liste_pret_user) > 0:
+        liste_pret_user_pd = pd.DataFrame(liste_pret_user)
         liste_pret_user_pd['id_jeux'] = liste_pret_user_pd['id_jeux'].astype(str).str.strip()
-    
-    
+        liste_pret_user_pd['user_id'] = liste_pret_user_pd['user_id'].astype(str).str.strip()
+
+        liste_game_preter = [ObjectId(game["id_jeux"]) for game in liste_pret_user]
+        liste_detail_preter = storage_jeux.load_games(liste_game_preter, None)
+        
+        liste__info_pret_user = pd.DataFrame(liste_detail_preter)
+        liste__info_pret_user = liste__info_pret_user.rename(columns={
+            '_id': 'id_jeux', 
+            'classement_jps_final': 'classement'
+        })
+        liste__info_pret_user['id_jeux'] = liste__info_pret_user['id_jeux'].astype(str).str.strip()
+
+
+
+
+  
+        # Jointure des prêts avec les infos de jeu
         liste_pret_user_detail = pd.merge(
-               liste__info_pret_user,
-               liste_pret_user_pd,
-               on="id_jeux",
-               how="inner",  
-           )
-        ###########  jointure des prets avec les infos de jeu
-        ########### nettoyage des clés pour les rendre compatible 
-        liste_pret_user_detail['user_id'] = liste_pret_user_detail['user_id'].astype(str).str.strip()
+            liste__info_pret_user,
+            liste_pret_user_pd,
+            on="id_jeux",
+            how="inner",  
+        )
+        
+        # Préparation des utilisateurs
         users_dict_pd['user_id'] = users_dict_pd['user_id'].astype(str).str.strip()
     
-       
-     
-        df_jeux_pret_graphique=pd.merge(
-               liste_pret_user_detail,
-               users_dict_pd,
-               on="user_id",
-               how="inner",  
-           )
+        # Jointure finale avec les utilisateurs
+        df_jeux_pret_graphique = pd.merge(
+            liste_pret_user_detail,
+            users_dict_pd,
+            on="user_id",
+            how="inner",  
+        )
     
-        if len(df_jeux_pret_graphique) > 0:
-             df_jeux_pret_graphique["Nouveauté"] = liste_pret_user_detail.apply(nouveaute_def, axis=1)
+        if not df_jeux_pret_graphique.empty:
+             df_jeux_pret_graphique["Nouveauté"] = df_jeux_pret_graphique.apply(nouveaute_def, axis=1)
              df_jeux_pret_graphique["Nb_jeux_propose"] = 1
-    
-    else :
-        ####creation dataframe vide car pas de pret
-        df_jeux_select_graphique = pd.DataFrame()
+    else:
+        #  On initialise bien le dataframe vide si pas de données
+        df_jeux_pret_graphique = pd.DataFrame()
+
+
+ 
     
 
     ### ----------------------------------------------------------------------------------------------
