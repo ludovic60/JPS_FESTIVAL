@@ -761,7 +761,7 @@ def _final_page(user):
     ###  gestion dataframe pour les jeux pretés   ---------------------------------------------------- 
     ### ----------------------------------------------------------------------------------------------
 
-   liste_pret_user = storage_jeux.get_all_loans()
+    liste_pret_user = storage_jeux.get_all_loans()
     
     ####creation du dataframe si il y a des prets
     if len(liste_pret_user) > 0:
