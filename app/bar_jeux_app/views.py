@@ -732,9 +732,7 @@ def _final_page(user):
     ####creation du dataframe si il y a des prets validé
     if len(liste_pret_validé_pd) >0 :
         ########### dataframe des infos jeux pretes
-        print(liste_game_validé)
-        if isinstance(liste_game_validé, list):
-                print("C'est une liste !")
+
         liste_detail_valider = storage_jeux.load_games(liste_game_validé, None)
         liste__info_pret_valider_user  = pd.DataFrame(liste_detail_valider)
         liste__info_pret_valider_user = liste__info_pret_valider_user.rename(columns={'_id': 'id_jeux'})
@@ -1277,25 +1275,25 @@ def _final_page(user):
     df_jeux_histogramme["Nb_jeux_valide"] = pd.to_numeric(df_jeux_histogramme["Nb_jeux_valide"], errors="coerce").fillna(0).astype(int)
     df_grouped = df_jeux_histogramme.groupby("pseudo")[["Nb_jeux_propose", "Nb_jeux_valide"]].sum().reset_index()
 
-    st.write( df_grouped[df_grouped["pseudo"] == "Lie"]) 
-    st.write( df_jeux_histogramme[df_jeux_histogramme["pseudo"] == "Lie"]) 
-    st.write( df_jeux_pret_graphique[df_jeux_pret_graphique["pseudo"] == "Lie"])    
-    st.write( df_jeux_valide_graphique[df_jeux_valide_graphique["pseudo"] == "Lie"]) 
+    #  st.write( df_grouped[df_grouped["pseudo"] == "Lie"]) 
+    #  st.write( df_jeux_histogramme[df_jeux_histogramme["pseudo"] == "Lie"]) 
+    #  st.write( df_jeux_pret_graphique[df_jeux_pret_graphique["pseudo"] == "Lie"])    
+    #  st.write( df_jeux_valide_graphique[df_jeux_valide_graphique["pseudo"] == "Lie"]) 
 
-    st.write( df_jeux_valide_graphique[liste_pret__validé_user_detail['user_id'] == "6a9d189113d4bdfa2f988833"])
-    st.write("df_filtre_global_valide")
-    st.write(df_filtre_global_valide)
+    #  st.write( df_jeux_valide_graphique[liste_pret__validé_user_detail['user_id'] == "6a9d189113d4bdfa2f988833"])
+    #  st.write("df_filtre_global_valide")
+    #  st.write(df_filtre_global_valide)
 
 
 
-    st.write("liste_game_validé")
+    #  st.write("liste_game_validé")
 
-    st.write(liste_game_validé)
+    #  st.write(liste_game_validé)
 
-    st.write("liste_pret_validé_pd")
-    st.write(liste_pret_validé_pd)
-    st.write("liste__info_pret_valider_user")
-    st.write(liste__info_pret_valider_user)
+    #  st.write("liste_pret_validé_pd")
+    #  st.write(liste_pret_validé_pd)
+    #  st.write("liste__info_pret_valider_user")
+    #  st.write(liste__info_pret_valider_user)
 
 
 
