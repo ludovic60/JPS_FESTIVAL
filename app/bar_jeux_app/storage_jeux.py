@@ -55,6 +55,9 @@ def load_games(list_key, search_query=None):
             elif list_key == "all":
                 filtre_tb = {}    
                
+            elif isinstance(list_key, list):
+                filtre_tb= {"_id": {"$in": list_key}}
+            
             elif len(list_key) <=7 :
               
                 if datetime.strptime(list_key, "%Y_%m"): 
@@ -70,7 +73,7 @@ def load_games(list_key, search_query=None):
                         filtre_tb= {"_id": {"$in": list_key}}
                        
             else :
-                filtre_tb= {"_id": {"$in": list_key}}
+                filtre_tb= {"_id": {"$in": list_key}}     
 
         
         resultats = list(game_tb.find(filtre_tb).sort({"nom_jeu_fichier":1}))
