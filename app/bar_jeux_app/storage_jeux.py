@@ -399,7 +399,7 @@ def get_validated_loans():
     if   con_mongo : 
         db = cs.get_db()
         game_loan_tb = db.prets_jeux
-        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") , "valide_par_admin" : str("True")  }  
+        filtre_tb = {"annee": cs._secret("ANNEE_FESTIVAL") , "valide_par_admin" : str("True") ,user_id:"6a9d189113d4bdfa2f988833" }  
         resultats = list(game_loan_tb.find(filtre_tb))
     return resultats 
 
