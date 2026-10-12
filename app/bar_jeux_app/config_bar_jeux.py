@@ -28,17 +28,17 @@ _CLS_AMBIANCE = f"🎉 AMBIANCE"
 _CLS_NON_CLASSE = f"🤔 NON CLASSE"
 
 
-couleurs_classement = {"AMBIANCE": "#E655DA", ## rose
-                       "COOP/SEMI COOP" :"#bc0ee3",####violet
-                       "JEU DUO" :"#FF9224",          ##orange                 
-                        "ENQUETE/ESCAPE/ENIGME/CASSETETE" :"#1fe1ff",##bleu clair
-                        "NON CLASSE": "#C7C5C5", ### gris
-                        "PBM CLASSEMENT": "#080808",   ### black                         
-                        "FAMILLE": "#57B02C", ## vert 
-                        "INITIE": "#F5E20C", ## jaune 
-                        "EXPERT": "#E67A70", ### rouge  
-                        "EXPERT+": "#8C0E07",   ### rouge   foncé                     
-                        "ENFANT": "#1174d6" ### bleu foncé
+couleurs_classement = {_CLS_AMBIANCE: "#E655DA", ## rose
+                       _CLS_COOP :"#bc0ee3",####violet
+                       _CLS_DUO  :"#FF9224",          ##orange                 
+                       _CLS_ENQUETE_ESCAPE :"#1fe1ff",##bleu clair
+                       "NON CLASSE": "#C7C5C5", ### gris
+                       "PBM CLASSEMENT": "#080808",   ### black                         
+                       _CLS_FAMILLE : "#57B02C", ## vert 
+                       _CLS_INITIE : "#F5E20C", ## jaune 
+                       _CLS_EXPERT: "#E67A70", ### rouge  
+                       _CLS_EXPERT_PLUS : "#8c5907",   ### rouge   foncé                     
+                       _CLS_ENFANT : "#1174d6" ### bleu foncé
                         }
 
 couleurs_nouveaute = {"✨NOUVEAUTE": "#57B02C", "🏺ANCIEN": "#080808", "🧐 INCONNU": "#1128D6"}
