@@ -281,19 +281,8 @@ def export_excel_bytes(df, page_size, mode ,color_or_blanc):
     if color_or_blanc == "couleur" : 
         try:
           classement_idx = columns.index("Classement")
-          color_map = {
-              config_bar_jeux._CLS_ENQUETE_ESCAPE: colors.HexColor("#1FC7FF"),
-              config_bar_jeux._CLS_COOP: colors.HexColor("#7A0EE3"),
-              config_bar_jeux._CLS_INITIE: colors.HexColor("#F5E20C"),
-              config_bar_jeux._CLS_ENFANT: colors.HexColor("#1128D6"),
-              config_bar_jeux._CLS_AMBIANCE: colors.HexColor("#57B02C"),
-              config_bar_jeux._CLS_FAMILLE: colors.HexColor("#E655DA"),
-              config_bar_jeux._CLS_EXPERT: colors.HexColor("#E67A70"),
-              config_bar_jeux._CLS_EXPERT_PLUS: colors.HexColor("#8C0E07"),
-              config_bar_jeux._CLS_NON_CLASSE: colors.HexColor("#C7C5C5"),
-              config_bar_jeux._CLS_DUO: colors.HexColor("#FF9224"),
-          }
-    
+          color_map = config_bar_jeux.couleurs_classement 
+            
           for row_idx, row in enumerate(df_export.itertuples(index=False), start=1):
             val = getattr(row, "Classement", None)
             if val in color_map:
