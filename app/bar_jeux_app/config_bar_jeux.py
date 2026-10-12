@@ -28,7 +28,7 @@ _CLS_AMBIANCE = f"🎉 AMBIANCE"
 _CLS_NON_CLASSE = f"🤔 NON CLASSE"
 
 
-couleurs_classement = {_CLS_AMBIANCE: "#E655DA", ## rose
+couleurs_classement = {_CLS_AMBIANCE: "#f78fef", ## rose
                        _CLS_COOP :"#e30ed8",####violet
                        _CLS_DUO  :"#FF9224",          ##orange                 
                        _CLS_ENQUETE_ESCAPE :"#1fe1ff",##bleu clair
