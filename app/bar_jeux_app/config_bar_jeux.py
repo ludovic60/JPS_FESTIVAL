@@ -23,7 +23,7 @@ _CLS_EXPERT_PLUS = f"🔴🔴🔴 EXPERT+"
 _CLS_ENFANT = f"🧸 ENFANT"                                        
 _CLS_DUO  = f"👥 JEU DUO"                                       
 _CLS_COOP   = f"🤝 COOP/SEMI COOP"                             
-_CLS_ENQUETE_ESCAPE   = f"🕵️ ENQUETE/ESCAPE/ENIGME/CASSETETE"                            
+_CLS_ENQUETE_ESCAPE   = f"🕵️ ENQUETE/ESCAPE/ENIGME"                            
 _CLS_AMBIANCE = f"🎉 AMBIANCE"
 _CLS_NON_CLASSE = f"🤔 NON CLASSE"
 
