@@ -26,14 +26,15 @@ _CLS_COOP   = f"🤝 COOP/SEMI COOP"
 _CLS_ENQUETE_ESCAPE   = f"🕵️ ENQUETE/ESCAPE/ENIGME"                            
 _CLS_AMBIANCE = f"🎉 AMBIANCE"
 _CLS_NON_CLASSE = f"🤔 NON CLASSE"
+_CLS_PBM_CLASSE = "PBM CLASSEMENT"
 
 
 couleurs_classement = {_CLS_AMBIANCE: "#f78fef", ## rose
                        _CLS_COOP :"#e30ed8",####violet
                        _CLS_DUO  :"#FF9224",          ##orange                 
                        _CLS_ENQUETE_ESCAPE :"#1fe1ff",##bleu clair
-                       "NON CLASSE": "#C7C5C5", ### gris
-                       "PBM CLASSEMENT": "#080808",   ### black                         
+                       _CLS_NON_CLASSE: "#C7C5C5", ### gris
+                       _CLS_PBM_CLASSE: "#080808",   ### black                         
                        _CLS_FAMILLE : "#57B02C", ## vert 
                        _CLS_INITIE : "#F5E20C", ## jaune 
                        _CLS_EXPERT: "#E67A70", ### rouge  
