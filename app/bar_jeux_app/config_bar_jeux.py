@@ -29,7 +29,7 @@ _CLS_NON_CLASSE = f"🤔 NON CLASSE"
 
 
 couleurs_classement = {_CLS_AMBIANCE: "#E655DA", ## rose
-                       _CLS_COOP :"#bc0ee3",####violet
+                       _CLS_COOP :"#e30ed8",####violet
                        _CLS_DUO  :"#FF9224",          ##orange                 
                        _CLS_ENQUETE_ESCAPE :"#1fe1ff",##bleu clair
                        "NON CLASSE": "#C7C5C5", ### gris
@@ -37,7 +37,7 @@ couleurs_classement = {_CLS_AMBIANCE: "#E655DA", ## rose
                        _CLS_FAMILLE : "#57B02C", ## vert 
                        _CLS_INITIE : "#F5E20C", ## jaune 
                        _CLS_EXPERT: "#E67A70", ### rouge  
-                       _CLS_EXPERT_PLUS : "#8c5907",   ### rouge   foncé                     
+                       _CLS_EXPERT_PLUS : "#b07d05",   ### marron                     
                        _CLS_ENFANT : "#1174d6" ### bleu foncé
                         }
 
