@@ -28,6 +28,20 @@ _CLS_AMBIANCE = f"🎉 AMBIANCE"
 _CLS_NON_CLASSE = f"🤔 NON CLASSE"
 
 
+couleurs_classement = {"AMBIANCE": "#E655DA", ## rose
+                           "COOP/SEMI COOP" :"#7A0EE3",####violet
+                           "JEU DUO" :"#FF9224",          ##orange                 
+                           "ENQUETE/ESCAPE/ENIGME/CASSETETE" :"#1FC7FF",##bleu clair
+                           "NON CLASSE": "#C7C5C5", ### gris
+                           "PBM CLASSEMENT": "#080808",   ### black                         
+                           "FAMILLE": "#57B02C", ## vert 
+                           "INITIE": "#F5E20C", ## jaune 
+                           "EXPERT": "#E67A70", ### rouge  
+                           "EXPERT+": "#8C0E07",   ### rouge   foncé                     
+                           "ENFANT": "#1128D6" ### bleu foncé
+                          }
+
+couleurs_nouveaute = {"✨NOUVEAUTE": "#57B02C", "🏺ANCIEN": "#080808", "🧐 INCONNU": "#1128D6"}
 
 
 
