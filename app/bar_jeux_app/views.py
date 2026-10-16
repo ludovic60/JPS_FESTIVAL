@@ -38,7 +38,7 @@ def main_app(user):
             pages = ["Liste des jeux","Recherche jeu"]
         page = st.radio("Navigation", pages, label_visibility="collapsed")
         st.divider()
-        if st.button("Déconnexion"):
+         if st.button("Déconnexion"):
             commun.auth.logout()
             st.rerun()
 
@@ -55,7 +55,10 @@ def main_app(user):
         _requests_suggestion_page(user)    
     elif page == "Recherche jeu":
          _list_page(f"Recherche jeu", "all", user)
-    else:
+   elif page == "Qui explique quoi":
+         _explique_page(user)
+
+   else:
         _final_page(user)
 
 
@@ -1313,3 +1316,270 @@ def _final_page(user):
        st.plotly_chart(fig_hist, use_container_width=True)
     else:
         st.info("Aucun jeu prété / validé pour le moment.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+############################################################################################################
+###-------------- page où est affiché les jeux selectionné
+############################################################################################################
+
+def _explique_page(user):
+    st.title("qui explique quoi")
+    st.write("Vous allez pouvoir remplir le tableau pour indiquer vos propositions de pret.   Les administrateurs valideront les différentes propositions pour définir votre liste de prêt définitive. ")
+
+    
+    # --- 1. CHARGEMENT GLOBAL DES DONNÉES EN AMONT (O(1) requêtes) ---
+    finals = storage_jeux.final_games()
+    if not finals:
+        st.info("Aucun jeu retenu par l'admin pour l'instant.")
+        return
+    
+    users = cs.get_users_loaner()
+    user_map = {u['pseudo']: str(u['_id']) for u in users}  # Dict pseudo -> id_str
+    pseudo_list = sorted(list(user_map.keys()))
+    
+    # Récupération en BATCH des infos de tous les jeux d'un coup
+ 
+    
+    # --- 2. CONSTRUCTION ULTRA-RAPIDE DU DATAFRAME ---
+    row_jeux = []
+    
+    for game in finals:
+        game_id = str(game.get('id_jeux'))
+        g = games_info_map.get(game_id, {})
+        
+        if not g:
+            continue
+    
+        # Calculs directes en mémoire
+        new_statut = nouveaute_def(g)
+    
+        row = {
+            "_id": game_id,                           
+            "nouveaute": new_statut,
+            "Classement": mise_forme_classement(g.get("classement_jps_final")),
+            "Couverture Jeu": g.get("couverture", ""),
+            "Jeu": g.get("nom_jeu_complet", "")
+        }
+    
+        # Remplissage des colonnes dynamiques par joueur (Recherche instantanée dans un Set)
+        for pseudo in pseudo_list:
+            u_id = user_map[pseudo]
+            row[f"{pseudo}_propose"] = (game_id, u_id) in loans_set
+            row[f"{pseudo}_valide"] = (game_id, u_id) in validated_loans_set
+    
+        row_jeux.append(row)
+    
+    df_jeux = pd.DataFrame(row_jeux)
+
+    # ---tableau  avec le boutons au dessus  ---
+    # Utilisation d'un st.form pour regrouper le tableau et le bouton de validation en bas
+    # Bouton de soumission unique en haut du tableau
+    # 1. On crée 4 colonnes pour aligner les 4 boutons sur la même ligne
+
+    st.markdown("""
+        <style>
+        div.stDownloadButton > button,
+        div.stFormSubmitButton > button {
+            height: 42px;
+            width: 100%;
+            border-radius: 8px;
+            font-weight: 600;
+            border: 1px solid #d0d0d0;
+        }
+        div[data-testid="stVerticalBlock"] > div:has(div.stDownloadButton) {
+            margin-bottom: -15px;
+        }
+        div.stFormSubmitButton > button {
+            background-color: #2e7d32;
+            color: white;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+
+ 
+        
+    
+  
+
+      
+   
+    with st.form(key="loans_form"):
+      image_renderer = JsCode("""
+      class ImageRenderer {
+          init(params) {
+              this.eGui = document.createElement('img');
+              this.eGui.setAttribute('src', params.value);
+              this.eGui.setAttribute('style', 'height: 45px; width: auto; border-radius: 4px; vertical-align: middle;');
+          }
+          getGui() { return this.eGui; }
+      }
+      """)
+      
+      #  On liste explicitement les noms des colonnes souhaitées
+      columns_to_show = [
+          "nouveaute",
+          "Annee",
+          "Classement",
+          "nbr max joueurs",
+          "duree min",
+          "duree max",
+          "Couverture Jeu",
+          "Jeu",
+          "Plusieurs exemplaires souhaités",
+          "Total coché par joueur",
+          "Total coché validé par admin"
+      ]
+      
+      # On passe la liste directement à partir du DataFrame
+      gb = GridOptionsBuilder.from_dataframe(df_jeux[columns_to_show])
+      gb.configure_default_column(filterable=True, sortable=True )
+      gb.configure_column("_id", hide=True)
+      gb.configure_column("nouveaute", editable=False, filter="agTextColumnFilter", width=110, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Couverture Jeu", editable=False,  wrapHeaderText=True, cellRenderer=image_renderer, width=100, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Jeu", editable=False, filter="agTextColumnFilter", sortable=True, width=150, suppressSizeToFit=True, pinned=True)
+      gb.configure_column("Classement", editable=False, filter="agTextColumnFilter", width=180, suppressSizeToFit=True, pinned=False)
+      
+      gb.configure_grid_options(singleClickEdit=True, rowHeight=60)
+      grid_options = gb.build()
+      
+      # En-têtes groupés par joueur
+      for pseudo in pseudo_list:
+          group_col = {
+              "headerName": pseudo,
+              "field": f"{pseudo}_propose",
+              "editable": (user["pseudo"] == pseudo or user["role"] == "admin"),
+              "cellRenderer": "agCheckboxCellRenderer",
+              "cellEditor": "agCheckboxCellEditor",
+              "width": 100,
+              "suppressSizeToFit": True,
+              }
+          grid_options["columnDefs"].append(group_col)
+      
+      # Hauteur dynamique
+      dynamic_height = 650 ##min(max(40 + (len(df_jeux) * 70) + 20, 200), 800)
+      if "grid_version" not in st.session_state:
+         st.session_state.grid_version = 0
+      gb.configure_grid_options(alwaysShowHorizontalScroll=True)
+
+      # Bouton de soumission unique en haut du tableau
+      submit_button = st.form_submit_button(
+            label="Enregistrer toutes les modifications"
+      )
+      # le tableau
+      grid_response = AgGrid(
+          df_jeux.sort_values(by="Jeu"),  
+          gridOptions=grid_options,
+          update_mode=GridUpdateMode.NO_UPDATE,
+          data_return_mode=DataReturnMode.AS_INPUT,
+          allow_unsafe_jscode=True,
+          fit_columns_on_grid_load=False,
+          height=dynamic_height, 
+          key=f"aggrid_table_{st.session_state.grid_version}",
+      ) 
+   
+ 
+
+
+     #### ------------------------------------------------------
+     # --- Détection des changements ---
+     #### ------------------------------------------------------
+    if submit_button:
+           updated_data = grid_response["data"]
+           new_df = pd.DataFrame(updated_data)
+     
+           # Les colonnes à surveiller
+           cols_to_check = [
+               "Plusieurs exemplaires souhaités"
+           ] + [
+               col
+               for col in new_df.columns
+               if "_propose" in col or "_valide" in col
+           ]
+     
+           # On fusionne pour comparer cellule par cellule via les suffixes _old et _new
+           merged = df_jeux.merge(new_df, on="_id", suffixes=("_old", "_new"))
+     
+           modifications_count = 0
+     
+           for _, row in merged.iterrows():
+             game_id = row["_id"]
+     
+             # On parcourt chaque colonne pour voir EXACTEMENT laquelle a changé
+             for col in cols_to_check:
+               val_old = row[f"{col}_old"]
+               val_new = row[f"{col}_new"]
+     
+               # Si la valeur a changé pour cette cellule précise
+               if val_old != val_new:
+                 modifications_count += 1
+     
+                 # --- CAS 1 : "Plusieurs exemplaires" ---
+                 if col == "Plusieurs exemplaires souhaités":
+                   if user["role"] == "admin":
+                     storage_jeux.toggle_admin_selected(game_id, val_new)
+     
+                 # --- CAS 2 : Colonne de prêt d'un utilisateur (ex: "pseudo_propose") ---
+                 elif "_propose" in col:
+                   # On extrait le pseudo du nom de la colonne (ex: "Alice_propose" -> "Alice")
+                   pseudo = col.replace("_propose", "")
+                   u_id = user_map[pseudo]
+                   storage_jeux.toggle_loan(game_id, str(u_id), val_new)
+     
+                 # --- CAS 3 : Colonne de validation admin d'un utilisateur (ex: "pseudo_valide") ---
+                 elif "_valide" in col:
+                   pseudo = col.replace("_valide", "")
+                   u_id = user_map[pseudo]
+                   storage_jeux.set_loan_valide_admin(game_id, str(u_id), val_new)
+     
+           st.success(
+               f"Enregistrement réussi : {modifications_count} cellule(s) modifiée(s)"
+               " mise(s) à jour !"
+           )
+           st.session_state.grid_version += 1
+           time.sleep(1)
+           st.rerun()
+    
+ 
+
+    st.divider()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
