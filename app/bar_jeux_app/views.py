@@ -1360,7 +1360,9 @@ def _explique_page(user):
     pseudo_list = sorted(list(user_map.keys()))
     
     # Récupération en BATCH des infos de tous les jeux d'un coup
- 
+    bar_jeu = get_validated_loans()
+    list_jeu_bar_jeu = {(p['id_jeux'], p['user_id']) for p in bar_jeu}
+    
     
     # --- 2. CONSTRUCTION ULTRA-RAPIDE DU DATAFRAME ---
     row_jeux = []
