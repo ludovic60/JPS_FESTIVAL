@@ -374,7 +374,37 @@ def _final_page(user):
     """, unsafe_allow_html=True)
 
 
- 
+
+    col_choix1 , col_choix2, col_choix3 = st.columns(3)
+
+    with col_choix1:
+       # Utilisation de st.radio pour 2 options sur la coueleur
+       mode_color = st.radio(
+           "Choisissez la couleur :",
+           options=["Couleur", "Noir et blanc"],
+           index=0  # Option par défaut (0 pour la première, 1 pour la seconde)
+       )
+
+    with col_choix2:
+       # Utilisation de st.radio pour 2 options sur la coueleur
+       mode_format = st.radio(
+           "Choisissez le format :",
+           options=["pdf", "excel"],
+           index=0  # Option par défaut (0 pour la première, 1 pour la seconde)
+       )
+
+    with col_choix3 :
+        st.subheader("1. Menu déroulant (Selectbox)")
+        # Votre liste de valeurs
+        options_nb_lignes = ["1", "2", "3", "4", "5", "6", "7", "8","9","10", "11", "12", "13", "14", "15", "16", "17", "18","19" ]
+    
+        # Sélection unique
+        nb_lignes_a_ajouter = st.selectbox(
+            "Choisissez un nb de lignes à ajouter :",
+            options=options_nb_lignes,
+            index=0  # Index de l'élément par défaut
+        )
+     
     col_btn1, col_btn2, col_btn3 , col_btn4, col_btn5 , col_btn6  = st.columns(6)
     
     # ---Colonne 1 : Export Proposé ---
