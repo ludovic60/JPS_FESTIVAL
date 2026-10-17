@@ -375,7 +375,7 @@ def _final_page(user):
 
 
 
-    col_choix1 , col_choix2, col_choix3 = st.columns(3)
+    col_choix1 , col_choix2, col_choix3 , col_choix4 = st.columns(4)
 
     with col_choix1:
        # Utilisation de st.radio pour 2 options sur la coueleur
@@ -393,7 +393,17 @@ def _final_page(user):
            index=0  # Option par défaut (0 pour la première, 1 pour la seconde)
        )
 
-    with col_choix3 :
+
+ 
+    with col_choix3:
+       # Utilisation de st.radio pour 2 options sur la coueleur
+       mode_taille = st.radio(
+           "Choisissez la taille  :",
+           options=["A4", "A3"],
+           index=0  # Option par défaut (0 pour la première, 1 pour la seconde)
+       )
+     
+    with col_choix4 :
         st.subheader("1. Menu déroulant (Selectbox)")
         # Votre liste de valeurs
         options_nb_lignes = ["1", "2", "3", "4", "5", "6", "7", "8","9","10", "11", "12", "13", "14", "15", "16", "17", "18","19" ]
@@ -409,9 +419,13 @@ def _final_page(user):
     
     # ---Colonne 1 : Export Proposé ---
     with col_btn1:
+
         if user['prete_jeu'] == True or user['prete_jeu'] == "True":
             df_filtre_propose = df_jeux[df_jeux[f"{user['pseudo']}_propose"] == True]
             df_export_list_propose = df_filtre_propose[["Jeu"]].sort_values(by="Jeu")
+            for i in range(1, options_nb_lignes) :
+                nouvelle_ligne = pd.DataFrame([{'Jeu': ' '}])
+                df_export_list_propose  = pd.concat([df_export_list_propose, nouvelles_lignes], ignore_index=True)
             excel_data_propose = to_excel(df_export_list_propose)
         else:
             excel_data_propose = b""
@@ -516,8 +530,18 @@ def _final_page(user):
         #df_export_liste_global_valide = df_filtre_global_valide[["Classement", "NbrEx","Jeu"]].sort_values(by="Jeu")
      
         df_export_liste_global_valide = df_filtre_global_valide[["Classement", "NbrEx","Jeu"]]
-      
-        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A3" ,"pdf", "blanc" ) 
+        df_export_liste_global_valide = df_export_liste_global_valide.sort_values(by="Jeu")
+
+      mode_color, options_nb_lignes
+     mode_format
+       if   mode_color == "couleur" : 
+            if mode_format == "pdf" : 
+               if mode_taille =="A3" :
+               
+excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A3" ,"pdf", "blanc" )      
+
+
+
         
         st.download_button(
             label="📥 la liste validée en pdf A3",
