@@ -59,8 +59,7 @@ def main_app(user):
          _list_page(f"Recherche jeu", "all", user)
     elif page == "Qui explique quoi":
          _explique_page(user)
-
-   else:
+    else:
         _final_page(user)
 
 
