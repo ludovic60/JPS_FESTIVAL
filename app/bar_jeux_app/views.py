@@ -440,7 +440,7 @@ def _final_page(user):
             df_export_list_propose = df_filtre_propose[["Jeu"]].sort_values(by="Jeu")
             for i in range(0, nb_lignes_a_ajouter) :
                 nouvelle_ligne = pd.DataFrame([{'Jeu': ' '}])
-                df_export_list_propose = pd.concat([df_export_list_propose, nouvelles_lignes], ignore_index=True)
+                df_export_list_propose = pd.concat([df_export_list_propose, nouvelle_ligne], ignore_index=True)
             file_bytes_user_propose = export_file_bytes( df_export_list_propose , mode_taille ,mode_format, mode_color ) 
         else:
             file_bytes_user_propose = b""
@@ -467,7 +467,7 @@ def _final_page(user):
             df_export_list_valide = df_filtre_valide[["Jeu"]].sort_values(by="Jeu")
             for i in range(0, nb_lignes_a_ajouter) :
                 nouvelle_ligne = pd.DataFrame([{'Jeu': ' '}])
-                df_export_list_valide  = pd.concat([df_export_list_valide, nouvelles_lignes], ignore_index=True)
+                df_export_list_valide  = pd.concat([df_export_list_valide, nouvelle_ligne], ignore_index=True)
   
             file_bytes_user_valide = export_file_bytes( df_export_list_valide , mode_taille ,mode_format, mode_color ) 
         else:
@@ -497,7 +497,7 @@ def _final_page(user):
         df_export_list_initiale = df_export_initiale[["Classement", "NbrEx","Jeu"]].sort_values(by="Jeu")
         for i in range(0, nb_lignes_a_ajouter) :
                 nouvelle_ligne = pd.DataFrame([{'Jeu': ' '}])
-                df_export_list_initiale  = pd.concat([df_export_list_initiale, nouvelles_lignes], ignore_index=True)
+                df_export_list_initiale  = pd.concat([df_export_list_initiale, nouvelle_ligne], ignore_index=True)
   
 
         file_bytes_initial = export_file_bytes( df_export_list_initiale , mode_taille ,mode_format, mode_color ) 
@@ -534,7 +534,7 @@ def _final_page(user):
         df_export_liste_global_valide = df_export_liste_global_valide.sort_values(by="Jeu")
         for i in range(0, nb_lignes_a_ajouter) :
                 nouvelle_ligne = pd.DataFrame([{'Jeu': ' '}])
-                df_export_liste_global_valide  = pd.concat([df_export_liste_global_valide, nouvelles_lignes], ignore_index=True)
+                df_export_liste_global_valide  = pd.concat([df_export_liste_global_valide, nouvelle_ligne], ignore_index=True)
   
 
         file_bytes_valide = export_file_bytes( df_export_liste_global_valide , mode_taille ,mode_format, mode_color ) 
