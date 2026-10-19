@@ -51,11 +51,13 @@ def main_app(user):
         _list_page("Vieux jeux", config_bar_jeux.VIEUX_KEY, user)
     elif page == "Demandes d'ajout / remarques":
         _requests_page(user)
+    elif page == "Mes suggestions":
+        _requests_suggestion_page(user,"ma_liste")     
     elif page == "Liste suggestions":
-        _requests_suggestion_page(user)    
+        _requests_suggestion_page(user,"all")      
     elif page == "Recherche jeu":
          _list_page(f"Recherche jeu", "all", user)
-   elif page == "Qui explique quoi":
+    elif page == "Qui explique quoi":
          _explique_page(user)
 
    else:
@@ -127,23 +129,25 @@ def _list_page(title, list_key, user):
 ###-------------- page des suggestion et remarque des joueur
 ############################################################################################################
    
-def _requests_suggestion_page(user):
-    st.title("liste des suggestions par les joueurs")
-    list_suggest = storage_jeux.get_game_suggestions_a_traiter()
-    list_games_tmp =[]
-    for sugg in list_suggest : 
-        
-        list_games_tmp.append(storage_jeux.get_info_games(sugg))
-    list_games = [elem for sous_liste in list_games_tmp for elem in sous_liste]
-   
-    if list_games:
-        per_row = 3
-        # FIX : On utilise len(list_games) ici !
-        for i in range(0, len(list_games), per_row):
-            cols = st.columns(per_row)
-            for j, g in enumerate(list_games[i:i + per_row]):
-                with cols[j]:
-                    _game_card(g, "all", user,"suggestion")
+def _requests_suggestion_page(user,mode):
+
+    if mode == "all" :
+       st.title("liste des suggestions par les joueurs")
+       list_suggest = storage_jeux.get_game_suggestions_a_traiter()
+       list_games_tmp =[]
+       for sugg in list_suggest : 
+           
+           list_games_tmp.append(storage_jeux.get_info_games(sugg))
+       list_games = [elem for sous_liste in list_games_tmp for elem in sous_liste]
+      
+       if list_games:
+           per_row = 3
+           # FIX : On utilise len(list_games) ici !
+           for i in range(0, len(list_games), per_row):
+               cols = st.columns(per_row)
+               for j, g in enumerate(list_games[i:i + per_row]):
+                   with cols[j]:
+                       _game_card(g, "all", user,"suggestion")
 
 
 ############################################################################################################
