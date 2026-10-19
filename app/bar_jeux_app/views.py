@@ -436,7 +436,7 @@ def _final_page(user):
         if mode_format == "pdf" :
              file_name="Votre_selection_valide_jeu.pdf"
         elif mode_format == "excel" : 
-             file_name="Votre_selection_valide_jeu.xlsx",
+             file_name="Votre_selection_valide_jeu.xlsx"
          
         st.download_button(
             label="📥 votre liste initial",
@@ -463,7 +463,7 @@ def _final_page(user):
         if mode_format == "pdf" :
              file_name="Votre_selection_valide_jeu.pdf"
         elif mode_format == "excel" : 
-             file_name="Votre_selection_valide_jeu.xlsx",
+             file_name="Votre_selection_valide_jeu.xlsx"
          
         st.download_button(
             label="📥 votre liste validée",
@@ -487,7 +487,7 @@ def _final_page(user):
         if mode_format == "pdf" :
              file_name="liste_selection_initial_jeu.pdf"
         elif mode_format == "excel" : 
-             file_name="liste_selection_initial_jeu.xlsx",
+             file_name="liste_selection_initial_jeu.xlsx"
          
         st.download_button(
             label="📥 la liste initial",
@@ -520,7 +520,7 @@ def _final_page(user):
         if mode_format == "pdf" :
              file_name="liste_selection_valide_jeu.pdf"
         elif mode_format == "excel" : 
-             file_name="liste_selection_valide_jeu.xlsx",
+             file_name="liste_selection_valide_jeu.xlsx"
          
         st.download_button(
             label="📥 la liste validée",
