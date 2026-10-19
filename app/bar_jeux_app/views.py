@@ -434,17 +434,17 @@ def _final_page(user):
             file_bytes_user_propose = b""
         
         if mode_format == "pdf" :
-             file_name="Votre_selection_valide_jeu.pdf"
+             file_name_user_prop="Votre_selection_valide_jeu.pdf"
         elif mode_format == "excel" : 
-             file_name="Votre_selection_valide_jeu.xlsx"
+             file_name_user_prop="Votre_selection_valide_jeu.xlsx"
          
         st.download_button(
             label="📥 votre liste initial",
             data=file_bytes_user_propose,
-            file_name,
+            file_name=file_name_user_prop,
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             use_container_width=True,
-            key="btn_download_valide"
+            key="btn_download_user_propose"
         )
         
     
@@ -461,17 +461,17 @@ def _final_page(user):
         
  
         if mode_format == "pdf" :
-             file_name="Votre_selection_valide_jeu.pdf"
+             file_name_user_valide="Votre_selection_valide_jeu.pdf"
         elif mode_format == "excel" : 
-             file_name="Votre_selection_valide_jeu.xlsx"
+             file_name_user_valide="Votre_selection_valide_jeu.xlsx"
          
         st.download_button(
             label="📥 votre liste validée",
             data=file_bytes_user_valide,
-            file_name,
+            file_name=file_name_user_valide,
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             use_container_width=True,
-            key="btn_download_valide"
+            key="btn_download_user_valide"
         )
 
  
@@ -485,17 +485,17 @@ def _final_page(user):
         file_bytes_initial = export_file_bytes( df_export_liste_global_valide , mode_taille ,mode_format, mode_color ) 
  
         if mode_format == "pdf" :
-             file_name="liste_selection_initial_jeu.pdf"
+             file_name_iniitial="liste_selection_initial_jeu.pdf"
         elif mode_format == "excel" : 
-             file_name="liste_selection_initial_jeu.xlsx"
+             file_name_iniitial="liste_selection_initial_jeu.xlsx"
          
         st.download_button(
             label="📥 la liste initial",
             data=file_bytes_initial,
-            file_name,
+            file_name=file_name_iniitial,
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             use_container_width=True,
-            key="btn_download_valide"
+            key="btn_download_initiale"
         )
 
  
@@ -518,14 +518,14 @@ def _final_page(user):
         file_bytes_valide = export_file_bytes( df_export_liste_global_valide , mode_taille ,mode_format, mode_color ) 
  
         if mode_format == "pdf" :
-             file_name="liste_selection_valide_jeu.pdf"
+             file_name_valide="liste_selection_valide_jeu.pdf"
         elif mode_format == "excel" : 
-             file_name="liste_selection_valide_jeu.xlsx"
+             file_name_valide="liste_selection_valide_jeu.xlsx"
          
         st.download_button(
             label="📥 la liste validée",
             data=file_bytes_valide,
-            file_name,
+            file_name=file_name_valide,
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             use_container_width=True,
             key="btn_download_valide"
