@@ -500,6 +500,7 @@ def _final_page(user):
                 df_export_list_initiale  = pd.concat([df_export_list_initiale, nouvelle_ligne], ignore_index=True)
   
 
+        df_export_list_initiale["NbrEx"] = df_export_list_initiale["NbrEx"].astype(int)
         file_bytes_initial = export_file_bytes( df_export_list_initiale , mode_taille ,mode_format, mode_color ) 
  
         if mode_format == "pdf" :
@@ -531,6 +532,7 @@ def _final_page(user):
         #df_export_liste_global_valide = df_filtre_global_valide[["Classement", "NbrEx","Jeu"]].sort_values(by="Jeu")
      
         df_export_liste_global_valide = df_filtre_global_valide[["Classement", "NbrEx","Jeu"]]
+        df_export_liste_global_valide["NbrEx"] = df_export_liste_global_valide["NbrEx"].astype(int)
         df_export_liste_global_valide = df_export_liste_global_valide.sort_values(by="Jeu")
         for i in range(0, nb_lignes_a_ajouter) :
                 nouvelle_ligne = pd.DataFrame([{'Jeu': ' '}])
