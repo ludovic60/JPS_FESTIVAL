@@ -420,7 +420,7 @@ def _final_page(user):
      
     with col_choix4 :
         # Votre liste de valeurs
-       options_nb_lignes = list(range(41))
+        options_nb_lignes = list(range(41))
 
     
         # Sélection unique
