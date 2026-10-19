@@ -537,14 +537,34 @@ def _final_page(user):
        if   mode_color == "couleur" : 
             if mode_format == "pdf" : 
                if mode_taille =="A3" :
-               
-excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A3" ,"pdf", "blanc" )      
+                        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A3" ,"pdf", "couleur" )      
+               elif  mode_taille =="A4" :
+                        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A4" ,"pdf", "couleur" )      
+               else : 
+                       excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , mode_taille ,"pdf", mode_color ) 
 
+
+
+# Dictionnaire associant chaque combinaison à son résultat/action
+actions_liste_valide = {
+    ("couleur", "pdf", "A3"): "Action 1 : Tout est VRAI",
+    ("couleur", "pdf", "A4"): "Action 2 : C3 est FAUX",
+    ("couleur", "excel", "A4"): "Action 3 : C2 est FAUX",
+    ("couleur", "excel", "A3"): "Action 4 : C2 et C3 sont FAUX",
+    ("couleur", "pdf", "A3"): "Action 1 : Tout est VRAI",
+    ("couleur", "pdf", "A4"): "Action 2 : C3 est FAUX",
+    ("couleur", "excel", "A4"): "Action 3 : C2 est FAUX",
+    ("couleur", "excel", "A3"):
+}
+
+# Récupération du résultat (avec une valeur par défaut de sécurité)
+resultat = actions.get((critere1, critere2, critere3), "Combinaison invalide")
+print(resultat)
 
 
         
         st.download_button(
-            label="📥 la liste validée en pdf A3",
+            label="📥 la liste validée",
             data=excel_data_liste_global_valide,
             file_name="liste_selection_valide_jeu.pdf",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
