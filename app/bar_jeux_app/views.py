@@ -409,7 +409,7 @@ def _final_page(user):
     with col_choix4 :
         st.subheader("1. Menu déroulant (Selectbox)")
         # Votre liste de valeurs
-        options_nb_lignes = ["1", "2", "3", "4", "5", "6", "7", "8","9","10", "11", "12", "13", "14", "15", "16", "17", "18","19" ]
+        options_nb_lignes = ["0", "1", "2", "3", "4", "5", "6", "7", "8","9","10", "11", "12", "13", "14", "15", "16", "17", "18","19" ]
     
         # Sélection unique
         nb_lignes_a_ajouter = st.selectbox(
@@ -426,7 +426,7 @@ def _final_page(user):
         if user['prete_jeu'] == True or user['prete_jeu'] == "True":
             df_filtre_propose = df_jeux[df_jeux[f"{user['pseudo']}_propose"] == True]
             df_export_list_propose = df_filtre_propose[["Jeu"]].sort_values(by="Jeu")
-            for i in range(1, options_nb_lignes) :
+            for i in range(0, nb_lignes_a_ajouter) :
                 nouvelle_ligne = pd.DataFrame([{'Jeu': ' '}])
                 df_export_list_propose  = pd.concat([df_export_list_propose, nouvelles_lignes], ignore_index=True)
             file_bytes_user_propose = export_file_bytes( df_export_list_valide , mode_taille ,mode_format, mode_color ) 
@@ -453,6 +453,9 @@ def _final_page(user):
         if user['prete_jeu'] == True or user['prete_jeu'] == "True":
             df_filtre_valide = df_jeux[df_jeux[f"{user['pseudo']}_valide"] == True]
             df_export_list_valide = df_filtre_valide[["Jeu"]].sort_values(by="Jeu")
+            for i in range(0, nb_lignes_a_ajouter) :
+                nouvelle_ligne = pd.DataFrame([{'Jeu': ' '}])
+                df_export_list_valide  = pd.concat([df_export_list_valide, nouvelles_lignes], ignore_index=True)
   
             file_bytes_user_valide = export_file_bytes( df_export_list_valide , mode_taille ,mode_format, mode_color ) 
         else:
@@ -480,7 +483,10 @@ def _final_page(user):
         df_export_initiale = df_jeux.copy()
         df_export_initiale = df_export_initiale.rename(columns={"Total coché par joueur": "NbrEx"})
         df_export_list_initiale = df_export_initiale[["Classement", "NbrEx","Jeu"]].sort_values(by="Jeu")
-      
+        for i in range(0, nb_lignes_a_ajouter) :
+                nouvelle_ligne = pd.DataFrame([{'Jeu': ' '}])
+                df_export_list_initiale  = pd.concat([df_export_list_initiale, nouvelles_lignes], ignore_index=True)
+  
 
         file_bytes_initial = export_file_bytes( df_export_liste_global_valide , mode_taille ,mode_format, mode_color ) 
  
@@ -514,6 +520,10 @@ def _final_page(user):
      
         df_export_liste_global_valide = df_filtre_global_valide[["Classement", "NbrEx","Jeu"]]
         df_export_liste_global_valide = df_export_liste_global_valide.sort_values(by="Jeu")
+        for i in range(0, nb_lignes_a_ajouter) :
+                nouvelle_ligne = pd.DataFrame([{'Jeu': ' '}])
+                df_export_liste_global_valide  = pd.concat([df_export_liste_global_valide, nouvelles_lignes], ignore_index=True)
+  
 
         file_bytes_valide = export_file_bytes( df_export_liste_global_valide , mode_taille ,mode_format, mode_color ) 
  
