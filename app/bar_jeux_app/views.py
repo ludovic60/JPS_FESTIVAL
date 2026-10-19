@@ -13,7 +13,7 @@ import sys
 import time
 from bson import ObjectId
 from config_game_card import _game_card , mise_forme_classement , nouveaute_def
-from export_import import to_excel , export_excel_bytes
+from export_import import export_file_bytes
 
 # Ajoute le dossier parent à sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -415,9 +415,9 @@ def _final_page(user):
             index=0  # Index de l'élément par défaut
         )
      
-    col_btn1, col_btn2, col_btn3 , col_btn4, col_btn5 , col_btn6  = st.columns(6)
+    col_btn1, col_btn2, col_btn3 , col_btn4  = st.columns(4)
     
-    # ---Colonne 1 : Export Proposé ---
+    # ---Colonne 1 : Export user Proposé ---
     with col_btn1:
 
         if user['prete_jeu'] == True or user['prete_jeu'] == "True":
@@ -426,97 +426,77 @@ def _final_page(user):
             for i in range(1, options_nb_lignes) :
                 nouvelle_ligne = pd.DataFrame([{'Jeu': ' '}])
                 df_export_list_propose  = pd.concat([df_export_list_propose, nouvelles_lignes], ignore_index=True)
-            excel_data_propose = to_excel(df_export_list_propose)
+            file_bytes_user_propose = export_file_bytes( df_export_list_valide , mode_taille ,mode_format, mode_color ) 
         else:
-            excel_data_propose = b""
+            file_bytes_user_propose = b""
         
+        if mode_format == "pdf" :
+             file_name="Votre_selection_valide_jeu.pdf"
+        elif mode_format == "excel" : 
+             file_name="Votre_selection_valide_jeu.xlsx",
+         
         st.download_button(
-            label="📥 Export de votre liste propose",
-            data=excel_data_propose,
-            file_name="export_jeux_propose_user.xlsx",
+            label="📥 votre liste initial",
+            data=file_bytes_user_propose,
+            file_name,
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             use_container_width=True,
-            key="btn_download_propose"
+            key="btn_download_valide"
         )
-         
         
     
-    # ---Colonne 2 : Export Validé ---
+    # ---Colonne 2 : Export user Validé ---
     with col_btn2:
         if user['prete_jeu'] == True or user['prete_jeu'] == "True":
             df_filtre_valide = df_jeux[df_jeux[f"{user['pseudo']}_valide"] == True]
             df_export_list_valide = df_filtre_valide[["Jeu"]].sort_values(by="Jeu")
-            excel_data_valide = to_excel(df_export_list_valide)
+  
+            file_bytes_user_valide = export_file_bytes( df_export_list_valide , mode_taille ,mode_format, mode_color ) 
         else:
-            excel_data_valide = b""   
+            file_bytes_user_valide = b""   
         
+        
+ 
+        if mode_format == "pdf" :
+             file_name="Votre_selection_valide_jeu.pdf"
+        elif mode_format == "excel" : 
+             file_name="Votre_selection_valide_jeu.xlsx",
+         
         st.download_button(
-            label="📥 Export de votre liste validée",
-            data=excel_data_valide,
-            file_name="export_jeux_valide_user.xlsx",
+            label="📥 votre liste validée",
+            data=file_bytes_user_valide,
+            file_name,
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             use_container_width=True,
             key="btn_download_valide"
-        
         )
 
  
-    # ---Colonne 3 : Export Initial ---
+    # ---Colonne 3 : Export total Initial ---
     with col_btn3:
         df_export_initiale = df_jeux.copy()
         df_export_initiale = df_export_initiale.rename(columns={"Total coché par joueur": "NbrEx"})
         df_export_list_initiale = df_export_initiale[["Classement", "NbrEx","Jeu"]].sort_values(by="Jeu")
-    
-        excel_data_initial = export_excel_bytes( df_export_list_initiale , "A3" ,"pdf" ,"couleur"  )    
+      
 
+        file_bytes_initial = export_file_bytes( df_export_liste_global_valide , mode_taille ,mode_format, mode_color ) 
+ 
+        if mode_format == "pdf" :
+             file_name="liste_selection_initial_jeu.pdf"
+        elif mode_format == "excel" : 
+             file_name="liste_selection_initial_jeu.xlsx",
+         
         st.download_button(
-            label="📥 la liste initiale en pdf A3",
-            data=excel_data_initial,
-            file_name="liste_selection_jeu.pdf",
+            label="📥 la liste initial",
+            data=file_bytes_initial,
+            file_name,
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             use_container_width=True,
-            key="btn_download_initial_pdf_A3"
-        
+            key="btn_download_valide"
         )
-
-        excel_data_initial = export_excel_bytes( df_export_list_initiale , "A3" ,"excel" ,"couleur")    
-
-        st.download_button(
-            label="📥 la liste initiale en excel A3",
-            data=excel_data_initial,
-            file_name="liste_selection_jeu.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True,
-            key="btn_download_initial_excel_A3"
-        )
-
-    with col_btn4:
-
-        excel_data_initial = export_excel_bytes( df_export_list_initiale , "A4" ,"pdf", "couleur" )    
-
-        st.download_button(
-            label="📥 la liste initiale en pdf A4",
-            data=excel_data_initial,
-            file_name="liste_selection_jeu.pdf",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True,
-            key="btn_download_initial_pdf_A4"
-        )
-
-        excel_data_initial = export_excel_bytes( df_export_list_initiale , "A4" ,"excel", "couleur" )    
-
-        st.download_button(
-            label="📥 la liste initiale en excel A4",
-            data=excel_data_initial,
-            file_name="liste_selection_jeu.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True,
-            key="btn_download_initial_excel_A4"
-        )
-
 
  
-    # ---Colonne 4 : Export list validé  ---
+    # ---Colonne 4 : Export total validé  ---
     with col_btn5:
 
         df_export_valide = df_jeux.copy()
@@ -532,82 +512,22 @@ def _final_page(user):
         df_export_liste_global_valide = df_filtre_global_valide[["Classement", "NbrEx","Jeu"]]
         df_export_liste_global_valide = df_export_liste_global_valide.sort_values(by="Jeu")
 
-      mode_color, options_nb_lignes
-     mode_format
-       if   mode_color == "couleur" : 
-            if mode_format == "pdf" : 
-               if mode_taille =="A3" :
-                        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A3" ,"pdf", "couleur" )      
-               elif  mode_taille =="A4" :
-                        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A4" ,"pdf", "couleur" )      
-               else : 
-                       excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , mode_taille ,"pdf", mode_color ) 
-
-
-
-# Dictionnaire associant chaque combinaison à son résultat/action
-actions_liste_valide = {
-    ("couleur", "pdf", "A3"): "Action 1 : Tout est VRAI",
-    ("couleur", "pdf", "A4"): "Action 2 : C3 est FAUX",
-    ("couleur", "excel", "A4"): "Action 3 : C2 est FAUX",
-    ("couleur", "excel", "A3"): "Action 4 : C2 et C3 sont FAUX",
-    ("couleur", "pdf", "A3"): "Action 1 : Tout est VRAI",
-    ("couleur", "pdf", "A4"): "Action 2 : C3 est FAUX",
-    ("couleur", "excel", "A4"): "Action 3 : C2 est FAUX",
-    ("couleur", "excel", "A3"):
-}
-
-# Récupération du résultat (avec une valeur par défaut de sécurité)
-resultat = actions.get((critere1, critere2, critere3), "Combinaison invalide")
-print(resultat)
-
-
-        
+        file_bytes_valide = export_file_bytes( df_export_liste_global_valide , mode_taille ,mode_format, mode_color ) 
+ 
+        if mode_format == "pdf" :
+             file_name="liste_selection_valide_jeu.pdf"
+        elif mode_format == "excel" : 
+             file_name="liste_selection_valide_jeu.xlsx",
+         
         st.download_button(
             label="📥 la liste validée",
-            data=excel_data_liste_global_valide,
-            file_name="liste_selection_valide_jeu.pdf",
+            data=file_bytes_valide,
+            file_name,
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             use_container_width=True,
-            key="btn_download_valide_pdf_A3"
+            key="btn_download_valide"
         )
 
-
-        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A3" ,"excel","blanc") 
-        
-        st.download_button(
-            label="📥 la liste validée en excel A3",
-            data=excel_data_liste_global_valide,
-            file_name="liste_selection_valide_jeu.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True,
-            key="btn_download_valide_excel_A3"
-        )
-    
-    with col_btn6:
-
-        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A4" ,"pdf","blanc" ) 
-        
-        st.download_button(
-            label="📥 la liste validée en pdf A4",
-            data=excel_data_liste_global_valide,
-            file_name="liste_selection_valide_jeu.pdf",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True,
-            key="btn_download_valide_pdf_A4"
-        )
-
-  
-        excel_data_liste_global_valide = export_excel_bytes( df_export_liste_global_valide , "A4" ,"excel","blanc" ) 
-        
-        st.download_button(
-            label="📥 la liste validée en excel A4",
-            data=excel_data_liste_global_valide,
-            file_name="liste_selection_valide_jeu.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True,
-            key="btn_download_valide_excel_A4"
-        )
     
 
       
