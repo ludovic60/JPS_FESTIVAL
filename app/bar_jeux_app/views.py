@@ -373,6 +373,15 @@ def _final_page(user):
             background-color: #2e7d32;
             color: white;
         }
+       /* Change la taille du texte pour st.radio */
+       .stRadio div[data-testid="stMarkdownContainer"] p {
+              font-size: 18px;
+        }
+    
+        /* Change la taille du texte pour st.selectbox */
+        .stSelectbox div[data-baseweb="select"] span {
+             font-size: 18px;
+        }
         </style>
     """, unsafe_allow_html=True)
 
@@ -385,6 +394,7 @@ def _final_page(user):
        mode_color = st.radio(
            "Choisissez la couleur :",
            options=["Couleur", "Noir et blanc"],
+           horizontal=True,
            index=0  # Option par défaut (0 pour la première, 1 pour la seconde)
        )
 
@@ -393,6 +403,7 @@ def _final_page(user):
        mode_format = st.radio(
            "Choisissez le format :",
            options=["pdf", "excel"],
+           horizontal=True,
            index=0  # Option par défaut (0 pour la première, 1 pour la seconde)
        )
 
@@ -403,6 +414,7 @@ def _final_page(user):
        mode_taille = st.radio(
            "Choisissez la taille  :",
            options=["A4", "A3"],
+           horizontal=True,
            index=0  # Option par défaut (0 pour la première, 1 pour la seconde)
        )
      
@@ -507,7 +519,7 @@ def _final_page(user):
 
  
     # ---Colonne 4 : Export total validé  ---
-    with col_btn5:
+    with col_btn4:
 
         df_export_valide = df_jeux.copy()
      
