@@ -429,8 +429,8 @@ def _final_page(user):
             df_export_list_propose = df_filtre_propose[["Jeu"]].sort_values(by="Jeu")
             for i in range(0, nb_lignes_a_ajouter) :
                 nouvelle_ligne = pd.DataFrame([{'Jeu': ' '}])
-                df_export_list_propose  = pd.concat([df_export_list_propose, nouvelles_lignes], ignore_index=True)
-            file_bytes_user_propose = export_file_bytes( df_export_list_valide , mode_taille ,mode_format, mode_color ) 
+                df_export_list_propose = pd.concat([df_export_list_propose, nouvelles_lignes], ignore_index=True)
+            file_bytes_user_propose = export_file_bytes( df_export_list_propose , mode_taille ,mode_format, mode_color ) 
         else:
             file_bytes_user_propose = b""
         
@@ -489,7 +489,7 @@ def _final_page(user):
                 df_export_list_initiale  = pd.concat([df_export_list_initiale, nouvelles_lignes], ignore_index=True)
   
 
-        file_bytes_initial = export_file_bytes( df_export_liste_global_valide , mode_taille ,mode_format, mode_color ) 
+        file_bytes_initial = export_file_bytes( df_export_list_initiale , mode_taille ,mode_format, mode_color ) 
  
         if mode_format == "pdf" :
              file_name_iniitial="liste_selection_initial_jeu.pdf"
