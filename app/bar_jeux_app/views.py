@@ -500,7 +500,7 @@ def _final_page(user):
                 df_export_list_initiale  = pd.concat([df_export_list_initiale, nouvelle_ligne], ignore_index=True)
   
 
-        df_export_list_initiale["NbrEx"] = df_export_list_initiale["NbrEx"].astype(Int64)
+        df_export_list_initiale["NbrEx"] = df_export_list_initiale["NbrEx"].astype('Int64')
         file_bytes_initial = export_file_bytes( df_export_list_initiale , mode_taille ,mode_format, mode_color ) 
  
         if mode_format == "pdf" :
@@ -525,14 +525,14 @@ def _final_page(user):
      
         df_export_valide = df_export_valide.rename(columns={"Total coché validé par admin": "NbrEx"})
         #  Convertir explicitement en entier (en gérant d'éventuels vides/NaN par 0 si besoin)
-        df_export_valide["NbrEx"] = ( pd.to_numeric(df_export_valide["NbrEx"], errors="coerce").fillna(0).astype(Int64)   )
+        df_export_valide["NbrEx"] = ( pd.to_numeric(df_export_valide["NbrEx"], errors="coerce").fillna(0).astype('Int64')   )
              
         df_filtre_global_valide = df_export_valide[df_export_valide["NbrEx"] > 0]
 
         #df_export_liste_global_valide = df_filtre_global_valide[["Classement", "NbrEx","Jeu"]].sort_values(by="Jeu")
      
         df_export_liste_global_valide = df_filtre_global_valide[["Classement", "NbrEx","Jeu"]]
-        df_export_liste_global_valide["NbrEx"] = df_export_liste_global_valide["NbrEx"].astype(Int64)
+        df_export_liste_global_valide["NbrEx"] = df_export_liste_global_valide["NbrEx"].astype('Int64')
         df_export_liste_global_valide = df_export_liste_global_valide.sort_values(by="Jeu")
         for i in range(0, nb_lignes_a_ajouter) :
                 nouvelle_ligne = pd.DataFrame([{'Jeu': ' '}])
