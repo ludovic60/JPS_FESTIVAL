@@ -38,7 +38,7 @@ def main_app(user):
             pages = ["Liste des jeux","Recherche jeu"]
         page = st.radio("Navigation", pages, label_visibility="collapsed")
         st.divider()
-         if st.button("Déconnexion"):
+        if st.button("Déconnexion"):
             commun.auth.logout()
             st.rerun()
 
