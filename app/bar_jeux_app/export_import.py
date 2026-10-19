@@ -105,7 +105,7 @@ def to_pdf(df, title="Liste finale des prêts") -> bytes:
 
 
 
-def export_excel_bytes(df, page_size, mode ,color_or_blanc):
+def export_file_bytes(df, page_size, mode ,color_or_blanc):
   df_export = df.copy()
 
   for i in range(1, 21):
