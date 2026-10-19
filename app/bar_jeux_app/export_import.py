@@ -278,7 +278,7 @@ def export_file_bytes(df, page_size, mode ,color_or_blanc):
     ]
 
     # Application des couleurs conditionnelles sur la colonne "Classement"
-    if color_or_blanc == "couleur" : 
+    if color_or_blanc == "Couleur" : 
         try:
           classement_idx = columns.index("Classement")
           color_map = {
