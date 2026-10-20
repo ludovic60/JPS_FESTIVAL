@@ -866,20 +866,6 @@ def _final_page(user):
 
 
     ###  gestion de l'affichage ---------------------------------------------------------------------------
-    couleurs_classement = {"AMBIANCE": "#E655DA", ## rose
-                           "COOP/SEMI COOP" :"#7A0EE3",####violet
-                           "JEU DUO" :"#FF9224",          ##orange                 
-                           "ENQUETE/ESCAPE/ENIGME/CASSETETE" :"#1FC7FF",##bleu clair
-                           "NON CLASSE": "#C7C5C5", ### gris
-                           "PBM CLASSEMENT": "#080808",   ### black                         
-                           "FAMILLE": "#57B02C", ## vert 
-                           "INITIE": "#F5E20C", ## jaune 
-                           "EXPERT": "#E67A70", ### rouge  
-                           "EXPERT+": "#8C0E07",   ### rouge   foncé                     
-                           "ENFANT": "#1128D6" ### bleu foncé
-                          }
-
-    couleurs_nouveaute = {"✨NOUVEAUTE": "#57B02C", "🏺ANCIEN": "#080808", "🧐 INCONNU": "#1128D6"}
 
 
     liste_valeur_nbr_joueur =   df_jeux["nbr max joueurs"].unique().tolist()
@@ -905,7 +891,7 @@ def _final_page(user):
           if not df_jeux_select_graphique.empty:
               df_cat = df_jeux_select_graphique.groupby('classement')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_cat.columns = ["classement", "Nombre"]
-              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, color="classement", color_discrete_map=couleurs_classement )
+              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, color="classement", color_discrete_map=config_bar_jeux.couleurs_classement )
               fig_pie_cat.update_layout(height=250 , width=1000) 
               fig_pie_cat.update_layout(
                   legend=dict(
@@ -929,7 +915,7 @@ def _final_page(user):
           if not df_jeux_select_graphique.empty:
               df_nov = df_jeux_select_graphique.groupby('Nouveauté')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_nov.columns = ["Nouveauté", "Nombre"]
-              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 , color="Nouveauté", color_discrete_map=couleurs_nouveaute  )
+              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 , color="Nouveauté", color_discrete_map=config_bar_jeux.couleurs_nouveaute  )
               fig_pie_nov.update_layout(height=250 , width=1000)
               st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
@@ -1021,7 +1007,7 @@ def _final_page(user):
           if not df_jeux_pret_graphique.empty:
               df_cat =  df_jeux_pret_graphique.groupby('classement')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_cat.columns = ["classement", "Nombre"]
-              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, color="classement", color_discrete_map=couleurs_classement )
+              fig_pie_cat = px.pie(df_cat, names="classement", values="Nombre", hole=0.3, color="classement", color_discrete_map=config_bar_jeux.couleurs_classement )
               fig_pie_cat.update_layout(height=250 , width=1000) 
               fig_pie_cat.update_layout(
                   legend=dict(
@@ -1045,7 +1031,7 @@ def _final_page(user):
           if not df_jeux_pret_graphique.empty:
               df_nov = df_jeux_pret_graphique.groupby('Nouveauté')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_nov.columns = ["Nouveauté", "Nombre"]
-              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 , color="Nouveauté", color_discrete_map=couleurs_nouveaute )
+              fig_pie_nov = px.pie(df_nov, names="Nouveauté", values="Nombre", hole=0.3 , color="Nouveauté", color_discrete_map=config_bar_jeux.couleurs_nouveaute )
               fig_pie_nov.update_layout(height=250 , width=1000)
               st.plotly_chart(fig_pie_nov, use_container_width=True)
           else:
@@ -1137,7 +1123,7 @@ def _final_page(user):
           if not df_jeux_valide_graphique.empty:
               df_cat2 =  df_jeux_valide_graphique.groupby('classement')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_cat2.columns = ["classement", "Nombre"]
-              fig_pie_cat2 = px.pie(df_cat2, names="classement", values="Nombre", hole=0.3 ,  color="classement", color_discrete_map=couleurs_classement )
+              fig_pie_cat2 = px.pie(df_cat2, names="classement", values="Nombre", hole=0.3 ,  color="classement", color_discrete_map=config_bar_jeux.couleurs_classement )
               fig_pie_cat2.update_layout(height=250 , width=1000) 
               fig_pie_cat2.update_layout(
                   legend=dict(
@@ -1162,7 +1148,7 @@ def _final_page(user):
           if not df_jeux_valide_graphique.empty:
               df_nov2 = df_jeux_valide_graphique.groupby('Nouveauté')['nom_jeu_complet'].nunique().reset_index(name='Nombre')
               df_nov2.columns = ["Nouveauté", "Nombre"]
-              fig_pie_nov2 = px.pie(df_nov2, names="Nouveauté", values="Nombre", hole=0.3 ,color="Nouveauté", color_discrete_map=couleurs_nouveaute)
+              fig_pie_nov2 = px.pie(df_nov2, names="Nouveauté", values="Nombre", hole=0.3 ,color="Nouveauté", color_discrete_map=config_bar_jeux.couleurs_nouveaute)
               fig_pie_nov2.update_layout(height=250 , width=1000)
               st.plotly_chart(fig_pie_nov2, use_container_width=True)
           else:
